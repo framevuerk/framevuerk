@@ -2,10 +2,6 @@ import './index.pcss'
 
 //import "babel-polyfill";
 
-import Vue from 'vue/dist/vue.js'
-import fastclick from 'fastclick'
-
-
 import fvMain from './components/fvMain'
 import fvContent from './components/fvContent'
 import fvHeader from './components/fvHeader'
@@ -35,6 +31,4 @@ const framevuerk = {
     Vue.component('fvSwitch', fvSwitch);
   }
 };
-fastclick.attach(document.body);
 module.exports = framevuerk;
-global.Vue = Vue;
