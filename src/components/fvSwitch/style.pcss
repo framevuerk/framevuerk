@@ -1,0 +1,38 @@
+.fv-switch{
+    width: 3.2em;
+    background: color( var(--gray-color-dark) a(85%));
+    border: solid 1px var(--gray-color-dark);
+    border-radius: 25px;
+    padding: 0;
+    display: inline-block;
+    height: 1.2em;
+    margin: 0.9em 0;
+    vertical-align: middle;
+    direction: rtl;
+    cursor: pointer;
+    transition: background .1s;
+    & > .fv-handler{
+        width: 1.8em;
+        height: 1.8em;
+        display: inline-block;
+        background: var(--gray-color-light);
+        margin: calc( -0.3em - 1px );
+        border-radius: 25px;
+        box-shadow: 0 1px 4px var(--shadow-color);
+        border: solid 1px var(--shadow-color);
+        transition: margin .1s;
+    }
+    &.on{
+        background: color( var(--theme-color) a(50%));
+        & > .fv-handler{
+            background: var(--theme-color);
+            margin-right: 1.65em;
+        }
+    }
+    &:focus, &.focus{
+        @apply --outline;
+        &:invalid, &.invalid{
+            @apply --danger-outline;
+        }
+    }
+}

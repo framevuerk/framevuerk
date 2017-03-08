@@ -1,0 +1,27 @@
+span
+    fv-input(class="fv-form-control", @click="open()", @keydown.enter="open()", :value="value", type="datepicker", :display-value="pDisplayValue", :placeholder="placeholder", :required="required", ref="inputEl")
+    transition(name="fv-fade")
+        div(class="fv-overlay", @click="close()", v-show="pShow")
+    transition(name="fv-datepicker")
+        fv-main(class="fv-datepicker", v-show="pShow", ref="datepicker")
+            fv-header
+                div(class="fv-title")
+                    h3(v-html="pDisplayValue || placeholder")
+            span(tabindex="0", ref="justFocusEl", @blur="closeIf()", @keydown="pKeyDown($event)")
+            fv-content
+                section(v-for="(val, index) in pSections", :class="{'fv-pick-section': val.type=='pick','fv-col-sm-1of3': val.type=='pick','fv-sp': val.type=='sp','fv-focused': highlightedOption==index}")
+                    label(class="fv-control-label fv-title", v-if="val.type=='pick'", v-html="val.title")
+                    span(class="fv-button fv-up", v-if="val.type=='pick'", @click.prevent="pMath('add', val.name)")
+                        i(class="fa fa-chevron-up")
+                    div(class="fv-value fv-padding fv-text-center", v-if="val.type=='pick'", v-html="pValue[val.name]")
+                    span(class="fv-button fv-bottom", v-if="val.type=='pick'", @click.prevent="pMath('subtract', val.name)")
+                        i(class="fa fa-chevron-down")
+                    hr(v-if="val.type=='sp'")
+            fv-footer
+                div(class="fv-grow")
+                fv-button(class="fv-default", @click.prevent="pSetValue(null); close();", @blur="closeIf()") 
+                    i(class="fa fa-circle-o")
+                    =" حذف انتخاب"
+                fv-button(class="fv-primary", @click.prevent="pSetValue(pDate); close();", @blur="closeIf()") 
+                    i(class="fa fa-check")
+                    =" باشه"

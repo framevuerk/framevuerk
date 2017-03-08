@@ -1,0 +1,20 @@
+span
+    fv-input(class="fv-form-control", @click="open()", @keydown.enter="open()", :value="value", type="select", :display-value="displayValue", :placeholder="placeholder", :required="required", ref="inputEl")
+    transition(name="fv-fade")
+        div(class="fv-overlay", @click="close()", v-show="pShow")
+    transition(name="fv-select")
+        fv-main(class="fv-select", v-show="pShow", ref="select")
+            fv-header(v-if="search")
+                fv-input(class="fv-form-control fv-grow", placeholder="جست و جو کنید...", v-model="searchQuery", ref="searchQueryEl", @blur="closeIf()", @keydown="pKeyDown($event)")
+            span(v-if="!search", tabindex="0", ref="justFocusEl", @blur="closeIf()", @keydown="pKeyDown($event)")
+            fv-content(class="no-padding")
+                div(class="fv-option", v-show="pOptions.length == 0") چیزی پیدا نشد!
+                div(class="fv-option", v-for="(option, index) in pOptions", v-html="option.text", @click="clickOption(option)", ref="optionElem",:class="{'fv-selected': pIsSelected(option), 'fv-focused': highlightedOption==index}")
+            fv-footer
+                div(class="fv-grow")
+                fv-button(class="fv-default", @click.prevent="clickOption(); close();", @blur="closeIf()") 
+                    i(class="fa fa-circle-o")
+                    =" حذف انتخاب"
+                fv-button(class="fv-primary", @click.prevent="close()", @blur="closeIf()") 
+                    i(class="fa fa-check")
+                    =" باشه"

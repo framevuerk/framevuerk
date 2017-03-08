@@ -1,0 +1,86 @@
+.fv-button{
+    font-family: inherit;
+    padding: 0 1em;
+    display: inline-block;
+    border: 1px solid var(--shadow-color);
+    box-shadow: 0 1em 1em var(--shadow-color-light);
+    border-radius: 0;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    max-width: 100%;
+    font-size: 0.9em;
+    height: 3.3em;
+    line-height: 3.3em;
+    overflow: hidden;
+    border-radius: 4px;
+    &:focus, &.focus{
+        @apply --outline;
+        &:invalid, &.invalid{
+            @apply --danger-outline;
+        }
+    }
+    &.fv-default, &{
+        background: var(--default-color);
+        color: yiq;
+        &:active{
+            background: var(--default-color-dark);
+            color: yiq;
+        }
+        &:focus{
+            background: var(--highlight-color-light);
+            color: yiq;
+        }
+    }
+    &.fv-primary{
+        background: var(--primary-color);
+        color: yiq;
+        &:active{
+            background: var(--primary-color-dark);
+            color: yiq;
+        }
+        &:focus{
+            background: var(--primary-color-light);
+            color: yiq;
+        }
+    }
+    &.fv-danger{
+        background: var(--danger-color);
+        color: yiq;
+        &:active{
+            background: var(--danger-color-dark);
+            color: yiq;
+        }
+        &:focus{
+            background: var(--danger-color-light);
+            color: yiq;
+        }
+    }
+    &.fv-warning{
+        background: var(--warning-color);
+        color: yiq;
+        &:active{
+            background: var(--warning-color-dark);
+            color: yiq;
+        }
+        &:focus{
+            background: var(--warning-color-light);
+            color: yiq;
+        }
+    }
+    &.fv-success{
+        background: var(--success-color);
+        color: yiq;
+        &:active{
+            background: var(--success-color-dark);
+            color: yiq;
+        }
+        &:focus{
+            background: var(--success-color-light);
+            color: yiq;
+        }
+    }
+    &:active{
+        box-shadow: inset 0 1em 1em var(--shadow-color-light);
+    }
+}

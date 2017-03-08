@@ -1,0 +1,131 @@
+html, body {
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+}
+body{
+    background: var(--bg-color);
+    color: var(--color);
+
+    width: 100%;
+    
+    font-family: Shabnam, sans-serif;
+    &.lock-scroll{
+        overflow-y: hidden;
+    }
+    &.rtl{
+        direction: rtl;
+    }
+    &.ltr{
+        direction: ltr;
+    }
+}
+
+
+
+.fv-block{
+    display: block !important;
+    width: 100%;
+}
+*.fv-inline-block{
+    display: inline-block !important;
+}
+.fv-inline{
+    display: inline !important;
+}
+.fv-full-width{
+    width: 100% important;
+}
+
+.fv-hide-on-small{
+    @media (max-width: 959px){
+        display: none !important;
+    }
+}
+.fv-hide-on-normal{
+    @media (min-width: 960px){
+        display: none !important;
+    }
+}
+.fv-hide{
+    display: none !important;
+}
+.fv-hidden{
+    position: absolute !important;
+    opacity: 0 !important;
+    padding: 0 !important;
+    margin: -99999999px !important;
+    height: 0px !important;
+    width: 0px !important;
+}
+.fv-overlay{
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: var(--shadow-color);
+    position: fixed;
+    z-index: 10000;
+    text-align: center;
+    &.fv-light{
+        background: var(--shadow-color-light);
+    }
+}
+
+.fv-text-center{
+    text-align: center;
+}
+
+.fv-padding{
+    padding: var(--padding);
+}
+.fv-vertical-padding{
+    padding-top: var(--padding);
+    padding-bottom: var(--padding);
+}
+.fv-horizontal-padding{
+    padding-left: var(--padding);
+    padding-right: var(--padding);
+}
+
+
+.fv-form-control, .fv-button{
+    font-size: 0.9em;
+    line-height: 3em;
+}
+.fv-control-label{
+    display: block;
+    min-height: 1.5em;
+    padding: 0.3em 0;
+    color: var(--color-light);
+    font-size: 0.9em;
+    max-width: 100%;
+    @apply --nowrap;
+}
+.fv-form-control{
+    font-family: inherit;
+    padding: 0 0.6em;
+    display: inline-block;
+    border: 1px solid var(--shadow-color);
+    box-shadow: inset 0 0.3em 0.5em var(--shadow-color-light);
+    background: var(--bg-color-light);
+    color: var(--color);
+    border-radius: 4px;
+    vertical-align: middle;
+    max-width: 100%;
+    width: 100%;
+    min-height: 3em;
+    &.fv-rounded{
+        border-radius: 1.5em;
+    }
+    &:focus, &.focus{
+        @apply --outline;
+        &:invalid, &.invalid{
+            @apply --danger-outline;
+        }
+    }
+    &::placeholder, & > .placeholder{
+        color: var(--gray-color-dark);
+    }
+}

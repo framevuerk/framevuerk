@@ -1,0 +1,53 @@
+{
+  "name": "framevuerk",
+  "version": "0.0.1",
+  "description": "A RTL and mobile-first Vue.js framevuerk.",
+  "main": "dist/framevuerk.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/webpack",
+    "dev": "./node_modules/.bin/lite-server"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.1.10",
+    "babel-preset-es2015": "^6.22.0",
+    "css-loader": "^0.26.2",
+    "extract-text-webpack-plugin": "^2.0.0",
+    "file-loader": "^0.10.1",
+    "html-loader": "^0.4.5",
+    "lite-server": "^2.2.2",
+    "moment": "^2.17.1",
+    "moment-jalaali": "^0.6.1",
+    "postcss-color-yiq": "^1.1.1",
+    "postcss-cssnext": "^2.9.0",
+    "postcss-loader": "^1.3.2",
+    "postcss-smart-import": "^0.6.9",
+    "pug-html-loader": "^1.1.1",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.13.2",
+    "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "vue": "^2.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nainemom/framevuerk.git"
+  },
+  "keywords": [
+    "vue",
+    "framework",
+    "framevuerk",
+    "rtl"
+  ],
+  "author": "nainemom <nainemom@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nainemom/framevuerk/issues"
+  },
+  "homepage": "https://github.com/nainemom/framevuerk#readme"
+}

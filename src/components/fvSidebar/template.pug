@@ -1,0 +1,6 @@
+span
+    transition(name="fv-fade")
+        div(class="fv-overlay", v-show="pShow", @click="close()")
+    transition(:name="'fv-sidebar-'+pPosition")
+        aside(class="fv-sidebar", v-show="pShow", :style="{width: pWidth+'px'}", :class="{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}")
+            slot

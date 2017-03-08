@@ -1,0 +1,36 @@
+.fv-sidebar {
+  z-index: 10001;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  background: var(--sidebar-bg-color);
+  color: yiq;
+  overflow-y: auto;
+  overflow-x: hidden;
+  &.fv-right{
+    right: 0;
+    /*box-shadow:  -1px 0 0 var(--shadow-color-light);*/
+  }
+  &.fv-left{
+    left: 0;
+    /*box-shadow:  1px 0 0 var(--shadow-color-light);*/
+  }
+}
+
+.fv-sidebar-left-enter-active, .fv-sidebar-left-leave-active,
+.fv-sidebar-right-enter-active, .fv-sidebar-right-leave-active{
+  transition: all .25s ease;
+  transform: translateX(0);
+  opacity: 1;
+  
+}
+
+.fv-sidebar-left-enter, .fv-sidebar-left-leave-active{
+  transform: translateX(-30%);
+  opacity: 0;
+}
+
+.fv-sidebar-right-enter, .fv-sidebar-right-leave-active{
+  transform: translateX(30%);
+  opacity: 0;
+}

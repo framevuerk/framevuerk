@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>hello</title>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  </head>
+  <body class="rtl">
+    <fv-main id="app">
+        <fv-header>
+          <fv-button class="fv-primary fv-icon fv-hide-on-normalz"  @click="$refs.sidebar.toggle()"> <i class="fa fa-bars"></i> </fv-button>
+          <div class="fv-title"> <h2>تایتل تست</h2> </div>
+          <fv-button class="fv-primary fv-icon"> <i class="fa fa-user"></i> </fv-button>
+          <fv-button class="fv-primary fv-icon" @click="$refs.menu.open($event)"> <i class="fa fa-ellipsis-v"></i> </fv-button>
+        </fv-header>
+        <fv-menu
+          ref="menu"
+          v-on:click="log($event)"
+          :options="[
+            {
+              key: 'add-item',
+              icon: 'fa fa-user',
+              text: 'آاضافه کردن کاربر'
+            },
+            {
+              icon: 'fa fa-chart-bar',
+              text: 'روبوسی با کاربر',
+              disabled: true
+            }
+          ]">
+        </fv-menu>
+        <fv-content class="no-padding">
+          <div class="fv-row">
+            <form class="fv-col-md-1of2 fv-col-xs-1of1" @submit.prevent="send()">
+                <div class="fv-col-sm-1of1">
+                    <label class="fv-control-label">نام کاربری {{user.username}} </label>
+                    <fv-input type="text" class="fv-form-control" v-model="user.username" placeholder="نام کاربری خود را وارد کنید." required></fv-input>
+                </div>
+                <div class="fv-col-sm-1of2">
+                    <label class="fv-control-label">رمز عبور {{user.password}}</label>
+                    <fv-input type="password" class="fv-form-control" v-model="user.password" placeholder="رمز عبور خود را وارد کنید." required></fv-input>
+                </div>
+                <div class="fv-col-sm-1of2">
+                  <label class="fv-control-label">موبایل {{user.mobile}}</label>
+                  <fv-input type="tel" class="fv-form-control" v-model="user.mobile" placeholder="شماره موبایل خود را وارد کنید." required></fv-input>
+                </div>
+                <div class="fv-col-sm-1of2">
+                  <label class="fv-control-label">نام تیم مورد علاقه {{user.team}}</label>
+                  <fv-select :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6},{text: 'آث میلان', value: 11}, {text: 'اینتر میلان', value: 12}, {text: 'یوونتوس', value: 13}, {text: 'آس رم', value: 14}, {text: 'ناپولی', value: 15}, {text: 'فیورنتینا', value: 16},{text: 'آث میلان', value: 1231}, {text: 'اینتر میلان', value: 21}, {text: 'یوونتوس', value: 31}, {text: 'آس رم', value: 41}, {text: 'ناپولی', value: 51}, {text: 'فیورنتینا', value: 61},{text: 'آث میلان', value: 111}, {text: 'اینتر میلان', value: 112}, {text: 'یوونتوس', value: 113}, {text: 'آس رم', value: 114}, {text: 'ناپولی', value: 115}, {text: 'فیورنتینا', value: 116}]" v-model="user.team" multiple requiredz placeholder="تیم مورد علاقت چی بود؟"></fv-select>
+                </div>
+                <div class="fv-col-sm-1of2">
+                  <label class="fv-control-label">تاریخ زایمان {{user.date}}</label>
+                  <fv-datepicker v-model="user.date" requiredz placeholder="تاریخ زایمان رو بگو."></fv-datepicker>
+                </div>
+                <div class="fv-col-xs-1of2">
+                  <label class="fv-control-label">تصویر</label>
+                  <fv-filepicker v-model="user.pic" required></fv-filepicker>
+                </div>
+              <div class="fv-col-xs-1of2">
+                  <label class="fv-control-label">آیا شما زن دارید؟ {{user.wife}}</label>
+                  <fv-switch v-model="user.wife" required></fv-switch>
+                </div>
+                <div class="fv-col-sm-1of1">
+                </div>
+                <div class="fv-col-sm-1of1">
+                    <fv-button class="fv-primary fv-block" type="submit">ورود</fv-button>
+                </div>
+            </form>
+            <div class="fv-col-md-1of2 fv-col-xs-1of1" v-html="content"></div>
+          </div>
+        </fv-content>
+
+        <fv-sidebar ref="sidebar" position="right">
+          <fv-main>
+            <fv-content>
+              <table class="fv-row fv-col-xs-1of1">
+                <tr>
+                  <td><label class="fv-control-label">آیا شما زن دارید؟</label></td>
+                   <td><fv-switch v-model="user.wife"></fv-switch></td>
+                </tr>
+              </table>
+              <div class="fv-row fv-col-xs-1of1" v-html="content"></div>
+            </fv-content>
+          </fv-main>
+        </fv-sidebar>
+        <fv-footer>
+          <fv-button class="fv-primary fv-block" @click="addContent()"> <i class="fa fa-plus"></i> اضافه‌کردن متن به صفحه! </fv-button> 
+        </fv-footer>
+    </fv-main>
+    
+
+    <!--script src="./node_modules/vue/dist/vue.js"></script-->
+    <script src="cordova.js"></script>
+    <script src="./dist/framevuerk.js"></script>
+    <link rel="stylesheet" href="dist/framevuerk.css">
+    <script>
+      Vue.use(framevuerk);
+      var app = new Vue({
+        el: '#app',
+        data: {
+          msg: 'salam',
+          selectVal: null,
+          select2Val: null,
+          test: '',
+          menu: false,
+          content: 'طرح‌نما یا لورم ایپسوم (به لاتین: lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به‌عنوان عنصری از ترکیب‌بندی برای پُر کردن صفحه و ارائهٔ اولیهٔ شکل ظاهری و کلیِ طرح سفارش‌گرفته‌شده استفاده می‌کند، تا ازنظر گرافیکی نشانگر چگونگی نوع و اندازهٔ قلم و ظاهرِ متن باشد. معمولاً طراحان گرافیک برای صفحه‌آرایی، نخست از متن‌های آزمایشی و بی‌معنی استفاده می‌کنند تا صرفاً به مشتری یا صاحب‌کار خود نشان دهند که صفحهٔ طراحی یا صفحه‌بندی شده، بعد از اینکه متن در آن قرار گیرد، چگونه به نظر می‌رسد و قلم‌ها و اندازه‌بندی‌ها چگونه در نظر گرفته شده‌است. از آنجایی که طراحان عموماً نویسندهٔ متن نیستند و وظیفهٔ رعایت حق تکثیر متون را ندارند و در همان حال، کار آنها به‌نوعی وابسته به متن است، آنها با استفاده از محتویات ساختگی، صفحهٔ گرافیکی خود را صفحه‌آرایی می‌کنند تا مرحلهٔ طراحی و صفحه‌بندی را به پایان برند.<br>',
+          user: {
+            username: null,
+            password: null,
+            mobile: null,
+            team: null,
+            date: null,
+            pic: null,
+            wife: null
+          }
+        },
+        mounted: function(){
+          console.log('App started.')
+        },
+        methods: {
+          log: console.log,
+          send: function(){
+            var fd = new FormData();
+            for(var i in this.user){
+              fd.append(i, this.user[i]);
+            }
+          },
+          addContent: function(){
+            this.content += "\n"+ this.content;
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+.fv-menu {
+  z-index: 10003;
+  position: fixed;
+  background: var(--sidebar-bg-color);
+  color: yiq;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 0 5px 15px var(--shadow-color);
+  max-height: 45%;
+  & .fv-menu-item {
+    z-index: 10003;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    padding: var(--padding-small) var(--padding);
+    border-bottom: solid 1px var(--shadow-color-light);
+    cursor: pointer;
+    padding-left: calc(var(--padding-large)*2);
+    & i{
+      padding-left: var(--padding-small);
+    }
+    &:last-child{
+      border-bottom: none;
+    }
+    &:active:not(.fv-disabled){
+      background: var(--shadow-color-light);
+    }
+    &.fv-disabled{
+      color: var(--shadow-color);
+      cursor: not-allowed;
+    }
+  }
+}
+
+.fv-menu-enter-active, .fv-menu-leave-active{
+  transition: opacity .25s;
+  opacity: 1;
+}
+
+.fv-menu-enter, .fv-menu-leave-active {
+  opacity: 0;
+}

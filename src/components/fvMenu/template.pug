@@ -1,0 +1,8 @@
+span(@click="close()")
+    transition(name="fv-fade")
+        div(class="fv-overlay fv-light", v-show="pShow")
+    transition(name="fv-menu")
+        div(class="fv-menu", v-show="pShow", ref="pMenu")
+            div(v-for="option in pOptions", class="fv-menu-item", :class="{'fv-disabled': option.disabled}", @click="clickOption(option)")
+                i(v-if="option.icon", :class="option.icon")
+                span(v-html="option.text")

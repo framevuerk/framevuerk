@@ -1,0 +1,58 @@
+.fv-header {
+    z-index: 9999;
+    background: var( --theme-color );
+    color: yiq;
+    line-height: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 5px 15px var(--shadow-color-light);
+    width: 100%;
+    top: 0;
+    right: 0;
+    transition: all 0.25s;
+    & > * {
+        /*margin: 0 calc(var(--padding)/2);*/
+        width: auto;
+        max-width: 100%;
+        vertical-align: middle;
+        &.fv-icon,
+        &.fv-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 0;
+            height: 100%;
+            &:not(:active){
+                
+            }
+        }
+        &.fv-icon {
+            font-size: 1.2em;
+            & > * {
+                vertical-align: middle;
+            }
+        }
+        &.fv-form-control{
+            margin: 0 var(--padding);
+            background: var(--bg-color);
+        }
+        &.fv-title {
+            padding: 0 var(--padding);
+            flex-grow: 1;
+            height: auto;
+            & > * {
+                height: auto;
+                width: 100%;
+                @apply --nowrap;
+                margin: 0;
+                padding: 4px 0;
+            }
+        }
+        &.fv-grow {
+            flex-grow: 1;
+        }
+    }
+}

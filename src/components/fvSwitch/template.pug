@@ -1,0 +1,4 @@
+span(class="fv-switch-container")
+    span(class="fv-switch", :class="{on: onValue === value, invalid: invalid}", ref="switch", @click="pToggle(); focus=true;", tabindex="0", @focus="focus=true", @blur="focus=false", @keydown="pKeyDown($event)")
+        span(class="fv-handler")
+        input(type="checkbox", :required="required", class="fv-hide", :checked="onValue === value", @invalid.prevent="pFocus()", @focus.prevent="pFocus()")
