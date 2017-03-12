@@ -40,12 +40,14 @@ export default ({
         open: function(){
             this.searchQuery = '';
             this.pShow = true;
+            this.$emit('open');
             setTimeout( ()=>{
                 this.pFocus('select');
             }, 100);
         },
         close: function(){
             this.pShow = false;
+            this.$emit('close');
             setTimeout( ()=>{
                 this.pFocus('input');
             }, 100);
@@ -73,6 +75,10 @@ export default ({
                     this.$refs.justFocusEl.focus();
                 }
             }
+        },
+        pSetValue: function(value){
+            this.$emit('input', value);
+            this.$emit('change');
         },
         pIsSelected: function(option={index:null,value:null}){
             if( this.multiple && typeof this.value === 'object' && this.value !== null){
@@ -112,10 +118,10 @@ export default ({
         clickOption: function(option={index:null,value:null}, setHighlight = false){
             if( option.value === null ){
                 if( this.multiple ){
-                    this.$emit('input', [] );
+                    this.pSetValue( [] );
                 }
                 else{
-                    this.$emit('input', null );
+                    this.pSetValue( null );
                 }
             }
             else if( this.multiple ){
@@ -126,10 +132,10 @@ export default ({
                 else{
                     newValue.push( option.value );
                 }
-                this.$emit('input', newValue );
+                this.pSetValue( newValue );
             }
             else{
-                this.$emit('input', option.value );
+                this.pSetValue( option.value );
             }
             if(setHighlight){
                 this.pFocus('select');
@@ -141,10 +147,11 @@ export default ({
         },
         setStructure: function(){ // bug
             if( this.multiple ){
-                this.$emit('input', []);
+                this.pSetValue( [] );
+                this.$emit('change');
             }
             else{
-                this.$emit('input', null);
+                this.pSetValue( null );
             }
         }
     },

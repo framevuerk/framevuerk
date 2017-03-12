@@ -51,12 +51,14 @@ export default ({
         },
         open: function(){
             this.pShow = true;
+            this.$emit('open');
             utility.doIt( ()=>{
                 this.pFocus('datepicker');
             });
         },
         close: function(){
             this.pShow = false;
+            this.$emit('close');
             utility.doIt( ()=>{
                 this.pFocus('input');
             });
@@ -169,6 +171,7 @@ export default ({
                 second: this.pDate.format('ss')
             }
             this.$emit( 'input', newValue );
+            this.$emit( 'change' );
             if( date === null ){
                 this.pDisplayValue = null;
             }

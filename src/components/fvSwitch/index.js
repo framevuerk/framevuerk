@@ -23,15 +23,19 @@ export default ({
         }
     },
     methods: {
+        pSetValue: function(value){
+            this.$emit('input', value);
+            this.$emit('change');
+        },
         pToggle: function(){
-            this.$emit('input', this.value === this.onValue? this.offValue: this.onValue);
+            this.pSetValue( this.value === this.onValue? this.offValue: this.onValue);
         },
         pFocus: function(){
             this.$refs.switch.focus();
         },
         setStructure: function(){
             if( [this.offValue, this.onValue].indexOf( this.value ) === -1 ){
-                this.$emit('input', this.offValue);
+                this.pSetValue(this.offValue);
             }
         },
         pKeyDown: function(event){

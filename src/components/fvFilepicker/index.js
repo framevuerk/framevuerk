@@ -28,6 +28,7 @@ export default ({
             if( this.required ){
                 const filesCount = this.$refs.fileinput.files.length;
                 this.invalid = filesCount > 0? false: true;
+
             }
         },
         choose: function(event){
@@ -49,6 +50,7 @@ export default ({
                             type: file.type,
                             endings: 'native'
                         }) );
+                        this.$emit('change');
                     });
                     reader.addEventListener('error', reject)
                     reader.readAsArrayBuffer(file);

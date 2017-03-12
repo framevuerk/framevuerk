@@ -14951,6 +14951,7 @@ exports.default = {
             var _this = this;
 
             this.pShow = true;
+            this.$emit('open');
             _utility2.default.doIt(function () {
                 _this.pFocus('datepicker');
             });
@@ -14959,6 +14960,7 @@ exports.default = {
             var _this2 = this;
 
             this.pShow = false;
+            this.$emit('close');
             _utility2.default.doIt(function () {
                 _this2.pFocus('input');
             });
@@ -15082,6 +15084,7 @@ exports.default = {
                 second: this.pDate.format('ss')
             };
             this.$emit('input', newValue);
+            this.$emit('change');
             if (date === null) {
                 this.pDisplayValue = null;
             } else {
@@ -15224,6 +15227,7 @@ exports.default = {
                             type: file.type,
                             endings: 'native'
                         }));
+                        _this.$emit('change');
                     });
                     reader.addEventListener('error', reject);
                     reader.readAsArrayBuffer(file);
@@ -15470,9 +15474,11 @@ exports.default = {
 
             this.pSetPosition(domElem);
             this.pShow = true;
+            this.$emit('open');
         },
         close: function close() {
             this.pShow = false;
+            this.$emit('close');
         },
         toggle: function toggle() {
             var domElem = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
@@ -15604,6 +15610,7 @@ exports.default = {
 
             this.searchQuery = '';
             this.pShow = true;
+            this.$emit('open');
             setTimeout(function () {
                 _this.pFocus('select');
             }, 100);
@@ -15612,6 +15619,7 @@ exports.default = {
             var _this2 = this;
 
             this.pShow = false;
+            this.$emit('close');
             setTimeout(function () {
                 _this2.pFocus('input');
             }, 100);
@@ -15643,6 +15651,10 @@ exports.default = {
                     this.$refs.justFocusEl.focus();
                 }
             }
+        },
+        pSetValue: function pSetValue(value) {
+            this.$emit('input', value);
+            this.$emit('change');
         },
         pIsSelected: function pIsSelected() {
             var option = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { index: null, value: null };
@@ -15690,9 +15702,9 @@ exports.default = {
 
             if (option.value === null) {
                 if (this.multiple) {
-                    this.$emit('input', []);
+                    this.pSetValue([]);
                 } else {
-                    this.$emit('input', null);
+                    this.pSetValue(null);
                 }
             } else if (this.multiple) {
                 var newValue = this.value;
@@ -15701,9 +15713,9 @@ exports.default = {
                 } else {
                     newValue.push(option.value);
                 }
-                this.$emit('input', newValue);
+                this.pSetValue(newValue);
             } else {
-                this.$emit('input', option.value);
+                this.pSetValue(option.value);
             }
             if (setHighlight) {
                 this.pFocus('select');
@@ -15715,9 +15727,10 @@ exports.default = {
         setStructure: function setStructure() {
             // bug
             if (this.multiple) {
-                this.$emit('input', []);
+                this.pSetValue([]);
+                this.$emit('change');
             } else {
-                this.$emit('input', null);
+                this.pSetValue(null);
             }
         }
     },
@@ -15806,9 +15819,11 @@ exports.default = {
     methods: {
         open: function open() {
             this.pShow = true;
+            this.$emit('open');
         },
         close: function close(a) {
             this.pShow = false;
+            this.$emit('close');
         },
         toggle: function toggle() {
             this[this.pShow ? 'close' : 'open']();
@@ -15880,15 +15895,19 @@ exports.default = {
         };
     },
     methods: {
+        pSetValue: function pSetValue(value) {
+            this.$emit('input', value);
+            this.$emit('change');
+        },
         pToggle: function pToggle() {
-            this.$emit('input', this.value === this.onValue ? this.offValue : this.onValue);
+            this.pSetValue(this.value === this.onValue ? this.offValue : this.onValue);
         },
         pFocus: function pFocus() {
             this.$refs.switch.focus();
         },
         setStructure: function setStructure() {
             if ([this.offValue, this.onValue].indexOf(this.value) === -1) {
-                this.$emit('input', this.offValue);
+                this.pSetValue(this.offValue);
             }
         },
         pKeyDown: function pKeyDown(event) {

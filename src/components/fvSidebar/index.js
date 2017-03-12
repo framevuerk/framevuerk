@@ -22,9 +22,12 @@ export default ({
     methods: {
         open: function(){
             this.pShow = true;
+            this.$emit('open');
+            
         },
         close: function(a){
             this.pShow = false;
+            this.$emit('close');
         },
         toggle: function(){
             this[this.pShow?'close':'open']();

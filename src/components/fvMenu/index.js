@@ -16,9 +16,11 @@ export default ({
         open: function(domElem=null){
             this.pSetPosition(domElem);
             this.pShow = true;
+            this.$emit('open');
         },
         close: function(){
             this.pShow = false;
+            this.$emit('close');
         },
         toggle: function(domElem=null){
             this[this.pShow?'close':'open'](domElem);
