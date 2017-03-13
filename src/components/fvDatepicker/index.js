@@ -59,15 +59,12 @@ export default ({
         close: function(){
             this.pShow = false;
             this.$emit('close');
-            utility.doIt( ()=>{
-                this.pFocus('input');
-            });
         },
         closeIf: function(event){
             utility.doIt( ()=>{
                 var focusedElem = document.querySelector(':focus');
                 if( focusedElem !== null && !utility.isDescendant(this.$refs.datepicker.$el, focusedElem) ){
-                    this.pFocus('input');
+                    this.close();
                 }
             } )
         },
@@ -146,7 +143,6 @@ export default ({
                 this.$emit('input', option.value );
             }
             if(setHighlight){
-                this.pFocus('select');
                 this.highlightOption( option );
             }
             else{
@@ -181,12 +177,12 @@ export default ({
             }
         },
         closeIf: function(event){
-            setTimeout( ()=>{
+            utility.doIt( ()=>{
                 var focusedElem = document.querySelector(':focus');
                 if( focusedElem !== null && !utility.isDescendant(this.$refs.datepicker.$el, focusedElem) ){
-                    this.pFocus('select');
+                    this.close();
                 }
-            }, 100 )
+            } );
         }
     },
     created: function(){

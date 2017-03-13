@@ -14957,21 +14957,16 @@ exports.default = {
             });
         },
         close: function close() {
-            var _this2 = this;
-
             this.pShow = false;
             this.$emit('close');
-            _utility2.default.doIt(function () {
-                _this2.pFocus('input');
-            });
         },
         closeIf: function closeIf(event) {
-            var _this3 = this;
+            var _this2 = this;
 
             _utility2.default.doIt(function () {
                 var focusedElem = document.querySelector(':focus');
-                if (focusedElem !== null && !_utility2.default.isDescendant(_this3.$refs.datepicker.$el, focusedElem)) {
-                    _this3.pFocus('input');
+                if (focusedElem !== null && !_utility2.default.isDescendant(_this2.$refs.datepicker.$el, focusedElem)) {
+                    _this2.close();
                 }
             });
         },
@@ -15059,7 +15054,6 @@ exports.default = {
                 this.$emit('input', option.value);
             }
             if (setHighlight) {
-                this.pFocus('select');
                 this.highlightOption(option);
             } else {
                 this.highlightOption();
@@ -15093,14 +15087,14 @@ exports.default = {
             }
         }
     }, 'closeIf', function closeIf(event) {
-        var _this4 = this;
+        var _this3 = this;
 
-        setTimeout(function () {
+        _utility2.default.doIt(function () {
             var focusedElem = document.querySelector(':focus');
-            if (focusedElem !== null && !_utility2.default.isDescendant(_this4.$refs.datepicker.$el, focusedElem)) {
-                _this4.pFocus('select');
+            if (focusedElem !== null && !_utility2.default.isDescendant(_this3.$refs.datepicker.$el, focusedElem)) {
+                _this3.close();
             }
-        }, 100);
+        });
     }),
     created: function created() {
         this.pSetValue(this.value === null ? null : _momentJalaali2.default.utc());
@@ -15611,28 +15605,23 @@ exports.default = {
             this.searchQuery = '';
             this.pShow = true;
             this.$emit('open');
-            setTimeout(function () {
+            _utility2.default.doIt(function () {
                 _this.pFocus('select');
-            }, 100);
+            });
         },
         close: function close() {
-            var _this2 = this;
-
             this.pShow = false;
             this.$emit('close');
-            setTimeout(function () {
-                _this2.pFocus('input');
-            }, 100);
         },
         closeIf: function closeIf(event) {
-            var _this3 = this;
+            var _this2 = this;
 
-            setTimeout(function () {
+            _utility2.default.doIt(function () {
                 var focusedElem = document.querySelector(':focus');
-                if (focusedElem !== null && !_utility2.default.isDescendant(_this3.$refs.select.$el, focusedElem)) {
-                    _this3.pFocus('select');
+                if (focusedElem !== null && !_utility2.default.isDescendant(_this2.$refs.select.$el, focusedElem)) {
+                    _this2.close();
                 }
-            }, 100);
+            });
         },
         highlightOption: function highlightOption() {
             var option = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { index: null };
@@ -15692,8 +15681,10 @@ exports.default = {
                 case 27:
                     //esc
                     this.close();
+                /*
                 default:
                     this.highlightedOption = null;
+                    */
             }
         },
         clickOption: function clickOption() {
@@ -15740,13 +15731,13 @@ exports.default = {
     mounted: function mounted() {},
     computed: {
         pOptions: function pOptions() {
-            var _this4 = this;
+            var _this3 = this;
 
             var ret = [];
             this.options.forEach(function (option, index) {
                 var text = (typeof option === 'undefined' ? 'undefined' : _typeof(option)) == 'object' && option !== null ? option.text : option;
                 var value = (typeof option === 'undefined' ? 'undefined' : _typeof(option)) == 'object' && option !== null ? option.value : option;
-                if (_utility2.default.contains(text, _this4.searchQuery) || _utility2.default.contains(value, _this4.searchQuery)) {
+                if (_utility2.default.contains(text, _this3.searchQuery) || _utility2.default.contains(value, _this3.searchQuery)) {
                     ret.push({
                         index: index,
                         text: text,
@@ -17334,7 +17325,7 @@ module.exports = "<span @click=\"close()\"><transition name=\"fv-fade\"><div cla
 /* 135 */
 /***/ (function(module, exports) {
 
-module.exports = "<span><fv-input class=\"fv-form-control\" @click=\"open()\" @keydown.enter=\"open()\" :value=\"value\" type=\"select\" :display-value=\"displayValue\" :placeholder=\"placeholder\" :required=\"required\" ref=\"inputEl\"></fv-input><transition name=\"fv-fade\"><div class=\"fv-overlay\" @click=\"close()\" v-show=\"pShow\"></div></transition><transition name=\"fv-select\"><fv-main class=\"fv-select\" v-show=\"pShow\" ref=\"select\"><fv-header v-if=\"search\"><fv-input class=\"fv-form-control fv-grow\" placeholder=\"جست و جو کنید...\" v-model=\"searchQuery\" ref=\"searchQueryEl\" @blur=\"closeIf()\" @keydown=\"pKeyDown($event)\"></fv-input></fv-header><span v-if=\"!search\" tabindex=\"0\" ref=\"justFocusEl\" @blur=\"closeIf()\" @keydown=\"pKeyDown($event)\"></span><fv-content class=\"no-padding\"><div class=\"fv-option\" v-show=\"pOptions.length == 0\">چیزی پیدا نشد!</div><div class=\"fv-option\" v-for=\"(option, index) in pOptions\" v-html=\"option.text\" @click=\"clickOption(option)\" ref=\"optionElem\" :class=\"{'fv-selected': pIsSelected(option), 'fv-focused': highlightedOption==index}\"></div></fv-content><fv-footer><div class=\"fv-grow\"></div><fv-button class=\"fv-default\" @click.prevent=\"clickOption(); close();\" @blur=\"closeIf()\"> <i class=\"fa fa-circle-o\"></i> حذف انتخاب</fv-button><fv-button class=\"fv-primary\" @click.prevent=\"close()\" @blur=\"closeIf()\"> <i class=\"fa fa-check\"></i> باشه</fv-button></fv-footer></fv-main></transition></span>"
+module.exports = "<span><fv-input class=\"fv-form-control\" @click=\"open()\" @keydown.enter=\"open()\" :value=\"value\" type=\"select\" :display-value=\"displayValue\" :placeholder=\"placeholder\" :required=\"required\" ref=\"inputEl\"></fv-input><transition name=\"fv-fade\"><div class=\"fv-overlay\" @click=\"close()\" v-show=\"pShow\"></div></transition><transition name=\"fv-select\"><fv-main class=\"fv-select\" v-show=\"pShow\" ref=\"select\" @keydown=\"pKeyDown($event)\"><fv-header v-if=\"search\"><fv-input class=\"fv-form-control fv-grow\" placeholder=\"جست و جو کنید...\" v-model=\"searchQuery\" ref=\"searchQueryEl\" @blur=\"closeIf()\"></fv-input></fv-header><span v-if=\"!search\" tabindex=\"0\" ref=\"justFocusEl\" @blur=\"closeIf()\"></span><fv-content class=\"no-padding\"><div class=\"fv-option\" v-show=\"pOptions.length == 0\">چیزی پیدا نشد!</div><div class=\"fv-option\" v-for=\"(option, index) in pOptions\" v-html=\"option.text\" @click=\"clickOption(option)\" ref=\"optionElem\" :class=\"{'fv-selected': pIsSelected(option), 'fv-focused': highlightedOption==index}\"></div></fv-content><fv-footer><div class=\"fv-grow\"></div><fv-button class=\"fv-default\" @click.prevent=\"clickOption(); close();\" @blur=\"closeIf()\"> <i class=\"fa fa-circle-o\"></i> حذف انتخاب</fv-button><fv-button class=\"fv-primary\" @click.prevent=\"close()\" @blur=\"closeIf()\"> <i class=\"fa fa-check\"></i> باشه</fv-button></fv-footer></fv-main></transition></span>"
 
 /***/ }),
 /* 136 */

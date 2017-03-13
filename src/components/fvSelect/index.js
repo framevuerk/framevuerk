@@ -41,24 +41,21 @@ export default ({
             this.searchQuery = '';
             this.pShow = true;
             this.$emit('open');
-            setTimeout( ()=>{
+            utility.doIt( ()=>{
                 this.pFocus('select');
-            }, 100);
+            });
         },
         close: function(){
             this.pShow = false;
             this.$emit('close');
-            setTimeout( ()=>{
-                this.pFocus('input');
-            }, 100);
         },
         closeIf: function(event){
-            setTimeout( ()=>{
+            utility.doIt( ()=>{
                 var focusedElem = document.querySelector(':focus');
                 if( focusedElem !== null && !utility.isDescendant(this.$refs.select.$el, focusedElem) ){
-                    this.pFocus('select');
+                    this.close();
                 }
-            }, 100 )
+            });
         },
         highlightOption: function(option={index:null}){
             this.highlightedOption = option.index;
@@ -111,8 +108,10 @@ export default ({
                     break;
                 case 27: //esc
                     this.close();
+                /*
                 default:
                     this.highlightedOption = null;
+                    */
             }        
         },
         clickOption: function(option={index:null,value:null}, setHighlight = false){
