@@ -15899,14 +15899,15 @@ exports.default = {
             default: null
         },
         pin: {
-            default: true // or true
+            default: null // or false or true
         }
     },
     data: function data() {
         return {
             pShow: false,
             pPosition: 'right',
-            pWidth: 250
+            pWidth: 250,
+            pPin: false
         };
     },
     methods: {
@@ -15930,6 +15931,39 @@ exports.default = {
                 this.pPosition = 'left';
             }
         },
+        widthChangeEvent: function widthChangeEvent(event) {
+            var width = window.innerWidth > 0 ? window.innerWidth : screen.width;
+            if (width < 992) {
+                this.pPin = false;
+                this.close();
+            } else {
+                this.pPin = true;
+                this.open();
+            }
+        },
+        bindEvents: function bindEvents() {
+            var set = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+            if (set) {
+                window.addEventListener('resize', this.widthChangeEvent);
+                window.addEventListener('orientationChange', this.widthChangeEvent);
+            } else {
+                window.removeEventListener('resize', this.widthChangeEvent);
+                window.removeEventListener('orientationChange', this.widthChangeEvent);
+            }
+        },
+        pSetPin: function pSetPin() {
+            this.pPin = this.pin;
+            if (this.pPin === true) {
+                this.bindEvents(false);
+                this.open();
+            } else if (this.pPin === false) {
+                this.bindEvents(false);
+                this.close();
+            } else {
+                this.bindEvents(true);
+            }
+        },
         pSetWidth: function pSetWidth() {
             if (typeof this.width == 'number' && this.width > 0) {
                 this.pWidth = this.width;
@@ -15939,7 +15973,6 @@ exports.default = {
             var el = this.$refs.sidebar;
             do {
                 if (el.classList.contains('fv-main')) {
-                    console.log(el);
                     break;
                 } else {
                     el = el.parentElement;
@@ -15949,7 +15982,7 @@ exports.default = {
                 return false;
             }
             var paddingDir = 'padding' + (this.position === 'right' ? 'Right' : 'Left');
-            if (this.pin && this.pShow) {
+            if (this.pPin && this.pShow) {
                 el.style[paddingDir] = this.pWidth + 'px';
             } else {
                 el.style[paddingDir] = '';
@@ -15960,6 +15993,7 @@ exports.default = {
     mounted: function mounted() {
         this.pSetPosition();
         this.pSetWidth();
+        this.pSetPin();
         this.pMainPadding();
     },
     watch: {
@@ -15967,6 +16001,7 @@ exports.default = {
             this.pSetPosition();
         },
         pin: function pin() {
+            this.pSetPin();
             this.pMainPadding();
         },
         width: function width() {
@@ -17467,7 +17502,7 @@ module.exports = "<span><fv-input class=\"fv-form-control\" @click=\"open()\" @k
 /* 138 */
 /***/ (function(module, exports) {
 
-module.exports = "<span><transition name=\"fv-fade\"><div class=\"fv-overlay\" v-show=\"pShow &amp;&amp; !pin\" @click=\"close()\"></div></transition><transition :name=\"'fv-sidebar-'+pPosition\"><aside class=\"fv-sidebar\" v-show=\"pShow\" :style=\"{width: pWidth+'px'}\" :class=\"{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}\" ref=\"sidebar\"><slot></slot></aside></transition></span>"
+module.exports = "<span><transition name=\"fv-fade\"><div class=\"fv-overlay\" v-show=\"pShow &amp;&amp; !pPin\" @click=\"close()\"></div></transition><transition :name=\"'fv-sidebar-'+pPosition\"><aside class=\"fv-sidebar\" v-show=\"pShow\" :style=\"{width: pWidth+'px'}\" :class=\"{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}\" ref=\"sidebar\"><slot></slot></aside></transition></span>"
 
 /***/ }),
 /* 139 */
