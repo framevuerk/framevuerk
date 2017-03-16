@@ -2728,3 +2728,36 @@ body.ltr{
   outline: none;
   box-shadow: 0 0 2px 1px rgba(233, 15, 15, 0.4);
   border-color: #e90f0f; }
+.fv-modal {
+    z-index: 10002;
+    position: fixed;
+    height: auto;
+    width: auto;
+    max-width: 90%;
+    max-height: 90%;
+    min-height: 200px;
+    min-width: 300px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    margin: 0;
+    padding: 0;
+    transform: translate(-50%, -50%);
+    background: #ECF0F1;
+    overflow: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .19)
+}
+@media (min-width: 0) and (max-width: 479px){
+  .fv-modal{
+    max-height: 100%;
+    max-width: 100%; }
+    }
+.fv-modal-enter-active, .fv-modal-leave-active{
+  -webkit-transition: all .25s;
+  transition: all .25s;
+  opacity: 1;
+}
+.fv-modal-enter, .fv-modal-leave-active {
+  opacity: 0;
+}

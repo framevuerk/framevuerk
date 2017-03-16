@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 139);
+/******/ 	return __webpack_require__(__webpack_require__.s = 141);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1894,7 +1894,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(125)("./" + name);
+            __webpack_require__(126)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4382,7 +4382,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(138)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(140)(module)))
 
 /***/ }),
 /* 1 */
@@ -14831,7 +14831,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _template = __webpack_require__(126);
+var _template = __webpack_require__(127);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -14857,7 +14857,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _template = __webpack_require__(127);
+var _template = __webpack_require__(128);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -14884,11 +14884,11 @@ var _utility = __webpack_require__(1);
 
 var _utility2 = _interopRequireDefault(_utility);
 
-var _template = __webpack_require__(128);
+var _template = __webpack_require__(129);
 
 var _template2 = _interopRequireDefault(_template);
 
-var _momentJalaali = __webpack_require__(124);
+var _momentJalaali = __webpack_require__(125);
 
 var _momentJalaali2 = _interopRequireDefault(_momentJalaali);
 
@@ -15162,7 +15162,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _template = __webpack_require__(129);
+var _template = __webpack_require__(130);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -15267,7 +15267,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _template = __webpack_require__(130);
+var _template = __webpack_require__(131);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -15309,7 +15309,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _template = __webpack_require__(131);
+var _template = __webpack_require__(132);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -15357,7 +15357,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _template = __webpack_require__(132);
+var _template = __webpack_require__(133);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -15419,7 +15419,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _template = __webpack_require__(133);
+var _template = __webpack_require__(134);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -15444,7 +15444,7 @@ var _utility = __webpack_require__(1);
 
 var _utility2 = _interopRequireDefault(_utility);
 
-var _template = __webpack_require__(134);
+var _template = __webpack_require__(135);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -15550,13 +15550,109 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _utility = __webpack_require__(1);
+
+var _utility2 = _interopRequireDefault(_utility);
+
+var _template = __webpack_require__(136);
+
+var _template2 = _interopRequireDefault(_template);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    template: _template2.default,
+    data: function data() {
+        return {
+            pShow: false
+        };
+    },
+    props: {
+        title: {
+            default: '',
+            required: false
+        },
+        buttons: {
+            type: Array
+        }
+    },
+    methods: {
+        toggle: function toggle() {
+            this[this.pShow ? 'close' : 'open']();
+        },
+        open: function open() {
+            var _this = this;
+
+            this.pShow = true;
+            this.$emit('open');
+            _utility2.default.doIt(function () {
+                _this.pFocus();
+            });
+        },
+        close: function close() {
+            this.pShow = false;
+            this.$emit('close');
+        },
+        focusIf: function focusIf(event) {
+            var _this2 = this;
+
+            _utility2.default.doIt(function () {
+                var focusedElem = document.querySelector(':focus');
+                if (focusedElem !== null && !_utility2.default.isDescendant(_this2.$refs.modal.$el, focusedElem)) {
+                    _this2.pFocus();
+                }
+            });
+        },
+        pFocus: function pFocus() {
+            if (this.$refs.buttonEl && this.$refs.buttonEl.length > 0) {
+                this.$refs.buttonEl[0].focus();
+            }
+        },
+        pKeyDown: function pKeyDown(event) {
+            switch (event.which) {
+                case 13:
+                    // enter
+                    event.preventDefault();
+            }
+        },
+        clickButton: function clickButton(button) {
+            this.$emit('click', button.key);
+        }
+    },
+    computed: {
+        pButtons: function pButtons() {
+            var ret = [];
+            this.buttons.reverse().forEach(function (value) {
+                ret.push({
+                    key: value.key || value.text || value,
+                    icon: value.icon || false,
+                    text: value.text || value,
+                    class: value.class || 'fv-primary'
+                });
+            });
+            return ret;
+        }
+    }
+};
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _utility = __webpack_require__(1);
 
 var _utility2 = _interopRequireDefault(_utility);
 
-var _template = __webpack_require__(135);
+var _template = __webpack_require__(137);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -15772,7 +15868,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15782,7 +15878,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _template = __webpack_require__(136);
+var _template = __webpack_require__(138);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -15847,7 +15943,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15857,7 +15953,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _template = __webpack_require__(137);
+var _template = __webpack_require__(139);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -15927,13 +16023,13 @@ exports.default = {
 };
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports) {
 
 /*
@@ -16187,14 +16283,14 @@ function mod(a, b) {
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 module.exports = jMoment
 
 var moment = __webpack_require__(0)
-  , jalaali = __webpack_require__(123)
+  , jalaali = __webpack_require__(124)
 
 /************************************
     Constants
@@ -17029,7 +17125,7 @@ function mod(a, b) {
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -17264,83 +17360,89 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 125;
+webpackContext.id = 126;
 
-
-/***/ }),
-/* 126 */
-/***/ (function(module, exports) {
-
-module.exports = "<button class=\"fv-button\" :type=\"type\" @focus=\"$emit('focus', $event)\" @click=\"$emit('click', $event)\" @blur=\"$emit('blur', $event)\" @keyup=\"$emit('keyup', $event)\" @keydown=\"$emit('keydown', $event)\" @keypress=\"$emit('keypress', $event)\"><slot></slot></button>"
 
 /***/ }),
 /* 127 */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"fv-content\"><slot></slot></section>"
+module.exports = "<button class=\"fv-button\" :type=\"type\" @focus=\"$emit('focus', $event)\" @click=\"$emit('click', $event)\" @blur=\"$emit('blur', $event)\" @keyup=\"$emit('keyup', $event)\" @keydown=\"$emit('keydown', $event)\" @keypress=\"$emit('keypress', $event)\"><slot></slot></button>"
 
 /***/ }),
 /* 128 */
 /***/ (function(module, exports) {
 
-module.exports = "<span><fv-input class=\"fv-form-control\" @click=\"open()\" @keydown.enter=\"open()\" :value=\"value\" type=\"datepicker\" :display-value=\"pDisplayValue\" :placeholder=\"placeholder\" :required=\"required\" ref=\"inputEl\"></fv-input><transition name=\"fv-fade\"><div class=\"fv-overlay\" @click=\"close()\" v-show=\"pShow\"></div></transition><transition name=\"fv-datepicker\"><fv-main class=\"fv-datepicker\" v-show=\"pShow\" ref=\"datepicker\"><fv-header><div class=\"fv-title\"><h3 v-html=\"pDisplayValue || placeholder\"></h3></div></fv-header><span tabindex=\"0\" ref=\"justFocusEl\" @blur=\"closeIf()\" @keydown=\"pKeyDown($event)\"></span><fv-content><section v-for=\"(val, index) in pSections\" :class=\"{'fv-pick-section': val.type=='pick','fv-col-sm-1of3': val.type=='pick','fv-sp': val.type=='sp','fv-focused': highlightedOption==index}\"><label class=\"fv-control-label fv-title\" v-if=\"val.type=='pick'\" v-html=\"val.title\"></label><span class=\"fv-button fv-up\" v-if=\"val.type=='pick'\" @click.prevent=\"pMath('add', val.name)\"><i class=\"fa fa-chevron-up\"></i></span><div class=\"fv-value fv-padding fv-text-center\" v-if=\"val.type=='pick'\" v-html=\"pValue[val.name]\"></div><span class=\"fv-button fv-bottom\" v-if=\"val.type=='pick'\" @click.prevent=\"pMath('subtract', val.name)\"><i class=\"fa fa-chevron-down\"></i></span><hr v-if=\"val.type=='sp'\"/></section></fv-content><fv-footer><div class=\"fv-grow\"></div><fv-button class=\"fv-default\" @click.prevent=\"pSetValue(null); close();\" @blur=\"closeIf()\"> <i class=\"fa fa-circle-o\"></i> حذف انتخاب</fv-button><fv-button class=\"fv-primary\" @click.prevent=\"pSetValue(pDate); close();\" @blur=\"closeIf()\"> <i class=\"fa fa-check\"></i> باشه</fv-button></fv-footer></fv-main></transition></span>"
+module.exports = "<section class=\"fv-content\"><slot></slot></section>"
 
 /***/ }),
 /* 129 */
 /***/ (function(module, exports) {
 
-module.exports = "<fv-button class=\"fv-file-picker fv-form-control\" @click=\"choose($event)\" type=\"button\" :class=\"{invalid: invalid}\" @focus=\"checkInvalid()\" ref=\"btnEl\"><i class=\"fa\" :class=\"{'fa-file': selected,'fa-file-o': !selected}\"></i> <span v-html=\"displayValue\"></span><input class=\"fv-hide\" type=\"file\" ref=\"fileinput\" @change=\"pick()\" :multiple=\"multiple\" :required=\"required\" @invalid.prevent=\"pFocus()\"/></fv-button>"
+module.exports = "<span><fv-input class=\"fv-form-control\" @click=\"open()\" @keydown.enter=\"open()\" :value=\"value\" type=\"datepicker\" :display-value=\"pDisplayValue\" :placeholder=\"placeholder\" :required=\"required\" ref=\"inputEl\"></fv-input><transition name=\"fv-fade\"><div class=\"fv-overlay\" @click=\"close()\" v-show=\"pShow\"></div></transition><transition name=\"fv-datepicker\"><fv-main class=\"fv-datepicker\" v-show=\"pShow\" ref=\"datepicker\"><fv-header><div class=\"fv-title\"><h3 v-html=\"pDisplayValue || placeholder\"></h3></div></fv-header><span tabindex=\"0\" ref=\"justFocusEl\" @blur=\"closeIf()\" @keydown=\"pKeyDown($event)\"></span><fv-content><section v-for=\"(val, index) in pSections\" :class=\"{'fv-pick-section': val.type=='pick','fv-col-sm-1of3': val.type=='pick','fv-sp': val.type=='sp','fv-focused': highlightedOption==index}\"><label class=\"fv-control-label fv-title\" v-if=\"val.type=='pick'\" v-html=\"val.title\"></label><span class=\"fv-button fv-up\" v-if=\"val.type=='pick'\" @click.prevent=\"pMath('add', val.name)\"><i class=\"fa fa-chevron-up\"></i></span><div class=\"fv-value fv-padding fv-text-center\" v-if=\"val.type=='pick'\" v-html=\"pValue[val.name]\"></div><span class=\"fv-button fv-bottom\" v-if=\"val.type=='pick'\" @click.prevent=\"pMath('subtract', val.name)\"><i class=\"fa fa-chevron-down\"></i></span><hr v-if=\"val.type=='sp'\"/></section></fv-content><fv-footer><div class=\"fv-grow\"></div><fv-button class=\"fv-default\" @click.prevent=\"pSetValue(null); close();\" @blur=\"closeIf()\"> <i class=\"fa fa-circle-o\"></i> حذف انتخاب</fv-button><fv-button class=\"fv-primary\" @click.prevent=\"pSetValue(pDate); close();\" @blur=\"closeIf()\"> <i class=\"fa fa-check\"></i> باشه</fv-button></fv-footer></fv-main></transition></span>"
 
 /***/ }),
 /* 130 */
 /***/ (function(module, exports) {
 
-module.exports = "<footer class=\"fv-footer\"><slot></slot></footer>"
+module.exports = "<fv-button class=\"fv-file-picker fv-form-control\" @click=\"choose($event)\" type=\"button\" :class=\"{invalid: invalid}\" @focus=\"checkInvalid()\" ref=\"btnEl\"><i class=\"fa\" :class=\"{'fa-file': selected,'fa-file-o': !selected}\"></i> <span v-html=\"displayValue\"></span><input class=\"fv-hide\" type=\"file\" ref=\"fileinput\" @change=\"pick()\" :multiple=\"multiple\" :required=\"required\" @invalid.prevent=\"pFocus()\"/></fv-button>"
 
 /***/ }),
 /* 131 */
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"fv-header\"><slot></slot></header>"
+module.exports = "<footer class=\"fv-footer\"><slot></slot></footer>"
 
 /***/ }),
 /* 132 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"fv-input fv-input-select\" v-if=\"type=='select'\" ref=\"inputEl\" :class=\"{invalid: invalid, focus:focus}\" tabindex=\"0\" @focus=\"checkInvalid(); $emit('focus', $event)\" @click=\"$emit('click', $event)\" @blur=\"$emit('blur', $event)\" @keyup=\"$emit('keyup', $event)\" @keydown=\"$emit('keydown', $event)\" @keypress=\"$emit('keypress', $event)\" @invalid.prevent=\"pFocus()\"><span class=\"placeholder\" v-html=\"placeholder\" v-if=\"displayValue === null || displayValue.length === 0\"></span><span class=\"fv-input-select-item\" v-for=\"val in displayValue\" v-html=\"val\"></span><i class=\"fa fa-chevron-down fv-arrow\"></i><input class=\"fv-hidden\" tabindex=\"999999999\" :value=\"value\" :required=\"required\" @focus=\"$refs.inputEl.focus()\"/></div><div class=\"fv-input fv-input-datepicker\" v-else-if=\"type=='datepicker'\" ref=\"inputEl\" :class=\"{invalid: invalid, focus:focus}\" tabindex=\"0\" @focus=\"checkInvalid(); $emit('focus', $event)\" @click=\"$emit('click', $event)\" @blur=\"$emit('blur', $event)\" @keyup=\"$emit('keyup', $event)\" @keydown=\"$emit('keydown', $event)\" @keypress=\"$emit('keypress', $event)\" @invalid.prevent=\"pFocus()\"><span class=\"placeholder\" v-html=\"placeholder\" v-if=\"displayValue === null || displayValue.length === 0\"></span><span class=\"fv-input-select-item\" v-html=\"displayValue\" v-if=\"displayValue!==null\"></span><i class=\"fa fa-calendar fv-arrow\"></i><input class=\"fv-hidden\" tabindex=\"999999999\" :value=\"value\" :required=\"required\" @focus=\"$refs.inputEl.focus()\"/></div><input class=\"fv-input\" v-else=\"v-else\" ref=\"inputEl\" :type=\"type\" tabindex=\"0\" :value=\"value\" :required=\"required\" :placeholder=\"placeholder\" @input=\"$emit('input', $event.target.value)\" @focus=\"$emit('focus', $event)\" @click=\"$emit('click', $event)\" @blur=\"$emit('blur', $event)\" @keyup=\"$emit('keyup', $event)\" @keydown=\"$emit('keydown', $event)\" @keypress=\"$emit('keypress', $event)\" @invalid.prevent=\"pFocus()\"/>"
+module.exports = "<header class=\"fv-header\"><slot></slot></header>"
 
 /***/ }),
 /* 133 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"fv-main\" @focus=\"$emit('focus', $event)\" @click=\"$emit('click', $event)\" @blur=\"$emit('blur', $event)\" @keyup=\"$emit('keyup', $event)\" @keydown=\"$emit('keydown', $event)\" @keypress=\"$emit('keypress', $event)\"><slot></slot></div>"
+module.exports = "<div class=\"fv-input fv-input-select\" v-if=\"type=='select'\" ref=\"inputEl\" :class=\"{invalid: invalid, focus:focus}\" tabindex=\"0\" @focus=\"checkInvalid(); $emit('focus', $event)\" @click=\"$emit('click', $event)\" @blur=\"$emit('blur', $event)\" @keyup=\"$emit('keyup', $event)\" @keydown=\"$emit('keydown', $event)\" @keypress=\"$emit('keypress', $event)\" @invalid.prevent=\"pFocus()\"><span class=\"placeholder\" v-html=\"placeholder\" v-if=\"displayValue === null || displayValue.length === 0\"></span><span class=\"fv-input-select-item\" v-for=\"val in displayValue\" v-html=\"val\"></span><i class=\"fa fa-chevron-down fv-arrow\"></i><input class=\"fv-hidden\" tabindex=\"999999999\" :value=\"value\" :required=\"required\" @focus=\"$refs.inputEl.focus()\"/></div><div class=\"fv-input fv-input-datepicker\" v-else-if=\"type=='datepicker'\" ref=\"inputEl\" :class=\"{invalid: invalid, focus:focus}\" tabindex=\"0\" @focus=\"checkInvalid(); $emit('focus', $event)\" @click=\"$emit('click', $event)\" @blur=\"$emit('blur', $event)\" @keyup=\"$emit('keyup', $event)\" @keydown=\"$emit('keydown', $event)\" @keypress=\"$emit('keypress', $event)\" @invalid.prevent=\"pFocus()\"><span class=\"placeholder\" v-html=\"placeholder\" v-if=\"displayValue === null || displayValue.length === 0\"></span><span class=\"fv-input-select-item\" v-html=\"displayValue\" v-if=\"displayValue!==null\"></span><i class=\"fa fa-calendar fv-arrow\"></i><input class=\"fv-hidden\" tabindex=\"999999999\" :value=\"value\" :required=\"required\" @focus=\"$refs.inputEl.focus()\"/></div><input class=\"fv-input\" v-else=\"v-else\" ref=\"inputEl\" :type=\"type\" tabindex=\"0\" :value=\"value\" :required=\"required\" :placeholder=\"placeholder\" @input=\"$emit('input', $event.target.value)\" @focus=\"$emit('focus', $event)\" @click=\"$emit('click', $event)\" @blur=\"$emit('blur', $event)\" @keyup=\"$emit('keyup', $event)\" @keydown=\"$emit('keydown', $event)\" @keypress=\"$emit('keypress', $event)\" @invalid.prevent=\"pFocus()\"/>"
 
 /***/ }),
 /* 134 */
 /***/ (function(module, exports) {
 
-module.exports = "<span @click=\"close()\"><transition name=\"fv-fade\"><div class=\"fv-overlay fv-light\" v-show=\"pShow\"></div></transition><transition name=\"fv-menu\"><div class=\"fv-menu\" v-show=\"pShow\" ref=\"pMenu\"><div class=\"fv-menu-item\" v-for=\"option in pOptions\" :class=\"{'fv-disabled': option.disabled}\" @click=\"clickOption(option)\"><i v-if=\"option.icon\" :class=\"option.icon\"></i><span v-html=\"option.text\"></span></div></div></transition></span>"
+module.exports = "<div class=\"fv-main\" @focus=\"$emit('focus', $event)\" @click=\"$emit('click', $event)\" @blur=\"$emit('blur', $event)\" @keyup=\"$emit('keyup', $event)\" @keydown=\"$emit('keydown', $event)\" @keypress=\"$emit('keypress', $event)\"><slot></slot></div>"
 
 /***/ }),
 /* 135 */
 /***/ (function(module, exports) {
 
-module.exports = "<span><fv-input class=\"fv-form-control\" @click=\"open()\" @keydown.enter=\"open()\" :value=\"value\" type=\"select\" :display-value=\"displayValue\" :placeholder=\"placeholder\" :required=\"required\" ref=\"inputEl\"></fv-input><transition name=\"fv-fade\"><div class=\"fv-overlay\" @click=\"close()\" v-show=\"pShow\"></div></transition><transition name=\"fv-select\"><fv-main class=\"fv-select\" v-show=\"pShow\" ref=\"select\" @keydown=\"pKeyDown($event)\"><fv-header v-if=\"search\"><fv-input class=\"fv-form-control fv-grow\" placeholder=\"جست و جو کنید...\" v-model=\"searchQuery\" ref=\"searchQueryEl\" @blur=\"closeIf()\"></fv-input></fv-header><span v-if=\"!search\" tabindex=\"0\" ref=\"justFocusEl\" @blur=\"closeIf()\"></span><fv-content class=\"no-padding\"><div class=\"fv-option\" v-show=\"pOptions.length == 0\">چیزی پیدا نشد!</div><div class=\"fv-option\" v-for=\"(option, index) in pOptions\" v-html=\"option.text\" @click=\"clickOption(option)\" ref=\"optionElem\" :class=\"{'fv-selected': pIsSelected(option), 'fv-focused': highlightedOption==index}\"></div></fv-content><fv-footer><div class=\"fv-grow\"></div><fv-button class=\"fv-default\" @click.prevent=\"clickOption(); close();\" @blur=\"closeIf()\"> <i class=\"fa fa-circle-o\"></i> حذف انتخاب</fv-button><fv-button class=\"fv-primary\" @click.prevent=\"close()\" @blur=\"closeIf()\"> <i class=\"fa fa-check\"></i> باشه</fv-button></fv-footer></fv-main></transition></span>"
+module.exports = "<span @click=\"close()\"><transition name=\"fv-fade\"><div class=\"fv-overlay fv-light\" v-show=\"pShow\"></div></transition><transition name=\"fv-menu\"><div class=\"fv-menu\" v-show=\"pShow\" ref=\"pMenu\"><div class=\"fv-menu-item\" v-for=\"option in pOptions\" :class=\"{'fv-disabled': option.disabled}\" @click=\"clickOption(option)\"><i v-if=\"option.icon\" :class=\"option.icon\"></i><span v-html=\"option.text\"></span></div></div></transition></span>"
 
 /***/ }),
 /* 136 */
 /***/ (function(module, exports) {
 
-module.exports = "<span><transition name=\"fv-fade\"><div class=\"fv-overlay\" v-show=\"pShow\" @click=\"close()\"></div></transition><transition :name=\"'fv-sidebar-'+pPosition\"><aside class=\"fv-sidebar\" v-show=\"pShow\" :style=\"{width: pWidth+'px'}\" :class=\"{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}\"><slot></slot></aside></transition></span>"
+module.exports = "<span><transition name=\"fv-fade\"><div class=\"fv-overlay\" v-show=\"pShow\"></div></transition><transition name=\"fv-modal\"><fv-main class=\"fv-modal\" v-show=\"pShow\" ref=\"modal\"><fv-header><div class=\"fv-title\"><h3 v-html=\"title\"></h3></div></fv-header><fv-content><slot></slot></fv-content><fv-footer><div class=\"fv-grow\"></div><button class=\"fv-button\" v-for=\"button in pButtons\" ref=\"buttonEl\" :class=\"button.class\" @click=\"clickButton(button)\" @blur=\"focusIf()\"> <i v-if=\"button.icon\" :class=\"button.icon\"></i> <span v-html=\"button.text\"></span></button></fv-footer></fv-main></transition></span>"
 
 /***/ }),
 /* 137 */
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"fv-switch-container\"><span class=\"fv-switch\" :class=\"{on: onValue === value, invalid: invalid}\" ref=\"switch\" @click=\"pToggle(); focus=true;\" tabindex=\"0\" @focus=\"focus=true\" @blur=\"focus=false\" @keydown=\"pKeyDown($event)\"><span class=\"fv-handler\"></span><input class=\"fv-hide\" type=\"checkbox\" :required=\"required\" :checked=\"onValue === value\" @invalid.prevent=\"pFocus()\" @focus.prevent=\"pFocus()\"/></span></span>"
+module.exports = "<span><fv-input class=\"fv-form-control\" @click=\"open()\" @keydown.enter=\"open()\" :value=\"value\" type=\"select\" :display-value=\"displayValue\" :placeholder=\"placeholder\" :required=\"required\" ref=\"inputEl\"></fv-input><transition name=\"fv-fade\"><div class=\"fv-overlay\" @click=\"close()\" v-show=\"pShow\"></div></transition><transition name=\"fv-select\"><fv-main class=\"fv-select\" v-show=\"pShow\" ref=\"select\" @keydown=\"pKeyDown($event)\"><fv-header v-if=\"search\"><fv-input class=\"fv-form-control fv-grow\" placeholder=\"جست و جو کنید...\" v-model=\"searchQuery\" ref=\"searchQueryEl\" @blur=\"closeIf()\"></fv-input></fv-header><span v-if=\"!search\" tabindex=\"0\" ref=\"justFocusEl\" @blur=\"closeIf()\"></span><fv-content class=\"no-padding\"><div class=\"fv-option\" v-show=\"pOptions.length == 0\">چیزی پیدا نشد!</div><div class=\"fv-option\" v-for=\"(option, index) in pOptions\" v-html=\"option.text\" @click=\"clickOption(option)\" ref=\"optionElem\" :class=\"{'fv-selected': pIsSelected(option), 'fv-focused': highlightedOption==index}\"></div></fv-content><fv-footer><div class=\"fv-grow\"></div><fv-button class=\"fv-default\" @click.prevent=\"clickOption(); close();\" @blur=\"closeIf()\"> <i class=\"fa fa-circle-o\"></i> حذف انتخاب</fv-button><fv-button class=\"fv-primary\" @click.prevent=\"close()\" @blur=\"closeIf()\"> <i class=\"fa fa-check\"></i> باشه</fv-button></fv-footer></fv-main></transition></span>"
 
 /***/ }),
 /* 138 */
+/***/ (function(module, exports) {
+
+module.exports = "<span><transition name=\"fv-fade\"><div class=\"fv-overlay\" v-show=\"pShow\" @click=\"close()\"></div></transition><transition :name=\"'fv-sidebar-'+pPosition\"><aside class=\"fv-sidebar\" v-show=\"pShow\" :style=\"{width: pWidth+'px'}\" :class=\"{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}\"><slot></slot></aside></transition></span>"
+
+/***/ }),
+/* 139 */
+/***/ (function(module, exports) {
+
+module.exports = "<span class=\"fv-switch-container\"><span class=\"fv-switch\" :class=\"{on: onValue === value, invalid: invalid}\" ref=\"switch\" @click=\"pToggle(); focus=true;\" tabindex=\"0\" @focus=\"focus=true\" @blur=\"focus=false\" @keydown=\"pKeyDown($event)\"><span class=\"fv-handler\"></span><input class=\"fv-hide\" type=\"checkbox\" :required=\"required\" :checked=\"onValue === value\" @invalid.prevent=\"pFocus()\" @focus.prevent=\"pFocus()\"/></span></span>"
+
+/***/ }),
+/* 140 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -17368,13 +17470,13 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 139 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(122);
+__webpack_require__(123);
 
 var _fvMain = __webpack_require__(117);
 
@@ -17392,11 +17494,11 @@ var _fvFooter = __webpack_require__(114);
 
 var _fvFooter2 = _interopRequireDefault(_fvFooter);
 
-var _fvSidebar = __webpack_require__(120);
+var _fvSidebar = __webpack_require__(121);
 
 var _fvSidebar2 = _interopRequireDefault(_fvSidebar);
 
-var _fvSelect = __webpack_require__(119);
+var _fvSelect = __webpack_require__(120);
 
 var _fvSelect2 = _interopRequireDefault(_fvSelect);
 
@@ -17420,13 +17522,15 @@ var _fvFilepicker = __webpack_require__(113);
 
 var _fvFilepicker2 = _interopRequireDefault(_fvFilepicker);
 
-var _fvSwitch = __webpack_require__(121);
+var _fvSwitch = __webpack_require__(122);
 
 var _fvSwitch2 = _interopRequireDefault(_fvSwitch);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _fvModal = __webpack_require__(119);
 
-//import "babel-polyfill";
+var _fvModal2 = _interopRequireDefault(_fvModal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var framevuerk = {
   install: function install(Vue) {
@@ -17442,8 +17546,12 @@ var framevuerk = {
     Vue.component('fvButton', _fvButton2.default);
     Vue.component('fvFilepicker', _fvFilepicker2.default);
     Vue.component('fvSwitch', _fvSwitch2.default);
+    Vue.component('fvModal', _fvModal2.default);
   }
 };
+
+//import "babel-polyfill";
+
 module.exports = framevuerk;
 
 /***/ })

@@ -29,9 +29,28 @@
             }
           ]">
         </fv-menu>
+        <fv-modal
+          ref="modal"
+          :modal="true"
+          title="اضافه‌کردن کاربر جدید"
+          v-on:click="$refs.modal.close(); log($event);"
+          :buttons="[
+            {
+              key: 'add-item',
+              icon: 'fa fa-user',
+              text: 'باشه'
+            },
+            {
+              icon: 'fa fa-chart-bar',
+              text: 'نباشه',
+              disabled: true
+            }
+          ]">
+        این کاربره اضافه بره به سیستم؟!
+        </fv-modal>
         <fv-content class="no-padding">
           <div class="fv-row">
-            <form class="fv-col-md-1of2 fv-col-xs-1of1" @submit.prevent="send()">
+            <form class="fv-col-md-1of2 fv-col-xs-1of1" @submit.prevent="$refs.modal.open()">
                 <div class="fv-col-sm-1of1">
                     <label class="fv-control-label">نام کاربری {{user.username}} </label>
                     <fv-input type="text" class="fv-form-control" v-model="user.username" placeholder="نام کاربری خود را وارد کنید." required></fv-input>
@@ -89,7 +108,7 @@
     </fv-main>
     
 
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="node_modules/vue/dist/vue.js"></script>
     <script src="cordova.js"></script>
     <script src="./dist/framevuerk.js"></script>
     <link rel="stylesheet" href="dist/framevuerk.css">
