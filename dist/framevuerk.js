@@ -15894,6 +15894,12 @@ exports.default = {
         position: {
             type: String,
             default: 'right'
+        },
+        main: {
+            default: null
+        },
+        pin: {
+            default: true // or true
         }
     },
     data: function data() {
@@ -15906,10 +15912,12 @@ exports.default = {
     methods: {
         open: function open() {
             this.pShow = true;
+            this.pMainPadding();
             this.$emit('open');
         },
         close: function close(a) {
             this.pShow = false;
+            this.pMainPadding();
             this.$emit('close');
         },
         toggle: function toggle() {
@@ -15926,18 +15934,44 @@ exports.default = {
             if (typeof this.width == 'number' && this.width > 0) {
                 this.pWidth = this.width;
             }
+        },
+        pMainPadding: function pMainPadding() {
+            var el = this.$refs.sidebar;
+            do {
+                if (el.classList.contains('fv-main')) {
+                    console.log(el);
+                    break;
+                } else {
+                    el = el.parentElement;
+                }
+            } while (el !== null);
+            if (el === null) {
+                return false;
+            }
+            var paddingDir = 'padding' + (this.position === 'right' ? 'Right' : 'Left');
+            if (this.pin && this.pShow) {
+                el.style[paddingDir] = this.pWidth + 'px';
+            } else {
+                el.style[paddingDir] = '';
+            }
+            return true;
         }
     },
     mounted: function mounted() {
         this.pSetPosition();
         this.pSetWidth();
+        this.pMainPadding();
     },
     watch: {
         position: function position() {
             this.pSetPosition();
         },
+        pin: function pin() {
+            this.pMainPadding();
+        },
         width: function width() {
             this.pSetWidth();
+            this.pMainPadding();
         }
     }
 };
@@ -17433,7 +17467,7 @@ module.exports = "<span><fv-input class=\"fv-form-control\" @click=\"open()\" @k
 /* 138 */
 /***/ (function(module, exports) {
 
-module.exports = "<span><transition name=\"fv-fade\"><div class=\"fv-overlay\" v-show=\"pShow\" @click=\"close()\"></div></transition><transition :name=\"'fv-sidebar-'+pPosition\"><aside class=\"fv-sidebar\" v-show=\"pShow\" :style=\"{width: pWidth+'px'}\" :class=\"{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}\"><slot></slot></aside></transition></span>"
+module.exports = "<span><transition name=\"fv-fade\"><div class=\"fv-overlay\" v-show=\"pShow &amp;&amp; !pin\" @click=\"close()\"></div></transition><transition :name=\"'fv-sidebar-'+pPosition\"><aside class=\"fv-sidebar\" v-show=\"pShow\" :style=\"{width: pWidth+'px'}\" :class=\"{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}\" ref=\"sidebar\"><slot></slot></aside></transition></span>"
 
 /***/ }),
 /* 139 */
