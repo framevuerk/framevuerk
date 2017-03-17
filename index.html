@@ -91,14 +91,32 @@
 
         <fv-sidebar ref="sidebar" position="right" :pin="null">
           <fv-main>
-            <fv-content>
-              <table class="fv-row fv-col-xs-1of1">
-                <tr>
-                  <td><label class="fv-control-label">آیا شما زن دارید؟</label></td>
-                   <td><fv-switch v-model="user.wife"></fv-switch></td>
-                </tr>
-              </table>
-              <div class="fv-row fv-col-xs-1of1" v-html="content"></div>
+            <fv-content class="no-padding">
+              <fv-list
+                class="no-outline-border"
+                v-on:click="log($event)"
+                :items="[
+                  {
+                    key: 'add-item',
+                    icon: 'fa fa-user',
+                    text: 'اضافه کردن کاربر'
+                  },
+                  {
+                    icon: 'fa fa-chart-bar',
+                    text: 'روبوسی با کاربر',
+                    disabled: true
+                  },
+                  {
+                    icon: 'fa fa-list',
+                    text: 'بگوز',
+                    selected: true
+                  },
+                  {
+                    icon: 'fa fa-google',
+                    text: 'گوگل'
+                  }
+                ]">
+              </fv-list>
             </fv-content>
           </fv-main>
         </fv-sidebar>

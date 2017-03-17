@@ -1,0 +1,31 @@
+.fv-list{
+    border: solid 1px var(--shadow-color);
+    &.no-outline-border{
+        border: none;
+    }
+    & .fv-item{
+        overflow: hidden;
+        padding: var(--padding-small) var(--padding);
+        border-bottom: solid 1px var(--shadow-color-light);
+        cursor: pointer;
+        &:last-child{
+            border-bottom: 0;
+        }
+        &.fv-disabled{
+            color: var(--shadow-color);
+            cursor: not-allowed;
+        }
+        &:active:not(.fv-disabled),
+        &.fv-focused{
+            background: var(--shadow-color-light);
+        }
+        &.fv-selected{
+            background: var(--theme-color);
+            color: yiq;
+            &:active,
+            &.fv-focused{
+                background: var(--theme-color-dark);
+            }
+        }
+    }
+}

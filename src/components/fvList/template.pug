@@ -1,0 +1,5 @@
+ul(class="fv-list")
+    li(class="fv-item", v-for="item in pItems", :class="{'fv-disabled': item.disabled, 'fv-selected': item.selected}", @click="clickItem(item)")
+        i(v-if="item.icon", :class="item.icon")
+        =" "
+        span(v-html="item.text")

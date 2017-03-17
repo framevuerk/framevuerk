@@ -2761,3 +2761,27 @@ body.ltr{
 .fv-modal-enter, .fv-modal-leave-active {
   opacity: 0;
 }
+.fv-list{
+    border: solid 1px rgba(0, 0, 0, .19)
+}
+.fv-list.no-outline-border{
+  border: none; }
+.fv-list .fv-item{
+  overflow: hidden;
+  padding: 11px 15px;
+  border-bottom: solid 1px rgba(0, 0, 0, .06);
+  cursor: pointer; }
+.fv-list .fv-item:last-child{
+  border-bottom: 0; }
+.fv-list .fv-item.fv-disabled{
+  color: rgba(0, 0, 0, .19);
+  cursor: not-allowed; }
+.fv-list .fv-item:active:not(.fv-disabled),
+        .fv-list .fv-item.fv-focused{
+  background: rgba(0, 0, 0, .06); }
+.fv-list .fv-item.fv-selected{
+  background: #1f89dd;
+  color: #fff; }
+.fv-list .fv-item.fv-selected:active,
+            .fv-list .fv-item.fv-selected.fv-focused{
+  background: rgb(28, 121, 196); }
