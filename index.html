@@ -85,6 +85,9 @@
                     <fv-button class="fv-primary fv-block" type="submit">ورود</fv-button>
                 </div>
             </form>
+            <div class="fv-col-md-1of2 fv-col-xs-1of1">
+              <fv-button  @click="$refs.modal.open()">Open Modal</fv-button>
+            </div>
             <div class="fv-col-md-1of2 fv-col-xs-1of1" v-html="content"></div>
           </div>
         </fv-content>
