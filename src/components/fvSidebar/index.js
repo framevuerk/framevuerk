@@ -61,6 +61,7 @@ export default ({
         },
         bindEvents: function(set=true){
             if( set ){
+                this.widthChangeEvent();
                 window.addEventListener('resize', this.widthChangeEvent );
                 window.addEventListener('orientationChange', this.widthChangeEvent );
             }

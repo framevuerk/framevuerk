@@ -16038,6 +16038,7 @@ exports.default = {
             var set = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
             if (set) {
+                this.widthChangeEvent();
                 window.addEventListener('resize', this.widthChangeEvent);
                 window.addEventListener('orientationChange', this.widthChangeEvent);
             } else {
