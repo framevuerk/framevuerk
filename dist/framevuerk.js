@@ -15507,16 +15507,25 @@ exports.default = {
     },
     data: function data() {
         return {
-            pShow: false
+            pShow: false,
+            highlightedOption: null
         };
     },
     methods: {
+        pFocus: function pFocus() {
+            this.$refs.justFocusEl.focus();
+        },
         open: function open() {
+            var _this = this;
+
             var domElem = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
             this.pSetPosition(domElem);
             this.pShow = true;
             this.$emit('open');
+            _utility2.default.doIt(function () {
+                _this.pFocus();
+            });
         },
         close: function close() {
             this.pShow = false;
@@ -15568,14 +15577,50 @@ exports.default = {
         clickOption: function clickOption(option) {
             if (!option.disabled) {
                 this.$emit('click', option.key);
+                this.close();
+            }
+        },
+        highlightOption: function highlightOption() {
+            var option = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { index: null };
+
+            this.highlightedOption = option.index;
+        },
+        pKeyDown: function pKeyDown(event) {
+            switch (event.which) {
+                case 38:
+                    //up
+                    this.highlightedOption = this.highlightedOption == null ? this.pOptions.length : this.highlightedOption;
+                    this.highlightedOption = this.highlightedOption - 1 < 0 ? this.pOptions.length - 1 : this.highlightedOption - 1;
+                    break;
+                case 40:
+                    // down
+                    this.highlightedOption = this.highlightedOption == null ? -1 : this.highlightedOption;
+                    this.highlightedOption = this.highlightedOption + 1 >= this.pOptions.length ? 0 : this.highlightedOption + 1;
+                    break;
+                case 37:case 39:
+                    //left, right
+                    break;
+                case 13:
+                    // enter
+                    event.preventDefault();
+                    if (this.highlightedOption !== null) {
+                        this.clickOption(this.pOptions[this.highlightedOption], true);
+                    } else {
+                        this.close();
+                    }
+                    break;
+                case 27:
+                    //esc
+                    this.close();
             }
         }
     },
     computed: {
         pOptions: function pOptions() {
             var ret = [];
-            this.options.forEach(function (value) {
+            this.options.forEach(function (value, index) {
                 ret.push({
+                    index: index,
                     key: value.key || value.text || value,
                     icon: value.icon || false,
                     text: value.text || value,
@@ -17538,7 +17583,7 @@ module.exports = "<div class=\"fv-main\" @focus=\"$emit('focus', $event)\" @clic
 /* 137 */
 /***/ (function(module, exports) {
 
-module.exports = "<span @click=\"close()\"><transition name=\"fv-fade\"><div class=\"fv-overlay fv-light\" v-show=\"pShow\"></div></transition><transition name=\"fv-menu\"><div class=\"fv-menu\" v-show=\"pShow\" ref=\"pMenu\"><div class=\"fv-menu-item\" v-for=\"option in pOptions\" :class=\"{'fv-disabled': option.disabled}\" @click=\"clickOption(option)\"><i v-if=\"option.icon\" :class=\"option.icon\"></i><span v-html=\"option.text\"></span></div></div></transition></span>"
+module.exports = "<span @click=\"close()\"><transition name=\"fv-fade\"><div class=\"fv-overlay fv-light\" v-show=\"pShow\"></div></transition><transition name=\"fv-menu\"><div class=\"fv-menu\" v-show=\"pShow\" ref=\"pMenu\"><span tabindex=\"0\" ref=\"justFocusEl\" @blur=\"close()\" @keydown=\"pKeyDown($event)\"></span><div class=\"fv-menu-item\" v-for=\"option in pOptions\" :class=\"{'fv-disabled': option.disabled, 'fv-focused': highlightedOption==option.index}\" @click=\"clickOption(option)\"><i v-if=\"option.icon\" :class=\"option.icon\"></i><span v-html=\"option.text\"></span></div></div></transition></span>"
 
 /***/ }),
 /* 138 */

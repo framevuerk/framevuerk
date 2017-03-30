@@ -9,14 +9,21 @@ export default ({
     },
     data: function(){
         return {
-            pShow: false
+            pShow: false,
+            highlightedOption: null
         }
     },
     methods: {
+        pFocus: function(){
+            this.$refs.justFocusEl.focus();
+           },
         open: function(domElem=null){
             this.pSetPosition(domElem);
             this.pShow = true;
             this.$emit('open');
+            utility.doIt( ()=>{
+                this.pFocus();
+            });
         },
         close: function(){
             this.pShow = false;
@@ -68,14 +75,44 @@ export default ({
         clickOption: function(option){
             if( !option.disabled ){
                 this.$emit('click', option.key);
+                this.close();
             }
-        }
+        },
+        highlightOption: function(option={index:null}){
+            this.highlightedOption = option.index;
+        },
+        pKeyDown: function(event){
+            switch(event.which){
+                case 38: //up
+                    this.highlightedOption = this.highlightedOption == null? this.pOptions.length: this.highlightedOption;
+                    this.highlightedOption = this.highlightedOption-1 < 0? this.pOptions.length-1: this.highlightedOption-1;
+                    break;
+                case 40: // down
+                    this.highlightedOption = this.highlightedOption == null? -1: this.highlightedOption;
+                    this.highlightedOption = this.highlightedOption+1 >= this.pOptions.length? 0: this.highlightedOption+1;
+                    break;
+                case 37: case 39: //left, right
+                    break;
+                case 13: // enter
+                    event.preventDefault();
+                    if( this.highlightedOption !== null ){
+                        this.clickOption( this.pOptions[ this.highlightedOption ], true );
+                    }
+                    else{
+                        this.close();
+                    }
+                    break;
+                case 27: //esc
+                    this.close();
+            }        
+        },
     },
     computed: {
         pOptions: function(){
             let ret = [];
-            this.options.forEach( (value)=>{
+            this.options.forEach( (value, index)=>{
                 ret.push({
+                    index: index,
                     key: value.key || value.text || value,
                     icon: value.icon || false,
                     text: value.text || value,

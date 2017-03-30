@@ -2582,7 +2582,8 @@ body.ltr{
   padding-left: 11px; }
 .fv-menu .fv-menu-item:last-child{
   border-bottom: none; }
-.fv-menu .fv-menu-item:active:not(.fv-disabled){
+.fv-menu .fv-menu-item:active:not(.fv-disabled),
+    .fv-menu .fv-menu-item.fv-focused{
   background: rgba(0, 0, 0, .06); }
 .fv-menu .fv-menu-item.fv-disabled{
   color: rgba(0, 0, 0, .19);
