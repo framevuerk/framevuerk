@@ -34,25 +34,6 @@
             },
           ]">
         </fv-menu>
-        <fv-modal
-          ref="modal"
-          :modal="true"
-          title="اضافه‌کردن کاربر جدید"
-          v-on:click="$refs.modal.close(); log($event);"
-          :buttons="[
-            {
-              key: 'add-item',
-              icon: 'fa fa-user',
-              text: 'باشه'
-            },
-            {
-              icon: 'fa fa-chart-bar',
-              text: 'نباشه',
-              disabled: true
-            }
-          ]">
-        این کاربره اضافه بره به سیستم؟!
-        </fv-modal>
         <fv-content class="no-padding">
           <div class="fv-row">
             <form class="fv-col-md-1of2 fv-col-xs-1of1" @submit.prevent="$refs.modal.open()">
@@ -128,6 +109,25 @@
             </fv-content>
           </fv-main>
         </fv-sidebar>
+        <fv-modal
+          ref="modal"
+          :modal="true"
+          title="اضافه‌کردن کاربر جدید"
+          v-on:click="$refs.modal.close(); log($event);"
+          :buttons="[
+            {
+              key: 'add-item',
+              icon: 'fa fa-user',
+              text: 'باشه'
+            },
+            {
+              icon: 'fa fa-chart-bar',
+              text: 'نباشه',
+              disabled: true
+            }
+          ]">
+        این کاربره اضافه بره به سیستم؟!
+        </fv-modal>
         <fv-footer>
           <fv-button class="fv-primary fv-block" @click="addContent()"> <i class="fa fa-plus"></i> اضافه‌کردن متن به صفحه! </fv-button> 
         </fv-footer>

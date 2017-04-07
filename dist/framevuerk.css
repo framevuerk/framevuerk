@@ -2422,8 +2422,8 @@ body.ltr{
       -ms-flex-positive: 1;
           flex-grow: 1; }
 .fv-sidebar {
-  z-index: 10001;
-  position: fixed;
+  z-index: 10000;
+  position: absolute;
   top: 0;
   height: 100%;
   background: #EEE;
