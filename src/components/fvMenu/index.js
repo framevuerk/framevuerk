@@ -33,43 +33,28 @@ export default ({
             this[this.pShow?'close':'open'](domElem);
         },
         pSetPosition: function(domElem = null){
-            let margin = 15;
-            let windowOffset = utility.windowOffset();
-            let offset = {
-                left: 'auto',
-                top: 'auto',
-                right: 'auto',
-                bottom: 'auto'
+            const margin = 15;
+            const windowOffset = utility.windowOffset();
+            const elemOffset = {
+                left: domElem.pageX,
+                top: domElem.pageY
             }
-            if( domElem ){
-                let targetOffset = {
-                    left: domElem.x,
-                    top: domElem.y,
-                    right: windowOffset.width - (domElem.x),
-                    bottom: windowOffset.height - (domElem.y)
-                }
-                if( targetOffset.left > windowOffset.width / 2 ){
-                    offset.right = `${targetOffset.right + margin}px`;
-                }
-                else{
-                    offset.left = `${targetOffset.left + margin}px`;
-                }
-                if( targetOffset.top > windowOffset.height / 2 ){
-                    offset.bottom = `${targetOffset.bottom + margin}px`;
-                }
-                else{
-                    offset.top = `${targetOffset.top + margin}px`;
-                }
+            const targetOffset = {
+                left: elemOffset.left + margin,
+                top: elemOffset.top + margin,
+                width: this.menuSize.width,
+                height: this.menuSize.height
             }
-            else{
-                offset.bottom = `${margin}px`;
-                offset.right = `${margin}px`;
+            if( targetOffset.left + targetOffset.width > windowOffset.width ){
+                targetOffset.left = windowOffset.width - targetOffset.width - margin;
             }
-            let menu = this.$refs.pMenu;
-            menu.style.top = offset.top;
-            menu.style.right = offset.right;
-            menu.style.bottom = offset.bottom;
-            menu.style.left = offset.left;
+            if( targetOffset.top + targetOffset.height > windowOffset.height ){
+                targetOffset.top = windowOffset.height - targetOffset.height - margin;
+            }
+
+            const menu = this.$refs.pMenu;
+            menu.style.top = `${targetOffset.top}px`;
+            menu.style.left = `${targetOffset.left}px`;
 
         },
         clickOption: function(option){
@@ -120,6 +105,14 @@ export default ({
                 });
             });
             return ret;
+        },
+        menuSize(){
+            const width = 200;
+            const itemHeight = 45;
+            return {
+                width,
+                height: itemHeight * this.pOptions.length
+            }
         }
     }
 })

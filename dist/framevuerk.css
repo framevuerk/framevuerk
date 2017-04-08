@@ -2567,6 +2567,7 @@ body.ltr{
   overflow-y: auto;
   overflow-x: hidden;
   box-shadow: 0 5px 15px rgba(0, 0, 0, .19);
+  width: 200px;
   max-height: 45%
 }
 .fv-menu .fv-menu-item{

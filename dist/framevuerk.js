@@ -15541,38 +15541,26 @@ exports.default = {
 
             var margin = 15;
             var windowOffset = _utility2.default.windowOffset();
-            var offset = {
-                left: 'auto',
-                top: 'auto',
-                right: 'auto',
-                bottom: 'auto'
+            var elemOffset = {
+                left: domElem.pageX,
+                top: domElem.pageY
             };
-            if (domElem) {
-                var targetOffset = {
-                    left: domElem.x,
-                    top: domElem.y,
-                    right: windowOffset.width - domElem.x,
-                    bottom: windowOffset.height - domElem.y
-                };
-                if (targetOffset.left > windowOffset.width / 2) {
-                    offset.right = targetOffset.right + margin + 'px';
-                } else {
-                    offset.left = targetOffset.left + margin + 'px';
-                }
-                if (targetOffset.top > windowOffset.height / 2) {
-                    offset.bottom = targetOffset.bottom + margin + 'px';
-                } else {
-                    offset.top = targetOffset.top + margin + 'px';
-                }
-            } else {
-                offset.bottom = margin + 'px';
-                offset.right = margin + 'px';
+            var targetOffset = {
+                left: elemOffset.left + margin,
+                top: elemOffset.top + margin,
+                width: this.menuSize.width,
+                height: this.menuSize.height
+            };
+            if (targetOffset.left + targetOffset.width > windowOffset.width) {
+                targetOffset.left = windowOffset.width - targetOffset.width - margin;
             }
+            if (targetOffset.top + targetOffset.height > windowOffset.height) {
+                targetOffset.top = windowOffset.height - targetOffset.height - margin;
+            }
+
             var menu = this.$refs.pMenu;
-            menu.style.top = offset.top;
-            menu.style.right = offset.right;
-            menu.style.bottom = offset.bottom;
-            menu.style.left = offset.left;
+            menu.style.top = targetOffset.top + 'px';
+            menu.style.left = targetOffset.left + 'px';
         },
         clickOption: function clickOption(option) {
             if (!option.disabled) {
@@ -15628,6 +15616,14 @@ exports.default = {
                 });
             });
             return ret;
+        },
+        menuSize: function menuSize() {
+            var width = 200;
+            var itemHeight = 45;
+            return {
+                width: width,
+                height: itemHeight * this.pOptions.length
+            };
         }
     }
 };
