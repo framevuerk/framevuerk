@@ -81,6 +81,7 @@
         <fv-sidebar ref="sidebar" position="right" :pin="null">
           <fv-main>
             <fv-content class="no-padding">
+              <fv-button class="fv-primary fv-icon" @click="$refs.menu.open($event)"> <i class="fa fa-ellipsis-v"></i> </fv-button>
               <fv-list
                 class="no-outline-border"
                 v-on:click="log($event)"
