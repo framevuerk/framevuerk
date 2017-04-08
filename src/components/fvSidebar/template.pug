@@ -1,6 +1,6 @@
 span
     transition(name="fv-fade")
         div(class="fv-overlay", v-show="pShow && !pPin", @click="close()")
-    transition(:name="'fv-sidebar-'+pPosition")
+    transition(:name="animationName")
         aside(class="fv-sidebar", v-show="pShow", :style="{width: pWidth+'px'}", :class="{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}", ref="sidebar")
             slot

@@ -15997,6 +15997,7 @@ exports.default = {
     },
     data: function data() {
         return {
+            pAnimation: null,
             pShow: false,
             pPosition: 'right',
             pWidth: 250,
@@ -16009,7 +16010,7 @@ exports.default = {
             this.pMainPadding();
             this.$emit('open');
         },
-        close: function close(a) {
+        close: function close() {
             this.pShow = false;
             this.pMainPadding();
             this.$emit('close');
@@ -16024,7 +16025,7 @@ exports.default = {
                 this.pPosition = 'left';
             }
         },
-        widthChangeEvent: function widthChangeEvent(event) {
+        widthChangeEvent: function widthChangeEvent() {
             var width = window.innerWidth > 0 ? window.innerWidth : screen.width;
             if (width < 992) {
                 this.pPin = false;
@@ -16084,11 +16085,30 @@ exports.default = {
             return true;
         }
     },
+    computed: {
+        animationName: function animationName() {
+            console.log('anim', this.pAnimation);
+            if (this.pAnimation === true) {
+                return 'fv-sidebar-' + this.pPosition;
+            } else {
+                return '';
+            }
+        }
+    },
+    created: function created() {
+        this.pAnimation = false;
+    },
+
     mounted: function mounted() {
+        var _this = this;
+
         this.pSetPosition();
         this.pSetWidth();
         this.pSetPin();
         this.pMainPadding();
+        setTimeout(function () {
+            _this.pAnimation = true;
+        }, 300);
     },
     watch: {
         position: function position() {
@@ -17602,7 +17622,7 @@ module.exports = "<span><fv-input class=\"fv-form-control\" @click=\"open()\" @k
 /* 140 */
 /***/ (function(module, exports) {
 
-module.exports = "<span><transition name=\"fv-fade\"><div class=\"fv-overlay\" v-show=\"pShow &amp;&amp; !pPin\" @click=\"close()\"></div></transition><transition :name=\"'fv-sidebar-'+pPosition\"><aside class=\"fv-sidebar\" v-show=\"pShow\" :style=\"{width: pWidth+'px'}\" :class=\"{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}\" ref=\"sidebar\"><slot></slot></aside></transition></span>"
+module.exports = "<span><transition name=\"fv-fade\"><div class=\"fv-overlay\" v-show=\"pShow &amp;&amp; !pPin\" @click=\"close()\"></div></transition><transition :name=\"animationName\"><aside class=\"fv-sidebar\" v-show=\"pShow\" :style=\"{width: pWidth+'px'}\" :class=\"{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}\" ref=\"sidebar\"><slot></slot></aside></transition></span>"
 
 /***/ }),
 /* 141 */

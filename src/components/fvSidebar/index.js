@@ -20,6 +20,7 @@ export default ({
     },
     data: function(){
         return {
+            pAnimation: null,
             pShow: false,
             pPosition: 'right',
             pWidth: 250,
@@ -32,7 +33,7 @@ export default ({
             this.pMainPadding();
             this.$emit('open');
         },
-        close: function(a){
+        close: function(){
             this.pShow = false;
             this.pMainPadding();
             this.$emit('close');
@@ -48,7 +49,7 @@ export default ({
                 this.pPosition = 'left';
             }
         },
-        widthChangeEvent: function(event){
+        widthChangeEvent: function(){
             const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
             if( width < 992 ){
                 this.pPin = false;
@@ -112,11 +113,29 @@ export default ({
             return true;
         }
     },
+    computed: {
+        animationName(){
+            console.log('anim', this.pAnimation);
+            if( this.pAnimation === true ){
+                return `fv-sidebar-${this.pPosition}`;
+            }
+            else{
+                return '';
+            }
+        }
+    },
+    created(){
+        this.pAnimation = false;
+    },
     mounted: function(){
+        
         this.pSetPosition();
         this.pSetWidth();
         this.pSetPin();
         this.pMainPadding();
+        setTimeout(()=>{
+            this.pAnimation = true;
+        }, 300);
     },
     watch: {
         position: function(){
