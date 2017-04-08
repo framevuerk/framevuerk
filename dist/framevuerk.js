@@ -16087,7 +16087,6 @@ exports.default = {
     },
     computed: {
         animationName: function animationName() {
-            console.log('anim', this.pAnimation);
             if (this.pAnimation === true) {
                 return 'fv-sidebar-' + this.pPosition;
             } else {
