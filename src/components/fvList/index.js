@@ -11,6 +11,7 @@ export default ({
         clickItem: function(item){
             if( !item.disabled ){
                 this.$emit('click', item.key);
+                item.action();
             }
         }
     },
@@ -23,7 +24,8 @@ export default ({
                     icon: value.icon || false,
                     text: value.text || value,
                     disabled: value.disabled || false,
-                    selected: value.selected || false
+                    selected: value.selected || false,
+                    action: value.action || new Function()
                 });
             });
             return ret;

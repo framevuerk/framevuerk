@@ -60,6 +60,7 @@ export default ({
         clickOption: function(option){
             if( !option.disabled ){
                 this.$emit('click', option.key);
+                option.action();
                 this.close();
             }
         },
@@ -101,7 +102,8 @@ export default ({
                     key: value.key || value.text || value,
                     icon: value.icon || false,
                     text: value.text || value,
-                    disabled: value.disabled || false
+                    disabled: value.disabled || false,
+                    action: value.action || new Function()
                 });
             });
             return ret;
