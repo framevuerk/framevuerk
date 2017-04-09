@@ -5,12 +5,6 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var combineLoaders = require('webpack-combine-loaders');
 
-
-var loader = function (name, query){
-  query = typeof query == 'undefined'? {}: query;
-  return name + "-loader?" + JSON.stringify(query);
-}
-
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -28,7 +22,7 @@ module.exports = {
       },
       {
         test: /\.(p)css$/,
-        loader: ExtractTextPlugin.extract( 'css-loader?importLoaders=1!postcss-loader' ),
+        loader: ExtractTextPlugin.extract( 'css-loader?importLoaders=1&minimize=1!postcss-loader' ),
         exclude: /node_modules/
       },
       {
@@ -40,15 +34,24 @@ module.exports = {
         loader: 'raw-loader'
       },
       {
-        test: /\.(png|jpg|gif|svg|woff|woff2|eot|ttf)$/,
-        loader: 'file-loader',
-        query: {
-          name: '[name].[ext]'//?[hash]'
-        }
+        test: /\.(png|jpg|gif|svg|woff|woff2|eot|ttf)/,
+        loader: 'file-loader?name=./assets/[name].[ext]'
       }
     ]
   },
   plugins: [
-    new ExtractTextPlugin(pkg.name+'.css')
+    new ExtractTextPlugin({
+      filename: pkg.name+'.css',
+      allChunks: true
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true
+    }),
+    new webpack.BannerPlugin(
+      pkg.name + ' ' + pkg.version + "\n"+
+      pkg.description + "\n" +
+      'Author: ' + pkg.author + "\n" +
+      'Homepage: ' + pkg.homepage
+    )
   ]
 }
