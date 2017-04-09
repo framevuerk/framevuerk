@@ -8,80 +8,15 @@
   <body class="rtl">
     <fv-main id="app">
         <fv-header>
-          <fv-button class="fv-primary fv-icon fv-hide-on-normalz"  @click="$refs.sidebar.toggle()"> <i class="fa fa-bars"></i> </fv-button>
+          <fv-button class="fv-primary fv-icon fv-hide-on-lg"  @click="$refs.sidebar.toggle()"> <i class="fa fa-bars"></i> </fv-button>
           <div class="fv-title"> <h2>تایتل تست</h2> </div>
           <fv-button class="fv-primary fv-icon"> <i class="fa fa-user"></i> </fv-button>
           <fv-button class="fv-primary fv-icon" @click="$refs.menu.open($event)"> <i class="fa fa-ellipsis-v"></i> </fv-button>
         </fv-header>
-        <fv-menu
-          ref="menu"
-          v-on:click="log($event)"
-          :options="[
-            {
-              key: 'add-item',
-              icon: 'fa fa-user',
-              text: 'آاضافه کردن کاربر'
-            },
-            {
-              icon: 'fa fa-chart-bar',
-              text: 'روبوسی با کاربر',
-              disabled: true
-            },
-            {
-              key: 'hi-item',
-              icon: 'fa fa-google',
-              text: 'سلام به روی ماهت'
-            },
-          ]">
-        </fv-menu>
-        <fv-content class="no-padding">
-          <div class="fv-row">
-            <form class="fv-col-md-1of2 fv-col-xs-1of1" @submit.prevent="$refs.modal.open()">
-                <div class="fv-col-sm-1of1">
-                    <label class="fv-control-label">نام کاربری {{user.username}} </label>
-                    <fv-input type="text" class="fv-form-control" v-model="user.username" placeholder="نام کاربری خود را وارد کنید." required></fv-input>
-                </div>
-                <div class="fv-col-sm-1of2">
-                    <label class="fv-control-label">رمز عبور {{user.password}}</label>
-                    <fv-input type="password" class="fv-form-control" v-model="user.password" placeholder="رمز عبور خود را وارد کنید." required></fv-input>
-                </div>
-                <div class="fv-col-sm-1of2">
-                  <label class="fv-control-label">موبایل {{user.mobile}}</label>
-                  <fv-input type="tel" class="fv-form-control" v-model="user.mobile" placeholder="شماره موبایل خود را وارد کنید." required></fv-input>
-                </div>
-                <div class="fv-col-sm-1of2">
-                  <label class="fv-control-label">نام تیم مورد علاقه {{user.team}}</label>
-                  <fv-select :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6},{text: 'آث میلان', value: 11}, {text: 'اینتر میلان', value: 12}, {text: 'یوونتوس', value: 13}, {text: 'آس رم', value: 14}, {text: 'ناپولی', value: 15}, {text: 'فیورنتینا', value: 16},{text: 'آث میلان', value: 1231}, {text: 'اینتر میلان', value: 21}, {text: 'یوونتوس', value: 31}, {text: 'آس رم', value: 41}, {text: 'ناپولی', value: 51}, {text: 'فیورنتینا', value: 61},{text: 'آث میلان', value: 111}, {text: 'اینتر میلان', value: 112}, {text: 'یوونتوس', value: 113}, {text: 'آس رم', value: 114}, {text: 'ناپولی', value: 115}, {text: 'فیورنتینا', value: 116}]" v-model="user.team" multiple requiredz placeholder="تیم مورد علاقت چی بود؟"></fv-select>
-                </div>
-                <div class="fv-col-sm-1of2">
-                  <label class="fv-control-label">تاریخ زایمان {{user.date}}</label>
-                  <fv-datepicker v-model="user.date" requiredz placeholder="تاریخ زایمان رو بگو."></fv-datepicker>
-                </div>
-                <div class="fv-col-xs-1of2">
-                  <label class="fv-control-label">تصویر</label>
-                  <fv-filepicker v-model="user.pic" required></fv-filepicker>
-                </div>
-              <div class="fv-col-xs-1of2">
-                  <label class="fv-control-label">آیا شما زن دارید؟ {{user.wife}}</label>
-                  <fv-switch v-model="user.wife" required></fv-switch>
-                </div>
-                <div class="fv-col-sm-1of1">
-                </div>
-                <div class="fv-col-sm-1of1">
-                    <fv-button class="fv-primary fv-block" type="submit">ورود</fv-button>
-                </div>
-            </form>
-            <div class="fv-col-md-1of2 fv-col-xs-1of1">
-              <fv-button  @click="$refs.modal.open()">Open Modal</fv-button>
-            </div>
-            <div class="fv-col-md-1of2 fv-col-xs-1of1" v-html="content"></div>
-          </div>
-        </fv-content>
 
         <fv-sidebar ref="sidebar" position="right" :pin="null">
           <fv-main>
             <fv-content class="no-padding">
-              <fv-button class="fv-primary fv-icon" @click="$refs.menu.open($event)"> <i class="fa fa-ellipsis-v"></i> </fv-button>
               <fv-list
                 class="no-outline-border"
                 v-on:click="log($event)"
@@ -110,6 +45,72 @@
             </fv-content>
           </fv-main>
         </fv-sidebar>
+        <fv-menu
+          ref="menu"
+          v-on:click="log($event)"
+          :options="[
+            {
+              key: 'add-item',
+              icon: 'fa fa-user',
+              text: 'آاضافه کردن کاربر',
+              action: log
+            },
+            {
+              icon: 'fa fa-chart-bar',
+              text: 'روبوسی با کاربر',
+              disabled: true
+            },
+            {
+              key: 'hi-item',
+              icon: 'fa fa-google',
+              text: 'سلام به روی ماهت'
+            },
+          ]">
+        </fv-menu>
+        <fv-content class="no-padding">
+          <div class="fv-row">
+            <form class="fv-col-md-6 fv-col-xs-12" @submit.prevent="$refs.modal.open()">
+                <div class="fv-col-sm-12">
+                    <label class="fv-control-label">نام کاربری {{user.username}} </label>
+                    <fv-input type="text" class="fv-form-control" v-model="user.username" placeholder="نام کاربری خود را وارد کنید." required></fv-input>
+                </div>
+                <div class="fv-col-sm-6">
+                    <label class="fv-control-label">رمز عبور {{user.password}}</label>
+                    <fv-input type="password" class="fv-form-control" v-model="user.password" placeholder="رمز عبور خود را وارد کنید." required></fv-input>
+                </div>
+                <div class="fv-col-sm-6">
+                  <label class="fv-control-label">موبایل {{user.mobile}}</label>
+                  <fv-input type="tel" class="fv-form-control" v-model="user.mobile" placeholder="شماره موبایل خود را وارد کنید." required></fv-input>
+                </div>
+                <div class="fv-col-sm-6">
+                  <label class="fv-control-label">نام تیم مورد علاقه {{user.team}}</label>
+                  <fv-select :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6},{text: 'آث میلان', value: 11}, {text: 'اینتر میلان', value: 12}, {text: 'یوونتوس', value: 13}, {text: 'آس رم', value: 14}, {text: 'ناپولی', value: 15}, {text: 'فیورنتینا', value: 16},{text: 'آث میلان', value: 1231}, {text: 'اینتر میلان', value: 21}, {text: 'یوونتوس', value: 31}, {text: 'آس رم', value: 41}, {text: 'ناپولی', value: 51}, {text: 'فیورنتینا', value: 61},{text: 'آث میلان', value: 111}, {text: 'اینتر میلان', value: 112}, {text: 'یوونتوس', value: 113}, {text: 'آس رم', value: 114}, {text: 'ناپولی', value: 115}, {text: 'فیورنتینا', value: 116}]" v-model="user.team" multiple requiredz placeholder="تیم مورد علاقت چی بود؟"></fv-select>
+                </div>
+                <div class="fv-col-sm-6">
+                  <label class="fv-control-label">تاریخ زایمان {{user.date}}</label>
+                  <fv-datepicker v-model="user.date" requiredz placeholder="تاریخ زایمان رو بگو."></fv-datepicker>
+                </div>
+                <div class="fv-col-xs-6">
+                  <label class="fv-control-label">تصویر</label>
+                  <fv-filepicker v-model="user.pic" required></fv-filepicker>
+                </div>
+              <div class="fv-col-xs-6">
+                  <label class="fv-control-label">آیا شما زن دارید؟ {{user.wife}}</label>
+                  <fv-switch v-model="user.wife" required></fv-switch>
+                </div>
+                <div class="fv-col-sm-12">
+                </div>
+                <div class="fv-col-sm-12">
+                    <fv-button class="fv-primary fv-block" type="submit">ورود</fv-button>
+                </div>
+            </form>
+            <div class="fv-col-md-6 fv-col-xs-12">
+              <fv-button  @click="$refs.modal.open()">Open Modal</fv-button>
+            </div>
+            <div class="fv-col-md-6 fv-col-xs-12" v-html="content"></div>
+          </div>
+        </fv-content>
+
         <fv-modal
           ref="modal"
           :modal="true"
