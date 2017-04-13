@@ -14,7 +14,7 @@ import fvInput from './components/fvInput'
 import fvButton from './components/fvButton'
 import fvFilepicker from './components/fvFilepicker'
 import fvSwitch from './components/fvSwitch'
-import fvModal from './components/fvModal'
+import fvDialog from './components/fvDialog'
 import fvList from './components/fvList'
 
 const framevuerk = {
@@ -31,7 +31,7 @@ const framevuerk = {
     Vue.component('fvButton', fvButton);
     Vue.component('fvFilepicker', fvFilepicker);
     Vue.component('fvSwitch', fvSwitch);
-    Vue.component('fvModal', fvModal);
+    Vue.component('fvDialog', fvDialog);
     Vue.component('fvList', fvList);
   }
 };
