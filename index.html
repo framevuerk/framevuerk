@@ -69,7 +69,7 @@
         </fv-menu>
         <fv-content class="no-padding">
           <div class="fv-row">
-            <form class="fv-col-md-6 fv-col-xs-12" @submit.prevent="$refs.modal.open()">
+            <form class="fv-col-md-6 fv-col-xs-12" @submit.prevent="$refs.dialog.open()">
                 <div class="fv-col-sm-12">
                     <label class="fv-control-label">نام کاربری {{user.username}} </label>
                     <fv-input type="text" class="fv-form-control" v-model="user.username" placeholder="نام کاربری خود را وارد کنید." required></fv-input>
@@ -105,17 +105,16 @@
                 </div>
             </form>
             <div class="fv-col-md-6 fv-col-xs-12">
-              <fv-button  @click="$refs.modal.open()">Open Modal</fv-button>
+              <fv-button  @click="$refs.dialog.open()">Open dialog</fv-button>
             </div>
             <div class="fv-col-md-6 fv-col-xs-12" v-html="content"></div>
           </div>
         </fv-content>
 
-        <fv-modal
-          ref="modal"
-          :modal="true"
+        <fv-dialog
+          ref="dialog"
           title="اضافه‌کردن کاربر جدید"
-          v-on:click="$refs.modal.close(); log($event);"
+          v-on:click="$refs.dialog.close(); log($event);"
           :buttons="[
             {
               key: 'add-item',
@@ -124,12 +123,11 @@
             },
             {
               icon: 'fa fa-chart-bar',
-              text: 'نباشه',
-              disabled: true
+              text: 'نباشه'
             }
           ]">
         این کاربره اضافه بره به سیستم؟!
-        </fv-modal>
+        </fv-dialog>
         <fv-footer>
           <fv-button class="fv-primary fv-block" @click="addContent()"> <i class="fa fa-plus"></i> اضافه‌کردن متن به صفحه! </fv-button> 
         </fv-footer>
