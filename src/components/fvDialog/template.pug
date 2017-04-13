@@ -1,0 +1,16 @@
+span
+    transition(name="fv-fade")
+        div(class="fv-overlay fv-dialog-overlay", v-show="pShow", @click="closeIf()")
+    transition(name="fv-dialog")
+        fv-main(class="fv-dialog", v-show="pShow", ref="dialog", @keydown="pKeyDown($event)")
+            fv-header(v-if="title.length > 0")
+                div(class="fv-title")
+                    h3(v-html="title")
+            fv-content
+                slot
+            fv-footer
+                div(class="fv-grow")
+                fv-button( v-for="button in pButtons", :key="button.key", ref="buttonEl", :class="button.class", @click="clickButton(button)", @blur="focusIf()") 
+                    i(v-if="button.icon", :class="button.icon")
+                    =" "
+                    span(v-html="button.text")

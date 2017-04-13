@@ -1,0 +1,35 @@
+.fv-dialog-overlay{
+  z-index: 20000;
+}
+.fv-dialog {
+    z-index: 20002;
+    position: fixed;
+    height: auto;
+    width: auto;
+    max-width: 90%;
+    max-height: 90%;
+    min-height: 200px;
+    min-width: 300px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    padding: 0;
+    transform: translate(-50%, -50%);
+    background: var(--bg-color);
+    overflow: auto;
+    box-shadow: 0 5px 15px var(--shadow-color);
+    @media (--only-xs){
+      max-height: 100%;
+      max-width: 100%;
+    }
+}
+
+.fv-dialog-enter-active, .fv-dialog-leave-active{
+  transition: all .25s;
+  opacity: 1;
+}
+
+.fv-dialog-enter, .fv-dialog-leave-active {
+  opacity: 0;
+}
