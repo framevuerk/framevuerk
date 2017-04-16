@@ -6,7 +6,7 @@ export default ({
         return {
             pShow: false,
             searchQuery: '',
-            highlightedOption: null
+            highlightedOption: 0
         }
     },
     props: {
@@ -31,6 +31,10 @@ export default ({
         placeholder: {
             type: String,
             default : ''
+        },
+        allowInsert: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {
@@ -114,7 +118,7 @@ export default ({
                     */
             }        
         },
-        clickOption: function(option={index:null,value:null}, setHighlight = false){
+        clickOption: function(option={index:null,value:null, action:'select'}, setHighlight = false){
             if( option.value === null ){
                 if( this.multiple ){
                     this.pSetValue( [] );
@@ -122,6 +126,16 @@ export default ({
                 else{
                     this.pSetValue( null );
                 }
+            }
+            else if( this.allowInsert && option.action === 'insert' ){
+                let newValue = this.value;
+                if( this.multiple ){
+                    newValue.push( option.value );
+                }
+                else{
+                    newValue = option.value;
+                }
+                this.pSetValue( newValue );
             }
             else if( this.multiple ){
                 let newValue = this.value;
@@ -143,6 +157,7 @@ export default ({
             else{
                 this.highlightOption();
             }
+            this.searchQuery = '';
         },
         setStructure: function(){ // bug
             if( this.multiple ){
@@ -160,9 +175,27 @@ export default ({
     mounted: function(){
     },
     computed: {
+        mOptions: function(){
+            const mOptions = this.options;
+            if( this.value !== null ){
+                if( this.multiple === true ){
+                    this.value.forEach( (value,index)=>{
+                        const founded = mOptions.find((v) => v.value == value);
+                        if( !founded ){
+                            mOptions.push({
+                                text: value,
+                                value: value
+                            });
+                        }
+                    });
+                }
+            }
+            return mOptions;
+        },
         pOptions: function(){
             let ret = [];
-            this.options.forEach( (option,index)=>{
+
+            this.mOptions.forEach( (option,index)=>{
                 let text = typeof option == 'object' && option !== null? option.text: option;
                 let value = typeof option == 'object' && option !== null? option.value: option;
                 if(
@@ -172,17 +205,47 @@ export default ({
                     ret.push({
                         index: index,
                         text: text,
-                        value: value
+                        value: value,
+                        action: 'select'
                     });
                 }
             });
+            let index = ret.length;
+            if( this.allowInsert === true && this.searchQuery.length > 0){
+                ret.push({
+                    index: index++,
+                    text: `اضافه کردن "${this.searchQuery}"`,
+                    value: this.searchQuery,
+                    action: 'insert'
+                });
+            }
             return ret;
         },
         displayValue: function(){
-            let ret = [];
-            for( let i = 0; i < this.pOptions.length; i++ ){
-                if( this.pIsSelected(this.pOptions[i]) ){
-                    ret.push( this.pOptions[i].text );
+            const ret = [];
+            const value = this.value;
+            const mOptions = this.mOptions;
+            function getText(value){
+                const founded = mOptions.find((v) => v.value == value);
+                if( founded ){
+                    return founded.text;
+                }
+                else{
+                    return value;
+                }
+            }
+
+            if( value === null ){
+                return [];
+            }
+            else{
+                if( this.multiple ){
+                    this.value.forEach( (value,index)=>{
+                        ret.push( getText(value) );
+                    });
+                }
+                else{
+                    ret.push( getText(this.value) );
                 }
             }
             return ret;
