@@ -67,7 +67,7 @@
             },
           ]">
         </fv-menu>
-        <fv-content class="no-padding">
+        <fv-content class="no-padding" :scroll-events="true" @scroll-down="log('down')" @scroll-end-down="log('end of down')">
           <div class="fv-row">
             <form class="fv-col-md-6 fv-col-xs-12" @submit.prevent="$refs.dialog.open()">
                 <div class="fv-col-sm-12">
@@ -163,7 +163,9 @@
           console.log('App started.')
         },
         methods: {
-          log: console.log,
+          log: function(msg){
+            console.log(msg);
+          },
           send: function(){
             var fd = new FormData();
             for(var i in this.user){
