@@ -83,6 +83,9 @@ let utility = {
     },
     lockScroll: (lock = true)=>{
         document.body.classList[lock === true ? 'add' : 'remove']('lock-scroll');
+    },
+    capitalizeFirstLetter: (str = '')=>{
+        return str.charAt(0).toUpperCase() + str.slice(1);
     }
 };
 window.onload = ()=>{
