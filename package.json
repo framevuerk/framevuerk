@@ -1,6 +1,6 @@
 {
   "name": "framevuerk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A RTL and mobile-first Vue.js framevuerk.",
   "main": "dist/framevuerk.js",
   "scripts": {
