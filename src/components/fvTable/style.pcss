@@ -29,6 +29,13 @@
             background: var(--bg-color-light);
             color: yiq;
         }
+        & > tbody > tr.fv-clickable{
+            cursor: pointer;
+            &:active,
+            &.fv-focused{
+                background: var(--shadow-color-light);
+            }
+        }
         & > thead > tr > th,
         & > tfoot > tr > td{
             font-weight: bold;
