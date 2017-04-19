@@ -16,6 +16,7 @@ import fvFilepicker from './components/fvFilepicker'
 import fvSwitch from './components/fvSwitch'
 import fvDialog from './components/fvDialog'
 import fvList from './components/fvList'
+import fvTable from './components/fvTable'
 
 const framevuerk = {
   install(Vue){
@@ -33,6 +34,7 @@ const framevuerk = {
     Vue.component('fvSwitch', fvSwitch);
     Vue.component('fvDialog', fvDialog);
     Vue.component('fvList', fvList);
+    Vue.component('fvTable', fvTable);
   }
 };
 module.exports = framevuerk;
