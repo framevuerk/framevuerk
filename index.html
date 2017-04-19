@@ -33,7 +33,7 @@
                   },
                   {
                     icon: 'fa fa-list',
-                    text: 'بگوز',
+                    text: 'لیست',
                     selected: true
                   },
                   {
@@ -90,6 +90,9 @@
               }]"
               api-rows-key=""
               api="http://restcountries.eu/rest/v2/all"
+              @click-row="log($event)"
+              @fetch="log('fetched')"
+              @fetch-error="log('fetch error')"
             ></fv-table>
             <form class="fv-col-md-6 fv-col-xs-12" @submit.prevent="$refs.dialog.open()">
                 <div class="fv-col-sm-12">
