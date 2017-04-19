@@ -69,6 +69,28 @@
         </fv-menu>
         <fv-content class="no-padding" :scroll-events="true" @scroll-down="log('down')" @scroll-end-down="log('end of down')">
           <div class="fv-row">
+            <!--fv-table class="fv-col-xs-10 fv-col-offset-xs-1"
+              :fields="['id', 'full_name', {
+                value: 'score',
+                text: 'امتیاز',
+                formatter: function(v){
+                  return v + ' <i class=\'fa fa-star\'>';
+                }
+              }]"
+              :limit="15"
+              api="https://api.github.com/search/repositories?q=node&page={page}&per_page={limit}"
+            ></fv-table-->
+            <fv-table class="fv-col-xs-12"
+              :fields="['name', 'nativeName', {
+                value: 'flag',
+                text: 'Flag',
+                formatter: function(v){
+                  return ' <img src=\''+v+'\' style=\'max-height: 15px;\'>';
+                }
+              }]"
+              api-rows-key=""
+              api="http://restcountries.eu/rest/v2/all"
+            ></fv-table>
             <form class="fv-col-md-6 fv-col-xs-12" @submit.prevent="$refs.dialog.open()">
                 <div class="fv-col-sm-12">
                     <label class="fv-control-label">نام کاربری {{user.username}} </label>
@@ -134,12 +156,14 @@
     </fv-main>
     
 
-    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/vue/dist/vue.min.js"></script>
+    <script src="node_modules/vue-resource/dist/vue-resource.min.js"></script>
     <script src="cordova.js"></script>
     <script src="./dist/framevuerk.js"></script>
     <link rel="stylesheet" href="dist/framevuerk.css">
     <script>
       Vue.use(framevuerk);
+      Vue.use(VueResource);
       var app = new Vue({
         el: '#app',
         data: {
