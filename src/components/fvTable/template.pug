@@ -1,0 +1,23 @@
+div.fv-table
+    table(:class="{'tf-loading': loading}")
+        thead
+            tr
+                th(v-for="field in pFields", v-html="field.text")
+        tbody
+            tr(v-for="row in pRows")
+                td(v-for="field in pFields", v-html="row[field.value]")
+        tfoot
+            tr
+                td.fv-row(:colspan="pFields.length")
+                    div.fv-col-xs-3
+                        | مجموع رکورد‌ها: {{totalCount}}
+                    div.fv-col-xs-6.page-control-continer
+                        fv-button(@click="fetch(page+1)", :disabled="page >= totalPages")
+                            i.fa.fa-arrow-right
+                            |  صفحه بعد
+                        fv-input.fv-form-control(type="number", :value="page", :min="1", :max="totalPages", @input="setUserPage($event)")
+                        fv-button(@click="fetch(page-1)", :disabled="page == 1")
+                            | صفحه قبل 
+                            i.fa.fa-arrow-left
+                    div.fv-col-xs-3
+                        | مجموع صفحات: {{totalPages}}
