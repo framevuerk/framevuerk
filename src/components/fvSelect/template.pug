@@ -3,10 +3,10 @@ span
     transition(name="fv-fade")
         div(class="fv-overlay", @click="close()", v-show="pShow")
     transition(name="fv-select")
-        fv-main(class="fv-select", v-show="pShow", ref="select", @keydown="pKeyDown($event)")
+        fv-main(class="fv-select", v-show="pShow", ref="select")
             fv-header(v-if="search || allowInsert")
-                fv-input(class="fv-form-control fv-grow", placeholder="متن خود را وارد کنید...", v-model="searchQuery", ref="searchQueryEl", @blur="closeIf()")
-            span(v-if="!search && !allowInsert", tabindex="0", ref="justFocusEl", @blur="closeIf()")
+                fv-input(class="fv-form-control fv-grow", placeholder="متن خود را وارد کنید...", v-model="searchQuery", ref="searchQueryEl", @keydown="pKeyDown($event)", @blur="closeIf()")
+            span(v-if="!search && !allowInsert", tabindex="0", ref="justFocusEl", @keydown="pKeyDown($event)", @blur="closeIf()")
             fv-content(class="no-padding")
                 div(class="fv-option", v-show="pOptions.length == 0") چیزی پیدا نشد!
                 div(class="fv-option", v-for="(option, index) in pOptions", v-html="option.text", @click="clickOption(option)", ref="optionElem",:class="{'fv-selected': pIsSelected(option), 'fv-focused': highlightedOption==index}")
