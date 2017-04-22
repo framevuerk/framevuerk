@@ -52,7 +52,8 @@ export default {
             this.fields.forEach( (field)=>{
                 ret.push({
                     value: field.value || field,
-                    text: field.text || utility.capitalizeFirstLetter(field),
+                    text: field.text || (field.value? utility.capitalizeFirstLetter(field.value): null) || utility.capitalizeFirstLetter(field),
+                    class: field.class || '',
                     formatter: field.formatter || (x=>x)
                 });
             });
