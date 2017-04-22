@@ -70,7 +70,7 @@ export default ({
                 this.$refs.inputEl.$el.focus();
             }
             else{
-                if( this.search ){
+                if( this.search || this.allowInsert ){
                     this.$refs.searchQueryEl.$el.focus();
                 }
                 else{
@@ -136,6 +136,7 @@ export default ({
                 else{
                     newValue = option.value;
                 }
+                this.$emit('insert', option.value);
                 this.pSetValue( newValue );
             }
             else if( this.multiple ){
@@ -183,7 +184,7 @@ export default ({
                     this.value.forEach( (value,index)=>{
                         const founded = mOptions.find((v) => v.value == value);
                         if( !founded ){
-                            mOptions.push({
+                            mOptions.unshift({
                                 text: value,
                                 value: value
                             });
@@ -257,11 +258,14 @@ export default ({
             if( this.highlightedOption !== null ){
                 let focusedEl = this.$refs.optionElem[this.highlightedOption];
                 if( focusedEl ){
-                    if( !utility.isInViewport(focusedEl, 100) ){
+                    if( !utility.isInViewport(focusedEl) ){
                         focusedEl.scrollIntoView();
                     }
                 }
             }
+        },
+        searchQuery: function(){
+            this.highlightedOption = this.pOptions.length > 0? 0: null;
         }
     }
 })
