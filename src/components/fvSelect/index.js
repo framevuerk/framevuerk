@@ -11,7 +11,8 @@ export default ({
     },
     props: {
         options: {
-            type: Array
+            type: Array,
+            default: () => []
         },
         value: {
             required: true

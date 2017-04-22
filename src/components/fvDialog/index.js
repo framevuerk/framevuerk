@@ -18,7 +18,7 @@ export default ({
         },
         buttons: {
             type: Array,
-            required: true
+            default: () => []
         }
     },
     methods: {

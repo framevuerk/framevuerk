@@ -4,7 +4,7 @@ export default ({
     template: template,
     props: {
         value: {
-            default: 'none'
+            default: null
         },
         displayValue: {
             default: null

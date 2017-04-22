@@ -8,7 +8,7 @@ span
                     h3(v-html="title")
             fv-content
                 slot
-            fv-footer
+            fv-footer(v-if="pButtons.length > 0")
                 div(class="fv-grow")
                 fv-button( v-for="button in pButtons", :key="button.key", ref="buttonEl", :class="button.class", @click="clickButton(button)", @blur="focusIf()") 
                     i(v-if="button.icon", :class="button.icon")

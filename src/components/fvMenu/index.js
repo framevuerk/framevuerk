@@ -4,7 +4,8 @@ export default ({
     template: template,
     props: {
         options: {
-            type: Array
+            type: Array,
+            default: () => []
         }
     },
     data: function(){
