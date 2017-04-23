@@ -6,7 +6,7 @@ export default {
         return {
             page: 1,
             totalCount: this.local? this.rows.length: 0,
-            apiRows: [],
+            apiResponse: null,
             loading: false,
             highlightedRow: null,
             setUserPageTimeout: null
@@ -29,13 +29,24 @@ export default {
             type: String,
             default: '/items?page:{page}&limit={limit}'
         },
+        paginate: {
+            type: Boolean,
+            default: true
+        },
         apiRowsKey: {
-            type: String,
-            default: 'items'
+            default: null
+        },
+        apiNextPageKey: {
+            default: null
+        },
+        apiPreviousPageKey: {
+            default: null
+        },
+        apiFinishedKey: {
+            default: null // also you can use '!' at start of this string to reverse value in api response
         },
         apiTotalCountKey: {
-            type: String,
-            default: 'total_count'
+            default: null
         },
         clickableRows: {
             type: Boolean,
@@ -61,7 +72,20 @@ export default {
         },
         pRows: function(){
             const ret = [];
-            this[this.local? 'rows': 'apiRows'].forEach( (row)=>{
+            let rows = [];
+            if( this.local ){
+                rows = this.rows;
+            }
+            else if ( this.apiRowsKey != null && this.apiResponse && this.apiResponse.body ){
+                rows = this.pFindValueByKey( this.apiRowsKey, this.apiResponse.body);
+                if( typeof rows == 'undefined' ){
+                    rows = [];
+                }
+            }
+            else{
+                return [];
+            }
+            rows.forEach( (row)=>{
                 const pRow = {};
                 this.pFields.forEach( (field)=>{
                     if( typeof row[field.value] !== 'undefined' ){
@@ -78,15 +102,108 @@ export default {
             return ret;
         },
         pApi: function(){
-            console.log('pApi', this.api);
             return this.api.replace('{page}', this.page).replace('{limit}', this.limit);
         },
         totalPages: function(){
-            if( this.local || this.apiRowsKey == ''){
+            if( this.local || !this.paginate ){
                 return 1;
             }
+            else if( !this.apiResponse || this.apiResponse.status < 200 || this.apiResponse > 299 || this.apiFinishedKey !== null ){
+                return false;
+            }
+            // { rows: [...], total: 50 }
+            else if( this.apiTotalCountKey !== null ){
+                const totalCount = this.pFindValueByKey( this.apiTotalCountKey, this.apiResponse.body );
+                if( typeof totalCount == 'undefined' ){
+                    console.error('Where is totalCount in apiResponse?');
+                    return false;
+                }
+                const totalPages = Math.ceil( totalCount / this.limit );
+                return totalPages;
+            }
             else{
-                return Math.ceil( this.totalCount / this.limit );
+                return 1;
+            }
+        },
+        nextPage: function(){
+            if( !this.paginate || !this.apiResponse || !this.apiRowsKey ){
+                return false;
+            }
+            else{
+                let page = this.page;
+                // { rows: [...], total: 50 }
+                if( this.apiTotalCountKey !== null ){
+                    const totalPages = this.totalPages;
+                    if( page < totalPages ){
+                        page++;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                // { rows: [...], next: 'x', prev: 'y' }
+                else if ( this.apiNextPageKey !== null ){
+                    if( this.apiNextPageKey ){
+                        console.error('Where is apiNextPageKey?');
+                        return false;
+                    }
+                    page = this.pFindValueByKey( this.apiNextPageKey, this.apiResponse.body );
+                    if( typeof page == 'undefined' ){
+                        console.error('Where is apiNextPageKey in apiResponse?');
+                        return false;
+                    }       
+                }
+                // { rows: [...], is_lastpage: false }
+                if( this.apiFinishedKey !== null ){
+                    let key = this.apiFinishedKey;
+                    let equal = true;
+                    if( key.indexOf('!') !== -1 ){
+                        equal = false;
+                        key = key.split('!').join('');
+                    }
+                    const finished = this.pFindValueByKey( key, this.apiResponse.body );
+                    if( typeof finished == 'undefined' ){
+                        console.error('Where is apiFinishedKey in apiResponse?');
+                        return false;
+                    }
+                    if( 
+                        (equal && !finished) ||
+                        (!equal && finished)
+                    ){
+                        page++;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                return page;
+            }
+        },
+        previousPage: function(){
+            if( !this.paginate || !this.apiResponse || !this.apiRowsKey ){
+                return false;
+            }
+            else{
+                let page = this.page;
+                // { rows: [...], total: 50 }
+                // { rows: [...], is_lastpage: false }
+                if( this.apiTotalCountKey !== null || this.apiFinishedKey !== null ){
+                    if( page > 1 ){
+                        page--;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                // { rows: [...], next: 'x', prev: 'y' }
+                else if ( this.apiPreviousPageKey !== null ){
+                    page = this.pFindValueByKey( this.apiPreviousPageKey, this.apiResponse.body );
+                    if( typeof page == 'undefined' ){
+                        console.error('Where is apiPreviousPageKey in apiResponse?');
+                        return false;
+                    }
+                }
+                return page;
             }
         }
     },
@@ -131,33 +248,57 @@ export default {
             else{
                 this.page = page;
                 return this.$http.get(this.pApi).then(response => {
-                    this.apiRows = this.apiRowsKey != ''? response.body[this.apiRowsKey]: response.body;
-                    this.totalCount = this.apiRowsKey != ''? response.body[this.apiTotalCountKey]: response.body.length;
+                    this.apiResponse = response;
                     this.loading = false;
                     this.$emit('fetch', this.page);
                     
                 }, response => {
+                    this.$emit('fetch-error', this.page);
                     this.page = currentPage;
                     this.loading = false;
-                    this.$emit('fetch-error', this.page);
                 });
             }
         },
-        rowClick: function(row, index = null){
+        rowClick: function(row, index = false){
             if( this.clickableRows ){
                 this.$emit('click-row', row.pOriginalRow );
-                this.highlightedRow = index;
+                if( index !== false ) {
+                    this.highlightedRow = index;
+                }
             }
         },
         setUserPage(page){
             clearTimeout( this.setUserPageTimeout );
             this.setUserPageTimeout = setTimeout(()=>{
-                this.fetch( parseInt(page) );
+                page = parseInt(page);
+                if( page > this.totalPages || page < 1 ){
+                    this.userInputPage.$el.value = this.page;
+                }
+                else{
+                    this.fetch( page );
+                }
             }, 1000);
+        },
+        pFindValueByKey(key='', obj={}){
+            if( key == null || obj == null ){
+                return undefined;
+            }
+            if( key == '' ){
+                return obj;
+            }
+            let ret = Object.assign({}, obj);
+            key.split('.').forEach( (pr)=>{
+                if( !pr || typeof ret[pr] == 'undefined' ){
+                    ret = undefined;
+                    return false;
+                }
+                ret = ret[pr];
+            });
+            return ret;
         }
     },
     created: function(){
-        this.fetch();
+        this.fetch(1);
     },
     watch: {
         highlightedRow: function(){
