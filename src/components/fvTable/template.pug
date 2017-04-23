@@ -10,11 +10,11 @@ div.fv-table
             tr
                 td(:colspan="pFields.length")
                     div.page-control-continer
-                        fv-button(@click="fetch(page+1)", :disabled="page >= totalPages")
+                        fv-button(@click="fetch(nextPage)", :disabled="nextPage === false")
                             i.fa.fa-arrow-right
                             |  صفحه بعد
-                        fv-input.fv-form-control(type="number", :value="page", :min="1", :max="totalPages", @input="setUserPage($event)")
-                        span از {{totalPages}}
-                        fv-button(@click="fetch(page-1)", :disabled="page == 1")
+                        fv-input.fv-form-control(type="number", :value="page", :min="1", :max="totalPages", @input="setUserPage($event)", ref="userInputPage", :disabled="totalPages > 1")
+                        span(v-if="totalPages !== false") از {{totalPages}}
+                        fv-button(@click="fetch(previousPage)", :disabled="previousPage === false")
                             | صفحه قبل 
                             i.fa.fa-arrow-left
