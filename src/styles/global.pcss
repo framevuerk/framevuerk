@@ -103,6 +103,16 @@ body{
     max-width: 100%;
     @apply --nowrap;
 }
+.fv-form-control-group{
+    border: 1px solid var(--shadow-color);
+    box-shadow: 0 0.3em 0.5em var(--shadow-color-light);
+    border-radius: 4px;
+    clear: both;
+    padding: calc( var(--padding) / 2 );
+    & > .fv-control-label{
+        padding: inherit;
+    }
+}
 .fv-form-control{
     font-family: inherit;
     padding: 0 0.6em;
