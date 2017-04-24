@@ -1,11 +1,15 @@
 import utility from '../../utility'
 import template from './template.pug'
-import moment from 'moment-jalaali'
+//let isMoment = require.resolve('moment-jalaali');
+//import moment from 'moment-jalaali'
+
+
 export default ({
     template: template,
     data: ()=>{
         return {
-            pDate: moment.utc(),
+            moment: null,
+            pDate: {}, //moment.utc(),
             pValue: {},
             pDisplayValue: '',
             pShow: false,
@@ -18,20 +22,21 @@ export default ({
             default: null,
             required: true
         },
-        defaultValue: {
-            default: 'now',
-            required: false
-        },
         required: {
             type: Boolean,
             default: false
         },
         pick: {
-            type: String,
-            default: 'year,month,day,sp,hour,minute,second'
-        },
-        format: {
-            default: null // or for example: 'jYYYY/jMM/jD HH:mm:ss'
+            type: Array,
+            default: ()=>[
+                'year',
+                'month',
+                'day',
+                'sp',
+                'hour',
+                'minute',
+                'second'
+            ]
         },
         displayFormat: {
             default: 'jD jMMMM jYYYY ساعت HH:mm'
@@ -149,14 +154,14 @@ export default ({
                 this.highlightOption();
             }
         },
-        pSetValue: function(date=null){ // becouse i cant set watcher on pDate
+        pSetValue: function(date=null){ // receive moment date and set date to value
             let newValue = null;
             if( date === null ){
-                this.pDate == moment.utc();
+                this.pDate = this.moment.utc();
             }
             else{
                 this.pDate = date;
-                newValue = this.format === null? this.pDate.toDate(): this.pDate.format(this.format);
+                newValue = this.pDate.toDate();
             }
             this.pValue =  {
                 year: this.pDate.format('jYYYY'),
@@ -186,11 +191,23 @@ export default ({
         }
     },
     created: function(){
-        this.pSetValue(this.value === null? null: moment.utc() );
+        const target = utility.getTarget();
+        if( target === 'module' ){
+            this.moment = require('moment-jalaali');
+            this.pSetValue(this.value === null? null: this.moment.utc() );
+        }
+        else if ( global.moment ){
+            this.moment = global.moment;
+            this.pSetValue(this.value === null? null: this.moment.utc() );
+        }
+        else{
+            console.error('Moment not found!');
+        }
+        
     },
     computed: {
         pSections: function(){
-            return this.pick.split(',').map( (v)=>{
+            return this.pick.map( (v)=>{
                 switch(v){
                     case 'year': return {
                         type: 'pick',
@@ -225,7 +242,7 @@ export default ({
                     case 'sp': return {
                         type: 'sp'
                     }
-                    default: throw 'Error in fv-datepicker pick attribute.';
+                    default: console.error('error in fv-datepicker pick attribute.');
                 }
             });            
         }
