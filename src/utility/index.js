@@ -86,6 +86,15 @@ let utility = {
     },
     capitalizeFirstLetter: (str = '')=>{
         return str.charAt(0).toUpperCase() + str.slice(1);
+    },
+    getTarget: ()=>{
+        if(typeof define === "function" && define.amd) {
+            return 'amd';
+        } else if(typeof module === "object" && module.exports) {
+            return 'module';
+        } else {
+            return 'browser';
+        }
     }
 };
 window.onload = ()=>{
