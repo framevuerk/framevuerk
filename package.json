@@ -1,7 +1,7 @@
 {
   "name": "framevuerk",
   "version": "0.3.01",
-  "description": "A RTL and mobile-first Vue.js framevuerk.",
+  "description": "An RTL and mobile-first Vue.js framevuerk.",
   "main": "dist/framevuerk.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
