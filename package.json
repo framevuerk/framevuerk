@@ -1,12 +1,14 @@
 {
   "name": "framevuerk",
-  "version": "0.3.0",
+  "version": "0.3.01",
   "description": "A RTL and mobile-first Vue.js framevuerk.",
   "main": "dist/framevuerk.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/.bin/webpack",
-    "dev": "./node_modules/.bin/lite-server"
+    "build:watch": "./node_modules/.bin/webpack --watch ",
+    "start": "./node_modules/.bin/lite-server",
+    "dev": "npm run build:watch & npm run start"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
@@ -32,7 +34,8 @@
     "raw-loader": "^0.5.1",
     "style-loader": "^0.13.2",
     "url-loader": "^0.5.8",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "webpack-combine-loaders": "^2.0.3"
   },
   "dependencies": {
     "vue": "^2.2.1",
