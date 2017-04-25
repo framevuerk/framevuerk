@@ -19,6 +19,14 @@ import fvList from './components/fvList'
 import fvTable from './components/fvTable'
 
 const framevuerk = {
+  _dependencies: {
+    moment: null
+  },
+  use(lib=null){
+    if( lib && lib.name == 'jMoment' ){
+      this._dependencies.moment = lib;
+    }
+  },
   install(Vue){
     Vue.component('fvMain', fvMain);
     Vue.component('fvContent', fvContent);
@@ -26,7 +34,7 @@ const framevuerk = {
     Vue.component('fvFooter', fvFooter);
     Vue.component('fvSidebar', fvSidebar);
     Vue.component('fvSelect', fvSelect);
-    Vue.component('fvDatepicker', fvDatepicker);
+    Vue.component('fvDatepicker', fvDatepicker(this._dependencies.moment) );
     Vue.component('fvMenu', fvMenu);
     Vue.component('fvInput', fvInput);
     Vue.component('fvButton', fvButton);
