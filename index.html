@@ -183,6 +183,8 @@
     <script src="./dist/framevuerk.js"></script>
     <link rel="stylesheet" href="dist/framevuerk.css">
     <script>
+      console.log(moment);
+      framevuerk.use(moment);
       Vue.use(framevuerk);
       Vue.use(VueResource);
       var app = new Vue({
