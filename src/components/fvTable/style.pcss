@@ -1,4 +1,11 @@
 .fv-table {
+    @media (--only-xs) {
+        overflow-x: auto;
+        overflow-y: hidden;
+        & > table {
+            max-width: 100%;
+        }
+    }
     & > table{
         border: solid 2px var(--default-color-dark);
         box-shadow: 0 1em 1em var(--shadow-color-light);
