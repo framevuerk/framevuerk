@@ -4,11 +4,11 @@ export default {
     props: {
         height: {
             type: Number,
-            default: 48
+            default: 55
         }
     },
     methods: {
-        setHeight: function(height=48){
+        setHeight: function(height=55){
             this.$el.style.height = `${height}px`;
             this.$el.style.minHeight = `${height}px`;
             this.$el.style.maxHeight = `${height}px`;
