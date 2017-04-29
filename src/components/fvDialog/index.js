@@ -12,7 +12,7 @@ export default ({
             default: '',
             required: false
         },
-        closeOnEscape: {
+        autoClose: {
             type: Boolean,
             default: true
         },
@@ -22,52 +22,59 @@ export default ({
         }
     },
     methods: {
-        toggle: function(){
+        toggle(){
             this[this.pShow?'close':'open']();
         },
-        open: function(){
+        open(){
             this.pShow = true;
             this.$emit('open');
             utility.doIt( ()=>{
-                this.pFocus();
+                this.pFocus(false);
             });
         },
-        closeIf: function(){
-            if( this.closeOnEscape === true ){
-                this.close();
-            }
-        },
-        close: function(){
+        close(){
             this.pShow = false;
             this.$emit('close');
         },
-        focusIf: function(event){
-            utility.doIt( ()=>{
-                var focusedElem = document.querySelector(':focus');
-                if( focusedElem !== null && !utility.isDescendant(this.$refs.dialog.$el, focusedElem) ){
-                    this.pFocus();
-                }
-            });
+        closeIf(){
+            if( this.autoClose === true ){
+                this.close();
+            }
         },
-        pFocus: function(){
-            this.$refs.buttonEl[0].$el.focus();
+        pFocus(first=true){
+            this.focusableItems[first? 0: this.focusableItems.length-1].focus();
         },
-        pKeyDown: function(event){
+        pKeyDown(event){
             switch(event.which){
+                case 9: // tab
+                    // when first item is focused and user press shift + tab
+                    if( event.target == this.focusableItems[0]  && event.shiftKey ){
+                        event.preventDefault();
+                        this.pFocus(false);
+                    }
+                    // when last item is focused and user press tab
+                    else if( event.target == this.focusableItems[this.focusableItems.length-1]  && !event.shiftKey ){
+                        event.preventDefault();
+                        this.pFocus(true);
+                    }
+                    break;
                 case 13: // enter
+                    event.target.click();
                     event.preventDefault();
+                    break;
                 case 27: //esc
                     this.closeIf();
             } 
         },
-        clickButton: function(button){
+        clickButton(button){
             this.$emit('click', button.key);
-            button.action();
-            this.close();
+            if( button.action() !== false ){
+                this.close();
+            }
         }
     },
     computed: {
-        pButtons: function(){
+        pButtons(){
             let ret = [];
             this.buttons.forEach( (value)=>{
                 ret.push({
@@ -79,6 +86,9 @@ export default ({
                 });
             });
             return ret;
+        },
+        focusableItems(){
+            return this.$refs.dialog.$el.querySelectorAll('select, input, textarea, button, a');
         }
     },
 })
