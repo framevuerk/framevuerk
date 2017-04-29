@@ -2,11 +2,26 @@ import utility from '../../utility'
 import template from './template.pug'
 export default ({
     template: template,
-    data: ()=>{
+    data(){
         return {
+            pValue: null,
             pShow: false,
             searchQuery: '',
-            highlightedOption: 0
+            highlightedOption: 0,
+            dialogButtons: [
+                {
+                    key: 'reset',
+                    icon: 'fa fa-circle-o',
+                    text: 'حذف انتخاب',
+                    class: 'fv-default'
+                },
+                {
+                    key: 'ok',
+                    icon: 'fa fa-check',
+                    text: 'باشه',
+                    class: 'fv-primary'
+                }
+            ]
         }
     },
     props: {
@@ -15,7 +30,7 @@ export default ({
             default: () => []
         },
         value: {
-            required: true
+            default: null
         },
         multiple: {
             type: Boolean,
@@ -39,55 +54,39 @@ export default ({
         }
     },
     methods: {
-        toggle: function(){
-            this[this.pShow?'close':'open']();
-        },
         open: function(){
             this.searchQuery = '';
-            this.pShow = true;
+            this.$refs.dialog.open();
             this.$emit('open');
-            utility.doIt( ()=>{
-                this.pFocus('select');
-            });
         },
         close: function(){
-            this.pShow = false;
+            this.$refs.dialog.close();
             this.$emit('close');
-        },
-        closeIf: function(event){
-            utility.doIt( ()=>{
-                var focusedElem = document.querySelector(':focus');
-                if( focusedElem !== null && !utility.isDescendant(this.$refs.select.$el, focusedElem) ){
-                    this.close();
-                }
-            });
         },
         highlightOption: function(option={index:null}){
             this.highlightedOption = option.index;
         },
-        pFocus: function(el="input"){
-            if( el == 'input' ){
-                this.$refs.inputEl.$el.focus();
+        pFocus: function(){
+            if( this.search || this.allowInsert ){
+                this.$refs.searchQueryEl.$el.focus();
             }
             else{
-                if( this.search || this.allowInsert ){
-                    this.$refs.searchQueryEl.$el.focus();
-                }
-                else{
-                    this.$refs.justFocusEl.focus();
-                }
+                this.$refs.justFocusEl.focus();
             }
         },
-        pSetValue: function(value){
-            this.$emit('input', value);
-            this.$emit('change');
+        pSetValue: function(value, emit=true){
+            this.pValue = value;
+            if( emit ){
+                this.$emit('input', value);
+                this.$emit('change');
+            }
         },
         pIsSelected: function(option={index:null,value:null}){
-            if( this.multiple && typeof this.value === 'object' && this.value !== null){
-                return this.value.indexOf( option.value ) !== -1;
+            if( this.multiple && typeof this.pValue === 'object' && this.pValue !== null){
+                return this.pValue.indexOf( option.value ) !== -1;
             }
             else{
-                return this.value === option.value;
+                return this.pValue === option.value;
             }
         },
         pKeyDown: function(event){
@@ -103,20 +102,14 @@ export default ({
                 case 37: case 39: //left, right
                     break;
                 case 13: // enter
-                    event.preventDefault();
                     if( this.highlightedOption !== null ){
                         this.clickOption( this.pOptions[ this.highlightedOption ], true );
                     }
-                    else{
-                        this.close();
+                    if( event.target.tagName == 'BUTTON' ){
+                        event.preventDefault();
+                        event.target.click();
                     }
                     break;
-                case 27: //esc
-                    this.close();
-                /*
-                default:
-                    this.highlightedOption = null;
-                    */
             }        
         },
         clickOption: function(option={index:null,value:null, action:'select'}, setHighlight = false){
@@ -129,7 +122,7 @@ export default ({
                 }
             }
             else if( this.allowInsert && option.action === 'insert' ){
-                let newValue = this.value;
+                let newValue = this.pValue;
                 if( this.multiple ){
                     newValue.push( option.value );
                 }
@@ -140,7 +133,7 @@ export default ({
                 this.pSetValue( newValue );
             }
             else if( this.multiple ){
-                let newValue = this.value;
+                let newValue = this.pValue;
                 if( this.pIsSelected(option) ){
                     newValue.splice( newValue.indexOf(option.value) , 1);
                 }
@@ -153,21 +146,34 @@ export default ({
                 this.pSetValue( option.value );
             }
             if(setHighlight){
-                this.pFocus('select');
+                this.pFocus();
                 this.highlightOption( option );
             }
             else{
                 this.highlightOption();
+                this.pFocus();
             }
             this.searchQuery = '';
         },
-        setStructure: function(){ // bug
+        clickButton: function(action){
+            switch(action){
+                case 'reset':
+                    this.clickOption();
+                default:
+                    this.close();
+            }
+        },
+        setStructure: function(){
             if( this.multiple ){
-                this.pSetValue( [] );
-                this.$emit('change');
+                if( !this.value || this.value.constructor !== Array ){
+                    this.pSetValue( [] );
+                }
+                else{
+                    this.pSetValue( this.value, false );
+                }
             }
             else{
-                this.pSetValue( null );
+                this.pSetValue( this.value, false );
             }
         }
     },
@@ -179,9 +185,9 @@ export default ({
     computed: {
         mOptions: function(){
             const mOptions = this.options;
-            if( this.value !== null ){
+            if( this.pValue !== null ){
                 if( this.multiple === true ){
-                    this.value.forEach( (value,index)=>{
+                    this.pValue.forEach( (value,index)=>{
                         const founded = mOptions.find((v) => v.value == value);
                         if( !founded ){
                             mOptions.unshift({
@@ -225,7 +231,7 @@ export default ({
         },
         displayValue: function(){
             const ret = [];
-            const value = this.value;
+            const value = this.pValue;
             const mOptions = this.mOptions;
             function getText(value){
                 const founded = mOptions.find((v) => v.value == value);
@@ -242,30 +248,23 @@ export default ({
             }
             else{
                 if( this.multiple ){
-                    this.value.forEach( (value,index)=>{
+                    this.pValue.forEach( (value,index)=>{
                         ret.push( getText(value) );
                     });
                 }
                 else{
-                    ret.push( getText(this.value) );
+                    ret.push( getText(this.pValue) );
                 }
             }
             return ret;
         }
     },
     watch: {
-        highlightedOption: function(){
-            if( this.highlightedOption !== null ){
-                let focusedEl = this.$refs.optionElem[this.highlightedOption];
-                if( focusedEl ){
-                    if( !utility.isInViewport(focusedEl) ){
-                        focusedEl.scrollIntoView();
-                    }
-                }
-            }
-        },
         searchQuery: function(){
             this.highlightedOption = this.pOptions.length > 0? 0: null;
+        },
+        value: function(){
+            this.setStructure();
         }
     }
 })

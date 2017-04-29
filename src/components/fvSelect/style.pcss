@@ -1,6 +1,5 @@
 
-.fv-select {
-    z-index: 10002;
+.fv-select > .fv-main{
     position: fixed;
     height: 500px;
     max-height: 90%;
@@ -21,6 +20,9 @@
       max-height: 100%;
       width: 100%;
       max-width: 100%;
+    }
+    & > .fv-content{
+      padding: 0;
     }
     & .fv-option {
       position: relative;
@@ -48,13 +50,4 @@
         }
       }
     }
-}
-
-.fv-select-enter-active, .fv-select-leave-active{
-  transition: opacity .25s;
-  opacity: 1;
-}
-
-.fv-select-enter, .fv-select-leave-active {
-  opacity: 0;
 }

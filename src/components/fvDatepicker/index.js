@@ -8,10 +8,23 @@ export default function(moment){
             return {
                 pDate: {}, //moment.utc(),
                 pValue: {},
-                pDisplayValue: '',
+                displayValue: null,
                 pShow: false,
-                searchQuery: '',
-                highlightedOption: null
+                highlightedOption: null,
+                dialogButtons: [
+                    {
+                        key: 'reset',
+                        icon: 'fa fa-circle-o',
+                        text: 'حذف انتخاب',
+                        class: 'fv-default'
+                    },
+                    {
+                        key: 'ok',
+                        icon: 'fa fa-check',
+                        text: 'باشه',
+                        class: 'fv-primary'
+                    }
+                ]
             }
         },
         props: {
@@ -37,38 +50,21 @@ export default function(moment){
             },
             displayFormat: {
                 default: 'jD jMMMM jYYYY ساعت HH:mm'
-            },
-            placeholder: {
-                type: String,
-                default : ''
             }
         },
         methods: {
+            open: function(){
+                this.searchQuery = '';
+                this.$refs.dialog.open();
+                this.$emit('open');
+            },
+            close: function(){
+                this.$refs.dialog.close();
+                this.$emit('close');
+            },
             pMath: function(action='add', type='day') {
                 this.pDate[action](1, type + 's');
                 this.pSetValue(this.pDate);
-            },
-            toggle: function(){
-                this[this.pShow?'close':'open']();
-            },
-            open: function(){
-                this.pShow = true;
-                this.$emit('open');
-                utility.doIt( ()=>{
-                    this.pFocus('datepicker');
-                });
-            },
-            close: function(){
-                this.pShow = false;
-                this.$emit('close');
-            },
-            closeIf: function(event){
-                utility.doIt( ()=>{
-                    var focusedElem = document.querySelector(':focus');
-                    if( focusedElem !== null && !utility.isDescendant(this.$refs.datepicker.$el, focusedElem) ){
-                        this.close();
-                    }
-                } )
             },
             highlightOption: function(option={index:null}){
                 this.highlightedOption = option.index;
@@ -112,43 +108,16 @@ export default function(moment){
                         this.highlightedOption = this.highlightedOption-1 < 0? this.pSections.length-1: this.highlightedOption-1;
                         this.highlightedOption = this.pSections[this.highlightedOption].type === 'sp'? this.highlightedOption-1: this.highlightedOption;
                         break;
-                    case 13: // enter
-                        event.preventDefault();
-                        this.close();
-                        break;
-                    case 27: //esc
-                        this.close();
                     default:
                         this.highlightedOption = null;
                 } 
             },
-            clickOption: function(option={index:null,value:null}, setHighlight = false){
-                if( option.value === null ){
-                    if( this.multiple ){
-                        this.$emit('input', [] );
-                    }
-                    else{
-                        this.$emit('input', null );
-                    }
-                }
-                else if( this.multiple ){
-                    let newValue = this.value;
-                    if( this.pIsSelected(option) ){
-                        newValue.splice( newValue.indexOf(option.value) , 1);
-                    }
-                    else{
-                        newValue.push( option.value );
-                    }
-                    this.$emit('input', newValue );
-                }
-                else{
-                    this.$emit('input', option.value );
-                }
-                if(setHighlight){
-                    this.highlightOption( option );
-                }
-                else{
-                    this.highlightOption();
+            clickButton: function(action){
+                switch(action){
+                    case 'reset':
+                        this.pSetValue();
+                    default:
+                        this.close();
                 }
             },
             pSetValue: function(date=null){ // receive moment date and set date to value
@@ -171,11 +140,11 @@ export default function(moment){
                 this.$emit( 'input', newValue );
                 this.$emit( 'change' );
                 if( date === null ){
-                    this.pDisplayValue = null;
+                    this.displayValue = null;
                 }
                 else{
                     let temp = this.displayFormat.split('jMMMM').join(this.pValue.month);
-                    this.pDisplayValue = this.pDate.format(temp);
+                    this.displayValue = this.pDate.format(temp);
                 }
             },
             closeIf: function(event){
@@ -192,7 +161,7 @@ export default function(moment){
                 this.pSetValue(this.value === null? null: moment.utc() );
             }
             else{
-                console.error('Moment not found!');
+                throw 'Moment not found!';
             }
             
         },
