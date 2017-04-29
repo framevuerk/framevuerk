@@ -19,6 +19,12 @@ export default ({
         placeholder: {
             type: String,
             default : ''
+        },
+        handler: {
+            default: false
+        },
+        icon: {
+            default: 'fa fa-chevron-down'
         }
     },
     data: function(){
@@ -41,6 +47,14 @@ export default ({
     watch: {
         value: function(){
             this.checkInvalid();
+        },
+        handler: function(newHandler, oldHandler){
+            if( oldHandler ) {
+                oldHandler.$off('close', this.pFocus);
+            }
+            if( newHandler ) {
+                newHandler.$on('close', this.pFocus);
+            }
         }
     }
 })
