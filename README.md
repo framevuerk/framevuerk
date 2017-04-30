@@ -51,25 +51,24 @@ Example:
 
 ```html
 <html>
-<head>
-...
-<link rel="stylesheet" href="path/to/framevuerk.css">
-...
-</head>
-<body>
-<div id="app">
-<fv-button>Hello world!</fv-button>
-</div>
-
-<script src="path/to/vue.js"></script>
-<script src="path/to/framevuerk.js"></script>
-<script>
-Vue.use(framevuerk);
-new Vue({
-el: '#app'
-});
-</script>
-</body>
+    <head>
+        ...
+        <link rel="stylesheet" href="path/to/framevuerk.css">
+        ...
+    </head>
+    <body>
+        <div id="app">
+            <fv-button>Hello world!</fv-button>
+        </div>
+        <script src="path/to/vue.js"></script>
+        <script src="path/to/framevuerk.js"></script>
+        <script>
+            Vue.use(framevuerk);
+            new Vue({
+                el: '#app'
+            });
+        </script>
+    </body>
 </html>
 ```
 
