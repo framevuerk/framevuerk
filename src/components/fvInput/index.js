@@ -56,5 +56,15 @@ export default ({
                 newHandler.$on('close', this.pFocus);
             }
         }
+    },
+    mounted(){
+        setTimeout(()=>{
+            // why this is here?
+            // the handler prop give the reference of selectbox or datepicker from parent scop,
+            // but here, just got undefined, becoz $refs are not reactive.
+            // so here i try to force update the parent scope to give me the right $refs instead of undefined
+            // for more information, visit: https://github.com/vuejs/vue/issues/5561
+            this.$root.$forceUpdate();
+        });
     }
 })
