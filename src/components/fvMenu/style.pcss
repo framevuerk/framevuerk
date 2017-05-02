@@ -1,13 +1,18 @@
 .fv-menu {
   z-index: 10003;
   position: fixed;
-  background: var(--sidebar-bg-color);
+  background: var(--bg-color);
   color: yiq;
   overflow-y: auto;
   overflow-x: hidden;
   box-shadow: 0 5px 15px var(--shadow-color);
   width: 200px;
   max-height: 45%;
+  &.fv-sheet{
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
   & .fv-menu-item {
     z-index: 10003;
     position: relative;
@@ -35,10 +40,18 @@
 }
 
 .fv-menu-enter-active, .fv-menu-leave-active{
-  transition: opacity .25s;
+  transition: opacity .25s ease;
   opacity: 1;
 }
-
 .fv-menu-enter, .fv-menu-leave-active {
   opacity: 0;
+}
+
+.fv-sheet-enter-active, .fv-sheet-leave-active{
+  transition: transform .25s ease;
+  transform: translateY(0);
+  
+}
+.fv-sheet-enter, .fv-sheet-leave-active {
+  transform: translateY(100%);
 }

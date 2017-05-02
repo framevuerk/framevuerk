@@ -6,6 +6,10 @@ export default ({
         options: {
             type: Array,
             default: () => []
+        },
+        sheet: {
+            type: Boolean,
+            default: false
         }
     },
     data: function(){
@@ -34,35 +38,47 @@ export default ({
             this[this.pShow?'close':'open'](domElem);
         },
         pSetPosition: function(domElem = null){
-            const margin = 15;
-            const windowOffset = utility.windowOffset();
-            const elemOffset = {
-                left: domElem.pageX,
-                top: domElem.pageY
+            let targetOffset;
+            if( this.domElem === null || this.sheet ){
+                targetOffset = {
+                    left: 'initial',
+                    top: 'initial',
+                    width: 'initial',
+                    height: 'initial'
+                }
             }
-            const targetOffset = {
-                left: elemOffset.left + margin,
-                top: elemOffset.top + margin,
-                width: this.menuSize.width,
-                height: this.menuSize.height
+            else{
+                const margin = 15;
+                const windowOffset = utility.windowOffset();
+                const elemOffset = {
+                    left: domElem.pageX,
+                    top: domElem.pageY
+                }
+                targetOffset = {
+                    left: elemOffset.left + margin,
+                    top: elemOffset.top + margin,
+                    width: this.menuSize.width,
+                    height: this.menuSize.height
+                }
+                if( targetOffset.left + targetOffset.width > windowOffset.width ){
+                    targetOffset.left = windowOffset.width - targetOffset.width - margin;
+                }
+                if( targetOffset.top + targetOffset.height > windowOffset.height ){
+                    targetOffset.top = windowOffset.height - targetOffset.height - margin;
+                }
             }
-            if( targetOffset.left + targetOffset.width > windowOffset.width ){
-                targetOffset.left = windowOffset.width - targetOffset.width - margin;
-            }
-            if( targetOffset.top + targetOffset.height > windowOffset.height ){
-                targetOffset.top = windowOffset.height - targetOffset.height - margin;
-            }
-
             const menu = this.$refs.pMenu;
             menu.style.top = `${targetOffset.top}px`;
             menu.style.left = `${targetOffset.left}px`;
+            menu.style.height = `${targetOffset.height}px`;
+            menu.style.width = `${targetOffset.width}px`;
 
         },
         clickOption: function(option){
             if( !option.disabled ){
                 this.$emit('click', option.key);
                 option.action();
-                this.close();
+                //this.close();
             }
         },
         highlightOption: function(option={index:null}){
@@ -85,9 +101,10 @@ export default ({
                     if( this.highlightedOption !== null ){
                         this.clickOption( this.pOptions[ this.highlightedOption ], true );
                     }
-                    else{
-                        this.close();
-                    }
+                    break;
+                case 9: // tab
+                    event.preventDefault();
+                    this.pFocus();
                     break;
                 case 27: //esc
                     this.close();
@@ -116,6 +133,9 @@ export default ({
                 width,
                 height: itemHeight * this.pOptions.length
             }
+        },
+        animationName(){
+            return this.sheet? 'fv-sheet': 'fv-menu';
         }
     }
 })
