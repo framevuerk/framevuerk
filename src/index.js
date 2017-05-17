@@ -17,6 +17,7 @@ import fvSwitch from './components/fvSwitch'
 import fvDialog from './components/fvDialog'
 import fvList from './components/fvList'
 import fvTable from './components/fvTable'
+import fvTabs from './components/fvTabs'
 
 const framevuerk = {
   _dependencies: {
@@ -43,6 +44,7 @@ const framevuerk = {
     Vue.component('fvDialog', fvDialog);
     Vue.component('fvList', fvList);
     Vue.component('fvTable', fvTable);
+    Vue.component('fvTabs', fvTabs);
 
     // why this mixin is here?
     // this is helps to pass true references to components like fvInput (handler property)
