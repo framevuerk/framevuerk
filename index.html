@@ -20,8 +20,11 @@
           <fv-input class="fv-form-control" :handler="$refs.team" placeholder="شماره موبایل خود را وارد کنید."/>
         </div>
         <fv-sidebar ref="sidebar" position="right" :pin="null">
-          <fv-main>
-            <fv-content class="no-padding">
+          <fv-tabs :tabs="[
+            {title: 'یک', slot: 'first', icon: 'fa fa-google'},
+            {title: 'دو', slot: 'second'}
+          ]">
+            <fv-content slot="first" class="no-padding">
               <fv-list
                 class="no-outline-border"
                 v-on:click="log($event)"
@@ -48,7 +51,7 @@
                 ]">
               </fv-list>
             </fv-content>
-          </fv-main>
+          </fv-tabs>
         </fv-sidebar>
         <fv-menu
           ref="menu"
