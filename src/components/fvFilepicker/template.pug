@@ -1,4 +1,4 @@
-fv-button(@click="choose($event)", type="button", class="fv-file-picker fv-form-control", :class="{invalid: invalid}", @focus="checkInvalid()", ref="btnEl")
+fv-button(@click="choose($event)", type="button", class="fv-file-picker", :class="{invalid: invalid}", @focus="checkInvalid()", ref="btnEl")
     i(class="fa", :class="{'fa-file': selected,'fa-file-o': !selected}")
     =" "
     span(v-html="displayValue")
