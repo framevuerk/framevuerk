@@ -13,12 +13,6 @@
           <fv-button class="fv-primary fv-icon"> <i class="fa fa-user"></i> </fv-button>
           <fv-button class="fv-primary fv-icon" @click="$refs.menu.open($event)"> <i class="fa fa-ellipsis-v"></i> </fv-button>
         </fv-header>
-        <div>
-          <label class="fv-control-label">نام تیم مورد علاقه {{user.team}}</label>
-          <cm>a</cm>
-          <fv-select :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6},{text: 'آث میلان', value: 11}, {text: 'اینتر میلان', value: 12}, {text: 'یوونتوس', value: 13}, {text: 'آس رم', value: 14}, {text: 'ناپولی', value: 15}, {text: 'فیورنتینا', value: 16},{text: 'آث میلان', value: 1231}, {text: 'اینتر میلان', value: 21}, {text: 'یوونتوس', value: 31}, {text: 'آس رم', value: 41}, {text: 'ناپولی', value: 51}, {text: 'فیورنتینا', value: 61},{text: 'آث میلان', value: 111}, {text: 'اینتر میلان', value: 112}, {text: 'یوونتوس', value: 113}, {text: 'آس رم', value: 114}, {text: 'ناپولی', value: 115}, {text: 'فیورنتینا', value: 116}]" v-model="user.team" :allow-insert="true" multiple required ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
-          <fv-input class="fv-form-control" :handler="$refs.team" placeholder="شماره موبایل خود را وارد کنید."/>
-        </div>
         <fv-sidebar ref="sidebar" position="right" :pin="null">
           <fv-tabs :tabs="[
             {title: 'یک', slot: 'first', icon: 'fa fa-google'},
@@ -96,13 +90,11 @@
                     </div>
                     <div class="fv-col-sm-6">
                       <label class="fv-control-label">نام تیم مورد علاقه {{user.team}}</label>
-                      <fv-input class="fv-form-control" :handler="$refs.team" placeholder="شماره موبایل خود را وارد کنید."></fv-input>
-                      <fv-select :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6},{text: 'آث میلان', value: 11}, {text: 'اینتر میلان', value: 12}, {text: 'یوونتوس', value: 13}, {text: 'آس رم', value: 14}, {text: 'ناپولی', value: 15}, {text: 'فیورنتینا', value: 16},{text: 'آث میلان', value: 1231}, {text: 'اینتر میلان', value: 21}, {text: 'یوونتوس', value: 31}, {text: 'آس رم', value: 41}, {text: 'ناپولی', value: 51}, {text: 'فیورنتینا', value: 61},{text: 'آث میلان', value: 111}, {text: 'اینتر میلان', value: 112}, {text: 'یوونتوس', value: 113}, {text: 'آس رم', value: 114}, {text: 'ناپولی', value: 115}, {text: 'فیورنتینا', value: 116}]" v-model="user.team" :allow-insert="true" multiple required ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
+                      <fv-select class="fv-form-control" :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6},{text: 'آث میلان', value: 11}, {text: 'اینتر میلان', value: 12}, {text: 'یوونتوس', value: 13}, {text: 'آس رم', value: 14}, {text: 'ناپولی', value: 15}, {text: 'فیورنتینا', value: 16},{text: 'آث میلان', value: 1231}, {text: 'اینتر میلان', value: 21}, {text: 'یوونتوس', value: 31}, {text: 'آس رم', value: 41}, {text: 'ناپولی', value: 51}, {text: 'فیورنتینا', value: 61},{text: 'آث میلان', value: 111}, {text: 'اینتر میلان', value: 112}, {text: 'یوونتوس', value: 113}, {text: 'آس رم', value: 114}, {text: 'ناپولی', value: 115}, {text: 'فیورنتینا', value: 116}]" v-model="user.team" :allow-insert="true" multiple required ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
                     </div>
                     <div class="fv-col-sm-6">
                       <label class="fv-control-label">تاریخ زایمان {{user.date}}</label>
-                      <fv-input class="fv-form-control" :handler="$refs.date" placeholder="تاریخ زایمان رو بگو."></fv-input>
-                      <fv-datepicker v-model="user.date" ref="date"></fv-datepicker>
+                      <fv-datepicker class="fv-form-control" v-model="user.date" ref="date" placeholder="تاریخ زایمان رو بگو."></fv-datepicker>
                     </div>
                     <div class="fv-col-xs-6">
                       <label class="fv-control-label">تصویر</label>
@@ -208,25 +200,9 @@
       Vue.use(framevuerk);
       Vue.use(VueResource);
 
-      var cm = Vue.component('cm', {
-        data(){
-          return {
-            a: null
-          }
-        },
-        template: `
-          <span>
-            <fv-select :options="['میلان']" v-model="a" :allow-insert="true" ref="team" placeholder="کامپوننت بیسد"></fv-select>
-            <fv-input class="fv-form-control" :handler="$refs.team" placeholder="شماره موبایل خود را وارد کنید."/>
-          </span>
-        `,
-      });
 
       var app = new Vue({
         el: '#app',
-        component: {
-          cm: cm
-        },
         data: {
           title: 'تایتل تست',
           msg: 'salam',
