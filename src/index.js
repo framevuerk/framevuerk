@@ -45,15 +45,6 @@ const framevuerk = {
     Vue.component('fvList', fvList);
     Vue.component('fvTable', fvTable);
     Vue.component('fvTabs', fvTabs);
-
-    // why this mixin is here?
-    // this is helps to pass true references to components like fvInput (handler property)
-    // for more information, read this: https://github.com/vuejs/vue/issues/5561
-    Vue.mixin({
-      mounted(){
-        this.$forceUpdate();
-      }
-    });
   }
 };
 module.exports = framevuerk;
