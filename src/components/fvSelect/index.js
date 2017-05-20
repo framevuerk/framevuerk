@@ -51,7 +51,8 @@ export default ({
         allowInsert: {
             type: Boolean,
             default: false
-        }
+        },
+        class: {}
     },
     methods: {
         open: function(){

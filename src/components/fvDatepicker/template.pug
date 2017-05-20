@@ -1,16 +1,18 @@
-fv-dialog.fv-datepicker(ref="dialog", class="fv-select", :buttons="dialogButtons" @click="clickButton($event)" @keydown="pKeyDown($event)", @close="$emit('close')", @open="$emit('open')")
-    fv-main(ref="datepicker")
-        fv-header
-            div(class="fv-title")
-                h3(v-html="displayValue")
-        span(tabindex="0", ref="justFocusEl")
-        fv-content.no-padding
-            div.fv-row
-                section(v-for="(val, index) in pSections", :class="{'fv-pick-section': val.type=='pick','fv-col-xs-4': val.type=='pick','fv-sp': val.type=='sp','fv-focused': highlightedOption==index}")
-                    label(class="fv-control-label fv-title", v-if="val.type=='pick'", v-html="val.title")
-                    span(class="fv-button fv-up", v-if="val.type=='pick'", @click.prevent="pMath('add', val.name)")
-                        i(class="fa fa-chevron-up")
-                    div(class="fv-value fv-padding fv-text-center", v-if="val.type=='pick'", v-html="pValue[val.name]")
-                    span(class="fv-button fv-bottom", v-if="val.type=='pick'", @click.prevent="pMath('subtract', val.name)")
-                        i(class="fa fa-chevron-down")
-                    hr(v-if="val.type=='sp'")
+span
+    fv-input(:display-value="displayValue", :value="value", @keydown.enter="open()", @click="open()")
+    fv-dialog.fv-datepicker(ref="dialog", class="fv-select", :buttons="dialogButtons" @click="clickButton($event)" @keydown="pKeyDown($event)", @close="$emit('close')", @open="$emit('open')")
+        fv-main(ref="datepicker")
+            fv-header
+                div(class="fv-title")
+                    h3(v-html="displayValue")
+            span(tabindex="0", ref="justFocusEl")
+            fv-content.no-padding
+                div.fv-row
+                    section(v-for="(val, index) in pSections", :class="{'fv-pick-section': val.type=='pick','fv-col-xs-4': val.type=='pick','fv-sp': val.type=='sp','fv-focused': highlightedOption==index}")
+                        label(class="fv-control-label fv-title", v-if="val.type=='pick'", v-html="val.title")
+                        span(class="fv-button fv-up", v-if="val.type=='pick'", @click.prevent="pMath('add', val.name)")
+                            i(class="fa fa-chevron-up")
+                        div(class="fv-value fv-padding fv-text-center", v-if="val.type=='pick'", v-html="pValue[val.name]")
+                        span(class="fv-button fv-bottom", v-if="val.type=='pick'", @click.prevent="pMath('subtract', val.name)")
+                            i(class="fa fa-chevron-down")
+                        hr(v-if="val.type=='sp'")
