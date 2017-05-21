@@ -11,11 +11,11 @@
           <fv-button class="fv-primary fv-icon fv-hide-on-lg"  @click="$refs.sidebar.toggle()"> <i class="fa fa-bars"></i> </fv-button>
           <div class="fv-title"> <h2 v-html="title"></h2> </div>
           <fv-button class="fv-primary fv-icon"> <i class="fa fa-user"></i> </fv-button>
-          <fv-button class="fv-primary fv-icon" @click="$refs.menu.open($event)"> <i class="fa fa-ellipsis-v"></i> </fv-button>
+          <fv-button class="fv-primary fv-icon" @click="$refs.menu.open($event, 'button-balayi')"> <i class="fa fa-ellipsis-v"></i> </fv-button>
         </fv-header>
         <fv-sidebar ref="sidebar" position="right" :pin="null">
           <fv-tabs :tabs="[
-            {title: 'یک', slot: 'first', icon: 'fa fa-google'},
+            {title: 'یک هزارو سیصدو شصت و دو هزارو نهصدو شونزده', slot: 'first', icon: 'fa fa-google'},
             {title: 'دو', slot: 'second'}
           ]">
             <fv-content slot="first" class="no-padding">
@@ -49,8 +49,9 @@
         </fv-sidebar>
         <fv-menu
           ref="menu"
-          v-on:click="log($event)"
+          v-on:click="log(arguments[0], arguments[1])"
           :sheet="true"
+          title="تایتل تست"
           :options="[
             {
               key: 'add-item',
