@@ -1,6 +1,7 @@
 .fv-tabs{
     & > .fv-header{
         background: transparent;
+        color: inherit;
         & > .fv-tab-button{
             text-align: center;
             cursor: pointer;
@@ -9,11 +10,18 @@
             color: inherit;
             box-shadow: inset 0 0 0 var(--theme-color);
             transition: all .25s;
+            max-width: 70%;
+            & span{
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
             & i{
                 padding-left: 0.3em;
             }
             &.fv-selected{
                 box-shadow: inset 0 -3px 0 var(--theme-color);
+                color: var( --theme-color );
             }
         }
     }
