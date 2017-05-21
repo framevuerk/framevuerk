@@ -6,22 +6,27 @@
   overflow-y: auto;
   overflow-x: hidden;
   box-shadow: 0 5px 15px var(--shadow-color);
-  width: 200px;
-  max-height: 45%;
+  max-height: 90%;
+  &.fv-not-sheet{
+    width: auto;
+    max-width: 60%;
+    min-width: 320px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
   &.fv-sheet{
     left: 0;
     bottom: 0;
     width: 100%;
-    min-height: 15%;
   }
-  & .fv-menu-item {
+  & .fv-menu-item,
+  & .fv-menu-title {
     z-index: 10003;
     position: relative;
     display: block;
     overflow: hidden;
     padding: var(--padding-small) var(--padding);
-    border-bottom: solid 1px var(--shadow-color-light);
-    cursor: pointer;
     padding-left: calc(var(--padding-large)*2);
     & i{
       padding-left: var(--padding-small);
@@ -29,13 +34,18 @@
     &:last-child{
       border-bottom: none;
     }
-    &:active:not(.fv-disabled),
-    &.fv-focused{
-      background: var(--shadow-color-light);
-    }
-    &.fv-disabled{
-      color: var(--shadow-color);
-      cursor: not-allowed;
+    &.fv-menu-title{}
+    &.fv-menu-item{
+      border-bottom: solid 1px var(--shadow-color-light);
+      cursor: pointer;
+      &:active:not(.fv-disabled),
+      &.fv-focused{
+        background: var(--shadow-color-light);
+      }
+      &.fv-disabled{
+        color: var(--shadow-color);
+        cursor: not-allowed;
+      }
     }
   }
 }
