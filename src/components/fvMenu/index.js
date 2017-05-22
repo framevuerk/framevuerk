@@ -8,17 +8,21 @@ export default ({
             default: () => []
         },
         sheet: {
-            type: Boolean,
-            default: false
+            default: null /* or true or false */
         },
         title: {
             type: String,
             default: ''
+        },
+        autoClose: {
+            type: Boolean,
+            default: true
         }
     },
     data: function(){
         return {
             pShow: false,
+            pSheet: false,
             highlightedOption: null,
             pParam:  null
         }
@@ -47,6 +51,14 @@ export default ({
             if( !option.disabled ){
                 this.$emit('click', option.key, this.pParam);
                 option.action(this.pParam);
+                if( this.autoClose ){
+                    this.close();
+                }
+                else{
+                    this.pFocus();
+                }
+            }
+            else{
                 this.pFocus();
             }
         },
@@ -79,6 +91,27 @@ export default ({
                     this.close();
             }        
         },
+        widthChangeEvent: function(){
+            const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+            if( width < 992 ){
+                this.pSheet = true;
+            }
+            else{
+                this.pSheet = false;
+            }
+        },
+        bindEvents: function(){
+            if( this.sheet === null ){
+                this.widthChangeEvent();
+                window.addEventListener('resize', this.widthChangeEvent );
+                window.addEventListener('orientationChange', this.widthChangeEvent );
+            }
+            else{
+                window.removeEventListener('resize', this.widthChangeEvent );
+                window.removeEventListener('orientationChange', this.widthChangeEvent );
+                this.pSheet = this.sheet;
+            }
+        },
     },
     computed: {
         pOptions: function(){
@@ -95,8 +128,16 @@ export default ({
             });
             return ret;
         },
-        animationName(){
-            return this.sheet? 'fv-sheet': 'fv-menu';
+        className(){
+            return this.pSheet? 'fv-sheet': 'fv-not-sheet';
+        }
+    },
+    created(){
+        this.bindEvents();
+    },
+    watch: {
+        sheet(){
+            this.bindEvents();
         }
     }
 })

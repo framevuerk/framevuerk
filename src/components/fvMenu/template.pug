@@ -1,8 +1,8 @@
 span
     transition(name="fv-fade")
         div.fv-overlay(v-show="pShow", style="z-index: 10003", @click="close()")
-    transition(:name="animationName")
-        div.fv-menu(:class="{'fv-sheet': sheet, 'fv-not-sheet': !sheet}", v-show="pShow", ref="pMenu", @keydown="pKeyDown($event)")
+    transition(:name="className")
+        div.fv-menu(:class="className", v-show="pShow", ref="pMenu", @keydown="pKeyDown($event)")
             span(tabindex="0", ref="justFocusEl")
             div(v-if="title" class="fv-menu-title")
                 label.fv-control-label(v-html="title")

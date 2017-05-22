@@ -34,7 +34,6 @@
     &:last-child{
       border-bottom: none;
     }
-    &.fv-menu-title{}
     &.fv-menu-item{
       border-bottom: solid 1px var(--shadow-color-light);
       cursor: pointer;
@@ -50,11 +49,11 @@
   }
 }
 
-.fv-menu-enter-active, .fv-menu-leave-active{
+.fv-not-sheet-enter-active, .fv-not-sheet-leave-active{
   transition: opacity .25s ease;
   opacity: 1;
 }
-.fv-menu-enter, .fv-menu-leave-active {
+.fv-not-sheet-enter, .fv-not-sheet-leave-active {
   opacity: 0;
 }
 
