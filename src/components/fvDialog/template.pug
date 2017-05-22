@@ -9,7 +9,7 @@ span
                 slot
             fv-footer(v-if="pButtons.length > 0")
                 div(class="fv-grow")
-                fv-button( v-for="button in pButtons", :key="button.key", :class="button.class", @click="clickButton(button)") 
+                fv-button( v-for="button in pButtons", :key="button.key", :class="button.class", @click="clickButton(button)", :disabled="button.disabled") 
                     i(v-if="button.icon", :class="button.icon")
                     =" "
                     span(v-html="button.text")

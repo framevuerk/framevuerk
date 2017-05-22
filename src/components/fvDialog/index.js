@@ -4,7 +4,8 @@ export default ({
     template: template,
     data: ()=>{
         return {
-            pShow: false
+            pShow: false,
+            pProp: null
         }
     },
     props: {
@@ -25,8 +26,9 @@ export default ({
         toggle(){
             this[this.pShow?'close':'open']();
         },
-        open(){
+        open(prop = null){
             this.pShow = true;
+            this.pProp = prop;
             this.$emit('open');
             utility.doIt( ()=>{
                 this.pFocus(false);
@@ -34,6 +36,7 @@ export default ({
         },
         close(){
             this.pShow = false;
+            this.pProp = null;
             this.$emit('close');
         },
         closeIf(){
@@ -67,10 +70,9 @@ export default ({
             } 
         },
         clickButton(button){
-            this.$emit('click', button.key);
-            if( button.action() !== false ){
-                this.close();
-            }
+            this.$emit('click', button.key, this.pProp);
+            button.action(this.pProp);
+            this.closeIf();
         }
     },
     computed: {
@@ -82,7 +84,8 @@ export default ({
                     icon: value.icon || false,
                     text: value.text || value,
                     action: value.action || new Function(),
-                    class: value.class || 'fv-default'
+                    class: value.class || 'fv-default',
+                    disabled: value.disabled || false
                 });
             });
             return ret;
