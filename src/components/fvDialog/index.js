@@ -29,7 +29,7 @@ export default ({
         open(prop = null){
             this.pShow = true;
             this.pProp = prop;
-            this.$emit('open');
+            this.$emit('open', this.pProp);
             utility.doIt( ()=>{
                 this.pFocus(false);
             });
@@ -37,7 +37,7 @@ export default ({
         close(){
             this.pShow = false;
             this.pProp = null;
-            this.$emit('close');
+            this.$emit('close', this.pProp);
         },
         closeIf(){
             if( this.autoClose === true ){
