@@ -9,7 +9,7 @@ div.fv-table
         tfoot
             tr
                 td(:colspan="pFields.length")
-                    div.page-control-continer
+                    div.page-control-continer(v-if="paginate && !local")
                         fv-button(@click="fetch(nextPage)", :disabled="nextPage === false")
                             i.fa.fa-arrow-right
                             |  صفحه بعد
