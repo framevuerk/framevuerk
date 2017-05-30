@@ -1,5 +1,5 @@
 span
-    fv-input(:display-value="displayValue", :value="value", @keydown.enter="open()", @click="open()")
+    fv-input(:display-value="displayValue", :value="value", :placeholder="placeholder", @keydown.enter="open()", @click="open()")
     fv-dialog.fv-datepicker(ref="dialog", class="fv-select", :buttons="dialogButtons" @click="clickButton($event)" @keydown="pKeyDown($event)", @close="$emit('close')", @open="$emit('open')")
         fv-main(ref="datepicker")
             fv-header
