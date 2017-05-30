@@ -21,6 +21,9 @@ export default {
             type: Boolean,
             default: false
         },
+        ajax: {
+            default: null
+        },
         rows: {
             type: Array,
             default: () => []
@@ -76,8 +79,8 @@ export default {
             if( this.local ){
                 rows = this.rows;
             }
-            else if ( this.apiRowsKey != null && this.apiResponse && this.apiResponse.body ){
-                rows = this.pFindValueByKey( this.apiRowsKey, this.apiResponse.body);
+            else if ( this.apiRowsKey != null && this.apiResponse && this.apiResponse ){
+                rows = this.pFindValueByKey( this.apiRowsKey, this.apiResponse);
                 if( typeof rows == 'undefined' ){
                     rows = [];
                 }
@@ -92,7 +95,7 @@ export default {
                         pRow[field.value] = field.formatter(row[field.value]);
                     }
                     else{
-                        pRow[field.value] = '---';
+                        pRow[field.value] = field.formatter();
                     }
                 });
                 pRow['pOriginalRow'] = row;
@@ -113,7 +116,7 @@ export default {
             }
             // { rows: [...], total: 50 }
             else if( this.apiTotalCountKey !== null ){
-                const totalCount = this.pFindValueByKey( this.apiTotalCountKey, this.apiResponse.body );
+                const totalCount = this.pFindValueByKey( this.apiTotalCountKey, this.apiResponse );
                 if( typeof totalCount == 'undefined' ){
                     console.error('Where is totalCount in apiResponse?');
                     return false;
@@ -147,7 +150,7 @@ export default {
                         console.error('Where is apiNextPageKey?');
                         return false;
                     }
-                    page = this.pFindValueByKey( this.apiNextPageKey, this.apiResponse.body );
+                    page = this.pFindValueByKey( this.apiNextPageKey, this.apiResponse );
                     if( typeof page == 'undefined' ){
                         console.error('Where is apiNextPageKey in apiResponse?');
                         return false;
@@ -161,7 +164,7 @@ export default {
                         equal = false;
                         key = key.split('!').join('');
                     }
-                    const finished = this.pFindValueByKey( key, this.apiResponse.body );
+                    const finished = this.pFindValueByKey( key, this.apiResponse );
                     if( typeof finished == 'undefined' ){
                         console.error('Where is apiFinishedKey in apiResponse?');
                         return false;
@@ -197,7 +200,7 @@ export default {
                 }
                 // { rows: [...], next: 'x', prev: 'y' }
                 else if ( this.apiPreviousPageKey !== null ){
-                    page = this.pFindValueByKey( this.apiPreviousPageKey, this.apiResponse.body );
+                    page = this.pFindValueByKey( this.apiPreviousPageKey, this.apiResponse );
                     if( typeof page == 'undefined' ){
                         console.error('Where is apiPreviousPageKey in apiResponse?');
                         return false;
@@ -241,18 +244,18 @@ export default {
                 this.loading = false;
                 return false;
             }
-            else if( !this.$http ){
-                console.error('Are you include vue-resource package to your project?');
+            else if( !this.ajax ){
+                console.error('Are you set ajax prop?');
                 return false;
             }
             else{
                 this.page = page;
-                return this.$http.get(this.pApi).then(response => {
+                return this.ajax.get(this.pApi).then(response => {
                     this.apiResponse = response;
                     this.loading = false;
                     this.$emit('fetch', this.page);
                     
-                }, response => {
+                }).catch(response => {
                     this.$emit('fetch-error', this.page);
                     this.page = currentPage;
                     this.loading = false;
