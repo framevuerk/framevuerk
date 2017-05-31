@@ -92,10 +92,10 @@ export default {
                 const pRow = {};
                 this.pFields.forEach( (field)=>{
                     if( typeof row[field.value] !== 'undefined' ){
-                        pRow[field.value] = field.formatter(row[field.value]);
+                        pRow[field.value] = field.formatter(row[field.value], row);
                     }
                     else{
-                        pRow[field.value] = field.formatter();
+                        pRow[field.value] = field.formatter(undefined, row);
                     }
                 });
                 pRow['pOriginalRow'] = row;
