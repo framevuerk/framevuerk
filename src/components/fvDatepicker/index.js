@@ -48,6 +48,10 @@ export default function(moment){
                     'second'
                 ]
             },
+            placeholder: {
+                type: String,
+                default : ''
+            },
             displayFormat: {
                 default: 'jD jMMMM jYYYY ساعت HH:mm'
             }
