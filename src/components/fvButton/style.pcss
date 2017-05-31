@@ -1,6 +1,5 @@
 .fv-button{
     font-family: inherit;
-    padding: 0 1em;
     display: inline-block;
     border: 1px solid var(--shadow-color);
     box-shadow: 0 1em 1em var(--shadow-color-light);
@@ -11,9 +10,15 @@
     max-width: 100%;
     font-size: 0.9em;
     height: 3.3em;
-    line-height: 3.3em;
-    overflow: hidden;
     border-radius: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    & span{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
     &:focus, &.focus{
         @apply --outline;
         &:invalid, &.invalid{
