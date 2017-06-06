@@ -1,6 +1,6 @@
 span
-    fv-input(:display-value="displayValue", :placeholder="placeholder", :value="value", @keydown.enter="open()", @click="open()")
-    fv-dialog(ref="dialog", class="fv-select", :buttons="dialogButtons" @click="clickButton($event)" @keydown="pKeyDown($event)", @close="$emit('close')", @open="$emit('open')")
+    fv-input(:class="inputClass", :display-value="displayValue", :placeholder="placeholder", :value="value", @keydown.enter="open()", @click="open()", ref="inputEl")
+    fv-dialog.fv-select(ref="dialog", :class="dialogClass", :buttons="dialogButtons" @click="clickButton($event)" @keydown="pKeyDown($event)", @close="$emit('close')", @open="$emit('open')")
         fv-main(ref="select")
             fv-header(v-if="search || allowInsert")
                 fv-input(class="fv-form-control fv-grow", placeholder="متن خود را وارد کنید...", v-model="searchQuery", ref="searchQueryEl")

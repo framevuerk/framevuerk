@@ -10,13 +10,8 @@
     font-size: 0.9em;
     height: 3.3em;
     border-radius: 4px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    & span{
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    &, & span{
+        @apply --nowrap;
     }
     &:focus, &.focus{
         @apply --outline;
