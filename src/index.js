@@ -3,6 +3,8 @@ import './index.pcss'
 const pkg = require('../package.json');
 //import "babel-polyfill";
 
+
+// Components
 import fvMain from './components/fvMain'
 import fvContent from './components/fvContent'
 import fvHeader from './components/fvHeader'
@@ -19,6 +21,9 @@ import fvDialog from './components/fvDialog'
 import fvList from './components/fvList'
 import fvTable from './components/fvTable'
 import fvTabs from './components/fvTabs'
+
+// Directives
+import fvScroll from './directives/fvScroll'
 
 const framevuerk = {
   _dependencies: {
@@ -46,6 +51,9 @@ const framevuerk = {
     Vue.component('fvList', fvList);
     Vue.component('fvTable', fvTable);
     Vue.component('fvTabs', fvTabs);
+
+
+    Vue.directive('fvScroll', fvScroll);
   },
   version: pkg.version,
   name: pkg.name
