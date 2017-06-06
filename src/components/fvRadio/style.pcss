@@ -26,6 +26,7 @@
     }
     & .fv-radio-check{
         color: var(--color);
+        border-radius: 4px;
         &, & *{
             cursor: pointer;
         }
@@ -37,6 +38,9 @@
         }
         &.fv-checked, &.fv-checked *{
             color: var(--theme-color);
+        }
+        &:focus, &.focus{
+            @apply --outline;
         }
     }
     & .fv-radio-icon{
