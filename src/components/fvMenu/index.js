@@ -93,7 +93,7 @@ export default ({
         },
         widthChangeEvent: function(){
             const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-            if( width < 992 ){
+            if( width < 768 ){
                 this.pSheet = true;
             }
             else{
