@@ -58,7 +58,6 @@ export default function(moment){
         },
         methods: {
             open: function(){
-                this.searchQuery = '';
                 this.$refs.dialog.open();
                 this.$emit('open');
             },
