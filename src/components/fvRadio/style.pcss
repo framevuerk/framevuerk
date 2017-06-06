@@ -1,0 +1,50 @@
+.fv-radio{
+    height: 1.2em;
+    margin: .7em 0;
+    display: inline-block;
+    & > .fv-button{
+        padding-left: 1.5em;
+        padding-right: 1.5em;
+        &:not(:last-child):not(:first-child){
+            border-radius: 0;
+            border-left: 0;
+            border-right: 0;
+        }
+        &:first-child{
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: 0;
+        }
+        &:last-child{
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: 0;
+        }
+    }
+    & .fv-radio-check:not(:last-child){
+        margin-left: .7em;
+    }
+    & .fv-radio-check{
+        color: var(--color);
+        &, & *{
+            cursor: pointer;
+        }
+        &.fv-disabled{
+            opacity: .6;
+            &, & *{
+                cursor: not-allowed;
+            }
+        }
+        &.fv-checked, &.fv-checked *{
+            color: var(--theme-color);
+        }
+    }
+    & .fv-radio-icon{
+        font-size: 1.2em;
+        display: inline;
+        vertical-align: middle;
+    }
+    & .fv-control-label{
+        display: inline;
+    }
+}

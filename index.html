@@ -72,7 +72,7 @@
             },
           ]">
         </fv-menu>
-        <fv-content class="no-padding" :scroll-events="true" @scroll-down="log('down')" @scroll-end-down="log('end of down')">
+        <fv-content class="no-padding" >
           <div class="fv-row">
             <form class="fv-col-md-8 fv-col-offset-md-2" @submit.prevent="$refs.dialog.open()">
                 <div class="fv-row">
@@ -102,6 +102,10 @@
                         <fv-datepicker class="fv-form-control" v-model="user.date" ref="date" placeholder="تاریخ زایمان رو بگو."></fv-datepicker>
                       </div>
                       <div class="fv-col-xs-6">
+                        <label class="fv-control-label">جهت همینجوری</label>
+                        <fv-radio v-model="radioVal" :options="['رسط','چپ', {value: 'a', text: 'غیر فعال', disabled: true}]"></fv-radio>
+                      </div>
+                      <div class="fv-col-xs-12">
                         <label class="fv-control-label">تصویر</label>
                         <fv-filepicker v-model="user.pic" required ref="file" type="file"></fv-filepicker>
                       </div>
@@ -180,7 +184,6 @@
     </style>
     
     <script>
-      console.log(moment);
       framevuerk.use(moment);
       Vue.use(framevuerk);
       Vue.use(VueResource);
@@ -193,6 +196,7 @@
           msg: 'salam',
           selectVal: null,
           select2Val: null,
+          radioVal: '',
           test: '',
           menu: false,
           content: 'طرح‌نما یا لورم ایپسوم (به لاتین: lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به‌عنوان عنصری از ترکیب‌بندی برای پُر کردن صفحه و ارائهٔ اولیهٔ شکل ظاهری و کلیِ طرح سفارش‌گرفته‌شده استفاده می‌کند، تا ازنظر گرافیکی نشانگر چگونگی نوع و اندازهٔ قلم و ظاهرِ متن باشد. معمولاً طراحان گرافیک برای صفحه‌آرایی، نخست از متن‌های آزمایشی و بی‌معنی استفاده می‌کنند تا صرفاً به مشتری یا صاحب‌کار خود نشان دهند که صفحهٔ طراحی یا صفحه‌بندی شده، بعد از اینکه متن در آن قرار گیرد، چگونه به نظر می‌رسد و قلم‌ها و اندازه‌بندی‌ها چگونه در نظر گرفته شده‌است. از آنجایی که طراحان عموماً نویسندهٔ متن نیستند و وظیفهٔ رعایت حق تکثیر متون را ندارند و در همان حال، کار آنها به‌نوعی وابسته به متن است، آنها با استفاده از محتویات ساختگی، صفحهٔ گرافیکی خود را صفحه‌آرایی می‌کنند تا مرحلهٔ طراحی و صفحه‌بندی را به پایان برند.<br>',
@@ -206,13 +210,11 @@
             wife: null
           }
         },
-        mounted: function(){
+        created: function(){
           console.log('App started.')
         },
         methods: {
-          log: function(msg){
-            console.log(msg);
-          },
+          log: console.log,
           send: function(){
             var fd = new FormData();
             for(var i in this.user){

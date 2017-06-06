@@ -43,13 +43,11 @@ export default ({
             this.$refs.fileinput.click();
             //event.preventDefault();
             //event.stopPropagation();
-            //alert('clicked');
         },
         pFocus(el="input"){
             this.$refs.btnEl.$el.focus();
         },
         pick(){ // here, should fire when input type file changed by user
-            console.log('picked')
             const loadAsBlob = (file) => {
                 return new Promise((resolve, reject) => {
                     const reader = new FileReader();

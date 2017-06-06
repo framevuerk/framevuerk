@@ -21,6 +21,7 @@ import fvDialog from './components/fvDialog'
 import fvList from './components/fvList'
 import fvTable from './components/fvTable'
 import fvTabs from './components/fvTabs'
+import fvRadio from './components/fvRadio'
 
 // Directives
 import fvScroll from './directives/fvScroll'
@@ -51,6 +52,7 @@ const framevuerk = {
     Vue.component('fvList', fvList);
     Vue.component('fvTable', fvTable);
     Vue.component('fvTabs', fvTabs);
+    Vue.component('fvRadio', fvRadio);
 
 
     Vue.directive('fvScroll', fvScroll);
