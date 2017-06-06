@@ -1,9 +1,10 @@
 module.exports = {
   plugins: [
-    require('postcss-smart-import')({ /* ...options */ }),
-    require('postcss-for')({ /* ...options */ }),
-    require('postcss-each')({ /* ...options */ }),
-    require('postcss-cssnext')({ /* ...options */ }),
-    require('postcss-color-yiq')({ /* ...options */ })
+    require('postcss-smart-import')(),
+    require('postcss-for')(),
+    require('postcss-each')(),
+    require('postcss-apply')(),
+    require('postcss-cssnext')(),
+    require('postcss-color-yiq')()
   ]
 }

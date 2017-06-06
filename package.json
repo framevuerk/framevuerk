@@ -24,6 +24,7 @@
     "lite-server": "^2.2.2",
     "moment": "^2.17.1",
     "moment-jalaali": "^0.6.1",
+    "postcss-apply": "^0.8.0",
     "postcss-color-yiq": "^1.1.1",
     "postcss-cssnext": "^2.9.0",
     "postcss-each": "^0.9.3",
