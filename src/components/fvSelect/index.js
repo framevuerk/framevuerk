@@ -29,6 +29,12 @@ export default ({
             type: Array,
             default: () => []
         },
+        inputClass: {
+            default: ''
+        },
+        dialogClass: {
+            default: ''
+        },
         value: {
             default: null
         },
@@ -57,21 +63,28 @@ export default ({
         open: function(){
             this.searchQuery = '';
             this.$refs.dialog.open();
+            this.pFocus();
             this.$emit('open');
         },
         close: function(){
             this.$refs.dialog.close();
+            this.pFocus('input');
             this.$emit('close');
         },
         highlightOption: function(option={index:null}){
             this.highlightedOption = option.index;
         },
-        pFocus: function(){
-            if( this.search || this.allowInsert ){
-                this.$refs.searchQueryEl.$el.focus();
+        pFocus: function(el="input"){
+            if( el == 'input' ){
+                this.$refs.inputEl.$el.focus();
             }
             else{
-                this.$refs.justFocusEl.focus();
+                if( this.search || this.allowInsert ){
+                    this.$refs.searchQueryEl.$el.focus();
+                }
+                else{
+                    this.$refs.justFocusEl.focus();
+                }
             }
         },
         pSetValue: function(value, emit=true){

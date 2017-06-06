@@ -32,6 +32,12 @@ export default function(moment){
                 default: null,
                 required: true
             },
+            inputClass: {
+                default: ''
+            },
+            dialogClass: {
+                default: ''
+            },
             required: {
                 type: Boolean,
                 default: false
@@ -59,10 +65,12 @@ export default function(moment){
         methods: {
             open: function(){
                 this.$refs.dialog.open();
+                this.pFocus();
                 this.$emit('open');
             },
             close: function(){
                 this.$refs.dialog.close();
+                this.pFocus('input');
                 this.$emit('close');
             },
             pMath: function(action='add', type='day') {
