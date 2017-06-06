@@ -95,11 +95,11 @@
                       </div>
                       <div class="fv-col-sm-6">
                         <label class="fv-control-label">نام تیم مورد علاقه {{user.team}}</label>
-                        <fv-select class="fv-form-control" :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6},{text: 'آث میلان', value: 11}, {text: 'اینتر میلان', value: 12}, {text: 'یوونتوس', value: 13}, {text: 'آس رم', value: 14}, {text: 'ناپولی', value: 15}, {text: 'فیورنتینا', value: 16},{text: 'آث میلان', value: 1231}, {text: 'اینتر میلان', value: 21}, {text: 'یوونتوس', value: 31}, {text: 'آس رم', value: 41}, {text: 'ناپولی', value: 51}, {text: 'فیورنتینا', value: 61},{text: 'آث میلان', value: 111}, {text: 'اینتر میلان', value: 112}, {text: 'یوونتوس', value: 113}, {text: 'آس رم', value: 114}, {text: 'ناپولی', value: 115}, {text: 'فیورنتینا', value: 116}]" v-model="user.team" :allow-insert="true" multiple required ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
+                        <fv-select input-class="fv-form-control" :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6},{text: 'آث میلان', value: 11}, {text: 'اینتر میلان', value: 12}, {text: 'یوونتوس', value: 13}, {text: 'آس رم', value: 14}, {text: 'ناپولی', value: 15}, {text: 'فیورنتینا', value: 16},{text: 'آث میلان', value: 1231}, {text: 'اینتر میلان', value: 21}, {text: 'یوونتوس', value: 31}, {text: 'آس رم', value: 41}, {text: 'ناپولی', value: 51}, {text: 'فیورنتینا', value: 61},{text: 'آث میلان', value: 111}, {text: 'اینتر میلان', value: 112}, {text: 'یوونتوس', value: 113}, {text: 'آس رم', value: 114}, {text: 'ناپولی', value: 115}, {text: 'فیورنتینا', value: 116}]" v-model="user.team" :allow-insert="true" multiple required ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
                       </div>
                       <div class="fv-col-sm-6">
                         <label class="fv-control-label">تاریخ زایمان {{user.date}}</label>
-                        <fv-datepicker class="fv-form-control" v-model="user.date" ref="date" placeholder="تاریخ زایمان رو بگو."></fv-datepicker>
+                        <fv-datepicker input-class="fv-form-control" v-model="user.date" ref="date" placeholder="تاریخ زایمان رو بگو."></fv-datepicker>
                       </div>
                       <div class="fv-col-xs-6">
                         <label class="fv-control-label">جهت همینجوری</label>
@@ -108,6 +108,10 @@
                       <div class="fv-col-xs-12">
                         <label class="fv-control-label">تصویر</label>
                         <fv-filepicker v-model="user.pic" required ref="file" type="file"></fv-filepicker>
+                      </div>
+                      <div class="fv-col-xs-12">
+                        <label class="fv-control-label">متن زیاد</label>
+                        <fv-textarea class="fv-form-control" v-model="user.password" required placeholder="متن زیاااااد"></fv-textarea>
                       </div>
                     </fieldset>
                   </div>
