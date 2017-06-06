@@ -1,5 +1,6 @@
 import './index.pcss'
 
+const pkg = require('../package.json');
 //import "babel-polyfill";
 
 import fvMain from './components/fvMain'
@@ -45,6 +46,8 @@ const framevuerk = {
     Vue.component('fvList', fvList);
     Vue.component('fvTable', fvTable);
     Vue.component('fvTabs', fvTabs);
-  }
+  },
+  version: pkg.version,
+  name: pkg.name
 };
 module.exports = framevuerk;
