@@ -7,7 +7,7 @@
   </head>
   <body class="rtl">
     <fv-main id="app">
-        <fv-header>
+        <fv-header :height="hdr == 'up'? 55: 0">
           <fv-button class="fv-primary fv-icon fv-hide-on-lg"  @click="$refs.sidebar.toggle()"> <i class="fa fa-bars"></i> </fv-button>
           <div class="fv-title"> <h2 v-html="title"></h2> </div>
           <fv-button class="fv-primary fv-icon"> <i class="fa fa-user"></i> </fv-button>
@@ -72,7 +72,7 @@
             },
           ]">
         </fv-menu>
-        <fv-content class="no-padding" >
+        <fv-content class="no-padding" v-fv-scroll="true" @fv-scroll="hdr = $event; log(hdr)">
           <div class="fv-row">
             <form class="fv-col-md-8 fv-col-offset-md-2" @submit.prevent="$refs.dialog.open()">
                 <div class="fv-row">
@@ -202,6 +202,7 @@
           select2Val: null,
           radioVal: '',
           test: '',
+          hdr: true,
           menu: false,
           content: 'طرح‌نما یا لورم ایپسوم (به لاتین: lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به‌عنوان عنصری از ترکیب‌بندی برای پُر کردن صفحه و ارائهٔ اولیهٔ شکل ظاهری و کلیِ طرح سفارش‌گرفته‌شده استفاده می‌کند، تا ازنظر گرافیکی نشانگر چگونگی نوع و اندازهٔ قلم و ظاهرِ متن باشد. معمولاً طراحان گرافیک برای صفحه‌آرایی، نخست از متن‌های آزمایشی و بی‌معنی استفاده می‌کنند تا صرفاً به مشتری یا صاحب‌کار خود نشان دهند که صفحهٔ طراحی یا صفحه‌بندی شده، بعد از اینکه متن در آن قرار گیرد، چگونه به نظر می‌رسد و قلم‌ها و اندازه‌بندی‌ها چگونه در نظر گرفته شده‌است. از آنجایی که طراحان عموماً نویسندهٔ متن نیستند و وظیفهٔ رعایت حق تکثیر متون را ندارند و در همان حال، کار آنها به‌نوعی وابسته به متن است، آنها با استفاده از محتویات ساختگی، صفحهٔ گرافیکی خود را صفحه‌آرایی می‌کنند تا مرحلهٔ طراحی و صفحه‌بندی را به پایان برند.<br>',
           user: {
@@ -218,7 +219,7 @@
           console.log('App started.')
         },
         methods: {
-          log: console.log,
+          log: function(x){ console.log(x) },
           send: function(){
             var fd = new FormData();
             for(var i in this.user){
