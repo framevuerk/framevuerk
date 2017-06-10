@@ -7,7 +7,7 @@
   </head>
   <body class="rtl">
     <fv-main id="app">
-        <fv-header :height="hdr == 'up'? 55: 0">
+        <fv-header :height="hdr < -5? 55: 0">
           <fv-button class="fv-primary fv-icon fv-hide-on-lg"  @click="$refs.sidebar.toggle()"> <i class="fa fa-bars"></i> </fv-button>
           <div class="fv-title"> <h2 v-html="title"></h2> </div>
           <fv-button class="fv-primary fv-icon"> <i class="fa fa-user"></i> </fv-button>
@@ -72,7 +72,7 @@
             },
           ]">
         </fv-menu>
-        <fv-content class="no-padding" v-fv-scroll="true" @fv-scroll="hdr = $event; log(hdr)">
+        <fv-content class="no-padding" v-fv-scroll="true" @fv-scroll-up="hdr = hdr > 0? 0: hdr - 1" @fv-scroll-down="hdr = hdr < 0? 0: hdr + 1">
           <div class="fv-row">
             <form class="fv-col-md-8 fv-col-offset-md-2" @submit.prevent="$refs.dialog.open()">
                 <div class="fv-row">
@@ -95,21 +95,21 @@
                       </div>
                       <div class="fv-col-sm-6">
                         <label class="fv-control-label">نام تیم مورد علاقه {{user.team}}</label>
-                        <fv-select input-class="fv-form-control" :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6},{text: 'آث میلان', value: 11}, {text: 'اینتر میلان', value: 12}, {text: 'یوونتوس', value: 13}, {text: 'آس رم', value: 14}, {text: 'ناپولی', value: 15}, {text: 'فیورنتینا', value: 16},{text: 'آث میلان', value: 1231}, {text: 'اینتر میلان', value: 21}, {text: 'یوونتوس', value: 31}, {text: 'آس رم', value: 41}, {text: 'ناپولی', value: 51}, {text: 'فیورنتینا', value: 61},{text: 'آث میلان', value: 111}, {text: 'اینتر میلان', value: 112}, {text: 'یوونتوس', value: 113}, {text: 'آس رم', value: 114}, {text: 'ناپولی', value: 115}, {text: 'فیورنتینا', value: 116}]" v-model="user.team" :allow-insert="true" multiple required ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
+                        <fv-select input-class="fv-form-control" :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2, disabled: true}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6}]" v-model="user.team" :allow-insert="true" multiple required ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
                       </div>
                       <div class="fv-col-sm-6">
                         <label class="fv-control-label">تاریخ زایمان {{user.date}}</label>
                         <fv-datepicker input-class="fv-form-control" v-model="user.date" ref="date" placeholder="تاریخ زایمان رو بگو."></fv-datepicker>
                       </div>
-                      <div class="fv-col-xs-6">
+                      <div class="fv-col-sm-6">
                         <label class="fv-control-label">جهت همینجوری</label>
                         <fv-radio v-model="radioVal" :options="['رسط','چپ', {value: 'a', text: 'غیر فعال', disabled: true}]"></fv-radio>
                       </div>
-                      <div class="fv-col-xs-12">
+                      <div class="fv-col-sm-12">
                         <label class="fv-control-label">تصویر</label>
                         <fv-filepicker v-model="user.pic" required ref="file" type="file"></fv-filepicker>
                       </div>
-                      <div class="fv-col-xs-12">
+                      <div class="fv-col-sm-12">
                         <label class="fv-control-label">متن زیاد</label>
                         <fv-textarea class="fv-form-control" v-model="user.password" required placeholder="متن زیاااااد"></fv-textarea>
                       </div>
@@ -202,7 +202,7 @@
           select2Val: null,
           radioVal: '',
           test: '',
-          hdr: true,
+          hdr: -6,
           menu: false,
           content: 'طرح‌نما یا لورم ایپسوم (به لاتین: lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به‌عنوان عنصری از ترکیب‌بندی برای پُر کردن صفحه و ارائهٔ اولیهٔ شکل ظاهری و کلیِ طرح سفارش‌گرفته‌شده استفاده می‌کند، تا ازنظر گرافیکی نشانگر چگونگی نوع و اندازهٔ قلم و ظاهرِ متن باشد. معمولاً طراحان گرافیک برای صفحه‌آرایی، نخست از متن‌های آزمایشی و بی‌معنی استفاده می‌کنند تا صرفاً به مشتری یا صاحب‌کار خود نشان دهند که صفحهٔ طراحی یا صفحه‌بندی شده، بعد از اینکه متن در آن قرار گیرد، چگونه به نظر می‌رسد و قلم‌ها و اندازه‌بندی‌ها چگونه در نظر گرفته شده‌است. از آنجایی که طراحان عموماً نویسندهٔ متن نیستند و وظیفهٔ رعایت حق تکثیر متون را ندارند و در همان حال، کار آنها به‌نوعی وابسته به متن است، آنها با استفاده از محتویات ساختگی، صفحهٔ گرافیکی خود را صفحه‌آرایی می‌کنند تا مرحلهٔ طراحی و صفحه‌بندی را به پایان برند.<br>',
           user: {
