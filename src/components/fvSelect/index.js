@@ -81,6 +81,7 @@ export default ({
             else{
                 if( this.search || this.allowInsert ){
                     this.$refs.searchQueryEl.$el.focus();
+                    
                 }
                 else{
                     this.$refs.justFocusEl.focus();
@@ -126,6 +127,10 @@ export default ({
             }        
         },
         clickOption: function(option={index:null,value:null, action:'select'}, setHighlight = false){
+            this.pFocus('search');
+            if( option.disabled ){
+                return;
+            }
             if( option.value === null ){
                 if( this.multiple ){
                     this.pSetValue( [] );
@@ -159,12 +164,10 @@ export default ({
                 this.pSetValue( option.value );
             }
             if(setHighlight){
-                this.pFocus();
                 this.highlightOption( option );
             }
             else{
                 this.highlightOption();
-                this.pFocus();
             }
             this.searchQuery = '';
         },
@@ -219,6 +222,7 @@ export default ({
             this.mOptions.forEach( (option,index)=>{
                 let text = typeof option == 'object' && option !== null? option.text: option;
                 let value = typeof option == 'object' && option !== null? option.value: option;
+                let disabled = typeof option == 'object' && option !== null? option.disabled || false: false;
                 if(
                     utility.contains(text, this.searchQuery) ||
                     utility.contains(value, this.searchQuery)
@@ -227,6 +231,7 @@ export default ({
                         index: index,
                         text: text,
                         value: value,
+                        disabled: disabled,
                         action: 'select'
                     });
                 }

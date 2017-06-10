@@ -7,4 +7,4 @@ span
             span(v-if="!search && !allowInsert", tabindex="0", ref="justFocusEl")
             fv-content.no-padding
                 div(class="fv-option", v-show="pOptions.length == 0") چیزی پیدا نشد!
-                div(class="fv-option", v-for="(option, index) in pOptions", v-html="option.text", @click="clickOption(option, true)", ref="optionElem",:class="{'fv-selected': pIsSelected(option), 'fv-focused': highlightedOption==index}")
+                div(class="fv-option", v-for="(option, index) in pOptions", v-html="option.text", @click="clickOption(option, true)", ref="optionElem",:class="{'fv-selected': pIsSelected(option), 'fv-focused': highlightedOption==index, 'fv-disabled': option.disabled}")
