@@ -144,6 +144,12 @@ body{
             @apply --danger-outline;
         }
     }
+    &[disabled], &.disabled{
+        background: var(--gray-color-light);
+        &, & *{
+            cursor: not-allowed;
+        }
+    }
     &::placeholder, & > .placeholder{
         color: var(--gray-color-dark);
     }
