@@ -13,7 +13,7 @@ div.fv-table
                         fv-button(@click="fetch(nextPage)", :disabled="nextPage === false")
                             i.fa.fa-arrow-right
                             |  صفحه بعد
-                        fv-input.fv-form-control(type="number", :value="page", :min="1", :max="totalPages", @input="setUserPage($event)", ref="userInputPage", :disabled="totalPages > 1")
+                        fv-input.fv-form-control(type="number", :value="page", :min="1", :max="totalPages", @input="setUserPage($event)", ref="userInputPage", :disabled="totalPages == 1")
                         span(v-if="totalPages !== false") از {{totalPages}}
                         fv-button(@click="fetch(previousPage)", :disabled="previousPage === false")
                             | صفحه قبل 
