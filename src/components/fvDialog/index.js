@@ -70,7 +70,7 @@ export default ({
             } 
         },
         clickButton(button){
-            this.$emit('click', button.key, this.pProp);
+            this.$emit('click-button', button.key, this.pProp);
             button.action(this.pProp);
             this.closeIf();
         }

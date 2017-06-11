@@ -2,7 +2,7 @@ span
     transition(name="fv-fade")
         div(class="fv-overlay fv-dialog-overlay", v-show="pShow", @click="closeIf()")
     transition(name="fv-dialog")
-        fv-main(class="fv-dialog", v-show="pShow", ref="dialog", @keydown="pKeyDown($event); $emit('keydown', $event)")
+        fv-main(class="fv-dialog", v-show="pShow", ref="dialog", @keydown="pKeyDown($event); $emit('keydown', $event)", @click="$emit('click', $event)")
             fv-content
                 h3(v-if="title.length > 0", v-html="title")
                 br(v-if="title.length > 0")
