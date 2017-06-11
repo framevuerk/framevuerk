@@ -11,19 +11,19 @@
         &:last-child{
             border-bottom: 0;
         }
-        &.fv-disabled{
+        &.disabled{
             color: var(--shadow-color);
             cursor: not-allowed;
         }
-        &:active:not(.fv-disabled),
-        &.fv-focused{
+        &:active:not(.disabled),
+        &.highlighted{
             background: var(--shadow-color-light);
         }
-        &.fv-selected{
+        &.selected{
             background: var(--theme-color);
             color: yiq;
             &:active,
-            &.fv-focused{
+            &.fv-highlighted{
                 background: var(--theme-color-dark);
             }
         }
