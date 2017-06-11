@@ -15,6 +15,10 @@ export default ({
         required: {
             type: Boolean,
             default: false
+        },
+        disabled: {
+            type: Boolean,
+            default: false
         }
     },
     data: function(){
@@ -30,8 +34,16 @@ export default ({
         pToggle: function(){
             this.pSetValue( this.value === this.onValue? this.offValue: this.onValue);
         },
-        pFocus: function(){
-            this.$refs.switch.focus();
+        pFocus(){
+            if( !this.disabled ){
+                this.$refs.switch.focus();
+            }
+        },
+        pClick(){
+            if( !this.disabled ){
+                this.pToggle();
+                this.focus = true;
+            }
         },
         setStructure: function(){
             if( [this.offValue, this.onValue].indexOf( this.value ) === -1 ){

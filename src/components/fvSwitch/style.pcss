@@ -33,4 +33,10 @@
             @apply --danger-outline;
         }
     }
+    &[disabled], &.disabled{
+        opacity: .5;
+        &, & *{
+            cursor: not-allowed;
+        }
+    }
 }
