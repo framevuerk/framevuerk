@@ -24,15 +24,22 @@ export default ({
             pShow: false,
             pSheet: false,
             highlightedOption: null,
-            pParam:  null
+            pParam:  null,
+            focusBackElem: null
         }
     },
     methods: {
-        pFocus: function(){
-            this.$refs.justFocusEl.focus();
+        pFocus: function(el){
+            if( el == 'back' && this.focusBackElem ){
+                this.focusBackElem.focus();
+            }
+            else{
+                this.$refs.justFocusEl.focus();
+            }
         },
         open: function(param=null){
             this.pParam = param;
+            this.focusBackElem = document.querySelector(':focus');
             this.pShow = true;
             this.$emit('open');
             utility.doIt( ()=>{
@@ -40,6 +47,9 @@ export default ({
             });
         },
         close: function(){
+            utility.doIt( ()=>{
+                this.pFocus('back');
+            });
             this.pShow = false;
             this.pParam = null;
             this.$emit('close');
@@ -49,17 +59,11 @@ export default ({
         },
         clickOption: function(option){
             if( !option.disabled ){
-                this.$emit('click', option.key, this.pParam);
+                this.$emit('click-item', option.key, this.pParam);
                 option.action(this.pParam);
                 if( this.autoClose ){
                     this.close();
                 }
-                else{
-                    this.pFocus();
-                }
-            }
-            else{
-                this.pFocus();
             }
         },
         highlightOption: function(option={index:null}){
@@ -122,6 +126,7 @@ export default ({
                     key: value.key || value.text || value,
                     icon: value.icon || false,
                     text: value.text || value,
+                    highlighted: this.highlightedOption === index,
                     disabled: value.disabled || false,
                     action: value.action || new Function()
                 });
