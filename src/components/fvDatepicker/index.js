@@ -42,6 +42,10 @@ export default function(moment){
                 type: Boolean,
                 default: false
             },
+            disabled: {
+                type: Boolean,
+                default: false
+            },
             pick: {
                 type: Array,
                 default: ()=>[
@@ -65,7 +69,6 @@ export default function(moment){
         methods: {
             open: function(){
                 this.$refs.dialog.open();
-                this.pFocus();
                 this.$emit('open');
             },
             close: function(){
@@ -85,7 +88,7 @@ export default function(moment){
                     this.$refs.inputEl.$el.focus();
                 }
                 else{
-                    this.$refs.justFocusEl.focus();
+                    this.$refs.dialog.pFocus();
                 }
             },
             pIsSelected: function(option={index:null,value:null}){
@@ -97,7 +100,6 @@ export default function(moment){
                 }
             },
             pKeyDown: function(event){
-                console.log(this.highlightedOption);
                 switch(event.which){
                     case 38: //up
                         if( this.highlightedOption !== null ){
@@ -213,7 +215,7 @@ export default function(moment){
                         case 'sp': return {
                             type: 'sp'
                         }
-                        default: console.error('error in fv-datepicker pick attribute.');
+                        default: throw 'error in fv-datepicker pick attribute.';
                     }
                 });            
             }

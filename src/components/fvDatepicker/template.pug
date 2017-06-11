@@ -1,11 +1,10 @@
 span
-    fv-input(:class="inputClass", :display-value="displayValue", :value="value", :placeholder="placeholder", @keydown.enter="open()", @click="open()", ref="inputEl")
-    fv-dialog.fv-datepicker(ref="dialog", :class="dialogClass", :buttons="dialogButtons" @click="clickButton($event)" @keydown="pKeyDown($event)", @close="$emit('close')", @open="$emit('open')")
+    fv-input(:class="inputClass", :display-value="displayValue", :value="value", :placeholder="placeholder", :required="required", :disabled="disabled", @keydown.enter="open()", @click="open()", ref="inputEl")
+    fv-dialog.fv-datepicker(ref="dialog", :class="dialogClass", :buttons="dialogButtons" @click-button="clickButton($event)", @click="pFocus('search')", @keydown="pKeyDown($event)", @close="$emit('close')", @open="$emit('open')")
         fv-main(ref="datepicker")
             fv-header
                 div(class="fv-title")
                     h3(v-html="displayValue")
-            span(tabindex="0", ref="justFocusEl")
             fv-content.no-padding
                 div.fv-row
                     section(v-for="(val, index) in pSections", :class="{'fv-pick-section': val.type=='pick','fv-col-xs-4': val.type=='pick','fv-sp': val.type=='sp','fv-focused': highlightedOption==index}")
