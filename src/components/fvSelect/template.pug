@@ -1,10 +1,7 @@
 span
-    fv-input(:class="inputClass", :display-value="displayValue", :placeholder="placeholder", :value="value", @keydown.enter="open()", @click="open()", ref="inputEl")
-    fv-dialog.fv-select(ref="dialog", :class="dialogClass", :buttons="dialogButtons" @click="clickButton($event)" @keydown="pKeyDown($event)", @close="$emit('close')", @open="$emit('open')")
+    fv-input(:class="inputClass", :display-value="displayValue", :placeholder="placeholder", :required="required", :disabled="disabled", :value="value", @keydown.enter="open()", @click="open()", ref="inputEl")
+    fv-dialog.fv-select(ref="dialog", :class="dialogClass", :buttons="dialogButtons" @click-button="clickButton($event)", @click="pFocus('search')", @keydown="pKeyDown($event)", @close="$emit('close')", @open="$emit('open')")
         fv-main(ref="select")
             fv-header(v-if="search || allowInsert")
                 fv-input(class="fv-form-control fv-grow", placeholder="متن خود را وارد کنید...", v-model="searchQuery", ref="searchQueryEl")
-            span(v-if="!search && !allowInsert", tabindex="0", ref="justFocusEl")
-            fv-content.no-padding
-                div(class="fv-option", v-show="pOptions.length == 0") چیزی پیدا نشد!
-                div(class="fv-option", v-for="(option, index) in pOptions", v-html="option.text", @click="clickOption(option, true)", ref="optionElem",:class="{'fv-selected': pIsSelected(option), 'fv-focused': highlightedOption==index, 'fv-disabled': option.disabled}")
+            fv-list.no-outline-border(:items="pOptions", @click-item="clickOption($event, true)", @click="pFocus('search')")

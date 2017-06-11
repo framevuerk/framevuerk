@@ -46,6 +46,10 @@ export default ({
             type: Boolean,
             default: false
         },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
         search: {
             type: Boolean,
             default: true
@@ -63,7 +67,6 @@ export default ({
         open: function(){
             this.searchQuery = '';
             this.$refs.dialog.open();
-            this.pFocus();
             this.$emit('open');
         },
         close: function(){
@@ -84,7 +87,7 @@ export default ({
                     
                 }
                 else{
-                    this.$refs.justFocusEl.focus();
+                    this.$refs.dialog.pFocus();
                 }
             }
         },
@@ -126,10 +129,15 @@ export default ({
                     break;
             }        
         },
-        clickOption: function(option={index:null,value:null, action:'select'}, setHighlight = false){
-            this.pFocus('search');
-            if( option.disabled ){
+        clickOption: function(option={index:null,value:null, key:'select'}, setHighlight = false){
+            if( option.disabled || option.key == 'none' ){
                 return;
+            }
+            if(setHighlight){
+                this.highlightOption( option );
+            }
+            else{
+                this.highlightOption();
             }
             if( option.value === null ){
                 if( this.multiple ){
@@ -139,7 +147,7 @@ export default ({
                     this.pSetValue( null );
                 }
             }
-            else if( this.allowInsert && option.action === 'insert' ){
+            else if( this.allowInsert && option.key === 'insert' ){
                 let newValue = this.pValue;
                 if( this.multiple ){
                     newValue.push( option.value );
@@ -162,12 +170,6 @@ export default ({
             }
             else{
                 this.pSetValue( option.value );
-            }
-            if(setHighlight){
-                this.highlightOption( option );
-            }
-            else{
-                this.highlightOption();
             }
             this.searchQuery = '';
         },
@@ -223,26 +225,39 @@ export default ({
                 let text = typeof option == 'object' && option !== null? option.text: option;
                 let value = typeof option == 'object' && option !== null? option.value: option;
                 let disabled = typeof option == 'object' && option !== null? option.disabled || false: false;
+                let selected = this.pIsSelected({value});
                 if(
                     utility.contains(text, this.searchQuery) ||
                     utility.contains(value, this.searchQuery)
                 ){
                     ret.push({
-                        index: index,
                         text: text,
                         value: value,
+                        highlighted: this.highlightedOption === index,
                         disabled: disabled,
-                        action: 'select'
+                        selected: selected,
+                        key: 'select',
+                        index: index,
                     });
                 }
             });
             let index = ret.length;
             if( this.allowInsert === true && this.searchQuery.length > 0){
                 ret.push({
-                    index: index++,
                     text: `اضافه کردن "${this.searchQuery}"`,
                     value: this.searchQuery,
-                    action: 'insert'
+                    highlighted: this.highlightedOption === index,
+                    key: 'insert',
+                    index: index++,
+                });
+            }
+            if( ret.length === 0 ){
+                ret.push({
+                    text: 'چیزی پیدا نشد!',
+                    value: null,
+                    highlighted: this.highlightedOption === index,
+                    key: 'none',
+                    index: index++,
                 });
             }
             return ret;
