@@ -42,6 +42,11 @@ export default ({
         },
         pFocus: function(){
             this.$refs.inputEl.focus();
+        },
+        pClick: function(event){
+            if( !this.disabled ){
+                this.$emit('click', event);
+            }
         }
     },
     watch: {

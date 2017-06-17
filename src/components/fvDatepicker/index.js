@@ -69,12 +69,9 @@ export default function(moment){
         methods: {
             open: function(){
                 this.$refs.dialog.open();
-                this.$emit('open');
             },
             close: function(){
                 this.$refs.dialog.close();
-                this.pFocus('input');
-                this.$emit('close');
             },
             pMath: function(action='add', type='day') {
                 this.pDate[action](1, type + 's');

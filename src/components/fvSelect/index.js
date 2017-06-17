@@ -67,12 +67,9 @@ export default ({
         open: function(){
             this.searchQuery = '';
             this.$refs.dialog.open();
-            this.$emit('open');
         },
         close: function(){
             this.$refs.dialog.close();
-            this.pFocus('input');
-            this.$emit('close');
         },
         highlightOption: function(option={index:null}){
             this.highlightedOption = option.index;

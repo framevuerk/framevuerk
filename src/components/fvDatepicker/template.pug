@@ -1,6 +1,6 @@
 span
     fv-input(:class="inputClass", :display-value="displayValue", :value="value", :placeholder="placeholder", :required="required", :disabled="disabled", @keydown.enter="open()", @click="open()", ref="inputEl")
-    fv-dialog.fv-datepicker(ref="dialog", :class="dialogClass", :buttons="dialogButtons" @click-button="clickButton($event)", @click="pFocus('search')", @keydown="pKeyDown($event)", @close="$emit('close')", @open="$emit('open')")
+    fv-dialog.fv-datepicker(ref="dialog", :class="dialogClass", :buttons="dialogButtons" @click-button="clickButton($event)", @click="pFocus('search')", @keydown="pKeyDown($event)", @close="$emit('close'); pFocus('input');", @open="$emit('open')")
         fv-main(ref="datepicker")
             fv-header
                 div(class="fv-title")
