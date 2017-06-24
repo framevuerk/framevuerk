@@ -49,12 +49,14 @@
   }
 }
 
+
 .fv-not-sheet-enter-active, .fv-not-sheet-leave-active{
-  transition: opacity .25s ease;
+  transition: all .25s ease;
   opacity: 1;
 }
 .fv-not-sheet-enter, .fv-not-sheet-leave-active {
   opacity: 0;
+  transform: translate(-50%, -40%) !important;
 }
 
 .fv-sheet-enter-active, .fv-sheet-leave-active{
