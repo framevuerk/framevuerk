@@ -1,7 +1,6 @@
 
-
-let utility = {
-    persianMonthName: function(month=1){
+export default {
+    persianMonthName(month=1){
         let monthNames = [
             'فروردین',
             'اردیبهشت',
@@ -18,7 +17,7 @@ let utility = {
         ];
         return monthNames[month-1];
     },
-    windowOffset: function(){
+    windowOffset(){
         let ret = {};
         ret.left = 0;
         ret.top = 0;
@@ -32,7 +31,7 @@ let utility = {
                     document.body.offsetHeight;
         return ret;
     },
-    getOffset: function(dom){
+    getOffset(dom){
         if( dom.style.display == 'none' ){
             var cln = dom.cloneNode(true);
             cln.style.display = 'block';
@@ -42,7 +41,6 @@ let utility = {
             document.body.appendChild(cln);
             var rect = cln.getBoundingClientRect();
             cln.remove();
-            console.log(rect)
             return {
                 width: rect.width,
                 height: rect.height
@@ -53,8 +51,7 @@ let utility = {
         }
         
     },
-    lastTouchPos: {left: 0, top: 0},
-    isDescendant: (parent, child)=> {
+    isDescendant(parent, child){
         if( child === null || parent === null ){
             return false;
         }
@@ -67,13 +64,13 @@ let utility = {
         }
         return false;
     },
-    contains: (text='',search='')=>{
+    contains(text='',search=''){
         return text.toString().toUpperCase().indexOf(search.toString().toUpperCase()) !== -1;
     },
-    doIt: (action)=>{
+    doIt(action){
         setTimeout( action, 500 );
     },
-    isInViewport: (el, offset = 0)=>{
+    isInViewport(el, offset = 0){
         let rect = el.getBoundingClientRect();
         let win = {
             height: window.innerHeight || document.documentElement.clientHeight,
@@ -81,13 +78,13 @@ let utility = {
         }
         return rect.top >= offset && rect.bottom <= win.height - offset && rect.left >= offset && rect.right <= win.width - offset;
     },
-    lockScroll: (lock = true)=>{
+    lockScroll(lock = true){
         document.body.classList[lock === true ? 'add' : 'remove']('lock-scroll');
     },
-    capitalizeFirstLetter: (str = '')=>{
+    capitalizeFirstLetter(str = ''){
         return str.charAt(0).toUpperCase() + str.slice(1);
     },
-    getTarget: ()=>{
+    getTarget(){
         if(typeof define === "function" && define.amd) {
             return 'amd';
         } else if(typeof module === "object" && module.exports) {
@@ -96,15 +93,4 @@ let utility = {
             return 'browser';
         }
     }
-};
-window.onload = ()=>{
-document.addEventListener('mousedown', (event)=>{
-    utility.lastTouchPos = {
-        left: event.clientX,
-        top: event.clientY
-    }
-});
 }
-
-
-export default utility;
