@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="fv">
   <head>
     <meta charset="utf-8">
     <title>hello</title>
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   </head>
-  <body class="rtl">
+  <body>
     <fv-main id="app">
         <fv-header :height="hdr < -5? 55: 0">
           <fv-button class="fv-primary fv-icon fv-hide-on-lg"  @click="$refs.sidebar.toggle()"> <i class="fa fa-bars"></i> </fv-button>
@@ -170,8 +170,6 @@
           <fv-button class="fv-primary fv-block" @click="addContent()"> <i class="fa fa-plus"></i> اضافه‌کردن متن به صفحه! </fv-button> 
         </fv-footer>
     </fv-main>
-    
-
     <script src="node_modules/vue/dist/vue.min.js"></script>
     <script src="node_modules/vue-resource/dist/vue-resource.min.js"></script>
     <script src="node_modules/moment/min/moment.min.js"></script>
