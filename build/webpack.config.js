@@ -41,6 +41,11 @@ module.exports = {
     library: pkg.name,
     libraryTarget: 'umd'
   },
+  resolve: {
+    alias: {
+      locale: path.resolve(__dirname, `../src/locale/${CONFIG.LOCALE}.js`),
+    }
+  },
   module: {
     rules: [
       {
