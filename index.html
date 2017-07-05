@@ -7,18 +7,18 @@
   </head>
   <body>
     <fv-main id="app">
-        <fv-header :height="hdr < -5? 55: 0">
+        <fv-header :height="hdr < -5? 55: 0" class="fv-invert">
           <fv-button class="fv-primary fv-icon fv-hide-on-lg"  @click="$refs.sidebar.toggle()"> <i class="fa fa-bars"></i> </fv-button>
           <div class="fv-title"> <h2 v-html="title"></h2> </div>
           <fv-button class="fv-primary fv-icon"> <i class="fa fa-user"></i> </fv-button>
           <fv-button class="fv-primary fv-icon" @click="$refs.menu.open($event, 'button-balayi')"> <i class="fa fa-ellipsis-v"></i> </fv-button>
         </fv-header>
-        <fv-sidebar ref="sidebar" position="right" :pin="null">
+        <fv-sidebar ref="sidebar" :pin="null">
           <fv-tabs :tabs="[
             {title: 'یک هزارو سیصدو شصت و دو هزارو نهصدو شونزده', slot: 'first', icon: 'fa fa-google'},
             {title: 'دو', slot: 'second'}
           ]">
-            <div slot="first" class="no-padding">
+            <div slot="first" class="fv-no-padding">
               <fv-list
                 class="no-outline-border"
                 v-on:click="log($event)"
@@ -72,7 +72,7 @@
             },
           ]">
         </fv-menu>
-        <fv-content class="no-padding" v-fv-scroll="true" @fv-scroll-up="hdr = hdr > 0? 0: hdr - 1" @fv-scroll-down="hdr = hdr < 0? 0: hdr + 1">
+        <fv-content class="fv-no-padding" v-fv-scroll="true" @fv-scroll-up="hdr = hdr > 0? 0: hdr - 1" @fv-scroll-down="hdr = hdr < 0? 0: hdr + 1">
           <div class="fv-row">
             <form class="fv-col-md-8 fv-col-offset-md-2" @submit.prevent="$refs.dialog.open()">
                 <div class="fv-row">
@@ -167,7 +167,7 @@
         این کاربره اضافه بره به سیستم؟!
         </fv-dialog>
         <fv-footer>
-          <fv-button class="fv-primary fv-block" @click="addContent()"> <i class="fa fa-plus"></i> اضافه‌کردن متن به صفحه! </fv-button> 
+          <fv-button class="fv-primary fv-xl fv-block" @click="addContent()"> <i class="fa fa-plus"></i> اضافه‌کردن متن به صفحه! </fv-button> 
         </fv-footer>
     </fv-main>
     <script src="node_modules/vue/dist/vue.min.js"></script>
@@ -179,7 +179,7 @@
     <link rel="stylesheet" href="node_modules/shabnam-font/dist/font-face.css">
     <link rel="stylesheet" href="dist/framevuerk.css">
     <style>
-      body{
+      #app{
         font-family: Shabnam, sans-serif;
         font-weight: 300;
       }
