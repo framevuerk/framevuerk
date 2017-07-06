@@ -92,5 +92,19 @@ export default {
         } else {
             return 'browser';
         }
-    }
+    },
+    vueEvents(){
+        return [
+            'click',
+            'focus',
+            'blur',
+            'keyup',
+            'keydown',
+            'keypress',
+            'invalid'
+        ];
+    },
+    _dependencies: {
+        moment: null
+    },
 }
