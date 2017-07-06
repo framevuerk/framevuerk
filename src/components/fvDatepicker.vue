@@ -2,7 +2,6 @@
     import utility from '../utility';
     import locale from 'locale';
     const moment = utility._dependencies.moment;
-    console.log(utility._dependencies);
     export default {
         data(){
             return {
@@ -244,10 +243,10 @@
             @open="$emit('open')"
         )
             fv-main(ref="datepicker")
-                fv-header
+                fv-header.fv-invert
                     div.fv-title
                         h3(v-html="displayValue")
-                fv-content.no-padding
+                fv-content.fv-no-padding
                     div.fv-row
                         section(v-for="(val, index) in pSections",
                             :class="{'fv-pick-section': val.type=='pick','fv-col-xs-4': val.type=='pick','fv-sp': val.type=='sp','fv-focused': highlightedOption==index}"

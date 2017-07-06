@@ -8,7 +8,7 @@
                 pValue: null,
                 pShow: false,
                 searchQuery: '',
-                highlightedOption: 0,
+                highlightedOption: null,
                 dialogButtons: [
                     {
                         key: 'reset',
@@ -67,6 +67,7 @@
         methods: {
             open(){
                 this.searchQuery = '';
+                this.highlightedOption = null;
                 this.$refs.dialog.open();
             },
             close(){
@@ -318,12 +319,12 @@
             @click="pFocus('search')",
             @keydown="pKeyDown($event)",
             @close="$emit('close'); pFocus('input');",
-            @open="$emit('open')"
+            @open="$emit('open')",
+            firstFocusOn="0"
         )
             fv-main(ref="select")
-                fv-header(v-if="search || allowInsert")
-                    fv-input(class="fv-form-control fv-grow",
-                        :placeholder="locale.search()",
+                fv-header.fv-invert(v-if="search || allowInsert")
+                    fv-input.fv-form-control.fv-search-style.fv-grow(:placeholder="locale.search()",
                         v-model="searchQuery",
                         ref="searchQueryEl"
                     )
