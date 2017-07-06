@@ -21,17 +21,6 @@
         height: 100%;
         overflow: auto;
         flex-grow: 1;
-        &.no-padding{
-            padding: 0;
-        }
-        &.no-vertical-padding{
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-        &.no-horizontal-padding{
-            padding-left: 0;
-            padding-right: 0; 
-        }
         &:after{
             content: '';
             clear: both;
