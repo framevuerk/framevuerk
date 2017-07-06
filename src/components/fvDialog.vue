@@ -4,13 +4,19 @@
         data(){
             return {
                 pShow: false,
-                pProp: null
+                pProp: null,
+                focusBackElem: null
             }
         },
         props: {
             title: {
                 default: '',
                 required: false
+            },
+            position: {
+                type: String,
+                enum: ['bottom', 'center'],
+                default: 'center'
             },
             autoClose: {
                 type: Boolean,
@@ -19,7 +25,10 @@
             buttons: {
                 type: Array,
                 default: () => []
-            }
+            },
+            contentClass: {
+                default: ''
+            },
         },
         methods: {
             toggle(){
@@ -28,6 +37,7 @@
             open(prop = null){
                 this.pShow = true;
                 this.pProp = prop;
+                this.focusBackElem = document.querySelector(':focus');
                 this.$emit('open', this.pProp);
                 utility.doIt( ()=>{
                     this.pFocus(false);
@@ -36,6 +46,11 @@
             close(){
                 this.pShow = false;
                 this.pProp = null;
+                if( this.focusBackElem ){
+                    utility.doIt( ()=>{
+                        this.focusBackElem.focus();
+                    });
+                }
                 this.$emit('close', this.pProp);
             },
             closeIf(){
@@ -90,7 +105,10 @@
                 return ret;
             },
             focusableItems(){
-                return this.$refs.dialog.$el.querySelectorAll('select, input, textarea, button, a');
+                return this.$refs.dialog.$el.querySelectorAll('select, input, textarea, button, a, [tabindex]');
+            },
+            animationName(){
+                return `fv-dialog-${this.position}`;
             }
         },
     }
@@ -103,14 +121,15 @@
                 v-show="pShow",
                 @click="closeIf()"
             )
-        transition(name="fv-dialog")
+        transition(:name="animationName")
             fv-main(class="fv-dialog",
+                :class="animationName",
                 v-show="pShow",
                 ref="dialog",
                 @keydown="pKeyDown($event); $emit('keydown', $event)",
                 @click="$emit('click', $event)"
             )
-                fv-content
+                fv-content(:class="contentClass")
                     h3(v-if="title.length > 0",
                         v-html="title"
                     )
@@ -145,11 +164,9 @@
         width: auto;
         max-width: 90%;
         max-height: 90%;
-        min-height: 200px;
+        /* min-height: 200px; */
         min-width: 300px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+
         margin: 0;
         padding: 0;
         @include yiq($bg-color);
@@ -159,14 +176,33 @@
             max-height: 100%;
             max-width: 100%;
         }
+        &.fv-dialog-bottom{
+            width: 100%;
+            max-width: 100%;
+            left: 0;
+            top: auto;
+            bottom: 0;
+        }
+        &.fv-dialog-center{
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     }
-    .fv-dialog-enter-active, .fv-dialog-leave-active{
+    .fv-dialog-center-enter-active, .fv-dialog-center-leave-active{
         transition: all $transition-speed !important;
         transform: translate(-50%, -50%) !important;
         opacity: 1;
     }
-    .fv-dialog-enter, .fv-dialog-leave-active {
+    .fv-dialog-center-enter, .fv-dialog-center-leave-active {
         opacity: 0 !important;
-        transform: translate(-50%, -40%) !important;
+        transform: translate(-50%, -34%) !important;
+    }
+    .fv-dialog-bottom-enter-active, .fv-dialog-bottom-leave-active{
+        transition: all $transition-speed !important;
+        transform: translateY(0);
+    }
+    .fv-dialog-bottom-enter, .fv-dialog-bottom-leave-active {
+        transform: translateY(100%) !important;
     }
 </style>
