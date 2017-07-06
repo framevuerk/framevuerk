@@ -1,6 +1,6 @@
 <script>
-    import utility from '../utility'
-    import locale from 'locale'
+    import utility from '../utility';
+    import locale from 'locale';
     export default {
         data(){
             return {
