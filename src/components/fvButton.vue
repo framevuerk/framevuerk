@@ -35,9 +35,27 @@
         text-align: center;
         cursor: pointer;
         max-width: 100%;
-        font-size: 0.9em;
-        height: 3.1em;
         border-radius: $border-radius;
+        &.fv-xs{
+            font-size: 0.7em;
+            height: 2.5em;
+        }
+        &.fv-sm{
+            font-size: 0.8em;
+            height: 2.8em;
+        }
+        &, &.fv-md{
+            font-size: 0.9em;
+            height: 3.1em;
+        }
+        &.fv-lg{
+            font-size: 1em;
+            height: 3.4em;
+        }
+        &.fv-xl{
+            font-size: 1.1em;
+            height: 3.7em;
+        }
         &, & span{
             @include nowrap;
         }
@@ -48,8 +66,7 @@
             }
         }
         &:disabled, &.disabled{
-            opacity: 0.6;
-            cursor: not-allowed;
+            @include disabled;
         }
         &, &.fv-default{
             @include yiq($default-color);
