@@ -133,7 +133,20 @@ html.fv body{
     width: 100%;
     min-height: 3em;
     &.fv-rounded{
-        border-radius: ($border-radius * 2);
+        border-radius: $border-radius-large;
+    }
+    &.fv-search-style{
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+        box-shadow: none;
+        &:focus, &.focus{
+            @include bottom-outline;
+            &:invalid, &.invalid{
+                @include bottom-outline($danger-color);
+            }
+        }
     }
     &:focus, &.focus{
         @include outline;
