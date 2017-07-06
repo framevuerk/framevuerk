@@ -1,6 +1,6 @@
 <script>
     import utility from '../utility'
-    import locale from '../locale'
+    import locale from 'locale'
     export default {
         data(){
             return {
@@ -323,7 +323,7 @@
             fv-main(ref="select")
                 fv-header(v-if="search || allowInsert")
                     fv-input(class="fv-form-control fv-grow",
-                        :placeholder="locale.enterSearch()",
+                        :placeholder="locale.search()",
                         v-model="searchQuery",
                         ref="searchQueryEl"
                     )
@@ -365,7 +365,7 @@
                 @include yiq($theme-color);
                 &:active,
                 &.fv-focused{
-                    background: $theme-color-dark;
+                    @include yiq($theme-color-dark);
                 }
             }
         }
