@@ -1,18 +1,17 @@
 <script>
+    import utility from '../utility';
     export default {
-
+        mounted(){
+            utility.vueEvents().forEach(eventName=>{
+                this.$refs.el.addEventListener(eventName, (event)=> this.$emit(eventName, event) );
+            });
+        }
     }
 </script>
 
 <template lang="pug">
-    div(
-        class="fv-main",
-        @focus="$emit('focus', $event)",
-        @click="$emit('click', $event)",
-        @blur="$emit('blur', $event)",
-        @keyup="$emit('keyup', $event)",
-        @keydown="$emit('keydown', $event)",
-        @keypress="$emit('keypress', $event)"
+    div(ref="el",
+        class="fv-main"
     )
         slot
 </template>
