@@ -68,7 +68,7 @@ export default {
         return text.toString().toUpperCase().indexOf(search.toString().toUpperCase()) !== -1;
     },
     doIt(action){
-        setTimeout( action, 500 );
+        setTimeout( action, 100 );
     },
     isInViewport(el, offset = 0){
         let rect = el.getBoundingClientRect();
