@@ -1,7 +1,0 @@
-fv-main.fv-tabs
-    fv-header
-        fv-button.fv-tab-button.fv-grow(v-for="tab in pTabs", :key="tab.slot", :class="{'fv-selected': tab.slot == selectedTab}", @click="clickTab(tab.slot)")
-            i(v-if="tab.icon", :class="tab.icon")
-            span(v-html="tab.title")
-    fv-content.no-padding.fv-tab(v-for="tab in pTabs", :key="tab.slot", v-show="tab.slot === selectedTab")
-        slot(:name="tab.slot")

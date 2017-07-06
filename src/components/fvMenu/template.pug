@@ -1,9 +1,0 @@
-span
-    transition(name="fv-fade")
-        div.fv-overlay(v-show="pShow", style="z-index: 10003", @click="close()")
-    transition(:name="className")
-        div.fv-menu(:class="className", v-show="pShow", ref="pMenu", @keydown="pKeyDown($event)")
-            span(tabindex="0", ref="justFocusEl")
-            div(v-if="title" class="fv-menu-title", @click="pFocus()")
-                label.fv-control-label(v-html="title")
-            fv-list.no-outline-border(:items="pOptions", @click-item="clickOption($event)", @click="pFocus()")

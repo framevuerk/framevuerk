@@ -1,3 +1,0 @@
-span(class="fv-switch", :class="{on: onValue === value, invalid: invalid, focus: focus, 'disabled': disabled}", ref="switch", @click="pClick()", :tabindex="disabled? '': 0", @focus="pFocus()", @blur="focus=false", @keydown="pKeyDown($event)")
-    span.fv-handler
-    input.fv-hide(type="checkbox", :required="required", :checked="onValue === value", @invalid.prevent="pFocus()")

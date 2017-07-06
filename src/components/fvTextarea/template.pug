@@ -1,2 +1,0 @@
-textarea.fv-textarea(ref="inputEl", tabindex="0", :value="value", :required="required", :placeholder="placeholder", @input="$emit('input', $event.target.value)", @focus="$emit('focus', $event)", @click="$emit('click', $event)", @blur="$emit('blur', $event)", @keyup="$emit('keyup', $event)", @keydown="$emit('keydown', $event)", @keypress="$emit('keypress', $event)", @invalid.prevent="pFocus()")
-    slot
