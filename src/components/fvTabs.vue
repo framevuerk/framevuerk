@@ -48,7 +48,7 @@
                         :class="tab.icon"
                     )
                     span(v-html="tab.title")
-            fv-content.no-padding.fv-tab(
+            fv-content.fv-no-padding.fv-tab(
                 v-for="tab in pTabs",
                 :key="tab.slot",
                 v-show="tab.slot === selectedTab"
