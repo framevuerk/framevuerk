@@ -29,6 +29,9 @@
             contentClass: {
                 default: ''
             },
+            firstFocusOn: {
+                default: false // can be index or false (lastindex) or true (firstindex)
+            }
         },
         methods: {
             toggle(){
@@ -40,7 +43,7 @@
                 this.focusBackElem = document.querySelector(':focus');
                 this.$emit('open', this.pProp);
                 utility.doIt( ()=>{
-                    this.pFocus(false);
+                    this.pFocus(this.firstFocusOn);
                 });
             },
             close(){
@@ -58,8 +61,15 @@
                     this.close();
                 }
             },
-            pFocus(first=true){
-                this.focusableItems[first? 0: this.focusableItems.length-1].focus();
+            pFocus(index=true){
+                let i;
+                if( typeof index === 'boolean' ){
+                    i = index? 0: this.focusableItems.length-1;
+                }
+                else{
+                    i = index;
+                }
+                this.focusableItems[i].focus();
             },
             pKeyDown(event){
                 switch(event.which){
@@ -166,7 +176,7 @@
         max-height: 90%;
         /* min-height: 200px; */
         min-width: 300px;
-
+        border-radius: $border-radius-small;
         margin: 0;
         padding: 0;
         @include yiq($bg-color);
