@@ -6,6 +6,11 @@
     box-shadow: 0 0 2px 1px rgba($color, 0.4);
     border-color: $color;
 }
+@mixin bottom-outline($color: $theme-color){
+    outline: none;
+    box-shadow: none;
+    border-color: $color;
+}
 
 @mixin nowrap {
     overflow: hidden;
