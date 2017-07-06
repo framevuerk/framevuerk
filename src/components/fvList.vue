@@ -70,18 +70,16 @@
                 border-bottom: 0;
             }
             &.disabled{
-                color: $gray-color-dark;
-                cursor: not-allowed;
+                @include disabled;
             }
             &.highlighted, &:active:not(.disabled){
                 background: $shadow-color-light;
             }
             &.selected{
-                background: $theme-color;
-                color: yiq;
+                @include yiq($theme-color);
                 &:active,
                 &.fv-highlighted{
-                    background: $theme-color-dark;
+                    @include yiq($theme-color-dark);
                 }
             }
         }
