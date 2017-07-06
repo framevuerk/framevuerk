@@ -15,7 +15,7 @@ const scssLoader = [
   {
     loader: 'css-loader',
     options: {
-      minimize: true
+      minimize: CONFIG.NODE_ENV == 'production'
     }
   },
   {
@@ -53,7 +53,7 @@ const plugins = [
 ];
 if( CONFIG.NODE_ENV !== 'development' ){
   plugins.push( new webpack.optimize.UglifyJsPlugin({
-      minimize: true
+      minimize: CONFIG.NODE_ENV == 'production'
   }));
 }
 
