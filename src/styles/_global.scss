@@ -62,16 +62,28 @@ html.fv body{
 }
 
 .fv-padding{
-    padding: $padding;
+    padding: $padding !important;
 }
 .fv-vertical-padding{
-    padding-top: $padding;
-    padding-bottom: $padding;
+    padding-top: $padding !important;
+    padding-bottom: $padding !important;
 }
 .fv-horizontal-padding{
-    padding-left: $padding;
-    padding-right: $padding;
+    padding-left: $padding !important;
+    padding-right: $padding !important;
 }
+.fv-no-padding{
+    padding: 0 !important;
+}
+.fv-no-vertical-padding{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.fv-no-horizontal-padding{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
 .fv-pull-left{
     float: left !important;
 }
@@ -130,10 +142,7 @@ html.fv body{
         }
     }
     &[disabled], &.disabled{
-        background: $gray-color-light;
-        &, & *{
-            cursor: not-allowed;
-        }
+        @include disabled;
     }
     &::placeholder, & > .placeholder{
         color: $gray-color-dark;
