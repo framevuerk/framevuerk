@@ -1,1 +1,0 @@
-// created for fix 404 error on non-cordova projects
