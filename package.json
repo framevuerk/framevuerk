@@ -5,7 +5,7 @@
   "main": "dist/framevuerk.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config ./build/webpack.config.js --hide-modules true",
+    "build": "webpack --config ./build/webpack.config.js --hide-modules true --progress",
     "build:watch": "webpack --config ./build/webpack.config.js --display minimal --watch ",
     "start": "lite-server",
     "dev": "cross-env NODE_ENV=development npm run build:watch & npm run start"
