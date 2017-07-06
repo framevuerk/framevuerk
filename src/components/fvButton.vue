@@ -1,23 +1,23 @@
 <script>
+    import utility from '../utility';
     export default {
         props: {
             type: {
                 type: String,
                 default: 'button'
             }
+        },
+        mounted(){
+            utility.vueEvents().forEach(eventName=>{
+                this.$refs.buttonEl.addEventListener(eventName, (event)=> this.$emit(eventName, event) );
+            });
         }
     }
 </script>
 
 <template lang="pug">
-    button(class="fv-button",
-        :type="type",
-        @focus="$emit('focus', $event)",
-        @click="$emit('click', $event)",
-        @blur="$emit('blur', $event)",
-        @keyup="$emit('keyup', $event)",
-        @keydown="$emit('keydown', $event)",
-        @keypress="$emit('keypress', $event)"
+    button.fv-button(ref="buttonEl",
+        :type="type"
     )
         slot
 </template>
