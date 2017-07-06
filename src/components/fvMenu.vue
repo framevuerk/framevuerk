@@ -37,6 +37,7 @@
                 }
             },
             open(param=null){
+                this.highlightedOption = null;
                 this.$refs.menu.open(param);
             },
             close(){
