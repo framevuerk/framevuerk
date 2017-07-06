@@ -6,7 +6,7 @@ export default {
         return 'انصراف';
     },
     add(item=''){
-        return `اضافه کردن${item? ` ${item}`:''}`;
+        return `اضافه کردن${item? ` '${item}'`:''}`;
     },
     selectNone(){
         return 'حذف انتخاب';
@@ -14,7 +14,7 @@ export default {
     notFound(){
         return 'چیزی پیدا نشد...';
     },
-    enterSearch(){
-        return 'متن خود را وارد کنید...';
+    search(){
+        return 'جست‌وجو کنید...';
     }
 }
