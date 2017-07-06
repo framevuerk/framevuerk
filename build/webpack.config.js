@@ -1,6 +1,8 @@
 var pkg = require('../package.json');
 var path = require('path');
 var webpack = require('webpack');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 
 const CONFIG = {};
 CONFIG.NODE_ENV = process.env.NODE_ENV || 'production';
@@ -10,8 +12,12 @@ CONFIG.LOCALE = process.env.LOCALE || 'fa';
 console.log(CONFIG);
 
 const scssLoader = [
-  'style-loader',
-  'css-loader',
+  {
+    loader: 'css-loader',
+    options: {
+      minimize: true
+    }
+  },
   {
     loader: 'sass-loader',
     options: {
@@ -20,13 +26,16 @@ const scssLoader = [
         $direction:'+CONFIG.DIRECTION+';\
         $theme-color:'+CONFIG.THEME_COLOR+';\
         $locale:'+CONFIG.LOCALE+';\
-      ',
-      outputStyle: CONFIG.NODE_ENV !== 'development'? 'compressed': 'normal'
+      '
     }
   }
 ];
 
 const plugins = [
+    new ExtractTextPlugin({
+      filename: pkg.name+'.css',
+      allChunks: true
+    }),
     new webpack.DefinePlugin({
       'CONFIG': JSON.stringify(CONFIG)
     }),
@@ -40,7 +49,7 @@ const plugins = [
       '\tDIRECTION: ' + CONFIG.DIRECTION + "\n"+
       '\tLOCALE: ' + CONFIG.LOCALE + "\n"+
       '}' + "\n"
-    )
+    ),
 ];
 if( CONFIG.NODE_ENV !== 'development' ){
   plugins.push( new webpack.optimize.UglifyJsPlugin({
@@ -50,6 +59,7 @@ if( CONFIG.NODE_ENV !== 'development' ){
 
 module.exports = {
   entry: path.resolve(__dirname, '../src/index.js'),
+  stats: { children: false },
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: pkg.name+'.js',
@@ -69,7 +79,7 @@ module.exports = {
         exclude: /node_modules/,
         options: {
           loaders: {
-            scss: scssLoader
+            scss: ExtractTextPlugin.extract( scssLoader )
           }
         }
       },
@@ -80,7 +90,7 @@ module.exports = {
       },
       {
           test: /\.scss$/,
-          use: scssLoader
+          use: ExtractTextPlugin.extract( scssLoader )
       }
     ]
   },
