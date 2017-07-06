@@ -1,4 +1,5 @@
 <script>
+    console.warn(CONFIG.DIRECTION)
     export default {
         props: {
             width: {
@@ -7,7 +8,7 @@
             },
             position: {
                 type: String,
-                default: 'right'
+                default: CONFIG.DIRECTION=='ltr'? 'left': 'right'
             },
             main: {
                 default: null
@@ -16,11 +17,11 @@
                 default: null // or false or true
             }
         },
-        data: function(){
+        data(){
             return {
                 pAnimation: null,
                 pShow: false,
-                pPosition: 'right',
+                pPosition: this.position,
                 pWidth: 250,
                 pPin: false
             }
