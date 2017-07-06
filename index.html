@@ -99,7 +99,7 @@
                       </div>
                       <div class="fv-col-sm-6">
                         <label class="fv-control-label">تاریخ زایمان {{user.date}}</label>
-                        <fv-datepicker input-class="fv-form-control" v-model="user.date" ref="date" placeholder="تاریخ زایمان رو بگو." disabled></fv-datepicker>
+                        <fv-datepicker input-class="fv-form-control" v-model="user.date" ref="date" placeholder="تاریخ زایمان رو بگو."></fv-datepicker>
                       </div>
                       <div class="fv-col-sm-6">
                         <label class="fv-control-label">جهت همینجوری</label>
@@ -107,11 +107,11 @@
                       </div>
                       <div class="fv-col-sm-12">
                         <label class="fv-control-label">تصویر</label>
-                        <fv-filepicker v-model="user.pic" required ref="file" type="file"></fv-filepicker>
+                        <fv-filepicker v-model="user.pic" required multiple ref="file" type="blob"></fv-filepicker>
                       </div>
                       <div class="fv-col-sm-12">
                         <label class="fv-control-label">متن زیاد</label>
-                        <fv-textarea class="fv-form-control" v-model="user.password" required placeholder="متن زیاااااد"></fv-textarea>
+                        <fv-textarea class="fv-form-control" v-model="user.password" required placeholder="متن زیاااااد" @click.once="log('clicked from index')" @keyup.enter="log('enter from index')"></fv-textarea>
                       </div>
                     </fieldset>
                   </div>
@@ -119,13 +119,13 @@
                 <div class="fv-row">
                   <div class="fv-col-sm-6">
                     <label class="fv-control-label">آیا شما زن دارید؟ {{user.wife}}</label>
-                    <fv-switch v-model="user.wife" required disabled></fv-switch>
+                    <fv-switch v-model="user.wife" required></fv-switch>
                   </div>
                 </div>
                 <div class="fv-col-sm-12">
                 </div>
                 <div class="fv-col-sm-12">
-                    <fv-button class="fv-primary fv-block" type="submit" disabled>ورود</fv-button>
+                    <fv-button class="fv-primary fv-block" type="submit">ورود</fv-button>
                 </div>
             </form>
             <fv-table class="fv-col-sm-12"
@@ -187,9 +187,10 @@
     
     <script>
       framevuerk.use(moment);
-      Vue.use(framevuerk);
+      console.log( framevuerk._dependencies );
+      console.log('im there')
       Vue.use(VueResource);
-
+      Vue.use(framevuerk);
 
       var app = new Vue({
         el: '#app',
