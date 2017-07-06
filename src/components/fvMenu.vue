@@ -1,5 +1,5 @@
 <script>
-    import utility from '../utility'
+    import utility from '../utility';
     export default {
         props: {
             options: {
