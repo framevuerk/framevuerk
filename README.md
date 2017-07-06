@@ -1,8 +1,8 @@
 # Framevuerk
 
-> A RTL and mobile-first Vue.js framevuerk.
+> Awesome fully responsive Vue.js framevuerk!
 
-Framevuerk is designed to be a lightweight and RTL [Vue.js](http://vuejs.org) UI framework with a simple API.
+Framevuerk is designed to be a lightweight and both rtl and ltr support [Vue.js](http://vuejs.org) UI framework with a simple API.
 
 `There is no stable api before 1.x.x :)`
 
