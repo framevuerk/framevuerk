@@ -51,6 +51,22 @@
         top: 0;
         right: 0;
         transition: all $transition-speed;
+        &.fv-invert{
+            @include yiq($bg-color, 70%);
+            border-bottom: solid 1px $shadow-color;
+            & .fv-icon,
+            & .fv-button {
+                @include yiq($bg-color, 70%);
+                &:focus, &.focus{
+                    @include yiq($bg-color-dark, 70%);
+                    @include outline($bg-color-dark);
+                }
+                &:disabled, &.disabled{
+                    @include yiq($bg-color, 70%);
+                    @include disabled;
+                }
+            }
+        }
         & > * {
             width: auto;
             max-width: 100%;
