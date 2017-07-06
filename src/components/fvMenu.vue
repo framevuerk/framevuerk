@@ -37,21 +37,10 @@
                 }
             },
             open(param=null){
-                this.pParam = param;
-                this.focusBackElem = document.querySelector(':focus');
-                this.pShow = true;
-                this.$emit('open');
-                utility.doIt( ()=>{
-                    this.pFocus();
-                });
+                this.$refs.menu.open(param);
             },
             close(){
-                utility.doIt( ()=>{
-                    this.pFocus('back');
-                });
-                this.pShow = false;
-                this.pParam = null;
-                this.$emit('close');
+                this.$refs.menu.close();
             },
             toggle(domElem=null){
                 this[this.pShow?'close':'open'](domElem);
@@ -114,7 +103,7 @@
                     window.removeEventListener('orientationChange', this.widthChangeEvent );
                     this.pSheet = this.sheet;
                 }
-            },
+            }
         },
         computed: {
             pOptions(){
@@ -131,9 +120,6 @@
                     });
                 });
                 return ret;
-            },
-            className(){
-                return this.pSheet? 'fv-sheet': 'fv-not-sheet';
             }
         },
         created(){
@@ -148,30 +134,26 @@
 </script>
 
 <template lang="pug">
-    span
-        transition(name="fv-fade")
-            div.fv-overlay(v-show="pShow",
-                style="z-index: 10003",
-                @click="close()"
-            )
-        transition(:name="className")
-            div.fv-menu(:class="className",
-                v-show="pShow",
-                ref="pMenu",
-                @keydown="pKeyDown($event)"
-            )
-                span(tabindex="0",
-                    ref="justFocusEl"
-                )
-                div(v-if="title",
-                    class="fv-menu-title",
-                    @click="pFocus()"
-                )
-                    label.fv-control-label(v-html="title")
-                fv-list.no-outline-border(:items="pOptions",
-                    @click-item="clickOption($event)",
-                    @click="pFocus()"
-                )
+    fv-dialog.fv-menu(ref="menu",
+        content-class="fv-no-padding",
+        :position="pSheet? 'bottom': 'center'",
+        @click="pFocus('search')",
+        @keydown="pKeyDown($event)",
+        @close="$emit('close'); pFocus('input');",
+        @open="$emit('open')"
+    )
+        span(tabindex="0",
+            ref="justFocusEl"
+        )
+        div(v-if="title",
+            class="fv-menu-title",
+            @click="pFocus()"
+        )
+            label.fv-control-label(v-html="title")
+        fv-list.no-outline-border(:items="pOptions",
+            @click-item="clickOption($event)",
+            @click="pFocus()"
+        )
 </template>
 
 <style lang="scss">
@@ -179,20 +161,8 @@
     @import "../styles/functions";
     @import "../styles/mixins";
     .fv-menu {
-        z-index: 10003;
-        position: fixed;
-        @include yiq($bg-color);
-        overflow-y: auto;
-        overflow-x: hidden;
-        box-shadow: 0 5px 15px $shadow-color;
-        max-height: 90%;
         &.fv-not-sheet{
-            width: auto;
-            max-width: 60%;
-            min-width: 320px;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+
         }
         &.fv-sheet{
             left: 0;
