@@ -1,37 +1,52 @@
 var pkg = require('../package.json');
 var path = require('path');
 var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-
-var combineLoaders = require('webpack-combine-loaders');
 
 const CONFIG = {};
 CONFIG.NODE_ENV = process.env.NODE_ENV || 'production';
 CONFIG.THEME_COLOR = process.env.THEME_COLOR || '#1f89dd';
 CONFIG.DIRECTION = process.env.DIRECTION || 'rtl';
 CONFIG.LOCALE = process.env.LOCALE || 'fa';
+console.log(CONFIG);
 
 const scssLoader = [
   'style-loader',
-  {
-    loader: 'css-loader',
-    options: {}
-  },
+  'css-loader',
   {
     loader: 'sass-loader',
     options: {
-      //importer: require('node-sass-importer'),
       data: '\
         $env:'+CONFIG.NODE_ENV+';\
         $direction:'+CONFIG.DIRECTION+';\
         $theme-color:'+CONFIG.THEME_COLOR+';\
         $locale:'+CONFIG.LOCALE+';\
       ',
-      outputStyle: 'compressed'
+      outputStyle: CONFIG.NODE_ENV !== 'development'? 'compressed': 'normal'
     }
   }
 ];
 
+const plugins = [
+    new webpack.DefinePlugin({
+      'CONFIG': JSON.stringify(CONFIG)
+    }),
+    new webpack.BannerPlugin(
+      pkg.name + ' ' + pkg.version + "\n"+
+      pkg.description + "\n" +
+      'Author: ' + pkg.author + "\n" +
+      'Homepage: ' + pkg.homepage + "\n" +
+      'CONFIG: {' + "\n"+
+      '\tTHEME_COLOR: ' + CONFIG.THEME_COLOR + "\n"+
+      '\tDIRECTION: ' + CONFIG.DIRECTION + "\n"+
+      '\tLOCALE: ' + CONFIG.LOCALE + "\n"+
+      '}' + "\n"
+    )
+];
+if( CONFIG.NODE_ENV !== 'development' ){
+  plugins.push( new webpack.optimize.UglifyJsPlugin({
+      minimize: true
+  }));
+}
 
 module.exports = {
   entry: path.resolve(__dirname, '../src/index.js'),
@@ -66,33 +81,8 @@ module.exports = {
       {
           test: /\.scss$/,
           use: scssLoader
-      },
-      {
-        test: /\.pug$/,
-        loader: 'raw-loader!pug-html-loader'
-      },
-      {
-        test: /\.(png|jpg|gif|svg|woff|woff2|eot|ttf)/,
-        loader: 'file-loader?name=./assets/[name].[ext]'
       }
     ]
   },
-  plugins: [
-    /*new ExtractTextPlugin({
-      filename: pkg.name+'.css',
-      allChunks: true
-    }),*/
-    new webpack.DefinePlugin({
-      'CONFIG': JSON.stringify(CONFIG)
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true
-    }),
-    new webpack.BannerPlugin(
-      pkg.name + ' ' + pkg.version + "\n"+
-      pkg.description + "\n" +
-      'Author: ' + pkg.author + "\n" +
-      'Homepage: ' + pkg.homepage
-    )
-  ]
+  plugins: plugins
 }
