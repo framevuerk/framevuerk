@@ -13,9 +13,17 @@
     white-space: nowrap;
 }
 
-@mixin yiq($color) {
+@mixin yiq($color, $percetange: 90%) {
     background: $color;
-    color: yiq($color);
+    color: yiq($color, $percetange);
+}
+
+@mixin disabled{
+    //@include yiq($gray-color-dark);
+    opacity: 0.5;
+    &, & *{
+        cursor: not-allowed;
+    }
 }
 
 @mixin respond-to($media) {
