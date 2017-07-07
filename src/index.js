@@ -1,4 +1,4 @@
-const pkg = require('../package.json');
+import {name, version} from '../package.json';
 import './style.scss';
 import utility from './utility';
 
@@ -33,7 +33,7 @@ const framevuerk = {
         // Directives
         Vue.directive('fvScroll', require('./directives/fvScroll.vue').default);
     },
-    version: pkg.version,
-    name: pkg.name
+    version,
+    name
 }
 module.exports = framevuerk;
