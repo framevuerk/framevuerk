@@ -125,7 +125,10 @@
                 switch(action){
                     case 'reset':
                         this.pSetValue();
+                        this.close();
+                        break;
                     default:
+                        this.pSetValue(this.pDate);
                         this.close();
                 }
             },
