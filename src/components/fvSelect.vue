@@ -73,8 +73,25 @@
             close(){
                 this.$refs.dialog.close();
             },
-            highlightOption(option={index:null}){
-                this.highlightedOption = option.index;
+            highlightOption(index=null, force = null){
+                let newIndex = index;
+                if( newIndex !== null && index < 0 ){
+                    newIndex = index + this.pOptions.length;
+                }
+                else if( newIndex !== null && index > this.pOptions.length - 1){
+                    newIndex = index - this.pOptions.length;
+                }
+                
+                if( !this.pOptions[newIndex].disabled ){
+                    this.highlightedOption = newIndex;
+                }
+                else if( force == 'next' && this.pOptions.filter(o=>!o.disabled).length ){
+                    this.highlightOption( newIndex + 1 );
+                }
+                else if( force == 'prev' && this.pOptions.filter(o=>!o.disabled).length ){
+                    this.highlightOption( newIndex - 1 );
+                }
+                
             },
             pFocus(el="input"){
                 if( el == 'input' ){
@@ -108,12 +125,10 @@
             pKeyDown(event){
                 switch(event.which){
                     case 38: //up
-                        this.highlightedOption = this.highlightedOption == null? this.pOptions.length: this.highlightedOption;
-                        this.highlightedOption = this.highlightedOption-1 < 0? this.pOptions.length-1: this.highlightedOption-1;
+                        this.highlightOption( this.highlightedOption == null? this.highlightedOption - 1: this.highlightedOption-1, 'prev');
                         break;
                     case 40: // down
-                        this.highlightedOption = this.highlightedOption == null? -1: this.highlightedOption;
-                        this.highlightedOption = this.highlightedOption+1 >= this.pOptions.length? 0: this.highlightedOption+1;
+                        this.highlightOption( this.highlightedOption == null? 0: this.highlightedOption+1, 'next');
                         break;
                     case 37: case 39: //left, right
                         break;
@@ -133,10 +148,10 @@
                     return;
                 }
                 if(setHighlight){
-                    this.highlightOption( option );
+                    this.highlightedOption = option.index;
                 }
                 else{
-                    this.highlightOption();
+                    this.highlightedOption = null;
                 }
                 if( option.value === null ){
                     if( this.multiple ){
