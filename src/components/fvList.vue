@@ -73,12 +73,12 @@
                 @include disabled;
             }
             &.highlighted, &:active:not(.disabled){
-                background: $shadow-color-light;
+                background-color: $shadow-color-light;
             }
             &.selected{
                 @include yiq($theme-color);
                 &:active,
-                &.fv-highlighted{
+                &.highlighted{
                     @include yiq($theme-color-dark);
                 }
             }
