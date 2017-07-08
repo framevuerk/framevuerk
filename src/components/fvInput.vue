@@ -100,7 +100,8 @@
         :value="value",
         :required="required",
         :placeholder="placeholder",
-        @invalid.prevent="pFocus()"
+        @invalid.prevent="pFocus()",
+        @input="$emit('input', $event.target.value)",
     )
 </template>
 
