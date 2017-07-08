@@ -1,5 +1,4 @@
 <script>
-    console.warn(CONFIG.DIRECTION)
     export default {
         props: {
             width: {
