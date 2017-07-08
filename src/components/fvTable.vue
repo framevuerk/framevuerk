@@ -363,7 +363,7 @@
                             fv-button(@click="fetch(previousPage)",
                                 :disabled="previousPage === false",
                                 v-html="prevPageBtnContent"
-                            )
+                            ) 
                             fv-input.fv-form-control(type="number",
                                 :value="page",
                                 :min="1",
@@ -371,8 +371,8 @@
                                 @input="setUserPage($event)",
                                 ref="userInputPage",
                                 :disabled="totalPages == 1"
-                            )
-                            span(v-if="totalPages !== false") {{locale.fromN(totalPages)}}
+                            ) 
+                            span(v-if="totalPages !== false") {{locale.fromN(totalPages)}} 
                             fv-button(@click="fetch(nextPage)",
                                 :disabled="nextPage === false",
                                 v-html="nextPageBtnContent"
@@ -430,8 +430,7 @@
             }
             & > thead > tr > th,
             & > tfoot > tr > td{
-                background: $default-color-light;
-                color: yiq;
+                @include yiq($default-color-light);
             }
 
             & > tfoot > tr > td{
