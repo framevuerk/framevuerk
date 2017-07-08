@@ -351,7 +351,7 @@
             border: solid 1px $shadow-color;
             box-shadow: 0 1em 1em $shadow-color-light;
             width: 100%;
-            border-spacing: 1px;
+            border-spacing: 0;
             &.tf-loading{
                 opacity: 0.4;
             }
