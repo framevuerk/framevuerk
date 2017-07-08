@@ -74,6 +74,45 @@
         </fv-menu>
         <fv-content class="fv-no-padding" v-fv-scroll="true" @fv-scroll-up="hdr = hdr > 0? 0: hdr - 1" @fv-scroll-down="hdr = hdr < 0? 0: hdr + 1">
           <div class="fv-row">
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: red"></div>
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: green"></div>
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: blue"></div>
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: cyan"></div>
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: brown"></div>
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: yellow"></div>
+                <div class="fv-col-sm-6">
+                    <label class="fv-control-label">نام کاربری {{user.username}} </label>
+                    <fv-input type="text" class="fv-form-control" v-model="user.username" placeholder="نام کاربری خود را وارد کنید." required></fv-input>
+                </div>
+                <div class="fv-col-sm-6">
+                    <label class="fv-control-label">رمز عبور {{user.password}}</label>
+                    <fv-input type="password" class="fv-form-control" v-model="user.password" placeholder="رمز عبور خود را وارد کنید." required></fv-input>
+                </div>
+                <div class="fv-col-sm-6">
+                    <label class="fv-control-label">موبایل {{user.mobile}}</label>
+                    <fv-input type="tel" class="fv-form-control" v-model="user.mobile" placeholder="شماره موبایل خود را وارد کنید." required disabled></fv-input>
+                </div>
+                <div class="fv-col-sm-6">
+                    <label class="fv-control-label">نام تیم مورد علاقه {{user.team}}</label>
+                    <fv-select input-class="fv-form-control" :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2, disabled: true}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6}]" v-model="user.team" :allow-insert="false" multiple required ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
+                </div>
+                <fv-table class="fv-col-md-8 fv-col-offset-md-2"
+                    :fields="['id', 'full_name', {
+                        value: 'score',
+                        text: 'امتیاز',
+                        formatter: function(v){
+                        return v + ' <i class=\'fa fa-star\'>';
+                    }
+                    }]"
+                    :limit="15"
+                    :ajax="$http"
+                    api="https://api.github.com/search/repositories?q=node&page={page}&per_page={limit}"
+                    api-rows-key="body.items"
+                    api-total-count-key="body.total_count"
+                ></fv-table>
+          </div>
+          
+          <div class="fv-row">
             <form class="fv-col-md-8 fv-col-offset-md-2" @submit.prevent="$refs.dialog.open()">
                 <div class="fv-row">
                   <div class="fv-col-sm-6">
@@ -89,17 +128,10 @@
                   <div class="fv-col-xs-12">
                     <fieldset class="fv-form-control-group">
                       <legend class="fv-control-label">اطلاعات بفنی</legend>
-                      <div class="fv-col-sm-6">
-                        <label class="fv-control-label">موبایل {{user.mobile}}</label>
-                        <fv-input type="tel" class="fv-form-control" v-model="user.mobile" placeholder="شماره موبایل خود را وارد کنید." required disabled></fv-input>
-                      </div>
-                      <div class="fv-col-sm-6">
-                        <label class="fv-control-label">نام تیم مورد علاقه {{user.team}}</label>
-                        <fv-select input-class="fv-form-control" :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2, disabled: true}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6}]" v-model="user.team" :allow-insert="false" multiple required ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
-                      </div>
+
                       <div class="fv-col-sm-6">
                         <label class="fv-control-label">تاریخ زایمان {{user.date}}</label>
-                        <fv-datepicker input-class="fv-form-control" v-model="user.date" ref="date" placeholder="تاریخ زایمان رو بگو."></fv-datepicker>
+                        <fv-datepicker input-class="fv-form-control" v-model="user.date" ref="date" placeholder="تاریخ زایمان رو بگو." disabled></fv-datepicker>
                       </div>
                       <div class="fv-col-sm-6">
                         <label class="fv-control-label">جهت همینجوری</label>
@@ -128,20 +160,9 @@
                     <fv-button class="fv-primary fv-block" type="submit">ورود</fv-button>
                 </div>
             </form>
-            <fv-table class="fv-col-sm-12"
-              :fields="['id', 'full_name', {
-                value: 'score',
-                text: 'امتیاز',
-                formatter: function(v){
-                  return v + ' <i class=\'fa fa-star\'>';
-                }
-              }]"
-              :limit="15"
-              :ajax="$http"
-              api="https://api.github.com/search/repositories?q=node&page={page}&per_page={limit}"
-              api-rows-key="body.items"
-              api-total-count-key="body.total_count"
-            ></fv-table>
+          </div>
+          <div class="fv-row">
+
             <div class="fv-col-md-6 fv-col-xs-12">
               <fv-button  @click="$refs.dialog.open()">Open dialog</fv-button>
             </div>

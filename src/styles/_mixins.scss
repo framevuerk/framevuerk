@@ -24,8 +24,8 @@
 }
 
 @mixin disabled{
-    //@include yiq($gray-color-dark);
-    opacity: 0.5;
+    //opacity: 0.5;
+    filter: opacity(50%);
     &, & *{
         cursor: not-allowed;
     }
