@@ -50,10 +50,16 @@ const plugins = [
       '\tLOCALE: ' + CONFIG.LOCALE + "\n"+
       '}' + "\n"
     ),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
+    })
 ];
 if( CONFIG.NODE_ENV !== 'development' ){
   plugins.push( new webpack.optimize.UglifyJsPlugin({
-      minimize: CONFIG.NODE_ENV == 'production'
+      minimize: CONFIG.NODE_ENV == 'production',
+      compress: {
+        warnings: false
+      }
   }));
 }
 
