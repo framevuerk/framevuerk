@@ -65,7 +65,7 @@
                 @include outline($danger-color);
             }
         }
-        &:disabled, &.disabled{
+        &[disabled], &.disabled{
             @include disabled;
         }
         &, &.fv-default{
