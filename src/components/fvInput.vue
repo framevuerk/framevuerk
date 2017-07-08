@@ -53,56 +53,61 @@
             value(){
                 this.checkInvalid();
             }
-        },
-        mounted(){
-            utility.vueEvents().forEach(eventName=>{
-                this.$refs.inputEl.addEventListener(eventName, (event)=> this.$emit(eventName, event) );
-            });
         }
     }
 </script>
 
 <template lang="pug">
-    div.fv-input.fv-input-select(v-if="displayValue !== undefined",
-        ref="inputEl",
-        :class="{invalid: invalid, focus: focus, disabled: disabled}",
-        :tabindex="disabled? '': 0",
-        :disabled="disabled",
-        @focus="checkInvalid(); focus = true;",
-        @click="pClick($event)",
-        @blur="focus = false"
-        @invalid.prevent="pFocus()"
+div.fv-input.fv-input-select(v-if="displayValue !== undefined",
+    ref="inputEl",
+    :class="{invalid: invalid, focus: focus, disabled: disabled}",
+    :tabindex="disabled? '': 0",
+    :disabled="disabled",
+    @focus="checkInvalid(); $emit('focus', $event); focus = true;",
+    @click="pClick($event)",
+    @blur="$emit('blur', $event); focus = false;",
+    @keyup="$emit('keyup', $event)",
+    @keydown="$emit('keydown', $event)",
+    @keypress="$emit('keypress', $event)",
+    @invalid.prevent="pFocus()"
+)
+    span.placeholder(v-if="typeof displayValue == 'undefined' || displayValue === null || displayValue.length === 0",
+        v-html="placeholder"
     )
-        span.placeholder(v-if="typeof displayValue == 'undefined' || displayValue === null || displayValue.length === 0",
-            v-html="placeholder"
-        )
-        span.fv-input-select-item(v-else-if="displayValue.constructor == Array",
-            v-for="val in displayValue",
-            v-html="val"
-        )
-        span.fv-input-select-item(v-else,
-            v-html="displayValue"
-        )
-        i.fv-arrow(v-if="icon",
-            :class="icon"
-        )
-        input(class="fv-hidden",
-            tabindex="999999999",
-            :value="value",
-            :required="required",
-            @focus="$refs.inputEl.focus()"
-        )
-    input.fv-input(v-else,
-        ref="inputEl",
-        :type="type",
-        :tabindex="disabled? '': 0",
-        :disabled="disabled",
+    span.fv-input-select-item(v-else-if="displayValue.constructor == Array",
+        v-for="val in displayValue",
+        v-html="val"
+    )
+    span.fv-input-select-item(v-else,
+        v-html="displayValue"
+    )
+    i(v-if="icon",
+        :class="icon",
+        class="fv-arrow"
+    )
+    input(class="fv-hidden",
+        tabindex="999999999",
         :value="value",
         :required="required",
-        :placeholder="placeholder",
-        @invalid.prevent="pFocus()",
-        @input="$emit('input', $event.target.value)",
+        @focus="$refs.inputEl.focus()"
     )
+input.fv-input(v-else,
+    ref="inputEl",
+    :type="type",
+    :tabindex="disabled? '': 0",
+    :disabled="disabled",
+    :value="value",
+    :required="required",
+    :placeholder="placeholder",
+    @input="$emit('input', $event.target.value)",
+    @focus="$emit('focus', $event)",
+    @click="$emit('click', $event)",
+    @blur="$emit('blur', $event)",
+    @keyup="$emit('keyup', $event)",
+    @keydown="$emit('keydown', $event)",
+    @keypress="$emit('keypress', $event)",
+    @invalid.prevent="pFocus()")
+
 </template>
 
 <style lang="scss">
