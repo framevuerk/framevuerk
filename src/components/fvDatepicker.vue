@@ -246,9 +246,6 @@
             @open="$emit('open')"
         )
             fv-main(ref="datepicker")
-                fv-header.fv-invert
-                    div.fv-title
-                        h3(v-html="displayValue")
                 fv-content.fv-no-padding
                     div.fv-row
                         section(v-for="(val, index) in pSections",
@@ -294,6 +291,9 @@
             }
             & > .fv-button{
                 width: 100%;
+            }
+            & > .fv-title{
+                text-align: center;
             }
             & > .fv-value{
                 background: $bg-color-light;
