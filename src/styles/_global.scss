@@ -2,13 +2,13 @@
 @import "./functions";
 @import "./mixins";
 
-html.fv, html.fv body {
+html, html body {
     height: 100%;
     min-height: 100%;
     max-height: 100%;
     overflow: hidden;
 }
-html.fv body{
+html body{
     @include yiq($bg-color);
     font-family: sans-serif;
     width: 100%;
