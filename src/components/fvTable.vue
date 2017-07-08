@@ -9,7 +9,6 @@
                 totalCount: this.local? this.rows.length: 0,
                 apiResponse: null,
                 loading: false,
-                highlightedRow: null,
                 setUserPageTimeout: null
             }
         },
@@ -228,32 +227,6 @@
             }
         },
         methods: {
-            pKeyDown(event){
-                switch(event.which){
-                    case 38: //up
-                        this.highlightedRow = this.highlightedRow == null? this.pRows.length: this.highlightedRow;
-                        this.highlightedRow = this.highlightedRow-1 < 0? this.pRows.length-1: this.highlightedRow-1;
-                        break;
-                    case 40: // down
-                        this.highlightedRow = this.highlightedRow == null? -1: this.highlightedRow;
-                        this.highlightedRow = this.highlightedRow+1 >= this.pRows.length? 0: this.highlightedRow+1;
-                        break;
-                    case 37: case 39: //left, right
-                        break;
-                    case 13: // enter
-                        event.preventDefault();
-                        if( this.highlightedOption !== null ){
-                            this.rowClick( this.pRows[ this.highlightedRow ] );
-                        }
-                        break;
-                    case 27: //esc
-                        this.highlightedOption = null;
-                    /*
-                    default:
-                        this.highlightedOption = null;
-                        */
-                }        
-            },
             fetch(page=1){
                 const currentPage = this.page;
                 this.loading = true;
@@ -282,9 +255,6 @@
             rowClick(row, index = false){
                 if( this.clickableRows ){
                     this.$emit('click-row', row.pOriginalRow );
-                    if( index !== false ) {
-                        this.highlightedRow = index;
-                    }
                 }
             },
             setUserPage(page){
@@ -319,27 +289,13 @@
         },
         created(){
             this.fetch(1);
-        },
-        watch: {
-            highlightedRow(){
-                if( this.highlightedRow !== null ){
-                    let focusedEl = this.$refs.rowElem[this.highlightedRow];
-                    if( focusedEl ){
-                        if( !utility.isInViewport(focusedEl) ){
-                            focusedEl.scrollIntoView();
-                        }
-                    }
-                }
-            }
         }
     }
 </script>
 
 <template lang="pug">
     div.fv-table
-        table(:class="{'tf-loading': loading}",
-            @keydown="pKeyDown($event)"
-        )
+        table(:class="{'tf-loading': loading}")
             thead
                 tr
                     th(v-for="field in pFields",
@@ -348,7 +304,7 @@
                     )
             tbody
                 tr(v-for="(row, index) in pRows",
-                    :class="{'fv-clickable': clickableRows, 'fv-focused': highlightedRow==index && clickableRows}",
+                    :class="{'fv-clickable': clickableRows}",
                     ref="rowElem",
                     @click="rowClick(row, index)"
                 )
@@ -392,10 +348,10 @@
             }
         }
         & > table{
-            border: solid 1px $default-color-dark;
+            border: solid 1px $shadow-color;
             box-shadow: 0 1em 1em $shadow-color-light;
             width: 100%;
-            border-spacing: 0;
+            border-spacing: 1px;
             &.tf-loading{
                 opacity: 0.4;
             }
@@ -413,18 +369,21 @@
             & > tfoot > tr > td{
                 padding: $padding-small $padding;
                 text-align: center;
-                border-bottom: solid 1px $default-color-dark;
+                //border-bottom: solid 1px $shadow-color;
                 &:not(:last-child){
-                    border-#{$block-end}: solid 1px $default-color-dark;
+                    //border-#{$block-end}: solid 1px $shadow-color;
                 }
             }
             & > tbody{
                 @include yiq($bg-color-light);
+                & > tr:nth-child(2n) td{
+                    @include yiq( darken($bg-color-light, 2%) );
+                }
             }
             & > tbody > tr.fv-clickable{
                 cursor: pointer;
-                &:active,
-                &.fv-focused{
+                &:active td,
+                &.fv-focused td{
                     background: $shadow-color-light;
                 }
             }
