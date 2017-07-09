@@ -62,7 +62,7 @@
         },
         computed: {
             nextPageBtnContent(){
-                if(global.CONFIG.DIRECTION == 'rtl'){
+                if(CONFIG.DIRECTION == 'rtl'){
                     return `${locale.nextPage()} <i class="fa fa-arrow-left"></i>`;
                 }
                 else{
@@ -70,7 +70,7 @@
                 }
             },
             prevPageBtnContent(){
-                if(global.CONFIG.DIRECTION == 'rtl'){
+                if(CONFIG.DIRECTION == 'rtl'){
                     return `<i class="fa fa-arrow-right"></i> ${locale.prevPage()}`;
                 }
                 else{
