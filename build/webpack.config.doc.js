@@ -1,18 +1,15 @@
-var pkg = require('../package.json')
 var path = require('path')
 var fs = require('fs')
 var webpack = require('webpack')
 
-var ENV = process.env.NODE_ENV || 'production';
-
+// var ENV = process.env.NODE_ENV || 'production';
 
 var COMPONENTS = []
 fs.readdirSync(path.resolve(__dirname, '../src/components')).forEach(file => {
   COMPONENTS.push(path.basename(file, '.vue'))
 })
 
-
-const scssLoader = ['style-loader', 'css-loader' , 'sass-loader'];
+const scssLoader = ['style-loader', 'css-loader', 'sass-loader']
 module.exports = {
   entry: path.resolve(__dirname, '../doc/index.js'),
   stats: { children: false },
@@ -60,6 +57,6 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'COMPONENTS': JSON.stringify(COMPONENTS)
-    }),
+    })
   ]
 }
