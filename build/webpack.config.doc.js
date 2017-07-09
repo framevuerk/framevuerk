@@ -5,6 +5,13 @@ var webpack = require('webpack')
 
 var ENV = process.env.NODE_ENV || 'production';
 
+
+var COMPONENTS = []
+fs.readdirSync(path.resolve(__dirname, '../src/components')).forEach(file => {
+  COMPONENTS.push(path.basename(file, '.vue'))
+})
+
+
 const scssLoader = ['style-loader', 'css-loader' , 'sass-loader'];
 module.exports = {
   entry: path.resolve(__dirname, '../doc/index.js'),
@@ -49,5 +56,10 @@ module.exports = {
         loader: 'file-loader?name=[name].[ext]'
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'COMPONENTS': JSON.stringify(COMPONENTS)
+    }),
+  ]
 }
