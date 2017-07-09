@@ -6,6 +6,10 @@
                 default: () => []
             },
             sheet: {
+                type: [Object, Boolean],
+                validator: (value)=>{
+                    return [true, false, null].indexOf(value) > -1;
+                },
                 default: null /* or true or false */
             },
             title: {

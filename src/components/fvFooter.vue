@@ -19,7 +19,7 @@
                 this.$el.style.height = `${this.height}px`;
                 this.$el.style.minHeight = `${this.height}px`;
                 this.$el.style.maxHeight = `${this.height}px`;
-    
+
             }
         }
     }
@@ -55,9 +55,6 @@
         }
         & .fv-button{
             margin: 0 0.5em;
-        }
-        & .fv-grow {
-            flex-grow: 1;
         }
     }
 </style>

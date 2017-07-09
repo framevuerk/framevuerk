@@ -8,7 +8,9 @@
             },
             position: {
                 type: String,
-                enum: ['bottom', 'center'],
+                validator: (value)=>{
+                    return ['bottom', 'center'].indexOf(value) > -1;
+                },
                 default: 'center'
             },
             autoClose: {

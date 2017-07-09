@@ -3,8 +3,8 @@
     export default {
         props: {
             type: {
-                type: String,
-                default: 'button'
+                type:  String,
+                default:'button'
             }
         },
         mounted(){

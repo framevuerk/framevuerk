@@ -98,9 +98,6 @@
                     padding: 4px 0;
                 }
             }
-            &.fv-grow {
-                flex-grow: 1;
-            }
         }
     }
 

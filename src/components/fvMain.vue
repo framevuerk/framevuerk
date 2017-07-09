@@ -10,9 +10,7 @@
 </script>
 
 <template lang="pug">
-    div(ref="el",
-        class="fv-main"
-    )
+    div.fv-main(ref="el")
         slot
 </template>
 

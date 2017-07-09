@@ -22,6 +22,10 @@
                 type: String,
                 default: '/items?page:{page}&limit={limit}'
             },
+            footer: {
+                type: Boolean,
+                default: true
+            },
             paginate: {
                 type: Boolean,
                 default: true
@@ -241,7 +245,7 @@
                         this.apiResponse = response;
                         this.loading = false;
                         this.$emit('fetch', this.page);
-    
+
                     }).catch(response => {
                         this.$emit('fetch-error', this.page, response);
                         this.page = currentPage;
@@ -306,7 +310,7 @@
                         :class="field.class",
                         v-html="row[field.value]"
                     )
-            tfoot
+            tfoot(v-if="footer")
                 tr
                     td(:colspan="pFields.length")
                         div.page-control-continer(v-if="paginate && !local")

@@ -118,7 +118,7 @@
             else{
                 throw new Error('Moment not found!');
             }
-    
+
         },
         methods: {
             open(){

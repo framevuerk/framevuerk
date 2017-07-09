@@ -7,12 +7,16 @@
             },
             position: {
                 type: String,
+                validator: (value)=>{
+                    return ['right', 'left'].indexOf(value) > -1;
+                },
                 default: CONFIG.DIRECTION=='ltr'? 'left': 'right'
             },
-            main: {
-                default: null
-            },
             pin: {
+                type: [Object, Boolean],
+                validator: (value)=>{
+                    return [true, false, null].indexOf(value) > -1;
+                },
                 default: null // or false or true
             }
         },
