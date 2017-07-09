@@ -7,7 +7,7 @@
 </script>
 
 <template lang="pug">
-    div salam salam sad taaassa;ammmmmmm
+    fv-content salam salam sad taaassa;ammmmmmm
 </template>
 
 <style lang="scss">
