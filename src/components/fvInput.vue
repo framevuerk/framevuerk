@@ -40,8 +40,15 @@
         methods: {
             checkInvalid(){
                 if( this.required ){
-                    let length = this.value === null? 0: this.value.toString().length;
-                    this.invalid = length > 0? true: false;
+                    if( this.value === null || (this.value.constructor === Array && this.value.length === 0) ){
+                        this.invalid = true;
+                    }
+                    else{
+                        this.invalid = false;
+                    }
+                }
+                else{
+                    this.invalid = false;
                 }
             },
             pFocus(){
