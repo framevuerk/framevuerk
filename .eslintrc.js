@@ -11,7 +11,9 @@ module.exports = {
     'node': true
   },
   settings: {
-    'html/html-extensions': ['.vue']
+    'html/html-extensions': ['.vue', '.html'],
+    'html/indent': '+4',
+    'html/report-bad-indent': 'error',
   },
   rules: {
     'vue/html-end-tags': 'error',
@@ -39,6 +41,8 @@ module.exports = {
     'vue/no-invalid-v-once': 'error',
     'vue/no-invalid-v-pre': 'error',
     'vue/no-invalid-v-show': 'error',
-    'vue/no-invalid-v-text': 'error'
+    'vue/no-invalid-v-text': 'error',
+    'vue/no-parsing-error': 'error',
+    'vue/no-template-key': 'error'
   }
 }
