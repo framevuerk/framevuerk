@@ -104,7 +104,7 @@
                         }
                         default: throw new Error('error in fv-datepicker pick attribute.');
                     }
-                });            
+                });
             }
         },
         created(){
@@ -117,7 +117,7 @@
             else{
                 throw 'Moment not found!';
             }
-            
+    
         },
         methods: {
             open(){
@@ -173,7 +173,7 @@
                         break;
                     default:
                         this.highlightedOption = null;
-                } 
+                }
             },
             clickButton(action){
                 switch(action){

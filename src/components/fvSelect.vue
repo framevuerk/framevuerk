@@ -184,7 +184,7 @@
                 else if( newIndex !== null && index > this.pOptions.length - 1){
                     newIndex = index - this.pOptions.length;
                 }
-                
+    
                 if( !this.pOptions[newIndex].disabled ){
                     this.highlightedOption = newIndex;
                 }
@@ -194,7 +194,7 @@
                 else if( force == 'prev' && this.pOptions.filter(o=>!o.disabled).length ){
                     this.highlightOption( newIndex - 1 );
                 }
-                
+    
             },
             pFocus(el="input"){
                 if( el == 'input' ){
@@ -203,7 +203,7 @@
                 else{
                     if( this.search || this.allowInsert ){
                         this.$refs.searchQueryEl.$el.focus();
-                        
+    
                     }
                     else{
                         this.$refs.dialog.pFocus();
@@ -244,7 +244,7 @@
                             event.target.click();
                         }
                         break;
-                }        
+                }
             },
             clickOption(option={index:null,value:null, key:'select'}, setHighlight = false){
                 if( option.disabled || option.key == 'none' ){

@@ -106,7 +106,7 @@
                         break;
                     case 27: //esc
                         this.close();
-                }        
+                }
             },
             widthChangeEvent(){
                 const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;

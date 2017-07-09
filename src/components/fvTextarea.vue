@@ -11,7 +11,7 @@
             },
             placeholder: {
                 type: String,
-                default : ''
+                default: ''
             }
         },
         mounted(){

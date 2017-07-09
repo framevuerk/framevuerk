@@ -67,7 +67,7 @@
                         event.preventDefault();
                         this.pToggle();
                         break;
-                }        
+                }
             },
         }
     }

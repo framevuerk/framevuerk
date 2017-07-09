@@ -167,7 +167,7 @@
                         page = this.pFindValueByKey( this.apiNextPageKey, this.apiResponse );
                         if( typeof page == 'undefined' ){
                             throw new Error('Where is apiNextPageKey in apiResponse?');
-                        }       
+                        }
                     }
                     // { rows: [...], is_lastpage: false }
                     if( this.apiFinishedKey !== null ){
@@ -181,7 +181,7 @@
                         if( typeof finished == 'undefined' ){
                             throw new Error('Where is apiFinishedKey in apiResponse?');
                         }
-                        if( 
+                        if(
                             (equal && !finished) ||
                             (!equal && finished)
                         ){
@@ -241,7 +241,7 @@
                         this.apiResponse = response;
                         this.loading = false;
                         this.$emit('fetch', this.page);
-                        
+    
                     }).catch(response => {
                         this.$emit('fetch-error', this.page, response);
                         this.page = currentPage;

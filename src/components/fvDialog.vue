@@ -113,7 +113,7 @@
                         break;
                     case 27: //esc
                         this.closeIf();
-                } 
+                }
             },
             clickButton(button){
                 this.$emit('click-button', button.key, this.pProp);
