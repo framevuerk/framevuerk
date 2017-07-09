@@ -7,7 +7,7 @@
             },
             position: {
                 type: String,
-                default: global.DIRECTION=='ltr'? 'left': 'right'
+                default: CONFIG.DIRECTION=='ltr'? 'left': 'right'
             },
             main: {
                 default: null
