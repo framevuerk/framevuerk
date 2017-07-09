@@ -33,7 +33,5 @@ export default {
       'invalid'
     ]
   },
-  _dependencies: {
-    moment: null
-  }
+  _dependencies: {}
 }
