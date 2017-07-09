@@ -38,10 +38,14 @@
             fv-header(:height="150")
                 div.fv-title.fv-text-center
                     h1 Framevuerk
+                    p.fv-word-wrap Awesome fully responsive Vue.js framevuerk!
             fv-tabs(:tabs="sidebarTabs")
                 fv-list.no-outline-border(:items="sidebarItems", slot="components")
         router-view
-        fv-footer by
+        fv-footer
+            div.fv-grow
+            a
+                i.fa.fa-2x.fa-github
 </template>
 
 <style lang="scss">
@@ -50,6 +54,9 @@
             background: #313840;
             & .fv-title h1{
                 font-size: 2em;
+            }
+            & *{
+                line-height: 1.3em;
             }
         }
         & .fv-tabs{
