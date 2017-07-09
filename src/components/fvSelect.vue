@@ -333,7 +333,7 @@
             @keydown="pKeyDown($event)",
             @close="$emit('close'); pFocus('input');",
             @open="$emit('open')",
-            firstFocusOn="0"
+            :first-focus-on="0"
         )
             fv-main(ref="select")
                 fv-header.fv-invert(v-if="search || allowInsert")
