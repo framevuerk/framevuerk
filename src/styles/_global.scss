@@ -58,7 +58,22 @@ html body{
 }
 
 .fv-text-center{
-    text-align: center;
+    text-align: center !important;
+}
+.fv-text-right{
+    text-align: right !important;
+}
+.fv-text-left{
+    text-align: left !important;
+}
+.fv-rtl{
+    direction: rtl !important;
+}
+.fv-ltr{
+    direction: ltr !important;
+}
+.fv-grow {
+    flex-grow: 1 !important;;
 }
 
 .fv-padding{
@@ -95,6 +110,14 @@ html body{
 }
 .fv-pointer{
     cursor: pointer !important;
+}
+.fv-word-wrap{
+    white-space: normal !important;
+}
+.fv-no-wrap{
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
 }
 
 .fv-form-control, .fv-button{
