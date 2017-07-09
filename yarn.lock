@@ -4798,10 +4798,6 @@ sha.js@^2.4.0, sha.js@^2.4.8:
   dependencies:
     inherits "^2.0.1"
 
-"shabnam-font@git+https://github.com/rastikerdar/shabnam-font.git":
-  version "1.1.0"
-  resolved "git+https://github.com/rastikerdar/shabnam-font.git#cc9a13b08e7165c7ef75380e6f36fbf394ab5792"
-
 shallow-clone@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/shallow-clone/-/shallow-clone-0.1.2.tgz#5909e874ba77106d73ac414cfec1ffca87d97060"
