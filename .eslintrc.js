@@ -1,10 +1,12 @@
 module.exports = {
   extends: [
-    'standard',
-    'plugin:vue/recommended'
+    'xo/esnext',
+    'plugin:vue/recommended',
+    'plugin:unicorn/recommended'
   ],
   plugins: [
-    'html'
+    'html',
+    'unicorn'
   ],
   env: {
     'browser': true,
@@ -16,6 +18,10 @@ module.exports = {
     'html/report-bad-indent': 'error',
   },
   rules: {
+    indent: ['error', 4],
+    'unicorn/filename-case': ['off'],
+    'unicorn/no-abusive-eslint-disable': ['off'],
+    'object-curly-spacing': ['error', 'always'],
     'vue/html-end-tags': 'error',
     'vue/html-no-self-closing': 'error',
     'vue/no-confusing-v-for-v-if': 'error',
