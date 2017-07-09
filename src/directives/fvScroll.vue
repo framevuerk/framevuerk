@@ -1,7 +1,7 @@
 <script>
     export default {
         isFn: true,
-        inserted(el, binding, vnode){
+        inserted(el, binding){
             if( binding.value === false ){
                 return;
             }

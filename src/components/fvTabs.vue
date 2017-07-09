@@ -1,13 +1,13 @@
 <script>
     export default {
-        data(){
-            return {
-                selectedTab: null
-            }
-        },
         props: {
             tabs: {
                 type: Array
+            }
+        },
+        data(){
+            return {
+                selectedTab: null
             }
         },
         computed: {
@@ -25,13 +25,13 @@
                 return ret;
             }
         },
+        mounted(){
+            this.selectedTab = this.pTabs[0].slot;
+        },
         methods: {
             clickTab(slotName){
                 this.selectedTab = slotName;
             }
-        },
-        mounted(){
-            this.selectedTab = this.pTabs[0].slot;
         }
     }
 </script>

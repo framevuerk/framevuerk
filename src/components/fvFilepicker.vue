@@ -30,6 +30,15 @@
                 selected: false
             }
         },
+        watch: {
+            value(){
+                this.checkInvalid();
+                this.valueChanges();
+            }
+        },
+        created(){
+            this.valueChanges();
+        },
         methods: {
             checkInvalid(){
                 if( this.required ){
@@ -38,13 +47,10 @@
 
                 }
             },
-            choose(event){
-                //event.preventDefault();
+            choose(){
                 this.$refs.fileinput.click();
-                //event.preventDefault();
-                //event.stopPropagation();
             },
-            pFocus(el="input"){
+            pFocus(){
                 this.$refs.btnEl.$el.focus();
             },
             pick(){ // here, should fire when input type file changed by user
@@ -114,15 +120,6 @@
                         break;
                 }
             }
-        },
-        watch: {
-            value(){
-                this.checkInvalid();
-                this.valueChanges();
-            }
-        },
-        created(){
-            this.valueChanges();
         }
     }
 </script>

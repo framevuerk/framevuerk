@@ -1,5 +1,4 @@
 <script>
-    import utility from '../utility';
     export default {
         props: {
             value: {
@@ -33,6 +32,11 @@
                 focus: false
             }
         },
+        watch: {
+            value(){
+                this.checkInvalid();
+            }
+        },
         methods: {
             checkInvalid(){
                 if( this.required ){
@@ -47,11 +51,6 @@
                 if( !this.disabled ){
                     this.$emit('click', event);
                 }
-            }
-        },
-        watch: {
-            value(){
-                this.checkInvalid();
             }
         }
     }

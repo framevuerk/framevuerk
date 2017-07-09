@@ -3,29 +3,6 @@
     import locale from 'locale';
     const moment = utility._dependencies.moment;
     export default {
-        data(){
-            return {
-                pDate: {}, //moment.utc(),
-                pValue: {},
-                displayValue: null,
-                pShow: false,
-                highlightedOption: null,
-                dialogButtons: [
-                    {
-                        key: 'reset',
-                        icon: 'fa fa-circle-o',
-                        text: locale.selectNone(),
-                        class: 'fv-default'
-                    },
-                    {
-                        key: 'ok',
-                        icon: 'fa fa-check',
-                        text: locale.ok(),
-                        class: 'fv-primary'
-                    }
-                ]
-            }
-        },
         props: {
             value: {
                 default: null,
@@ -64,6 +41,83 @@
             displayFormat: {
                 default: locale.momentDisplayFormat()
             }
+        },
+        data(){
+            return {
+                pDate: {}, //moment.utc(),
+                pValue: {},
+                displayValue: null,
+                pShow: false,
+                highlightedOption: null,
+                dialogButtons: [
+                    {
+                        key: 'reset',
+                        icon: 'fa fa-circle-o',
+                        text: locale.selectNone(),
+                        class: 'fv-default'
+                    },
+                    {
+                        key: 'ok',
+                        icon: 'fa fa-check',
+                        text: locale.ok(),
+                        class: 'fv-primary'
+                    }
+                ]
+            }
+        },
+        computed: {
+            pSections(){
+                return this.pick.map( (v)=>{
+                    switch(v){
+                        case 'year': return {
+                            type: 'pick',
+                            name: v,
+                            title: locale.year()
+                        };
+                        case 'month': return {
+                            type: 'pick',
+                            name: v,
+                            title: locale.month()
+                        }
+                        case 'day': return {
+                            type: 'pick',
+                            name: v,
+                            title: locale.day()
+                        }
+                        case 'hour': return {
+                            type: 'pick',
+                            name: v,
+                            title: locale.hour()
+                        }
+                        case 'minute': return {
+                            type: 'pick',
+                            name: v,
+                            title: locale.minute()
+                        }
+                        case 'second': return {
+                            type: 'pick',
+                            name: v,
+                            title: locale.second()
+                        }
+                        case 'sp': return {
+                            type: 'sp'
+                        }
+                        default: throw new Error('error in fv-datepicker pick attribute.');
+                    }
+                });            
+            }
+        },
+        created(){
+            if( moment ){
+                if( global.CONFIG.LOCALE == 'fa' ){
+                    moment.loadPersian();
+                }
+                this.pSetValue(this.value === null? null: moment.utc() );
+            }
+            else{
+                throw 'Moment not found!';
+            }
+            
         },
         methods: {
             open(){
@@ -158,67 +212,13 @@
                     this.displayValue = this.pDate.format(this.displayFormat);
                 }
             },
-            closeIf(event){
+            closeIf(){
                 utility.doIt( ()=>{
                     var focusedElem = document.querySelector(':focus');
                     if( focusedElem !== null && !utility.isDescendant(this.$refs.datepicker.$el, focusedElem) ){
                         this.close();
                     }
                 } );
-            }
-        },
-        created(){
-            if( moment ){
-                if( CONFIG.LOCALE == 'fa' ){
-                    moment.loadPersian();
-                }
-                this.pSetValue(this.value === null? null: moment.utc() );
-            }
-            else{
-                throw 'Moment not found!';
-            }
-            
-        },
-        computed: {
-            pSections(){
-                return this.pick.map( (v)=>{
-                    switch(v){
-                        case 'year': return {
-                            type: 'pick',
-                            name: v,
-                            title: locale.year()
-                        };
-                        case 'month': return {
-                            type: 'pick',
-                            name: v,
-                            title: locale.month()
-                        }
-                        case 'day': return {
-                            type: 'pick',
-                            name: v,
-                            title: locale.day()
-                        }
-                        case 'hour': return {
-                            type: 'pick',
-                            name: v,
-                            title: locale.hour()
-                        }
-                        case 'minute': return {
-                            type: 'pick',
-                            name: v,
-                            title: locale.minute()
-                        }
-                        case 'second': return {
-                            type: 'pick',
-                            name: v,
-                            title: locale.second()
-                        }
-                        case 'sp': return {
-                            type: 'sp'
-                        }
-                        default: throw 'error in fv-datepicker pick attribute.';
-                    }
-                });            
             }
         }
     }

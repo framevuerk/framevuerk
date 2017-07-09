@@ -14,15 +14,15 @@
                 default : ''
             }
         },
-        methods: {
-            pFocus(){
-                this.$refs.inputEl.focus();
-            }
-        },
         mounted(){
             utility.vueEvents().forEach(eventName=>{
                 this.$refs.inputEl.addEventListener(eventName, (event)=> this.$emit(eventName, event) );
             });
+        },
+        methods: {
+            pFocus(){
+                this.$refs.inputEl.focus();
+            }
         }
     }
 </script>

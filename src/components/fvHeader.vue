@@ -6,24 +6,19 @@
                 default: 55
             }
         },
+        watch: {
+            height(){
+                this.setHeight();
+            }
+        },
+        mounted(){
+            this.setHeight();
+        },
         methods: {
             setHeight(){
                 this.$el.style.height = `${this.height}px`;
                 this.$el.style.minHeight = `${this.height}px`;
                 this.$el.style.maxHeight = `${this.height}px`;
-            }
-        },
-        mounted(){
-            this.setHeight();
-            // this.$parent.addEventListener('scroll', this.pAutoShow);
-        },
-        destroyed(){
-            // this.$parent.removeEventListener('scroll', this.pAutoShow);
-        },
-        watch: {
-            height(){
-                console.log('height changed');
-                this.setHeight();
             }
         }
     }

@@ -6,20 +6,20 @@
                 default: 65
             }
         },
+        watch: {
+            height(){
+                this.setHeight();
+            }
+        },
+        mounted(){
+            this.setHeight();
+        },
         methods: {
             setHeight(){
                 this.$el.style.height = `${this.height}px`;
                 this.$el.style.minHeight = `${this.height}px`;
                 this.$el.style.maxHeight = `${this.height}px`;
                 
-            }
-        },
-        mounted(){
-            this.setHeight();
-        },
-        watch: {
-            height(){
-                this.setHeight();
             }
         }
     }

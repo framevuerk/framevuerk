@@ -24,6 +24,19 @@
                 focus: false
             }
         },
+        computed: {
+            invalid(){
+                return this.required === true && this.value !== this.onValue;
+            }
+        },
+        watch: {
+            value(){
+                this.setStructure();
+            }
+        },
+        created(){
+            this.setStructure();
+        },
         methods: {
             pSetValue(value){
                 this.$emit('input', value);
@@ -56,19 +69,6 @@
                         break;
                 }        
             },
-        },
-        computed: {
-            invalid(){
-                return this.required === true && this.value !== this.onValue;
-            }
-        },
-        watch: {
-            value(){
-                this.setStructure();
-            }
-        },
-        created(){
-            this.setStructure();
         }
     }
 </script>

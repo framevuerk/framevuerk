@@ -1,5 +1,4 @@
 <script>
-    import utility from '../utility';
     export default {
         props: {
             options: {
@@ -26,6 +25,31 @@
                 pParam:  null,
                 focusBackElem: null
             }
+        },
+        computed: {
+            pOptions(){
+                let ret = [];
+                this.options.forEach( (value, index)=>{
+                    ret.push({
+                        index: index,
+                        key: value.key || value.text || value,
+                        icon: value.icon || false,
+                        text: value.text || value,
+                        highlighted: this.highlightedOption === index,
+                        disabled: value.disabled || false,
+                        action: value.action || new Function()
+                    });
+                });
+                return ret;
+            }
+        },
+        watch: {
+            sheet(){
+                this.bindEvents();
+            }
+        },
+        created(){
+            this.bindEvents();
         },
         methods: {
             pFocus(el){
@@ -104,31 +128,6 @@
                     window.removeEventListener('orientationChange', this.widthChangeEvent );
                     this.pSheet = this.sheet;
                 }
-            }
-        },
-        computed: {
-            pOptions(){
-                let ret = [];
-                this.options.forEach( (value, index)=>{
-                    ret.push({
-                        index: index,
-                        key: value.key || value.text || value,
-                        icon: value.icon || false,
-                        text: value.text || value,
-                        highlighted: this.highlightedOption === index,
-                        disabled: value.disabled || false,
-                        action: value.action || new Function()
-                    });
-                });
-                return ret;
-            }
-        },
-        created(){
-            this.bindEvents();
-        },
-        watch: {
-            sheet(){
-                this.bindEvents();
             }
         }
     }

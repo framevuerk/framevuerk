@@ -6,14 +6,6 @@
                 default: () => []
             }
         },
-        methods: {
-            clickItem(item){
-                if( !item.disabled ){
-                    this.$emit('click-item', item);
-                    item.action();
-                }
-            }
-        },
         computed: {
             pItems(){
                 let ret = [];
@@ -31,6 +23,14 @@
                     }));
                 });
                 return ret;
+            }
+        },
+        methods: {
+            clickItem(item){
+                if( !item.disabled ){
+                    this.$emit('click-item', item);
+                    item.action();
+                }
             }
         }
     }

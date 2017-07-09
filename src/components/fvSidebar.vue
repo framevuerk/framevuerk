@@ -7,7 +7,7 @@
             },
             position: {
                 type: String,
-                default: CONFIG.DIRECTION=='ltr'? 'left': 'right'
+                default: global.DIRECTION=='ltr'? 'left': 'right'
             },
             main: {
                 default: null
@@ -25,21 +25,56 @@
                 pPin: false
             }
         },
+        computed: {
+            animationName(){
+                if( this.pAnimation === true ){
+                    return `fv-sidebar-${this.pPosition}`;
+                }
+                else{
+                    return '';
+                }
+            }
+        },
+        watch: {
+            position(){
+                this.pSetPosition();
+            },
+            pin(){
+                this.pSetPin();
+                this.pMainPadding();
+            },
+            width(){
+                this.pSetWidth();
+                this.pMainPadding();
+            }
+        },
+        created(){
+            this.pAnimation = false;
+        },
+        mounted(){
+            this.pSetPosition();
+            this.pSetWidth();
+            this.pSetPin();
+            this.pMainPadding();
+            setTimeout(()=>{
+                this.pAnimation = true;
+            }, 300);
+        },
         methods: {
-            open: function(){
+            open(){
                 this.pShow = true;
                 this.pMainPadding();
                 this.$emit('open');
             },
-            close: function(){
+            close(){
                 this.pShow = false;
                 this.pMainPadding();
                 this.$emit('close');
             },
-            toggle: function(){
+            toggle(){
                 this[this.pShow?'close':'open']();
             },
-            pSetPosition: function(){
+            pSetPosition(){
                 if( ['left','right'].indexOf( this.position) !== -1 ){
                     this.pPosition = this.position;
                 }
@@ -47,7 +82,7 @@
                     this.pPosition = 'left';
                 }
             },
-            widthChangeEvent: function(){
+            widthChangeEvent(){
                 const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
                 if( width < 992 ){
                     this.pPin = false;
@@ -58,7 +93,7 @@
                     this.open();
                 }
             },
-            bindEvents: function(set=true){
+            bindEvents(set=true){
                 if( set ){
                     this.widthChangeEvent();
                     window.addEventListener('resize', this.widthChangeEvent );
@@ -69,7 +104,7 @@
                     window.removeEventListener('orientationChange', this.widthChangeEvent );
                 }
             },
-            pSetPin: function(){
+            pSetPin(){
                 this.pPin = this.pin;
                 if( this.pPin === true ){
                     this.bindEvents(false);
@@ -83,12 +118,12 @@
                     this.bindEvents(true);
                 }
             },
-            pSetWidth: function(){
+            pSetWidth(){
                 if( typeof this.width == 'number' && this.width > 0 ){
                     this.pWidth = this.width;
                 }
             },
-            pMainPadding: function(){
+            pMainPadding(){
                 let el = this.$refs.sidebar;
                 do{
                     if( el.classList.contains('fv-main') ){
@@ -110,42 +145,6 @@
                 }
                 return true;
             }
-        },
-        computed: {
-            animationName(){
-                if( this.pAnimation === true ){
-                    return `fv-sidebar-${this.pPosition}`;
-                }
-                else{
-                    return '';
-                }
-            }
-        },
-        created(){
-            this.pAnimation = false;
-        },
-        mounted: function(){
-            
-            this.pSetPosition();
-            this.pSetWidth();
-            this.pSetPin();
-            this.pMainPadding();
-            setTimeout(()=>{
-                this.pAnimation = true;
-            }, 300);
-        },
-        watch: {
-            position: function(){
-                this.pSetPosition();
-            },
-            pin: function(){
-                this.pSetPin();
-                this.pMainPadding();
-            },
-            width: function(){
-                this.pSetWidth();
-                this.pMainPadding();
-            }
         }
     }
 </script>
@@ -153,9 +152,17 @@
 <template lang="pug">
     span
         transition(name="fv-fade")
-            div(class="fv-overlay", v-show="pShow && !pPin", @click="close()")
+            div(class="fv-overlay",
+                    v-show="pShow && !pPin",
+                    @click="close()"
+            )
         transition(:name="animationName")
-            aside(class="fv-sidebar", v-show="pShow", :style="{width: pWidth+'px'}", :class="{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}", ref="sidebar")
+            aside(class="fv-sidebar",
+                v-show="pShow",
+                :style="{width: pWidth+'px'}",
+                :class="{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}",
+                ref="sidebar"
+            )
                 slot
 </template>
 

@@ -1,13 +1,6 @@
 <script>
     import utility from '../utility';
     export default {
-        data(){
-            return {
-                pShow: false,
-                pProp: null,
-                focusBackElem: null
-            }
-        },
         props: {
             title: {
                 default: '',
@@ -31,6 +24,35 @@
             },
             firstFocusOn: {
                 default: false // can be index or false (lastindex) or true (firstindex)
+            }
+        },
+        data(){
+            return {
+                pShow: false,
+                pProp: null,
+                focusBackElem: null
+            }
+        },
+        computed: {
+            pButtons(){
+                let ret = [];
+                this.buttons.forEach( (value)=>{
+                    ret.push({
+                        key: value.key || value.text || value,
+                        icon: value.icon || false,
+                        text: value.text || value,
+                        action: value.action || new Function(),
+                        class: value.class || 'fv-default',
+                        disabled: value.disabled || false
+                    });
+                });
+                return ret;
+            },
+            focusableItems(){
+                return this.$refs.dialog.$el.querySelectorAll('select, input, textarea, button, a, [tabindex]');
+            },
+            animationName(){
+                return `fv-dialog-${this.position}`;
             }
         },
         methods: {
@@ -98,29 +120,7 @@
                 button.action(this.pProp);
                 this.closeIf();
             }
-        },
-        computed: {
-            pButtons(){
-                let ret = [];
-                this.buttons.forEach( (value)=>{
-                    ret.push({
-                        key: value.key || value.text || value,
-                        icon: value.icon || false,
-                        text: value.text || value,
-                        action: value.action || new Function(),
-                        class: value.class || 'fv-default',
-                        disabled: value.disabled || false
-                    });
-                });
-                return ret;
-            },
-            focusableItems(){
-                return this.$refs.dialog.$el.querySelectorAll('select, input, textarea, button, a, [tabindex]');
-            },
-            animationName(){
-                return `fv-dialog-${this.position}`;
-            }
-        },
+        }
     }
 </script>
 

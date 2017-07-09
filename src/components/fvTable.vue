@@ -2,16 +2,6 @@
     import utility from '../utility';
     import locale from 'locale';
     export default {
-        data(){
-            return {
-                locale,
-                page: 1,
-                totalCount: this.local? this.rows.length: 0,
-                apiResponse: null,
-                loading: false,
-                setUserPageTimeout: null
-            }
-        },
         props: {
             fields: {
                 type: Array,
@@ -60,9 +50,19 @@
                 default: 15
             }
         },
+        data(){
+            return {
+                locale,
+                page: 1,
+                totalCount: this.local? this.rows.length: 0,
+                apiResponse: null,
+                loading: false,
+                setUserPageTimeout: null
+            }
+        },
         computed: {
             nextPageBtnContent(){
-                if(CONFIG.DIRECTION == 'rtl'){
+                if(global.CONFIG.DIRECTION == 'rtl'){
                     return `${locale.nextPage()} <i class="fa fa-arrow-left"></i>`;
                 }
                 else{
@@ -70,7 +70,7 @@
                 }
             },
             prevPageBtnContent(){
-                if(CONFIG.DIRECTION == 'rtl'){
+                if(global.CONFIG.DIRECTION == 'rtl'){
                     return `<i class="fa fa-arrow-right"></i> ${locale.prevPage()}`;
                 }
                 else{
@@ -134,8 +134,7 @@
                 else if( this.apiTotalCountKey !== null ){
                     const totalCount = this.pFindValueByKey( this.apiTotalCountKey, this.apiResponse );
                     if( typeof totalCount == 'undefined' ){
-                        console.error('Where is totalCount in apiResponse?');
-                        return false;
+                        throw new Error('Where is totalCount in apiResponse?');
                     }
                     const totalPages = Math.ceil( totalCount / this.limit );
                     return totalPages;
@@ -163,13 +162,11 @@
                     // { rows: [...], next: 'x', prev: 'y' }
                     else if ( this.apiNextPageKey !== null ){
                         if( this.apiNextPageKey ){
-                            console.error('Where is apiNextPageKey?');
-                            return false;
+                            throw new Error('Where is apiNextPageKey?');
                         }
                         page = this.pFindValueByKey( this.apiNextPageKey, this.apiResponse );
                         if( typeof page == 'undefined' ){
-                            console.error('Where is apiNextPageKey in apiResponse?');
-                            return false;
+                            throw new Error('Where is apiNextPageKey in apiResponse?');
                         }       
                     }
                     // { rows: [...], is_lastpage: false }
@@ -182,8 +179,7 @@
                         }
                         const finished = this.pFindValueByKey( key, this.apiResponse );
                         if( typeof finished == 'undefined' ){
-                            console.error('Where is apiFinishedKey in apiResponse?');
-                            return false;
+                            throw new Error('Where is apiFinishedKey in apiResponse?');
                         }
                         if( 
                             (equal && !finished) ||
@@ -218,13 +214,15 @@
                     else if ( this.apiPreviousPageKey !== null ){
                         page = this.pFindValueByKey( this.apiPreviousPageKey, this.apiResponse );
                         if( typeof page == 'undefined' ){
-                            console.error('Where is apiPreviousPageKey in apiResponse?');
-                            return false;
+                            throw new Error('Where is apiPreviousPageKey in apiResponse?');
                         }
                     }
                     return page;
                 }
             }
+        },
+        created(){
+            this.fetch(1);
         },
         methods: {
             fetch(page=1){
@@ -235,8 +233,7 @@
                     return false;
                 }
                 else if( !this.ajax ){
-                    console.error('Are you set ajax prop?');
-                    return false;
+                    throw new Error('Are you set ajax prop?');
                 }
                 else{
                     this.page = page;
@@ -246,13 +243,13 @@
                         this.$emit('fetch', this.page);
                         
                     }).catch(response => {
-                        this.$emit('fetch-error', this.page);
+                        this.$emit('fetch-error', this.page, response);
                         this.page = currentPage;
                         this.loading = false;
                     });
                 }
             },
-            rowClick(row, index = false){
+            rowClick(row){
                 if( this.clickableRows ){
                     this.$emit('click-row', row.pOriginalRow );
                 }
@@ -286,9 +283,6 @@
                 });
                 return ret;
             }
-        },
-        created(){
-            this.fetch(1);
         }
     }
 </script>

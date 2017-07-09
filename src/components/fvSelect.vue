@@ -2,29 +2,6 @@
     import utility from '../utility';
     import locale from 'locale';
     export default {
-        data(){
-            return {
-                locale,
-                pValue: null,
-                pShow: false,
-                searchQuery: '',
-                highlightedOption: null,
-                dialogButtons: [
-                    {
-                        key: 'reset',
-                        icon: 'fa fa-circle-o',
-                        text: locale.selectNone(),
-                        class: 'fv-default'
-                    },
-                    {
-                        key: 'ok',
-                        icon: 'fa fa-check',
-                        text: locale.ok(),
-                        class: 'fv-primary'
-                    }
-                ]
-            }
-        },
         props: {
             options: {
                 type: Array,
@@ -63,6 +40,132 @@
                 type: Boolean,
                 default: false
             }
+        },
+        data(){
+            return {
+                locale,
+                pValue: null,
+                pShow: false,
+                searchQuery: '',
+                highlightedOption: null,
+                dialogButtons: [
+                    {
+                        key: 'reset',
+                        icon: 'fa fa-circle-o',
+                        text: locale.selectNone(),
+                        class: 'fv-default'
+                    },
+                    {
+                        key: 'ok',
+                        icon: 'fa fa-check',
+                        text: locale.ok(),
+                        class: 'fv-primary'
+                    }
+                ]
+            }
+        },
+        computed: {
+            mOptions(){
+                const mOptions = this.options;
+                if( this.pValue !== null ){
+                    if( this.multiple === true ){
+                        this.pValue.forEach( (value)=>{
+                            const founded = mOptions.find((v) => v.value == value);
+                            if( !founded ){
+                                mOptions.unshift({
+                                    text: value,
+                                    value: value
+                                });
+                            }
+                        });
+                    }
+                }
+                return mOptions;
+            },
+            pOptions(){
+                let ret = [];
+
+                this.mOptions.forEach( (option,index)=>{
+                    let text = typeof option == 'object' && option !== null? option.text: option;
+                    let value = typeof option == 'object' && option !== null? option.value: option;
+                    let disabled = typeof option == 'object' && option !== null? option.disabled || false: false;
+                    let selected = this.pIsSelected({value});
+                    if(
+                        utility.contains(text, this.searchQuery) ||
+                        utility.contains(value, this.searchQuery)
+                    ){
+                        ret.push({
+                            text: text,
+                            value: value,
+                            highlighted: this.highlightedOption === index,
+                            disabled: disabled,
+                            selected: selected,
+                            key: 'select',
+                            index: index,
+                        });
+                    }
+                });
+                let index = ret.length;
+                if( this.allowInsert === true && this.searchQuery.length > 0){
+                    ret.push({
+                        text: locale.add(this.searchQuery),
+                        value: this.searchQuery,
+                        highlighted: this.highlightedOption === index,
+                        key: 'insert',
+                        index: index++,
+                    });
+                }
+                if( ret.length === 0 ){
+                    ret.push({
+                        text: locale.notFound(),
+                        value: null,
+                        highlighted: this.highlightedOption === index,
+                        key: 'none',
+                        index: index++,
+                    });
+                }
+                return ret;
+            },
+            displayValue(){
+                const ret = [];
+                const value = this.pValue;
+                const mOptions = this.mOptions;
+                function getText(value){
+                    const founded = mOptions.find((v) => v.value == value);
+                    if( founded ){
+                        return founded.text;
+                    }
+                    else{
+                        return value;
+                    }
+                }
+
+                if( value === null ){
+                    return [];
+                }
+                else{
+                    if( this.multiple ){
+                        this.pValue.forEach( (value)=>{
+                            ret.push( getText(value) );
+                        });
+                    }
+                    else{
+                        ret.push( getText(this.pValue) );
+                    }
+                }
+                return ret;
+            }
+        },
+        watch: {
+            searchQuery(){
+                this.highlightedOption = this.pOptions.length > 0? 0: null;
+            },
+            value(){
+                this.setStructure();
+            }
+        },
+        created(){
+            this.setStructure();
         },
         methods: {
             open(){
@@ -188,12 +291,10 @@
                 this.searchQuery = '';
             },
             clickButton(action){
-                switch(action){
-                    case 'reset':
-                        this.clickOption();
-                    default:
-                        this.close();
+                if( action == 'reset' ){
+                    this.clickOption();
                 }
+                this.close();
             },
             setStructure(){
                 if( this.multiple ){
@@ -207,109 +308,6 @@
                 else{
                     this.pSetValue( this.value, false );
                 }
-            }
-        },
-        created: function(){
-            this.setStructure();
-        },
-        computed: {
-            mOptions(){
-                const mOptions = this.options;
-                if( this.pValue !== null ){
-                    if( this.multiple === true ){
-                        this.pValue.forEach( (value,index)=>{
-                            const founded = mOptions.find((v) => v.value == value);
-                            if( !founded ){
-                                mOptions.unshift({
-                                    text: value,
-                                    value: value
-                                });
-                            }
-                        });
-                    }
-                }
-                return mOptions;
-            },
-            pOptions(){
-                let ret = [];
-
-                this.mOptions.forEach( (option,index)=>{
-                    let text = typeof option == 'object' && option !== null? option.text: option;
-                    let value = typeof option == 'object' && option !== null? option.value: option;
-                    let disabled = typeof option == 'object' && option !== null? option.disabled || false: false;
-                    let selected = this.pIsSelected({value});
-                    if(
-                        utility.contains(text, this.searchQuery) ||
-                        utility.contains(value, this.searchQuery)
-                    ){
-                        ret.push({
-                            text: text,
-                            value: value,
-                            highlighted: this.highlightedOption === index,
-                            disabled: disabled,
-                            selected: selected,
-                            key: 'select',
-                            index: index,
-                        });
-                    }
-                });
-                let index = ret.length;
-                if( this.allowInsert === true && this.searchQuery.length > 0){
-                    ret.push({
-                        text: locale.add(this.searchQuery),
-                        value: this.searchQuery,
-                        highlighted: this.highlightedOption === index,
-                        key: 'insert',
-                        index: index++,
-                    });
-                }
-                if( ret.length === 0 ){
-                    ret.push({
-                        text: locale.notFound(),
-                        value: null,
-                        highlighted: this.highlightedOption === index,
-                        key: 'none',
-                        index: index++,
-                    });
-                }
-                return ret;
-            },
-            displayValue(){
-                const ret = [];
-                const value = this.pValue;
-                const mOptions = this.mOptions;
-                function getText(value){
-                    const founded = mOptions.find((v) => v.value == value);
-                    if( founded ){
-                        return founded.text;
-                    }
-                    else{
-                        return value;
-                    }
-                }
-
-                if( value === null ){
-                    return [];
-                }
-                else{
-                    if( this.multiple ){
-                        this.pValue.forEach( (value,index)=>{
-                            ret.push( getText(value) );
-                        });
-                    }
-                    else{
-                        ret.push( getText(this.pValue) );
-                    }
-                }
-                return ret;
-            }
-        },
-        watch: {
-            searchQuery(){
-                this.highlightedOption = this.pOptions.length > 0? 0: null;
-            },
-            value(){
-                this.setStructure();
             }
         }
     }
