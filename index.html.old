@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" class="fv">
+  <head>
+    <meta charset="utf-8">
+    <title>hello</title>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  </head>
+  <body>
+    <fv-main id="app">
+        <fv-header class="fv-invert">
+          <fv-button class="fv-primary fv-icon fv-hide-on-lg"  @click="$refs.sidebar.toggle()"> <i class="fa fa-bars"></i> </fv-button>
+          <div class="fv-title"> <h2 v-html="title"></h2> </div>
+          <fv-button class="fv-primary fv-icon"> <i class="fa fa-user"></i> </fv-button>
+          <fv-button class="fv-primary fv-icon" @click="$refs.menu.open($event, 'button-balayi')"> <i class="fa fa-ellipsis-v"></i> </fv-button>
+        </fv-header>
+        <fv-sidebar ref="sidebar" :pin="null">
+          <fv-tabs :tabs="[
+            {title: 'یک هزارو سیصدو شصت و دو هزارو نهصدو شونزده', slot: 'first', icon: 'fa fa-google'},
+            {title: 'دو', slot: 'second'}
+          ]">
+            <div slot="first" class="fv-no-padding">
+              <fv-list
+                class="no-outline-border"
+                v-on:click="log($event)"
+                :items="[
+                  {
+                    key: 'add-item',
+                    icon: 'fa fa-user',
+                    text: 'اضافه کردن کاربر'
+                  },
+                  {
+                    icon: 'fa fa-chart-bar',
+                    text: 'روبوسی با کاربر',
+                    disabled: true
+                  },
+                  {
+                    icon: 'fa fa-list',
+                    text: 'لیست',
+                    selected: true
+                  },
+                  {
+                    icon: 'fa fa-google',
+                    text: 'گوگل'
+                  }
+                ]">
+              </fv-list>
+            </div>
+            <fv-content slot="second" v-html="content"></fv-content>
+          </fv-tabs>
+        </fv-sidebar>
+        <fv-menu
+          ref="menu"
+          v-on:click="log(arguments[0], arguments[1])"
+          :sheet="null"
+          title="تایتل تست"
+          :options="[
+            {
+              key: 'add-item',
+              icon: 'fa fa-user',
+              text: 'آاضافه کردن کاربر',
+              action: log
+            },
+            {
+              icon: 'fa fa-chart-bar',
+              text: 'روبوسی با کاربر',
+              disabled: true
+            },
+            {
+              key: 'hi-item',
+              icon: 'fa fa-google',
+              text: 'سلام به روی ماهت'
+            },
+          ]">
+        </fv-menu>
+        <fv-content class="fv-no-padding" v-fv-scroll="true" @fv-scroll-up="hdr = hdr > 0? 0: hdr - 1" @fv-scroll-down="hdr = hdr < 0? 0: hdr + 1">
+          <div class="fv-row">
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: red"></div>
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: green"></div>
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: blue"></div>
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: cyan"></div>
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: brown"></div>
+                <div class="fv-col-xs-12 fv-col-sm-6 fv-col-md-4 fv-col-lg-3 fv-col-xl-2" style="background: yellow"></div>
+                <div class="fv-col-sm-6">
+                    <label class="fv-control-label">نام کاربری {{user.username}} </label>
+                    <fv-input type="text" class="fv-form-control" v-model="user.username" placeholder="نام کاربری خود را وارد کنید." required></fv-input>
+                </div>
+                <div class="fv-col-sm-6">
+                    <label class="fv-control-label">رمز عبور {{user.password}}</label>
+                    <fv-input type="password" class="fv-form-control" v-model="user.password" placeholder="رمز عبور خود را وارد کنید." required></fv-input>
+                </div>
+                <div class="fv-col-sm-6">
+                    <label class="fv-control-label">موبایل {{user.mobile}}</label>
+                    <fv-input type="tel" class="fv-form-control" v-model="user.mobile" placeholder="شماره موبایل خود را وارد کنید." required disabled></fv-input>
+                </div>
+                <div class="fv-col-sm-6">
+                    <label class="fv-control-label">نام تیمای مورد علاقه {{user.teams}}</label>
+                    <fv-select input-class="fv-form-control" :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2, disabled: true}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6}]" v-model="user.teams" :allow-insert="false" multiple ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
+                </div>
+                <div class="fv-col-sm-6">
+                    <label class="fv-control-label">نام تیم مورد علاقه {{user.team}}</label>
+                    <fv-select input-class="fv-form-control" :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2, disabled: true}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6}]" v-model="user.team" :allow-insert="false" required placeholder="تیم مورد علاقت چی بود؟"></fv-select>
+                </div>
+                <fv-table class="fv-col-md-8 fv-col-offset-md-2"
+                    :fields="['id', 'full_name', {
+                        value: 'score',
+                        text: 'امتیاز',
+                        formatter: function(v){
+                        return v + ' <i class=\'fa fa-star\'>';
+                    }
+                    }]"
+                    :limit="15"
+                    :ajax="$http"
+                    api="https://api.github.com/search/repositories?q=node&page={page}&per_page={limit}"
+                    api-rows-key="body.items"
+                    api-total-count-key="body.total_count"
+                ></fv-table>
+          </div>
+          
+          <div class="fv-row">
+            <form class="fv-col-md-8 fv-col-offset-md-2" @submit.prevent="$refs.dialog.open()">
+                <div class="fv-row">
+                  <div class="fv-col-sm-6">
+                      <label class="fv-control-label">نام کاربری {{user.username}} </label>
+                      <fv-input type="text" class="fv-form-control" v-model="user.username" placeholder="نام کاربری خود را وارد کنید." required></fv-input>
+                  </div>
+                  <div class="fv-col-sm-6">
+                      <label class="fv-control-label">رمز عبور {{user.password}}</label>
+                      <fv-input type="password" class="fv-form-control" v-model="user.password" placeholder="رمز عبور خود را وارد کنید." required></fv-input>
+                  </div>
+                </div>
+                <div class="fv-row">
+                  <div class="fv-col-xs-12">
+                    <fieldset class="fv-form-control-group">
+                      <legend class="fv-control-label">اطلاعات بفنی</legend>
+
+                      <div class="fv-col-sm-6">
+                        <label class="fv-control-label">تاریخ زایمان {{user.date}}</label>
+                        <fv-datepicker input-class="fv-form-control" v-model="user.date" ref="date" placeholder="تاریخ زایمان رو بگو."></fv-datepicker>
+                      </div>
+                      <div class="fv-col-sm-6">
+                        <label class="fv-control-label">جهت همینجوری</label>
+                        <fv-radio v-model="radioVal" :options="['رسط','چپ', {value: 'a', text: 'غیر فعال', disabled: true}]"></fv-radio>
+                      </div>
+                      <div class="fv-col-sm-12">
+                        <label class="fv-control-label">تصویر</label>
+                        <fv-filepicker v-model="user.pic" required multiple ref="file" type="blob"></fv-filepicker>
+                      </div>
+                      <div class="fv-col-sm-12">
+                        <label class="fv-control-label">متن زیاد</label>
+                        <fv-textarea class="fv-form-control" v-model="user.password" required placeholder="متن زیاااااد" @click.once="log('clicked from index')" @keyup.enter="log('enter from index')"></fv-textarea>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+                <div class="fv-row">
+                  <div class="fv-col-sm-6">
+                    <label class="fv-control-label">آیا شما زن دارید؟ {{user.wife}}</label>
+                    <fv-switch v-model="user.wife" required></fv-switch>
+                  </div>
+                </div>
+                <div class="fv-col-sm-12">
+                </div>
+                <div class="fv-col-sm-12">
+                    <fv-button class="fv-primary fv-block" type="submit">ورود</fv-button>
+                </div>
+            </form>
+          </div>
+          <div class="fv-row">
+
+            <div class="fv-col-md-6 fv-col-xs-12">
+              <fv-button  @click="$refs.dialog.open()">Open dialog</fv-button>
+            </div>
+            <div class="fv-col-md-6 fv-col-xs-12" v-html="content"></div>
+          </div>
+        </fv-content>
+
+        <fv-dialog
+          ref="dialog"
+          title="اضافه‌کردن کاربر جدید"
+          v-on:click="$refs.dialog.close(); log($event);"
+          :buttons="[
+            {
+              key: 'add-item',
+              icon: 'fa fa-user',
+              text: 'باشه'
+            },
+            {
+              icon: 'fa fa-chart-bar',
+              text: 'نباشه'
+            }
+          ]">
+        این کاربره اضافه بره به سیستم؟!
+        </fv-dialog>
+        <fv-footer>
+          <fv-button class="fv-primary fv-xl fv-block" @click="addContent()"> <i class="fa fa-plus"></i> اضافه‌کردن متن به صفحه! </fv-button> 
+        </fv-footer>
+    </fv-main>
+    <script src="node_modules/vue/dist/vue.min.js"></script>
+    <script src="node_modules/vue-resource/dist/vue-resource.min.js"></script>
+    <script src="node_modules/moment/min/moment.min.js"></script>
+    <script src="node_modules/moment-jalaali/build/moment-jalaali.js"></script>
+    <script src="./dist/framevuerk-fa.js"></script>
+    <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="node_modules/shabnam-font/dist/font-face.css">
+    <style>
+      #app{
+        font-family: Shabnam, sans-serif;
+        font-weight: 300;
+      }
+    </style>
+    
+    <script>
+      framevuerk.use(moment);
+      Vue.use(VueResource);
+      Vue.use(framevuerk);
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          title: 'تایتل تست',
+          msg: 'salam',
+          selectVal: null,
+          select2Val: null,
+          radioVal: '',
+          test: '',
+          hdr: -6,
+          menu: false,
+          content: 'طرح‌نما یا لورم ایپسوم (به لاتین: lorem ipsum) به متنی آزمایشی و بی‌معنی در صنعت چاپ، صفحه‌آرایی و طراحی گرافیک گفته می‌شود. طراح گرافیک از این متن به‌عنوان عنصری از ترکیب‌بندی برای پُر کردن صفحه و ارائهٔ اولیهٔ شکل ظاهری و کلیِ طرح سفارش‌گرفته‌شده استفاده می‌کند، تا ازنظر گرافیکی نشانگر چگونگی نوع و اندازهٔ قلم و ظاهرِ متن باشد. معمولاً طراحان گرافیک برای صفحه‌آرایی، نخست از متن‌های آزمایشی و بی‌معنی استفاده می‌کنند تا صرفاً به مشتری یا صاحب‌کار خود نشان دهند که صفحهٔ طراحی یا صفحه‌بندی شده، بعد از اینکه متن در آن قرار گیرد، چگونه به نظر می‌رسد و قلم‌ها و اندازه‌بندی‌ها چگونه در نظر گرفته شده‌است. از آنجایی که طراحان عموماً نویسندهٔ متن نیستند و وظیفهٔ رعایت حق تکثیر متون را ندارند و در همان حال، کار آنها به‌نوعی وابسته به متن است، آنها با استفاده از محتویات ساختگی، صفحهٔ گرافیکی خود را صفحه‌آرایی می‌کنند تا مرحلهٔ طراحی و صفحه‌بندی را به پایان برند.<br>',
+          user: {
+            username: null,
+            password: null,
+            mobile: null,
+            teams: [6],
+            team: null,
+            date: new Date(),
+            pic: null,
+            wife: null
+          }
+        },
+        created: function(){
+          console.log('App started.')
+        },
+        methods: {
+          log: function(x){ console.log(x) },
+          send: function(){
+            var fd = new FormData();
+            for(var i in this.user){
+              fd.append(i, this.user[i]);
+            }
+          },
+          addContent: function(){
+            this.content += "\n"+ this.content;
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
