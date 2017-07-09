@@ -25,11 +25,9 @@ import fvTextarea from './components/fvTextarea.vue'
 import fvScroll from './directives/fvScroll.vue'
 
 const framevuerk = {
-  _dependencies: utility._dependencies,
   use (lib = null) {
     if (lib && (lib.name === 'jMoment' || lib.name === 'moment')) {
       utility._dependencies.moment = lib
-      this._dependencies.moment = lib
     }
   },
   install (Vue) {
@@ -58,4 +56,4 @@ const framevuerk = {
   version,
   name
 }
-export default framevuerk
+module.exports = framevuerk
