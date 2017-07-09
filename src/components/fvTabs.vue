@@ -3,11 +3,14 @@
         props: {
             tabs: {
                 type: Array
+            },
+            value: {
+                default: undefined
             }
         },
         data(){
             return {
-                selectedTab: null
+                pValue: this.value
             }
         },
         computed: {
@@ -26,11 +29,24 @@
             }
         },
         mounted(){
-            this.selectedTab = this.pTabs[0].slot;
+            if( !this.value ){
+                this.changeTab( this.pTabs[0].slot );
+            }
         },
         methods: {
-            clickTab(slotName){
-                this.selectedTab = slotName;
+            changeTab(slotName, emit = true){
+                if( emit ){
+                    this.$emit('input', slotName);
+                }
+                this.pValue = slotName;
+                this.$emit('tab-change', slotName);
+            }
+        },
+        watch: {
+            value(){
+                if( this.value !== this.pValue ){
+                    changeTab(this.value, false);
+                }
             }
         }
     }
@@ -41,8 +57,8 @@
             fv-header
                 fv-button.fv-tab-button.fv-grow(v-for="tab in pTabs",
                     :key="tab.slot",
-                    :class="{'fv-selected': tab.slot == selectedTab}",
-                    @click="clickTab(tab.slot)"
+                    :class="{'fv-selected': tab.slot == pValue}",
+                    @click="changeTab(tab.slot)"
                 )
                     i(v-if="tab.icon",
                         :class="tab.icon"
@@ -51,7 +67,7 @@
             fv-content.fv-no-padding.fv-tab(
                 v-for="tab in pTabs",
                 :key="tab.slot",
-                v-show="tab.slot === selectedTab"
+                v-show="tab.slot === pValue"
             )
                 slot(:name="tab.slot")
 </template>
