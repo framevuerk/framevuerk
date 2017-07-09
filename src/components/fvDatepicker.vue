@@ -1,7 +1,7 @@
 <script>
     import utility from '../utility';
     import locale from 'locale';
-    const moment = utility._dependencies.moment;
+    let moment;
     export default {
         props: {
             value: {
@@ -108,14 +108,15 @@
             }
         },
         created(){
+            moment = utility._dependencies.moment;
             if( moment ){
-                if( global.CONFIG.LOCALE == 'fa' ){
+                if( CONFIG.LOCALE == 'fa' ){
                     moment.loadPersian();
                 }
                 this.pSetValue(this.value === null? null: moment.utc() );
             }
             else{
-                throw 'Moment not found!';
+                throw new Error('Moment not found!');
             }
     
         },
