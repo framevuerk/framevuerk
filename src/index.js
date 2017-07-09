@@ -2,6 +2,28 @@ import {name, version} from '../package.json';
 import './style.scss';
 import utility from './utility';
 
+// Components
+import fvMain from './components/fvMain.vue';
+import fvContent from './components/fvContent.vue';
+import fvHeader from './components/fvHeader.vue';
+import fvFooter from './components/fvFooter.vue';
+import fvSidebar from './components/fvSidebar.vue';
+import fvSelect from './components/fvSelect.vue';
+import fvDatepicker from './components/fvDatepicker.vue';
+import fvList from './components/fvList.vue';
+import fvMenu from './components/fvMenu.vue';
+import fvInput from './components/fvInput.vue';
+import fvButton from './components/fvButton.vue';
+import fvFilepicker from './components/fvFilepicker.vue';
+import fvSwitch from './components/fvSwitch.vue';
+import fvDialog from './components/fvDialog.vue';
+import fvTable from './components/fvTable.vue';
+import fvTabs from './components/fvTabs.vue';
+import fvRadio from './components/fvRadio.vue';
+import fvTextarea from './components/fvTextarea.vue';
+// Directives
+import fvScroll from './directives/fvScroll.vue';
+
 const framevuerk = {
     _dependencies: utility._dependencies,
     use(lib=null){
@@ -12,28 +34,28 @@ const framevuerk = {
     },
     install(Vue){
         // Components
-        Vue.component('fvMain', require('./components/fvMain.vue').default);
-        Vue.component('fvContent', require('./components/fvContent.vue').default);
-        Vue.component('fvHeader', require('./components/fvHeader.vue').default);
-        Vue.component('fvFooter', require('./components/fvFooter.vue').default);
-        Vue.component('fvSidebar', require('./components/fvSidebar.vue').default);
-        Vue.component('fvSelect', require('./components/fvSelect.vue').default);
-        Vue.component('fvDatepicker', require('./components/fvDatepicker.vue').default);
-        Vue.component('fvList', require('./components/fvList.vue').default);
-        Vue.component('fvMenu', require('./components/fvMenu.vue').default);
-        Vue.component('fvInput', require('./components/fvInput.vue').default);
-        Vue.component('fvButton', require('./components/fvButton.vue').default);
-        Vue.component('fvFilepicker', require('./components/fvFilepicker.vue').default);
-        Vue.component('fvSwitch', require('./components/fvSwitch.vue').default);
-        Vue.component('fvDialog', require('./components/fvDialog.vue').default);
-        Vue.component('fvTable', require('./components/fvTable.vue').default);
-        Vue.component('fvTabs', require('./components/fvTabs.vue').default);
-        Vue.component('fvRadio', require('./components/fvRadio.vue').default);
-        Vue.component('fvTextarea', require('./components/fvTextarea.vue').default);
+        Vue.component('fvMain', fvMain);
+        Vue.component('fvContent', fvContent);
+        Vue.component('fvHeader', fvHeader);
+        Vue.component('fvFooter', fvFooter);
+        Vue.component('fvSidebar', fvSidebar);
+        Vue.component('fvSelect', fvSelect);
+        Vue.component('fvDatepicker', fvDatepicker);
+        Vue.component('fvList', fvList);
+        Vue.component('fvMenu', fvMenu);
+        Vue.component('fvInput', fvInput);
+        Vue.component('fvButton', fvButton);
+        Vue.component('fvFilepicker', fvFilepicker);
+        Vue.component('fvSwitch', fvSwitch);
+        Vue.component('fvDialog', fvDialog);
+        Vue.component('fvTable', fvTable);
+        Vue.component('fvTabs', fvTabs);
+        Vue.component('fvRadio', fvRadio);
+        Vue.component('fvTextarea', fvTextarea);
         // Directives
-        Vue.directive('fvScroll', require('./directives/fvScroll.vue').default);
+        Vue.directive('fvScroll', fvScroll);
     },
     version,
     name
 }
-module.exports = framevuerk;
+export default framevuerk;
