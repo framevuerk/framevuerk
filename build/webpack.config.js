@@ -8,7 +8,7 @@ CONFIG.NODE_ENV = process.env.NODE_ENV || 'production'
 CONFIG.THEME_COLOR = process.env.THEME_COLOR || '#1f89dd'
 CONFIG.DIRECTION = process.env.DIRECTION || 'rtl'
 CONFIG.LOCALE = process.env.LOCALE || 'fa'
-// console.log(CONFIG);
+console.log(CONFIG)
 
 const scssLoader = [
   {
@@ -54,7 +54,7 @@ const plugins = [
 ]
 if (CONFIG.NODE_ENV === 'production') {
   plugins.push(new webpack.optimize.UglifyJsPlugin({
-    minimize: CONFIG.NODE_ENV === 'production',
+    minimize: true,
     compress: {
       warnings: false
     }
