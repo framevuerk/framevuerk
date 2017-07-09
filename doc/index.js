@@ -5,12 +5,13 @@ import framevuerk from '../dist/framevuerk-en.js';
 import moment from 'moment-jalaali';
 import 'font-awesome/css/font-awesome.css';
 import 'shabnam-font/dist/font-face.css';
+import './index.html';
 
 framevuerk.use(moment);
 Vue.use(VueRouter);
 Vue.use(framevuerk);
 
-import index from './index.vue';
+import main from './main.vue';
 
 import fvMain from './components/fvMain.vue';
 
@@ -33,9 +34,19 @@ const router = new VueRouter({
         }
     ]
 });
-const app = new Vue({
+global.app = new Vue({
+    data(){
+        return {
+            components: {
+
+            }
+        }
+    },
+    computed: {
+
+    },
     router,
-    render: h => h(index)
+    render: h => h(main)
 }).$mount('#app');
 
 export default app;
