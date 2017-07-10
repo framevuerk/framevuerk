@@ -8,21 +8,22 @@
   cursor: pointer;
   display: inline-block;
   font-family: inherit;
+  line-height: 1;
   max-width: 100%;
   text-align: center;
   vertical-align: middle;
   &.fv-xs {
     font-size: .7em;
-    height: 2.5em;
+    height: 2.6em;
   }
   &.fv-sm {
     font-size: .8em;
-    height: 2.8em;
+    height: 2.9em;
   }
   &,
   &.fv-md {
     font-size: .9em;
-    height: 3.1em;
+    height: 3.2em;
   }
   &.fv-lg {
     font-size: 1em;
