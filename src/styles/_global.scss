@@ -1,186 +1,191 @@
-@import "./variables";
-@import "./functions";
-@import "./mixins";
+@import './variables';
+@import './functions';
+@import './mixins';
 
-html, html body {
+html,
+html > body {
     height: 100%;
-    min-height: 100%;
     max-height: 100%;
+    min-height: 100%;
     overflow: hidden;
 }
-html body{
+html > body {
     @include yiq($bg-color);
+    direction: $direction;
     font-family: sans-serif;
     width: 100%;
-    direction: $direction;
-    &.lock-scroll{
-        overflow-y: hidden;
-    }
 }
 
-.fv-block{
+.fv-block {
     display: block !important;
     width: 100%;
 }
-*.fv-inline-block{
+.fv-inline-block {
     display: inline-block !important;
 }
-.fv-inline{
+.fv-inline {
     display: inline !important;
 }
-.fv-full-width{
+.fv-full-width {
     width: 100% important;
 }
 
-.fv-hide{
+.fv-hide {
     display: none !important;
 }
-.fv-hidden{
-    position: absolute !important;
+.fv-hidden {
+    height: 0 !important;
+    margin: -99999999px !important;
     opacity: 0 !important;
     padding: 0 !important;
-    margin: -99999999px !important;
-    height: 0px !important;
-    width: 0px !important;
+    position: absolute !important;
+    width: 0 !important;
 }
-.fv-overlay{
-    width: 100%;
+.fv-overlay {
+    background: $shadow-color;
     height: 100%;
     left: 0;
-    top: 0;
-    background: $shadow-color;
     position: fixed;
-    z-index: 10000;
     text-align: center;
-    &.fv-light{
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+    &.fv-light {
         background: $shadow-color-light;
     }
 }
 
-.fv-text-center{
+.fv-text-center {
     text-align: center !important;
 }
-.fv-text-right{
+.fv-text-right {
     text-align: right !important;
 }
-.fv-text-left{
+.fv-text-left {
     text-align: left !important;
 }
-.fv-rtl{
+.fv-rtl {
     direction: rtl !important;
 }
-.fv-ltr{
+.fv-ltr {
     direction: ltr !important;
 }
 .fv-grow {
     flex-grow: 1 !important;;
 }
 
-.fv-padding{
+.fv-padding {
     padding: $padding !important;
 }
-.fv-vertical-padding{
-    padding-top: $padding !important;
+.fv-vertical-padding {
     padding-bottom: $padding !important;
+    padding-top: $padding !important;
 }
-.fv-horizontal-padding{
+.fv-horizontal-padding {
     padding-left: $padding !important;
     padding-right: $padding !important;
 }
-.fv-no-padding{
+.fv-no-padding {
     padding: 0 !important;
 }
-.fv-no-vertical-padding{
-    padding-top: 0 !important;
+.fv-no-vertical-padding {
     padding-bottom: 0 !important;
+    padding-top: 0 !important;
 }
-.fv-no-horizontal-padding{
+.fv-no-horizontal-padding {
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
 
-.fv-pull-left{
+.fv-pull-left {
     float: left !important;
 }
-.fv-pull-right{
+.fv-pull-right {
     float: right !important;
 }
-.fv-clear-both{
+.fv-clear-both {
     clear: both !important;
 }
-.fv-pointer{
+.fv-pointer {
     cursor: pointer !important;
 }
-.fv-word-wrap{
+.fv-word-wrap {
     white-space: normal !important;
 }
-.fv-no-wrap{
+.fv-no-wrap {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
 }
 
-.fv-form-control, .fv-button{
-    font-size: 0.9em;
+.fv-form-control,
+.fv-button {
+    font-size: .9em;
     line-height: 3em;
 }
-.fv-control-label{
-    display: block;
-    min-height: 1.5em;
-    padding: 0.3em 0;
-    color: $color-light;
-    font-size: 0.9em;
-    max-width: 100%;
+.fv-control-label {
     @include nowrap;
+    color: $color-light;
+    display: block;
+    font-size: .9em;
+    max-width: 100%;
+    min-height: 1.5em;
+    padding: .3em 0;
 }
-.fv-form-control-group{
+.fv-form-control-group {
     border: 1px solid $shadow-color;
-    box-shadow: 0 0.3em 0.5em $shadow-color-light;
     border-radius: $border-radius;
+    box-shadow: 0 .3em .5em $shadow-color-light;
     clear: both;
     padding: #{$padding / 2};
-    & > .fv-control-label{
+    & > .fv-control-label {
         padding: inherit;
     }
 }
-.fv-form-control{
-    font-family: inherit;
-    padding: 0 0.6em;
-    display: inline-block;
-    border: 1px solid $shadow-color;
-    box-shadow: inset 0 0.3em 0.5em $shadow-color-light;
+.fv-form-control {
     @include yiq($bg-color-light);
+    border: 1px solid $shadow-color;
     border-radius: 4px;
-    vertical-align: middle;
+    box-shadow: inset 0 .3em .5em $shadow-color-light;
+    display: inline-block;
+    font-family: inherit;
     max-width: 100%;
-    width: 100%;
     min-height: 3em;
-    &.fv-rounded{
+    padding: 0 .6em;
+    vertical-align: middle;
+    width: 100%;
+    &.fv-rounded {
         border-radius: $border-radius-large;
     }
-    &.fv-search-style{
-        border-top: 0;
+    &.fv-search-style {
         border-left: 0;
-        border-right: 0;
         border-radius: 0;
+        border-right: 0;
+        border-top: 0;
         box-shadow: none;
-        &:focus, &.focus{
+        &:focus,
+        &.focus {
             @include bottom-outline;
-            &:invalid, &.invalid{
+            &:invalid,
+            &.invalid {
                 @include bottom-outline($danger-color);
             }
         }
     }
-    &:focus, &.focus{
+    &:focus,
+    &.focus {
         @include outline;
-        &:invalid, &.invalid{
+        &:invalid,
+        &.invalid {
             @include outline($danger-color);
         }
     }
-    &[disabled], &.disabled{
+    &[disabled],
+    &.disabled {
         @include disabled;
     }
-    &::placeholder, & > .placeholder{
+    &::placeholder,
+    & > .placeholder {
         color: $gray-color-dark;
     }
 }
