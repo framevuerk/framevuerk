@@ -1,7 +1,7 @@
-import { name, version } from '../package.json'
+// import { name, version } from '../package.json'
 import './style.scss'
 import utility from './utility'
-/* global CONFIG */
+/* global CONFIG, PKG_NAME, PKG_VERSION */
 
 // Components
 import fvMain from './components/fvMain'
@@ -72,8 +72,8 @@ const framevuerk = {
     // Directives
     Vue.directive('fvScroll', fvScroll)
   },
-  version,
-  name,
-  config: Object.freeze(CONFIG)
+  config: Object.freeze(CONFIG),
+  name: PKG_NAME,
+  version: PKG_VERSION
 }
 module.exports = framevuerk
