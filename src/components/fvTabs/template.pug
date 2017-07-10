@@ -4,9 +4,9 @@ fv-main.fv-tabs
       :key="tab.slot",
       :class="{'fv-selected': tab.slot == pValue}",
       @click="changeTab(tab.slot)")
-    i(v-if="tab.icon",
-      :class="tab.icon")
-    span(v-html="tab.title")
+      i(v-if="tab.icon",
+        :class="tab.icon")
+      span(v-html="tab.title")
   fv-content.fv-no-padding.fv-tab(
     v-for="tab in pTabs",
     :key="tab.slot",
