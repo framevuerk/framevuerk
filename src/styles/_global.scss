@@ -142,6 +142,21 @@ html > body {
     padding: inherit;
   }
 }
+.fv-no-transition {
+  transition: 0s !important;
+}
+
+.fv-fade-enter-active,
+.fv-fade-leave-active {
+  opacity: 1;
+  transition-duration: $transition-speed;
+  transition-property: opacity;
+}
+.fv-fade-enter,
+.fv-fade-leave-active {
+  opacity: 0;
+}
+
 .fv-form-control {
   @include yiq($bg-color-light);
   border: 1px solid $shadow-color;
