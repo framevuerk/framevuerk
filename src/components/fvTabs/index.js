@@ -20,7 +20,7 @@ export default {
       let ret = []
       this.tabs.forEach((value, index) => {
         ret.push({
-          index: index,
+          index,
           slot: value.slot || value.title || value,
           icon: value.icon || false,
           title: value.title || value,
