@@ -99,7 +99,12 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
           exclude: /node_modules/
         },
         {
-          test: /\.scss$/,
+          test: /\.pug$/,
+          loader: ['vue-template-compiler-loader', 'pug-html-loader'],
+          exclude: /node_modules/
+        },
+        {
+          test: /\.[s]css$/,
           use: scssLoader
         }
       ]
