@@ -1,0 +1,32 @@
+@import '../../styles/variables';
+@import '../../styles/functions';
+@import '../../styles/mixins';
+.fv-list {
+    border: solid 1px $shadow-color;
+    &.no-outline-border {
+        border: 0;
+    }
+    & .fv-item {
+        overflow: hidden;
+        padding: $padding-small $padding;
+        border-bottom: solid 1px $shadow-color-light;
+        cursor: pointer;
+        &:last-child {
+            border-bottom: 0;
+        }
+        &.disabled {
+            @include disabled;
+        }
+        &.highlighted,
+        &:active:not(.disabled) {
+            background-color: $shadow-color-light;
+        }
+        &.selected {
+            @include yiq($theme-color);
+            &:active,
+            &.highlighted {
+                @include yiq($theme-color-dark);
+            }
+        }
+    }
+}

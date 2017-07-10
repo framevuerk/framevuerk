@@ -1,0 +1,32 @@
+span
+    fv-input(:class="inputClass",
+        :display-value="displayValue",
+        :placeholder="placeholder",
+        :required="required",
+        :disabled="disabled",
+        :value="value",
+        @keydown.enter="open()",
+        @click="open()",
+        ref="inputEl"
+    )
+    fv-dialog.fv-select(ref="dialog",
+        :class="dialogClass",
+        :buttons="dialogButtons",
+        @click-button="clickButton($event)",
+        @click="pFocus('search')",
+        @keydown="pKeyDown($event)",
+        @close="$emit('close'); pFocus('input');",
+        @open="$emit('open')",
+        :first-focus-on="0",
+        content-class="fv-no-padding"
+    )
+        fv-main(ref="select")
+            fv-header.fv-invert(v-if="search || allowInsert")
+                fv-input.fv-form-control.fv-search-style.fv-grow(:placeholder="locale.search()",
+                    v-model="searchQuery",
+                    ref="searchQueryEl"
+                )
+            fv-list.no-outline-border(:items="pOptions",
+                @click-item="clickOption($event, true)",
+                @click="pFocus('search')"
+            )

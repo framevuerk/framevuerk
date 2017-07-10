@@ -1,0 +1,63 @@
+@import '../../styles/variables';
+@import '../../styles/functions';
+@import '../../styles/mixins';
+.fv-dialog-overlay {
+    z-index: 20000;
+}
+.fv-dialog {
+    @include yiq($bg-color);
+    @include respond-to(only-xs) {
+        max-height: 100%;
+        max-width: 100%;
+    }
+    z-index: 20002;
+    position: fixed;
+    height: auto;
+    width: auto;
+    max-width: 90%;
+    max-height: 90%;
+    min-width: 300px;
+    border-radius: $border-radius;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    box-shadow: 0 5px 15px $shadow-color;
+    & > .fv-header {
+        border: 0;
+        box-shadow: none;
+    }
+    &.fv-dialog-bottom {
+        width: 100%;
+        max-width: 100%;
+        left: 0;
+        top: auto;
+        bottom: 0;
+    }
+    &.fv-dialog-center {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    &.fv-dialog-center-enter-active,
+    &.fv-dialog-center-leave-active {
+        transition-duration: $transition-speed;
+        transition-property: transform, opacity;
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+    &.fv-dialog-center-enter,
+    &.fv-dialog-center-leave-active {
+        opacity: 0;
+        transform: translate(-50%, -34%);
+    }
+    &.fv-dialog-bottom-enter-active,
+    &.fv-dialog-bottom-leave-active {
+        transition-duration: $transition-speed;
+        transition-property: transform;
+        transform: translateY(0);
+    }
+    &.fv-dialog-bottom-enter,
+    &.fv-dialog-bottom-leave-active {
+        transform: translateY(100%);
+    }
+}
