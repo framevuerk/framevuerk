@@ -2,75 +2,75 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-table {
-    @include respond-to(only-xs) {
-        overflow-x: auto;
-        overflow-y: hidden;
-        & > table {
-            max-width: 100%;
-        }
-    }
+  @include respond-to(only-xs) {
+    overflow-x: auto;
+    overflow-y: hidden;
     & > table {
-        border: solid 1px $shadow-color;
-        box-shadow: 0 1em 1em $shadow-color-light;
-        width: 100%;
-        border-spacing: 0;
-        &.tf-loading {
-            opacity: .4;
-        }
-        & > thead {
-            position: sticky;
-            font-weight: bold;
-            top: 0;
-        }
-        & > tfoot {
-            position: sticky;
-            bottom: 0;
-        }
-        & > thead > tr > th,
-        & > tbody > tr > td,
-        & > tfoot > tr > td {
-            padding: $padding-small $padding;
-            text-align: center;
-        }
-        & > tbody {
-            @include yiq($bg-color-light);
-            & > tr &:nth-child(2n) {
-                & td {
-                    @include yiq(darken($bg-color-light, 2%));
-                }
-            }
-        }
-        & > tbody > tr {
-            &.fv-clickable {
-                cursor: pointer;
-                &:active,
-                &.fv-focused {
-                    & td {
-                        background: $shadow-color-light;
-                    }
-                }
-            }
-        }
-        & > thead > tr > th,
-        & > tfoot > tr > td {
-            @include yiq($default-color-light);
-        }
-
-        & > tfoot > tr > td {
-            & > * {
-                line-height: 3em;
-            }
-        }
-        & .page-control-continer {
-            & > * {
-                margin: 0 2px;
-                width: auto;
-            }
-            & > .fv-input {
-                text-align: center;
-                width: 70px;
-            }
-        }
-
+      max-width: 100%;
     }
+  }
+  & > table {
+    border: solid 1px $shadow-color;
+    border-spacing: 0;
+    box-shadow: 0 1em 1em $shadow-color-light;
+    width: 100%;
+    &.tf-loading {
+      opacity: .4;
+    }
+    & > thead {
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+    }
+    & > tfoot {
+      bottom: 0;
+      position: sticky;
+    }
+    & > thead > tr > th,
+    & > tbody > tr > td,
+    & > tfoot > tr > td {
+      padding: $padding-small $padding;
+      text-align: center;
+    }
+    & > tbody {
+      @include yiq($bg-color-light);
+      & > tr &:nth-child(2n) {
+        & td {
+          @include yiq(darken($bg-color-light, 2%));
+        }
+      }
+    }
+    & > tbody > tr {
+      &.fv-clickable {
+        cursor: pointer;
+        &:active,
+        &.fv-focused {
+          & td {
+            background: $shadow-color-light;
+          }
+        }
+      }
+    }
+    & > thead > tr > th,
+    & > tfoot > tr > td {
+      @include yiq($default-color-light);
+    }
+
+    & > tfoot > tr > td {
+      & > * {
+        line-height: 3em;
+      }
+    }
+    & .page-control-continer {
+      & > * {
+        margin: 0 2px;
+        width: auto;
+      }
+      & > .fv-input {
+        text-align: center;
+        width: 70px;
+      }
+    }
+
+  }
 }

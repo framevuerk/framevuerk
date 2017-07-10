@@ -4,188 +4,188 @@
 
 html,
 html > body {
-    height: 100%;
-    max-height: 100%;
-    min-height: 100%;
-    overflow: hidden;
+  height: 100%;
+  max-height: 100%;
+  min-height: 100%;
+  overflow: hidden;
 }
 html > body {
-    @include yiq($bg-color);
-    direction: $direction;
-    font-family: sans-serif;
-    width: 100%;
+  @include yiq($bg-color);
+  direction: $direction;
+  font-family: sans-serif;
+  width: 100%;
 }
 
 .fv-block {
-    display: block !important;
-    width: 100%;
+  display: block !important;
+  width: 100%;
 }
 .fv-inline-block {
-    display: inline-block !important;
+  display: inline-block !important;
 }
 .fv-inline {
-    display: inline !important;
+  display: inline !important;
 }
 .fv-full-width {
-    width: 100% important;
+  width: 100% important;
 }
 
 .fv-hide {
-    display: none !important;
+  display: none !important;
 }
 .fv-hidden {
-    height: 0 !important;
-    margin: -99999999px !important;
-    opacity: 0 !important;
-    padding: 0 !important;
-    position: absolute !important;
-    width: 0 !important;
+  height: 0 !important;
+  margin: -99999999px !important;
+  opacity: 0 !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 0 !important;
 }
 .fv-overlay {
-    background: $shadow-color;
-    height: 100%;
-    left: 0;
-    position: fixed;
-    text-align: center;
-    top: 0;
-    width: 100%;
-    z-index: 10000;
-    &.fv-light {
-        background: $shadow-color-light;
-    }
+  background: $shadow-color;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+  &.fv-light {
+    background: $shadow-color-light;
+  }
 }
 
 .fv-text-center {
-    text-align: center !important;
+  text-align: center !important;
 }
 .fv-text-right {
-    text-align: right !important;
+  text-align: right !important;
 }
 .fv-text-left {
-    text-align: left !important;
+  text-align: left !important;
 }
 .fv-rtl {
-    direction: rtl !important;
+  direction: rtl !important;
 }
 .fv-ltr {
-    direction: ltr !important;
+  direction: ltr !important;
 }
 .fv-grow {
-    flex-grow: 1 !important;;
+  flex-grow: 1 !important;;
 }
 
 .fv-padding {
-    padding: $padding !important;
+  padding: $padding !important;
 }
 .fv-vertical-padding {
-    padding-bottom: $padding !important;
-    padding-top: $padding !important;
+  padding-bottom: $padding !important;
+  padding-top: $padding !important;
 }
 .fv-horizontal-padding {
-    padding-left: $padding !important;
-    padding-right: $padding !important;
+  padding-left: $padding !important;
+  padding-right: $padding !important;
 }
 .fv-no-padding {
-    padding: 0 !important;
+  padding: 0 !important;
 }
 .fv-no-vertical-padding {
-    padding-bottom: 0 !important;
-    padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
 }
 .fv-no-horizontal-padding {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .fv-pull-left {
-    float: left !important;
+  float: left !important;
 }
 .fv-pull-right {
-    float: right !important;
+  float: right !important;
 }
 .fv-clear-both {
-    clear: both !important;
+  clear: both !important;
 }
 .fv-pointer {
-    cursor: pointer !important;
+  cursor: pointer !important;
 }
 .fv-word-wrap {
-    white-space: normal !important;
+  white-space: normal !important;
 }
 .fv-no-wrap {
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 
 .fv-form-control,
 .fv-button {
-    font-size: .9em;
-    line-height: 3em;
+  font-size: .9em;
+  line-height: 3em;
 }
 .fv-control-label {
-    @include nowrap;
-    color: $color-light;
-    display: block;
-    font-size: .9em;
-    max-width: 100%;
-    min-height: 1.5em;
-    padding: .3em 0;
+  @include nowrap;
+  color: $color-light;
+  display: block;
+  font-size: .9em;
+  max-width: 100%;
+  min-height: 1.5em;
+  padding: .3em 0;
 }
 .fv-form-control-group {
-    border: 1px solid $shadow-color;
-    border-radius: $border-radius;
-    box-shadow: 0 .3em .5em $shadow-color-light;
-    clear: both;
-    padding: #{$padding / 2};
-    & > .fv-control-label {
-        padding: inherit;
-    }
+  border: 1px solid $shadow-color;
+  border-radius: $border-radius;
+  box-shadow: 0 .3em .5em $shadow-color-light;
+  clear: both;
+  padding: #{$padding / 2};
+  & > .fv-control-label {
+    padding: inherit;
+  }
 }
 .fv-form-control {
-    @include yiq($bg-color-light);
-    border: 1px solid $shadow-color;
-    border-radius: 4px;
-    box-shadow: inset 0 .3em .5em $shadow-color-light;
-    display: inline-block;
-    font-family: inherit;
-    max-width: 100%;
-    min-height: 3em;
-    padding: 0 .6em;
-    vertical-align: middle;
-    width: 100%;
-    &.fv-rounded {
-        border-radius: $border-radius-large;
-    }
-    &.fv-search-style {
-        border-left: 0;
-        border-radius: 0;
-        border-right: 0;
-        border-top: 0;
-        box-shadow: none;
-        &:focus,
-        &.focus {
-            @include bottom-outline;
-            &:invalid,
-            &.invalid {
-                @include bottom-outline($danger-color);
-            }
-        }
-    }
+  @include yiq($bg-color-light);
+  border: 1px solid $shadow-color;
+  border-radius: 4px;
+  box-shadow: inset 0 .3em .5em $shadow-color-light;
+  display: inline-block;
+  font-family: inherit;
+  max-width: 100%;
+  min-height: 3em;
+  padding: 0 .6em;
+  vertical-align: middle;
+  width: 100%;
+  &.fv-rounded {
+    border-radius: $border-radius-large;
+  }
+  &.fv-search-style {
+    border-left: 0;
+    border-radius: 0;
+    border-right: 0;
+    border-top: 0;
+    box-shadow: none;
     &:focus,
     &.focus {
-        @include outline;
-        &:invalid,
-        &.invalid {
-            @include outline($danger-color);
-        }
+      @include bottom-outline;
+      &:invalid,
+      &.invalid {
+        @include bottom-outline($danger-color);
+      }
     }
-    &[disabled],
-    &.disabled {
-        @include disabled;
+  }
+  &:focus,
+  &.focus {
+    @include outline;
+    &:invalid,
+    &.invalid {
+      @include outline($danger-color);
     }
-    &::placeholder,
-    & > .placeholder {
-        color: $gray-color-dark;
-    }
+  }
+  &[disabled],
+  &.disabled {
+    @include disabled;
+  }
+  &::placeholder,
+  & > .placeholder {
+    color: $gray-color-dark;
+  }
 }

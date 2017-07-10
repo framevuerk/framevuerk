@@ -98,21 +98,21 @@ export default {
     },
     pKeyDown (event) {
       switch (event.which) {
-        case 9: // tab
-          if (event.target === this.focusableItems[0] && event.shiftKey) { // when first item is focused and user press shift + tab
-            event.preventDefault()
-            this.pFocus(false)
-          } else if (event.target === this.focusableItems[this.focusableItems.length - 1] && !event.shiftKey) { // when last item is focused and user press tab
-            event.preventDefault()
-            this.pFocus(true)
-          }
-          break
-        case 13: // enter
-          event.target.click()
+      case 9: // tab
+        if (event.target === this.focusableItems[0] && event.shiftKey) { // when first item is focused and user press shift + tab
           event.preventDefault()
-          break
-        case 27: // esc
-          this.closeIf()
+          this.pFocus(false)
+        } else if (event.target === this.focusableItems[this.focusableItems.length - 1] && !event.shiftKey) { // when last item is focused and user press tab
+          event.preventDefault()
+          this.pFocus(true)
+        }
+        break
+      case 13: // enter
+        event.target.click()
+        event.preventDefault()
+        break
+      case 27: // esc
+        this.closeIf()
       }
     },
     clickButton (button) {

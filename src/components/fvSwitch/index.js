@@ -65,10 +65,10 @@ export default {
     },
     pKeyDown (event) {
       switch (event.which) {
-        case 13: case 32: // enter, space
-          event.preventDefault()
-          this.pToggle()
-          break
+      case 13: case 32: // enter, space
+        event.preventDefault()
+        this.pToggle()
+        break
       }
     }
   },

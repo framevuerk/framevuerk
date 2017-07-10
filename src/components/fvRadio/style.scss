@@ -2,45 +2,45 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-radio {
-    height: 1.2em;
-    margin: .7em 0;
-    display: inline-block;
-    & > .fv-button {
-        padding-#{$block-end}: 1.5em;
-        padding-#{$block-start}: 1.5em;
+  display: inline-block;
+  height: 1.2em;
+  margin: .7em 0;
+  & > .fv-button {
+    padding-#{$block-end}: 1.5em;
+    padding-#{$block-start}: 1.5em;
+  }
+  & .fv-radio-check:not(:last-child) {
+    margin-#{$block-end}: .7em;
+  }
+  & .fv-radio-check {
+    border-radius: $border-radius;
+    color: inherit;
+    &,
+    & * {
+      cursor: pointer;
     }
-    & .fv-radio-check:not(:last-child) {
-        margin-#{$block-end}: .7em;
+    &.fv-disabled {
+      opacity: .5;
+      &,
+      & * {
+        cursor: not-allowed;
+      }
     }
-    & .fv-radio-check {
-        color: inherit;
-        border-radius: $border-radius;
-        &,
-        & * {
-            cursor: pointer;
-        }
-        &.fv-disabled {
-            opacity: .5;
-            &,
-            & * {
-                cursor: not-allowed;
-            }
-        }
-        &.fv-checked,
-        &.fv-checked * {
-            color: $primary-color;
-        }
-        &:focus,
-        &.focus {
-            @include outline;
-        }
+    &.fv-checked,
+    &.fv-checked * {
+      color: $primary-color;
     }
-    & .fv-radio-icon {
-        font-size: 1.2em;
-        display: inline;
-        vertical-align: middle;
+    &:focus,
+    &.focus {
+      @include outline;
     }
-    & .fv-control-label {
-        display: inline;
-    }
+  }
+  & .fv-radio-icon {
+    display: inline;
+    font-size: 1.2em;
+    vertical-align: middle;
+  }
+  & .fv-control-label {
+    display: inline;
+  }
 }

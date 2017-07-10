@@ -2,16 +2,16 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-content {
-    position: relative;
+  display: block;
+  flex-grow: 1;
+  height: 100%;
+  overflow: auto;
+  padding: $padding;
+  position: relative;
+  width: 100%;
+  &::after {
+    clear: both;
+    content: '';
     display: block;
-    width: 100%;
-    padding: $padding;
-    height: 100%;
-    overflow: auto;
-    flex-grow: 1;
-    &::after {
-        content: '';
-        clear: both;
-        display: block;
-    }
+  }
 }

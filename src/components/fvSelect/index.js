@@ -217,23 +217,23 @@ export default {
     },
     pKeyDown (event) {
       switch (event.which) {
-        case 38: // up
-          this.highlightOption(this.highlightedOption == null ? this.highlightedOption - 1 : this.highlightedOption - 1, 'prev')
-          break
-        case 40: // down
-          this.highlightOption(this.highlightedOption == null ? 0 : this.highlightedOption + 1, 'next')
-          break
-        case 37: case 39: // left, right
-          break
-        case 13: // enter
-          if (this.highlightedOption !== null) {
-            this.clickOption(this.pOptions[ this.highlightedOption ], true)
-          }
-          if (event.target.tagName === 'BUTTON') {
-            event.preventDefault()
-            event.target.click()
-          }
-          break
+      case 38: // up
+        this.highlightOption(this.highlightedOption == null ? this.highlightedOption - 1 : this.highlightedOption - 1, 'prev')
+        break
+      case 40: // down
+        this.highlightOption(this.highlightedOption == null ? 0 : this.highlightedOption + 1, 'next')
+        break
+      case 37: case 39: // left, right
+        break
+      case 13: // enter
+        if (this.highlightedOption !== null) {
+          this.clickOption(this.pOptions[ this.highlightedOption ], true)
+        }
+        if (event.target.tagName === 'BUTTON') {
+          event.preventDefault()
+          event.target.click()
+        }
+        break
       }
     },
     clickOption (option = {index: null, value: null, key: 'select'}, setHighlight = false) {

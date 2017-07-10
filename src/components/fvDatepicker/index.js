@@ -2,7 +2,9 @@ import utility from '../../utility'
 import locale from 'locale'
 import template from './template.pug'
 import style from './style.scss'
+/* global CONFIG */
 let moment
+
 export default {
   props: {
     value: {
@@ -70,40 +72,40 @@ export default {
     pSections () {
       return this.pick.map((v) => {
         switch (v) {
-          case 'year': return {
-            type: 'pick',
-            name: v,
-            title: locale.year()
-          }
-          case 'month': return {
-            type: 'pick',
-            name: v,
-            title: locale.month()
-          }
-          case 'day': return {
-            type: 'pick',
-            name: v,
-            title: locale.day()
-          }
-          case 'hour': return {
-            type: 'pick',
-            name: v,
-            title: locale.hour()
-          }
-          case 'minute': return {
-            type: 'pick',
-            name: v,
-            title: locale.minute()
-          }
-          case 'second': return {
-            type: 'pick',
-            name: v,
-            title: locale.second()
-          }
-          case 'sp': return {
-            type: 'sp'
-          }
-          default: throw new Error('error in fv-datepicker pick attribute.')
+        case 'year': return {
+          type: 'pick',
+          name: v,
+          title: locale.year()
+        }
+        case 'month': return {
+          type: 'pick',
+          name: v,
+          title: locale.month()
+        }
+        case 'day': return {
+          type: 'pick',
+          name: v,
+          title: locale.day()
+        }
+        case 'hour': return {
+          type: 'pick',
+          name: v,
+          title: locale.hour()
+        }
+        case 'minute': return {
+          type: 'pick',
+          name: v,
+          title: locale.minute()
+        }
+        case 'second': return {
+          type: 'pick',
+          name: v,
+          title: locale.second()
+        }
+        case 'sp': return {
+          type: 'sp'
+        }
+        default: throw new Error('error in fv-datepicker pick attribute.')
         }
       })
     }
@@ -149,39 +151,39 @@ export default {
     },
     pKeyDown (event) {
       switch (event.which) {
-        case 38: // up
-          if (this.highlightedOption !== null) {
-            this.pMath('add', this.pSections[this.highlightedOption].name)
-          }
-          break
-        case 40: // down
-          if (this.highlightedOption !== null) {
-            this.pMath('subtract', this.pSections[this.highlightedOption].name)
-          }
-          break
-        case 37: // left
-          this.highlightedOption = this.highlightedOption == null ? -1 : this.highlightedOption
-          this.highlightedOption = this.highlightedOption + 1 >= this.pSections.length ? 0 : this.highlightedOption + 1
-          this.highlightedOption = this.pSections[this.highlightedOption].type === 'sp' ? this.highlightedOption + 1 : this.highlightedOption
-          break
-        case 39: // right
-          this.highlightedOption = this.highlightedOption == null ? this.pSections.length : this.highlightedOption
-          this.highlightedOption = this.highlightedOption - 1 < 0 ? this.pSections.length - 1 : this.highlightedOption - 1
-          this.highlightedOption = this.pSections[this.highlightedOption].type === 'sp' ? this.highlightedOption - 1 : this.highlightedOption
-          break
-        default:
-          this.highlightedOption = null
+      case 38: // up
+        if (this.highlightedOption !== null) {
+          this.pMath('add', this.pSections[this.highlightedOption].name)
+        }
+        break
+      case 40: // down
+        if (this.highlightedOption !== null) {
+          this.pMath('subtract', this.pSections[this.highlightedOption].name)
+        }
+        break
+      case 37: // left
+        this.highlightedOption = this.highlightedOption == null ? -1 : this.highlightedOption
+        this.highlightedOption = this.highlightedOption + 1 >= this.pSections.length ? 0 : this.highlightedOption + 1
+        this.highlightedOption = this.pSections[this.highlightedOption].type === 'sp' ? this.highlightedOption + 1 : this.highlightedOption
+        break
+      case 39: // right
+        this.highlightedOption = this.highlightedOption == null ? this.pSections.length : this.highlightedOption
+        this.highlightedOption = this.highlightedOption - 1 < 0 ? this.pSections.length - 1 : this.highlightedOption - 1
+        this.highlightedOption = this.pSections[this.highlightedOption].type === 'sp' ? this.highlightedOption - 1 : this.highlightedOption
+        break
+      default:
+        this.highlightedOption = null
       }
     },
     clickButton (action) {
       switch (action) {
-        case 'reset':
-          this.pSetValue()
-          this.close()
-          break
-        default:
-          this.pSetValue(this.pDate)
-          this.close()
+      case 'reset':
+        this.pSetValue()
+        this.close()
+        break
+      default:
+        this.pSetValue(this.pDate)
+        this.close()
       }
     },
     pSetValue (date = null) { // receive moment date and set date to value

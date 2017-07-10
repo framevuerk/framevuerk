@@ -2,10 +2,10 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-main {
-    display: flex;
-    flex-direction: column;
-    height: inherit;
-    width: inherit;
-    transition-duration: $transition-speed;
-    transition-property: padding;
+  display: flex;
+  flex-direction: column;
+  height: inherit;
+  transition-duration: $transition-speed;
+  transition-property: padding;
+  width: inherit;
 }

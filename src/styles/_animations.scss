@@ -11,33 +11,33 @@
 .fv-zoom-enter-active,
 .fv-zoom-leave-active,
 .fv-animation-default {
-    opacity: 1;
-    transform: translate(0, 0) scale(1, 1);
-    transition-duration: $transition-speed;
-    transition-property: transform, opacity, width;
+  opacity: 1;
+  transform: translate(0, 0) scale(1, 1);
+  transition-duration: $transition-speed;
+  transition-property: transform, opacity, width;
 }
 .fv-no-transition {
-    transition: 0s !important;
+  transition: 0s !important;
 }
 
 
 .fv-slide-up-enter,
 .fv-slide-up-leave-active {
-    transform: translateY(-100%);
+  transform: translateY(-100%);
 }
 .fv-slide-left-enter,
 .fv-slide-left-leave-active {
-    transform: translateX(-100%);
+  transform: translateX(-100%);
 }
 .fv-slide-right-enter,
 .fv-slide-right-leave-active {
-    transform: translateX(100%);
+  transform: translateX(100%);
 }
 .fv-fade-enter,
 .fv-fade-leave-active {
-    opacity: 0;
+  opacity: 0;
 }
 .fv-zoom-enter,
 .fv-zoom-leave-active {
-    transform: scale(1.1, 1.1);
+  transform: scale(1.1, 1.1);
 }

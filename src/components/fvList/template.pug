@@ -1,13 +1,8 @@
-ul(class="fv-list",
-    @click="$emit('click', $event)"
-)
-    li(class="fv-item",
-        v-for="item in pItems",
-        :class="{'disabled': item.disabled, 'selected': item.selected, 'highlighted': item.highlighted}",
-        @click="clickItem(item)"
-    )
-        i(v-if="item.icon",
-            :class="item.icon"
-        )
-        =" "
-        span(v-html="item.text")
+ul.fv-list(@click="$emit('click', $event)")
+  li.fv-item(v-for="item in pItems",
+    :class="{'disabled': item.disabled, 'selected': item.selected, 'highlighted': item.highlighted}",
+    @click="clickItem(item)")
+    i(v-if="item.icon",
+      :class="item.icon")
+    |  
+    span(v-html="item.text")

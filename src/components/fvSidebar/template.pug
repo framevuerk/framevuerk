@@ -1,14 +1,10 @@
 span
-    transition(name="fv-fade")
-        div(class="fv-overlay",
-                v-show="pShow && !pPin",
-                @click="close()"
-        )
-    transition(:name="animationName")
-        aside(class="fv-sidebar",
-            v-show="pShow",
-            :style="{width: pWidth+'px'}",
-            :class="{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}",
-            ref="sidebar"
-        )
-            slot
+  transition(name="fv-fade")
+    .fv-overlay(v-show="pShow && !pPin",
+      @click="close()")
+  transition(:name="animationName")
+    aside.fv-sidebar(v-show="pShow",
+      :style="{width: pWidth+'px'}",
+      :class="{'fv-left': pPosition=='left', 'fv-right': pPosition=='right'}",
+      ref="sidebar")
+      slot

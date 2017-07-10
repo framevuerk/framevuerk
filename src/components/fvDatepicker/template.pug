@@ -1,41 +1,34 @@
 span
-    fv-input(:class="inputClass",
-        :display-value="displayValue",
-        :value="value",
-        :placeholder="placeholder",
-        :required="required",
-        :disabled="disabled",
-        @keydown.enter="open()",
-        @click="open()",
-        ref="inputEl"
-    )
-    fv-dialog.fv-datepicker(ref="dialog",
-        :class="dialogClass",
-        :buttons="dialogButtons",
-        @click-button="clickButton($event)",
-        @click="pFocus('search')",
-        @keydown="pKeyDown($event)",
-        @close="$emit('close'); pFocus('input');",
-        @open="$emit('open')"
-    )
-        fv-main(ref="datepicker")
-            fv-content.fv-no-padding
-                div.fv-row
-                    section(v-for="(val, index) in pSections",
-                        :class="{'fv-pick-section': val.type=='pick','fv-col-xs-4': val.type=='pick','fv-sp': val.type=='sp','fv-focused': highlightedOption==index}"
-                    )
-                        label.fv-control-label.fv-title(v-if="val.type=='pick'",
-                            v-html="val.title"
-                        )
-                        span.fv-button.fv-up(v-if="val.type=='pick'",
-                            @click.prevent="pMath('add', val.name)"
-                        )
-                            i.fa.fa-chevron-up
-                        div.fv-value.fv-text-center(v-if="val.type=='pick'",
-                            v-html="pValue[val.name]"
-                        )
-                        span.fv-button.fv-bottom(v-if="val.type=='pick'",
-                            @click.prevent="pMath('subtract', val.name)"
-                        )
-                            i.fa.fa-chevron-down
-                        hr(v-if="val.type=='sp'")
+  fv-input(:class="inputClass",
+    :display-value="displayValue",
+    :value="value",
+    :placeholder="placeholder",
+    :required="required",
+    :disabled="disabled",
+    @keydown.enter="open()",
+    @click="open()",
+    ref="inputEl")
+  fv-dialog.fv-datepicker(ref="dialog",
+    :class="dialogClass",
+    :buttons="dialogButtons",
+    @click-button="clickButton($event)",
+    @click="pFocus('search')",
+    @keydown="pKeyDown($event)",
+    @close="$emit('close'); pFocus('input');",
+    @open="$emit('open')")
+    fv-main(ref="datepicker")
+      fv-content.fv-no-padding
+        .fv-row
+          section(v-for="(val, index) in pSections",
+            :class="{'fv-pick-section': val.type=='pick','fv-col-xs-4': val.type=='pick','fv-sp': val.type=='sp','fv-focused': highlightedOption==index}")
+            label.fv-control-label.fv-title(v-if="val.type=='pick'",
+              v-html="val.title")
+            span.fv-button.fv-up(v-if="val.type=='pick'",
+              @click.prevent="pMath('add', val.name)")
+              i.fa.fa-chevron-up
+            .fv-value.fv-text-center(v-if="val.type=='pick'",
+              v-html="pValue[val.name]")
+            span.fv-button.fv-bottom(v-if="val.type=='pick'",
+              @click.prevent="pMath('subtract', val.name)")
+              i.fa.fa-chevron-down
+            hr(v-if="val.type=='sp'")

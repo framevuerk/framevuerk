@@ -2,6 +2,7 @@ import template from './template.pug'
 import style from './style.scss'
 import utility from '../../utility'
 import locale from 'locale'
+/* global CONFIG */
 
 export default {
   props: {

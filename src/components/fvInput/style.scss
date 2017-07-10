@@ -2,21 +2,21 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-input {
-    &.fv-input-select,
-    &.fv-input-datepicker {
-        cursor: pointer;
-        & > .fv-input-select-item {
-            @include yiq($gray-color-light);
-            border: 1px solid $shadow-color;
-            box-shadow: 0 2px 1px $shadow-color-light;
-            border-radius: .5em;
-            margin-#{$block-end}: .5em;
-            padding: 0 .5em;
-            line-height: 3em;
-        }
-        & > .fv-arrow {
-            float: $block-end;
-            margin: 1.1em .4em 1em;
-        }
+  &.fv-input-select,
+  &.fv-input-datepicker {
+    cursor: pointer;
+    & > .fv-input-select-item {
+      @include yiq($gray-color-light);
+      border: 1px solid $shadow-color;
+      border-radius: .5em;
+      box-shadow: 0 2px 1px $shadow-color-light;
+      line-height: 3em;
+      margin-#{$block-end}: .5em;
+      padding: 0 .5em;
     }
+    & > .fv-arrow {
+      float: $block-end;
+      margin: 1.1em .4em 1em;
+    }
+  }
 }

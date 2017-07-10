@@ -1,6 +1,7 @@
 import { name, version } from '../package.json'
 import './style.scss'
 import utility from './utility'
+/* global CONFIG */
 
 // Components
 import fvMain from './components/fvMain'
@@ -25,6 +26,24 @@ import fvTextarea from './components/fvTextarea'
 import fvScroll from './directives/fvScroll'
 
 const framevuerk = {
+  fvMain,
+  fvContent,
+  fvHeader,
+  fvFooter,
+  fvSidebar,
+  fvSelect,
+  fvDatepicker,
+  fvList,
+  fvMenu,
+  fvInput,
+  fvButton,
+  fvFilepicker,
+  fvSwitch,
+  fvDialog,
+  fvTable,
+  fvTabs,
+  fvRadio,
+  fvTextarea,
   use (lib = null) {
     if (lib && (lib.name === 'jMoment' || lib.name === 'moment')) {
       utility._dependencies.moment = lib
@@ -54,6 +73,7 @@ const framevuerk = {
     Vue.directive('fvScroll', fvScroll)
   },
   version,
-  name
+  name,
+  config: Object.freeze(CONFIG)
 }
 module.exports = framevuerk

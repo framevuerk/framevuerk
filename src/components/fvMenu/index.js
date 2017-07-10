@@ -88,28 +88,28 @@ export default {
     },
     pKeyDown (event) {
       switch (event.which) {
-        case 38: // up
-          this.highlightedOption = this.highlightedOption == null ? this.pOptions.length : this.highlightedOption
-          this.highlightedOption = this.highlightedOption - 1 < 0 ? this.pOptions.length - 1 : this.highlightedOption - 1
-          break
-        case 40: // down
-          this.highlightedOption = this.highlightedOption == null ? -1 : this.highlightedOption
-          this.highlightedOption = this.highlightedOption + 1 >= this.pOptions.length ? 0 : this.highlightedOption + 1
-          break
-        case 37: case 39: // left, right
-          break
-        case 13: // enter
-          event.preventDefault()
-          if (this.highlightedOption !== null) {
-            this.clickOption(this.pOptions[ this.highlightedOption ], true)
-          }
-          break
-        case 9: // tab
-          event.preventDefault()
-          this.pFocus()
-          break
-        case 27: // esc
-          this.close()
+      case 38: // up
+        this.highlightedOption = this.highlightedOption == null ? this.pOptions.length : this.highlightedOption
+        this.highlightedOption = this.highlightedOption - 1 < 0 ? this.pOptions.length - 1 : this.highlightedOption - 1
+        break
+      case 40: // down
+        this.highlightedOption = this.highlightedOption == null ? -1 : this.highlightedOption
+        this.highlightedOption = this.highlightedOption + 1 >= this.pOptions.length ? 0 : this.highlightedOption + 1
+        break
+      case 37: case 39: // left, right
+        break
+      case 13: // enter
+        event.preventDefault()
+        if (this.highlightedOption !== null) {
+          this.clickOption(this.pOptions[ this.highlightedOption ], true)
+        }
+        break
+      case 9: // tab
+        event.preventDefault()
+        this.pFocus()
+        break
+      case 27: // esc
+        this.close()
       }
     },
     widthChangeEvent () {

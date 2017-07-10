@@ -1,17 +1,14 @@
-fv-button(@click="choose($event)",
-    type="button",
-    class="fv-file-picker",
-    :class="{invalid: invalid}",
-    @focus="checkInvalid()",
-    ref="btnEl"
-)
-    i.fa(:class="{'fa-file': selected,'fa-file-o': !selected}")
-    =" "
-    span(v-html="displayValue")
-    input.fv-hide(type="file",
-        ref="fileinput",
-        @change="pick()",
-        :multiple="multiple",
-        :required="required",
-        @invalid.prevent="pFocus()"
-    )
+fv-button.fv-file-picker(@click="choose($event)",
+  type="button",
+  :class="{invalid: invalid}",
+  @focus="checkInvalid()",
+  ref="btnEl")
+  i.fa(:class="{'fa-file': selected,'fa-file-o': !selected}")
+  |  
+  span(v-html="displayValue")
+  input.fv-hide(type="file",
+    ref="fileinput",
+    @change="pick()",
+    :multiple="multiple",
+    :required="required",
+    @invalid.prevent="pFocus()")

@@ -75,20 +75,20 @@ export default {
         this.$emit('input', this.multiple ? [] : null)
       } else {
         switch (this.type) {
-          case 'blob':
-            for (let i = 0; i < filesCount; i++) {
-              loadAsBlob(this.$refs.fileinput.files[i]).then((result) => {
-                value.push(result)
-                j++
-                if (j === filesCount) {
-                  this.$emit('input', this.multiple ? value : value[0])
-                }
-              })
-            }
-            break
-          case 'file':
-            this.$emit('input', this.multiple ? this.$refs.fileinput.files : this.$refs.fileinput.files[0])
-            break
+        case 'blob':
+          for (let i = 0; i < filesCount; i++) {
+            loadAsBlob(this.$refs.fileinput.files[i]).then((result) => {
+              value.push(result)
+              j++
+              if (j === filesCount) {
+                this.$emit('input', this.multiple ? value : value[0])
+              }
+            })
+          }
+          break
+        case 'file':
+          this.$emit('input', this.multiple ? this.$refs.fileinput.files : this.$refs.fileinput.files[0])
+          break
         }
       }
     },
@@ -101,20 +101,20 @@ export default {
       const filesCount = this.$refs.fileinput.files.length
       this.selected = true
       switch (this.type) {
-        case 'blob':
-          if (this.multiple) {
-            this.displayValue = locale.nFileSelected(filesCount)
-          } else {
-            this.displayValue = locale.nFileSelected(1)
-          }
-          break
-        case 'file':
-          if (this.multiple) {
-            this.displayValue = locale.nFileSelected(filesCount)
-          } else {
-            this.displayValue = this.value.name
-          }
-          break
+      case 'blob':
+        if (this.multiple) {
+          this.displayValue = locale.nFileSelected(filesCount)
+        } else {
+          this.displayValue = locale.nFileSelected(1)
+        }
+        break
+      case 'file':
+        if (this.multiple) {
+          this.displayValue = locale.nFileSelected(filesCount)
+        } else {
+          this.displayValue = this.value.name
+        }
+        break
       }
     }
   },
