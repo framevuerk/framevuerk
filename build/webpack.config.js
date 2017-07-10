@@ -1,6 +1,6 @@
-var pkg = require('../package.json')
 var path = require('path')
 var fs = require('fs')
+var pkg = require(path.resolve(__dirname,'../package.json'))
 var webpack = require('webpack')
 
 var ENV = process.env.NODE_ENV || 'production'
@@ -46,7 +46,9 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
 
   const plugins = [
     new webpack.DefinePlugin({
-      'CONFIG': JSON.stringify(CONFIG)
+      'CONFIG': JSON.stringify(CONFIG),
+      'PKG_NAME': JSON.stringify(pkg.name),
+      'PKG_VERSION': JSON.stringify(pkg.version)
     }),
     new webpack.BannerPlugin(
       pkg.name + ' ' + pkg.version + '\n' +
@@ -84,18 +86,11 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
     module: {
       rules: [
         {
-          test: /\.vue$/,
-          loader: 'vue-loader',
-          exclude: /node_modules/,
-          options: {
-            loaders: {
-              scss: scssLoader
-            }
-          }
-        },
-        {
           test: /\.js$/,
-          loader: 'babel-loader',
+          use: {
+            loader: 'babel-loader',
+            options: require(path.resolve(__dirname, '../config/.babelrc.json'))
+          },
           exclude: /node_modules/
         },
         {
@@ -105,7 +100,27 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
         },
         {
           test: /\.[s]css$/,
-          use: scssLoader
+          use: [
+            {
+              loader: 'style-loader'
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                minimize: CONFIG.ENV === 'production'
+              }
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                data: '' +
+                  '$env:' + CONFIG.ENV + ';' +
+                  '$direction:' + CONFIG.DIRECTION + ';' +
+                  '$theme-color:' + CONFIG.THEME_COLOR + ';' +
+                  '$locale:' + CONFIG.LOCALE + ';'
+              }
+            }
+          ]
         }
       ]
     },
