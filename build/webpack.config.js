@@ -1,6 +1,6 @@
 var path = require('path')
 var fs = require('fs')
-var pkg = require(path.resolve(__dirname,'../package.json'))
+var pkg = require(path.resolve(__dirname, '../package.json'))
 var webpack = require('webpack')
 
 var ENV = process.env.NODE_ENV || 'production'
@@ -8,11 +8,11 @@ var ENV = process.env.NODE_ENV || 'production'
 var generateConfig = (LOCALE, THEME_COLOR) => {
   let DIRECTION
   switch (LOCALE) {
-    case 'fa':
-      DIRECTION = 'rtl'
-      break
-    default:
-      DIRECTION = 'ltr'
+  case 'fa':
+    DIRECTION = 'rtl'
+    break
+  default:
+    DIRECTION = 'ltr'
   }
   const CONFIG = {
     ENV,
