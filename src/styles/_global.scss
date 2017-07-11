@@ -55,6 +55,26 @@ html > body {
   }
 }
 
+.fv-link {
+  &,
+  &:hover,
+  &.hover,
+  &:active,
+  &.active,
+  &:focus,
+  &.focus,
+  &:visited,
+  &.visited {
+    color: $theme-color-light;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  &:focus,
+  &.focus {
+    @include outline;
+  }
+}
+
 .fv-text-center {
   text-align: center !important;
 }
@@ -96,7 +116,9 @@ html > body {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
-
+.fv-no-border {
+  border: 0 !important;
+}
 .fv-pull-left {
   float: left !important;
 }
