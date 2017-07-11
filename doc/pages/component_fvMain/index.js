@@ -8,4 +8,4 @@ export default {
     docDescription
   },
   render: template.render
-} 
+}

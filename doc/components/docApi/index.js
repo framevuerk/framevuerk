@@ -4,10 +4,10 @@ export default {
   props: {
     rows: {
       type: Object,
-      default: ()=>{}
+      default: () => {}
     }
   },
-  data(){
+  data () {
     return {
       tabs: [
         {
@@ -21,20 +21,20 @@ export default {
         {
           title: 'Method`s',
           slot: 'method'}
-        ]
+      ]
     }
   },
   methods: {
-    fields(type){
-      switch(type){
-        case 'prop':
-          return ['name', 'type', 'default', 'description'];
-        case 'event':
-          return ['name', 'params'];
-        case 'method':
-          return ['name', 'params'];
+    fields (type) {
+      switch (type) {
+      case 'prop':
+        return ['name', 'type', 'default', 'description']
+      case 'event':
+        return ['name', 'params']
+      case 'method':
+        return ['name', 'params']
       }
     }
   },
   render: template.render
-} 
+}
