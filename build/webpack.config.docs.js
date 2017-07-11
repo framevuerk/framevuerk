@@ -28,10 +28,10 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
     }))
   }
   return {
-    entry: path.resolve(__dirname, '../doc/index.js'),
+    entry: path.resolve(__dirname, '../docs-src/index.js'),
     stats: { children: false },
     output: {
-      path: path.resolve(__dirname, '../public'),
+      path: path.resolve(__dirname, '../docs'),
       filename: fileName + '.js',
       library: fileName,
       libraryTarget: 'umd'

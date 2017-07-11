@@ -1,8 +1,8 @@
 test
 src
 build
-doc
-public
+docs-src
+docs
 bs-config.json
 index.html
 .editorconfig
