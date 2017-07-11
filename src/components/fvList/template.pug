@@ -1,4 +1,4 @@
-ul.fv-list(@click="$emit('click', $event)")
+ul.fv-list
   li.fv-item(v-for="item in pItems",
     :class="{'disabled': item.disabled, 'selected': item.selected, 'highlighted': item.highlighted}",
     @click="clickItem(item)")

@@ -9,9 +9,6 @@ export default {
     displayValue: {
       default: undefined
     },
-    type: {
-      default: 'text'
-    },
     required: {
       type: Boolean,
       default: false

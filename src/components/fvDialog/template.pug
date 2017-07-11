@@ -6,8 +6,8 @@ span
     fv-main.fv-dialog(:class="animationName",
       v-show="pShow",
       ref="dialog",
-      @keydown="pKeyDown($event); $emit('keydown', $event)",
-      @click="$emit('click', $event)")
+      @keydown.native="pKeyDown($event); $emit('keydown', $event)",
+      @click.native="$emit('click', $event)")
       fv-header.fv-invert(:height="37",
         v-if="title.length > 0")
         .fv-title
@@ -19,7 +19,7 @@ span
         fv-button(v-for="button in pButtons",
           :key="button.key",
           :class="button.class",
-          @click="clickButton(button)",
+          @click.native="clickButton(button)",
           :disabled="button.disabled") 
           i(v-if="button.icon",
             :class="button.icon")
