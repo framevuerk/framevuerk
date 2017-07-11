@@ -1,0 +1,46 @@
+@import '../../styles/variables';
+@import '../../styles/functions';
+@import '../../styles/mixins';
+.fv-radio {
+  display: inline-block;
+  height: 1.2em;
+  margin: .7em 0;
+  & > .fv-button {
+    padding-#{$block-end}: 1.5em;
+    padding-#{$block-start}: 1.5em;
+  }
+  & .fv-radio-check:not(:last-child) {
+    margin-#{$block-end}: .7em;
+  }
+  & .fv-radio-check {
+    border-radius: $border-radius;
+    color: inherit;
+    &,
+    & * {
+      cursor: pointer;
+    }
+    &.fv-disabled {
+      opacity: .5;
+      &,
+      & * {
+        cursor: not-allowed;
+      }
+    }
+    &.fv-checked,
+    &.fv-checked * {
+      color: $primary-color;
+    }
+    &:focus,
+    &.focus {
+      @include outline;
+    }
+  }
+  & .fv-radio-icon {
+    display: inline;
+    font-size: 1.2em;
+    vertical-align: middle;
+  }
+  & .fv-control-label {
+    display: inline;
+  }
+}

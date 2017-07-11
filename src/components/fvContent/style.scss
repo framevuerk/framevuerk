@@ -1,0 +1,17 @@
+@import '../../styles/variables';
+@import '../../styles/functions';
+@import '../../styles/mixins';
+.fv-content {
+  display: block;
+  flex-grow: 1;
+  height: 100%;
+  overflow: auto;
+  padding: $padding;
+  position: relative;
+  width: 100%;
+  &::after {
+    clear: both;
+    content: '';
+    display: block;
+  }
+}

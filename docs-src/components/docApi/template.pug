@@ -1,0 +1,12 @@
+span
+  h3 API
+  fv-tabs(:tabs="tabs")
+    div(v-for="tab in tabs", :slot="tab.slot")
+      br
+      fv-table.fv-no-border(v-if="rows[tab.slot] && rows[tab.slot].length > 0",
+        local,
+        :fields="fields(tab.slot)",
+        :footer="false",
+        :rows="rows[tab.slot]")
+      p(v-else) ---
+  br

@@ -94,7 +94,7 @@
                 </div>
                 <div class="fv-col-sm-6">
                     <label class="fv-control-label">نام تیمای مورد علاقه {{user.teams}}</label>
-                    <fv-select input-class="fv-form-control" :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2, disabled: true}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6}]" v-model="user.teams" :allow-insert="false" multiple required ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
+                    <fv-select input-class="fv-form-control" :options="[{text: 'آث میلان', value: 1}, {text: 'اینتر میلان', value: 2, disabled: true}, {text: 'یوونتوس', value: 3}, {text: 'آس رم', value: 4}, {text: 'ناپولی', value: 5}, {text: 'فیورنتینا', value: 6}]" v-model="user.teams" :allow-insert="false" multiple ref="team" placeholder="تیم مورد علاقت چی بود؟"></fv-select>
                 </div>
                 <div class="fv-col-sm-6">
                     <label class="fv-control-label">نام تیم مورد علاقه {{user.team}}</label>
@@ -199,21 +199,17 @@
     <script src="node_modules/vue-resource/dist/vue-resource.min.js"></script>
     <script src="node_modules/moment/min/moment.min.js"></script>
     <script src="node_modules/moment-jalaali/build/moment-jalaali.js"></script>
-    <script src="./dist/framevuerk.js"></script>
+    <script src="./dist/framevuerk-en.js"></script>
     <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="node_modules/shabnam-font/dist/font-face.css">
-    <link rel="stylesheet" href="dist/framevuerk.css">
     <style>
       #app{
-        font-family: Shabnam, sans-serif;
+        font-family: sans-serif;
         font-weight: 300;
       }
     </style>
     
     <script>
       framevuerk.use(moment);
-      console.log( framevuerk._dependencies );
-      console.log('im there')
       Vue.use(VueResource);
       Vue.use(framevuerk);
 

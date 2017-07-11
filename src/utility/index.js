@@ -4,7 +4,7 @@ export default {
     if (child === null || parent === null) {
       return false
     }
-    var node = child.parentNode
+    let node = child.parentNode
     while (node !== null) {
       if (node === parent) {
         return true
@@ -33,7 +33,5 @@ export default {
       'invalid'
     ]
   },
-  _dependencies: {
-    moment: null
-  }
+  _dependencies: {}
 }

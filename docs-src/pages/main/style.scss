@@ -1,0 +1,23 @@
+body .sidebar {
+  & .fv-header {
+    background: #313840;
+    & .fv-title h1 {
+      font-size: 2em;
+    }
+    & * {
+      line-height: 1.3em;
+    }
+  }
+  & .fv-tabs {
+    max-height: calc(100% - 150px);
+  }
+  & .fv-list {
+    & .fa {
+      font-size: 1.3em;
+      margin-right: 5px;
+    }
+    & .fv-item.selected {
+      background: rgba(255, 255, 255, .1);
+    }
+  }
+}

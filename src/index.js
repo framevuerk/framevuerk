@@ -1,35 +1,52 @@
-import {name, version} from '../package.json'
+// import { name, version } from '../package.json'
 import './style.scss'
 import utility from './utility'
+/* global CONFIG, PKG_NAME, PKG_VERSION */
 
 // Components
-import fvMain from './components/fvMain.vue'
-import fvContent from './components/fvContent.vue'
-import fvHeader from './components/fvHeader.vue'
-import fvFooter from './components/fvFooter.vue'
-import fvSidebar from './components/fvSidebar.vue'
-import fvSelect from './components/fvSelect.vue'
-import fvDatepicker from './components/fvDatepicker.vue'
-import fvList from './components/fvList.vue'
-import fvMenu from './components/fvMenu.vue'
-import fvInput from './components/fvInput.vue'
-import fvButton from './components/fvButton.vue'
-import fvFilepicker from './components/fvFilepicker.vue'
-import fvSwitch from './components/fvSwitch.vue'
-import fvDialog from './components/fvDialog.vue'
-import fvTable from './components/fvTable.vue'
-import fvTabs from './components/fvTabs.vue'
-import fvRadio from './components/fvRadio.vue'
-import fvTextarea from './components/fvTextarea.vue'
+import fvMain from './components/fvMain'
+import fvContent from './components/fvContent'
+import fvHeader from './components/fvHeader'
+import fvFooter from './components/fvFooter'
+import fvSidebar from './components/fvSidebar'
+import fvSelect from './components/fvSelect'
+import fvDatepicker from './components/fvDatepicker'
+import fvList from './components/fvList'
+import fvMenu from './components/fvMenu'
+import fvInput from './components/fvInput'
+import fvButton from './components/fvButton'
+import fvFilepicker from './components/fvFilepicker'
+import fvSwitch from './components/fvSwitch'
+import fvDialog from './components/fvDialog'
+import fvTable from './components/fvTable'
+import fvTabs from './components/fvTabs'
+import fvRadio from './components/fvRadio'
+import fvTextarea from './components/fvTextarea'
 // Directives
-import fvScroll from './directives/fvScroll.vue'
+import fvScroll from './directives/fvScroll'
 
 const framevuerk = {
-  _dependencies: utility._dependencies,
+  fvMain,
+  fvContent,
+  fvHeader,
+  fvFooter,
+  fvSidebar,
+  fvSelect,
+  fvDatepicker,
+  fvList,
+  fvMenu,
+  fvInput,
+  fvButton,
+  fvFilepicker,
+  fvSwitch,
+  fvDialog,
+  fvTable,
+  fvTabs,
+  fvRadio,
+  fvTextarea,
   use (lib = null) {
     if (lib && (lib.name === 'jMoment' || lib.name === 'moment')) {
       utility._dependencies.moment = lib
-      this._dependencies.moment = lib
     }
   },
   install (Vue) {
@@ -55,7 +72,8 @@ const framevuerk = {
     // Directives
     Vue.directive('fvScroll', fvScroll)
   },
-  version,
-  name
+  config: Object.freeze(CONFIG),
+  name: PKG_NAME,
+  version: PKG_VERSION
 }
-export default framevuerk
+module.exports = framevuerk

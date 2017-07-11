@@ -1,42 +1,42 @@
 $width-1: 8.33333333333333333333333%;
-@import "./variables";
-@import "./mixins";
+@import './variables';
+@import './mixins';
 
-.fv-row{
+.fv-row {
+  clear: both;
+  padding: #{$padding / 2};
+  &::after {
     clear: both;
-    padding: #{$padding / 2};
-    &:after{
-        content: '';
-        clear: both;
-        display: block;
-    }
-}
-
-[class*=fv-col]{
+    content: '';
     display: block;
-    float: $block-start;
-    padding: #{$padding / 2};
-    position: relative;
-    width: 100%;
+  }
 }
 
-@each $media in xs, sm, md, lg, xl{
-    @include respond-to($media) {
-        @for $i from 1 to 12 {
-            .fv-col-#{$media}-#{$i}{
-                width: #{$width-1 * $i};
-            }
-            .fv-col-offset-#{$media}-#{$i}{
-                margin-#{$block-start}: #{$width-1 * $i};
-            }
-        }
-        .fv-hide-on-#{$media}{
-            display: none !important;
-        }
+[class*='fv-col'] {
+  display: block;
+  float: $block-start;
+  padding: #{$padding / 2};
+  position: relative;
+  width: 100%;
+}
+
+@each $media in xs, sm, md, lg, xl {
+  @include respond-to($media) {
+    @for $i from 1 to 12 {
+      .fv-col-#{$media}-#{$i} {
+        width: #{$width-1 * $i};
+      }
+      .fv-col-offset-#{$media}-#{$i} {
+        margin-#{$block-start}: #{$width-1 * $i};
+      }
     }
-    @include respond-to(only-#{$media}) {
-        .fv-hide-on-only-#{$media}{
-            display: none !important;
-        }
+    .fv-hide-on-#{$media} {
+      display: none !important;
     }
+  }
+  @include respond-to(only-#{$media}) {
+    .fv-hide-on-only-#{$media} {
+      display: none !important;
+    }
+  }
 }

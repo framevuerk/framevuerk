@@ -1,0 +1,13 @@
+fv-dialog.fv-menu(ref="menu",
+  content-class="fv-no-padding",
+  :position="pSheet? 'bottom': 'center'",
+  :title="title",
+  @click.native="pFocus('search')",
+  @keydown.native="pKeyDown($event)",
+  @close="$emit('close'); pFocus('input');",
+  @open="$emit('open')")
+  span(tabindex="0",
+    ref="justFocusEl")
+  fv-list.no-outline-border(:items="pOptions",
+    @click-item="clickOption($event)",
+    @click="pFocus()")

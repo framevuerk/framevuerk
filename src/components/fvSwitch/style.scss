@@ -1,0 +1,45 @@
+@import '../../styles/variables';
+@import '../../styles/functions';
+@import '../../styles/mixins';
+.fv-switch {
+  background: $gray-color;
+  border: solid 1px $gray-color-dark;
+  border-radius: #{$border-radius * 6};
+  cursor: pointer;
+  direction: $direction;
+  display: inline-block;
+  height: 1.2em;
+  margin: .9em 0;
+  padding: 0;
+  vertical-align: middle;
+  width: 3.2em;
+  & > .fv-handler {
+    background: $gray-color-light;
+    border: solid 1px $shadow-color;
+    border-radius: 25px;
+    box-shadow: 0 1px 4px $shadow-color;
+    display: inline-block;
+    height: 1.8em;
+    margin: calc(-.3em - 1px);
+    width: 1.8em;
+  }
+  &.on {
+    background: rgba($theme-color-light, .8);
+    & > .fv-handler {
+      background: $theme-color;
+      margin-#{$block-start}: 1.65em;
+    }
+  }
+  &:focus,
+  &.focus {
+    @include outline;
+    &:invalid,
+    &.invalid {
+      @include outline($danger-color);
+    }
+  }
+  &[disabled],
+  &.disabled {
+    @include disabled;
+  }
+}

@@ -1,0 +1,36 @@
+@import '../../styles/variables';
+@import '../../styles/functions';
+@import '../../styles/mixins';
+
+.fv-datepicker  > .fv-main {
+  @include respond-to(only-xs) {
+    max-height: 100%;
+    width: 100%;
+  }
+  & > .fv-content {
+    padding: 0;
+  }
+  & .fv-sp {
+    margin-top: #{$padding * 2};
+  }
+  & .fv-pick-section {
+    display: inline-block;
+    &.fv-focused {
+      background: $shadow-color-light;
+    }
+    & > .fv-button {
+      width: 100%;
+    }
+    & > .fv-title {
+      text-align: center;
+    }
+    & > .fv-value {
+      background: $bg-color-light;
+      border-left: 1px solid $shadow-color-light;
+      border-right: 1px solid $shadow-color-light;
+      color: $theme-color;
+      font-weight: bold;
+      padding: $padding 0;
+    }
+  }
+}

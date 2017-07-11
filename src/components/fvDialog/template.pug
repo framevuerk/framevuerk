@@ -1,0 +1,27 @@
+span
+  transition(name="fv-fade")
+    .fv-overlay.fv-dialog-overlay(v-show="pShow",
+      @click="closeIf()")
+  transition(:name="animationName")
+    fv-main.fv-dialog(:class="animationName",
+      v-show="pShow",
+      ref="dialog",
+      @keydown.native="pKeyDown($event); $emit('keydown', $event)",
+      @click.native="$emit('click', $event)")
+      fv-header.fv-invert(:height="37",
+        v-if="title.length > 0")
+        .fv-title
+          label.fv-control-label(v-html="title")
+      fv-content(:class="contentClass")
+        slot
+      fv-footer(v-if="pButtons.length > 0")
+        .fv-grow
+        fv-button(v-for="button in pButtons",
+          :key="button.key",
+          :class="button.class",
+          @click.native="clickButton(button)",
+          :disabled="button.disabled") 
+          i(v-if="button.icon",
+            :class="button.icon")
+          |  
+          span(v-html="button.text")

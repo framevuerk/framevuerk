@@ -1,88 +1,79 @@
-@import "./variables";
-@import "./functions";
+@import './variables';
+@import './functions';
 
-@mixin outline($color: $theme-color){
-    outline: none;
-    box-shadow: 0 0 2px 1px rgba($color, 0.4);
-    border-color: $color;
+@mixin outline($color: $theme-color) {
+  border-color: $color;
+  box-shadow: 0 0 2px 1px rgba($color, .4);
+  outline: none;
 }
-@mixin bottom-outline($color: $theme-color){
-    outline: none;
-    box-shadow: none;
-    border-color: $color;
+@mixin bottom-outline($color: $theme-color) {
+  border-color: $color;
+  box-shadow: none;
+  outline: none;
 }
 
 @mixin nowrap {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @mixin yiq($color, $percetange: 90%) {
-    background: $color;
-    color: yiq($color, $percetange);
+  background: $color;
+  color: yiq($color, $percetange);
 }
 
-@mixin disabled{
-    //opacity: 0.5;
-    filter: opacity(50%);
-    &, & *{
-        cursor: not-allowed;
-    }
+@mixin disabled {
+  //opacity: .5;
+  filter: opacity(50%);
+  &,
+  & * {
+    cursor: not-allowed;
+  }
 }
 
 @mixin respond-to($media) {
-    @if $media == all {
-        @content;
+  @if $media == all {
+    @content;
+  } @else if $media == xs {
+    @media #{$media-xs} {
+      @content;
     }
-    @else if $media == xs {
-        @media #{$media-xs}{
-            @content;
-        }
+  } @else if $media == only-xs {
+    @media #{$media-only-xs} {
+      @content;
     }
-    @else if $media == only-xs {
-        @media #{$media-only-xs}{
-            @content;
-        }
+  } @else if $media == sm {
+    @media #{$media-sm} {
+      @content;
     }
-    @else if $media == sm {
-        @media #{$media-sm}{
-            @content;
-        }
+  } @else if $media == only-sm {
+    @media #{$media-only-sm} {
+      @content;
     }
-    @else if $media == only-sm {
-        @media #{$media-only-sm}{
-            @content;
-        }
+  } @else if $media == md {
+    @media #{$media-md} {
+      @content;
     }
-    @else if $media == md {
-        @media #{$media-md}{
-            @content;
-        }
+  } @else if $media == only-md {
+    @media #{$media-only-md} {
+      @content;
     }
-    @else if $media == only-md {
-        @media #{$media-only-md}{
-            @content;
-        }
+  } @else if $media == lg {
+    @media #{$media-lg} {
+      @content;
     }
-    @else if $media == lg {
-        @media #{$media-lg}{
-            @content;
-        }
+  } @else if $media == only-lg {
+    @media #{$media-only-lg} {
+      @content;
     }
-    @else if $media == only-lg {
-        @media #{$media-only-lg}{
-            @content;
-        }
+  } @else if $media == xl {
+    @media #{$media-xl} {
+      @content;
     }
-    @else if $media == xl {
-        @media #{$media-xl}{
-            @content;
-        }
+  } @else if $media == only-xl {
+    @media #{$media-only-xl} {
+      @content;
     }
-    @else if $media == only-xl {
-        @media #{$media-only-xl}{
-            @content;
-        }
-    }
+  }
 }

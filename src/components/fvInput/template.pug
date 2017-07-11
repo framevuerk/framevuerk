@@ -1,0 +1,30 @@
+.fv-input.fv-input-select(v-if="displayValue !== undefined",
+  ref="inputEl",
+  :class="{invalid: invalid, focus: focus, disabled: disabled}",
+  :tabindex="disabled? '': 0",
+  :disabled="disabled",
+  @focus="checkInvalid(); focus = true;",
+  @click="pClick($event)",
+  @blur="focus = false;",
+  @invalid.prevent="pFocus()")
+  span.placeholder(v-if="typeof displayValue == 'undefined' || displayValue === null || displayValue.length === 0",
+    v-html="placeholder")
+  span.fv-input-select-item(v-else-if="displayValue.constructor == Array",
+    v-for="val in displayValue",
+    v-html="val")
+  span.fv-input-select-item(v-else,
+    v-html="displayValue")
+  i.fv-arrow(v-if="icon",
+    :class="icon")
+  input.fv-hidden(tabindex="999999999",
+    :value="value",
+    :required="required",
+    @focus="$refs.inputEl.focus()")
+input.fv-input(v-else,
+  ref="inputEl",
+  :disabled="disabled",
+  :value="value",
+  :required="required",
+  :placeholder="placeholder",
+  @input="$emit('input', $event.target.value)",
+  @invalid.prevent="pFocus()")
