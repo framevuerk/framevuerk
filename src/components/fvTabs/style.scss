@@ -4,8 +4,8 @@
 .fv-tabs {
   & > .fv-header {
     background: transparent;
-    color: inherit;
     box-shadow: none;
+    color: inherit;
     & > .fv-tab-button {
       background: transparent;
       box-shadow: inset 0 0 0 $theme-color;
