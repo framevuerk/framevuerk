@@ -1,3 +1,9 @@
 test
 src
 build
+doc
+public
+bs-config.json
+index.html
+.editorconfig
+.gitignore
