@@ -5,11 +5,13 @@
   & > .fv-header {
     background: transparent;
     color: inherit;
+    box-shadow: none;
     & > .fv-tab-button {
       background: transparent;
       box-shadow: inset 0 0 0 $theme-color;
       color: inherit;
       cursor: pointer;
+      font-weight: bold;
       height: 100%;
       max-width: 70%;
       text-align: center;
