@@ -22,27 +22,6 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
   }
 
   const fileName = pkg.name + '-' + CONFIG.LOCALE
-  const scssLoader = [
-    {
-      loader: 'style-loader'
-    },
-    {
-      loader: 'css-loader',
-      options: {
-        minimize: CONFIG.ENV === 'production'
-      }
-    },
-    {
-      loader: 'sass-loader',
-      options: {
-        data: '' +
-          '$env:' + CONFIG.ENV + ';' +
-          '$direction:' + CONFIG.DIRECTION + ';' +
-          '$theme-color:' + CONFIG.THEME_COLOR + ';' +
-          '$locale:' + CONFIG.LOCALE + ';'
-      }
-    }
-  ]
 
   const plugins = [
     new webpack.DefinePlugin({
@@ -89,7 +68,7 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
           test: /\.js$/,
           use: {
             loader: 'babel-loader',
-            options: require(path.resolve(__dirname, '../config/.babelrc.json'))
+            options: require(path.resolve(__dirname, '../build/.babelrc.json'))
           },
           exclude: /node_modules/
         },
@@ -99,7 +78,7 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
           exclude: /node_modules/
         },
         {
-          test: /\.[s]css$/,
+          test: /\.(scss|css)$/,
           use: [
             {
               loader: 'style-loader'
