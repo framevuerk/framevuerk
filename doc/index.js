@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import framevuerk from 'framevuerk'
 import moment from 'moment-jalaali'
 import 'font-awesome/css/font-awesome.css'
-import './index.html'
 
 import './index.html'
 import main from './pages/main'
@@ -36,4 +35,3 @@ export default new Vue({
   router,
   render: h => h(main)
 }).$mount('#app')
- 
