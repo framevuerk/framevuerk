@@ -15,14 +15,14 @@
     "test": "npm run lint",
     "clean:lib": "rimraf ./dist",
     "build:lib": "npm run clean:lib && webpack --config ./build/webpack.config.js --hide-modules true --progress",
-    "build:lib:watch": "webpack --config ./build/webpack.config.js --display minimal --watch",
+    "build:lib:watch": "cross-env NODE_ENV=development webpack --config ./build/webpack.config.js --display minimal --watch",
     "clean:docs": "rimraf ./docs",
     "build:docs": "npm run clean:docs && webpack --config ./build/webpack.config.docs.js --hide-modules true --progress",
-    "build:docs:watch": "webpack --config ./build/webpack.config.docs.js --display minimal --watch",
+    "build:docs:watch": "cross-env NODE_ENV=development webpack --config ./build/webpack.config.docs.js --display minimal --watch",
     "clean": "npm run clean:lib && npm run clean:docs",
     "build": "npm run build:lib && npm run build:docs",
     "start": "lite-server",
-    "dev": "cross-env NODE_ENV=development npm run build:lib:watch & npm run build:docs:watch & npm run start"
+    "dev": "npm run build:lib:watch & npm run build:docs:watch & npm run start"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
