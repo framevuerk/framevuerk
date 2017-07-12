@@ -35,10 +35,7 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
         'Author: ' + pkg.author + '\n' +
         'Homepage: ' + pkg.homepage + '\n' +
         'CONFIG: ' + JSON.stringify(CONFIG) + '\n'
-    ),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
+    )
   ]
   if (ENV === 'production') {
     plugins.push(new webpack.optimize.UglifyJsPlugin({

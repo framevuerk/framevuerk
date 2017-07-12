@@ -14,19 +14,8 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
       'CONFIG': JSON.stringify(CONFIG),
       'PKG_NAME': JSON.stringify(pkg.name),
       'PKG_VERSION': JSON.stringify(pkg.version)
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
     })
   ]
-  if (CONFIG.ENV === 'production') {
-    plugins.push(new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      compress: {
-        warnings: false
-      }
-    }))
-  }
   return {
     entry: path.resolve(__dirname, '../docs-src/index.js'),
     stats: { children: false },
