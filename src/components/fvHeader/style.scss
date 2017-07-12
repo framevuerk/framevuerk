@@ -32,6 +32,9 @@
         @include disabled;
       }
     }
+    & .fv-link {
+      @include yiq($bg-color, 70%);
+    }
   }
   & > * {
     max-width: 100%;
@@ -52,6 +55,10 @@
       & > * {
         vertical-align: middle;
       }
+    }
+    & .fv-link {
+      @include yiq($theme-color);
+      font-size: .9em;
     }
     &.fv-form-control {
       background: $bg-color;
