@@ -11,15 +11,15 @@ export default {
     return {
       tabs: [
         {
-          title: 'Event`s',
+          title: 'Event\'s',
           slot: 'event'
         },
         {
-          title: 'Prop`s',
+          title: 'Prop\'s',
           slot: 'prop'
         },
         {
-          title: 'Method`s',
+          title: 'Method\'s',
           slot: 'method'}
       ]
     }
