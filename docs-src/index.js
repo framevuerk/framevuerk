@@ -9,6 +9,7 @@ import main from './pages/main'
 // Components Page
 import fvMain from './pages/component_fvMain'
 import fvHeader from './pages/component_fvHeader'
+import fvSidebar from './pages/component_fvSidebar'
 
 framevuerk.use(moment)
 Vue.use(VueRouter)
@@ -30,6 +31,11 @@ const router = new VueRouter({
       name: 'fvHeader',
       path: '/components/fvHeader',
       component: fvHeader
+    },
+    {
+      name: 'fvSidebar',
+      path: '/components/fvSidebar',
+      component: fvSidebar
     },
     {
       name: 'notfound',
