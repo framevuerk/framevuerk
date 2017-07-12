@@ -1,8 +1,9 @@
 span
-  h3 Code:
-  pre.doc-code.fv-padding(v-if="$slots.default")
-    code
-      slot
+  h3 Simple usage:
+  .doc-code.fv-padding(v-if="$slots.default")
+    pre
+      code
+        slot
   div(v-else)
     p.fv-text-center Nothing to show!
   br

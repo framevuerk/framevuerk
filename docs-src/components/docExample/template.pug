@@ -1,7 +1,13 @@
 span
-  h3 Example's:
-  .doc-example.fv-padding(v-if="$slots.default")
-    slot
+  .fv-row.fv-no-padding
+    h3.fv-pull-left Example's:
+    |  
+    a.fv-link.fv-pull-right(v-if="$slots.default", 
+      :href="$root.githubRepo + '/tree/master/docs-src/pages/component_' + $route.name",
+      target="_blank") View Source
+  .doc-example(v-if="$slots.default")
+    fv-main
+      slot
   div(v-else)
     p.fv-text-center Nothing to show!
   br

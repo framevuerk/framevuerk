@@ -11,5 +11,10 @@ export default {
     docExample,
     docCode
   },
+  data () {
+    return {
+      api: {}
+    }
+  },
   render: template.render
 }

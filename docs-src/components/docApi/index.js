@@ -1,4 +1,5 @@
 import template from './template.pug'
+import style from './style.scss'
 
 export default {
   props: {
@@ -11,12 +12,12 @@ export default {
     return {
       tabs: [
         {
-          title: 'Event\'s',
-          slot: 'event'
-        },
-        {
           title: 'Prop\'s',
           slot: 'prop'
+        },
+        {
+          title: 'Event\'s',
+          slot: 'event'
         },
         {
           title: 'Method\'s',
@@ -30,11 +31,12 @@ export default {
       case 'prop':
         return ['name', 'type', 'default', 'description']
       case 'event':
-        return ['name', 'params']
+        return ['name', 'params', 'description']
       case 'method':
-        return ['name', 'params']
+        return ['name', 'params', 'description']
       }
     }
   },
+  style,
   render: template.render
 }

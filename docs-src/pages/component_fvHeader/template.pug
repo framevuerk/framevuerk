@@ -1,48 +1,50 @@
 fv-content
   div(:class="$root.mainClass")
-    doc-description To creating header inside #[a.fv-link fvMain], use this component. 
+    doc-description
+      | To creating header inside 
+      a.fv-link(@click="$router.push(`/components/fvMain`)") fvMain
+      | , use this component. 
     doc-example
-      h4 Default:
-      fv-header
-        .fv-title.fv-no-wrap
-          h2 Hello
-      br
-      h4 Inverted Color
-      fv-header.fv-invert
-        .fv-title.fv-no-wrap
-          h2 Bye Bye!
-      br
-      h4 With Buttons and description:
-      fv-header
-        fv-button.fv-primary.fv-icon
-          i.fa.fa-chevron-left
-        .fv-title.fv-no-wrap
-          h2 Framevuerk
-          p Support both rtl and ltr.
-        fv-button.fv-primary.fv-icon
-          i.fa.fa-bars
-      br
-      h4 With link:
-      fv-header
-        fv-button.fv-primary.fv-icon
-          i.fa.fa-chevron-left
-        .fv-title.fv-no-wrap
-          h2 Twitter
-        .fv-icon
-          a.fv-link I'm Link
-      br
-      h4 Modified height:
-      fv-header.fv-invert(:height="35")
-        fv-button.fv-primary.fv-icon
-          i.fa.fa-chevron-left
-        fv-button.fv-primary.fv-icon
-          i.fa.fa-home
-        .fv-title.fv-no-wrap
-          h3 Simple app
-        .fv-icon
-          a.fv-link Link!
-    doc-code(v-pre)
+      .fv-padding
+        h4 Default:
+        fv-header
+          .fv-title.fv-no-wrap
+            h2 Hello
+        br
+        h4 Inverted Color
+        fv-header.fv-invert
+          .fv-title.fv-no-wrap
+            h2 Bye Bye!
+        br
+        h4 With Buttons and description:
+        fv-header
+          fv-button.fv-primary.fv-icon
+            i.fa.fa-chevron-left
+          .fv-title.fv-no-wrap
+            h2 Framevuerk
+            p Support both rtl and ltr.
+          fv-button.fv-primary.fv-icon
+            i.fa.fa-bars
+        br
+        h4 With link:
+        fv-header
+          fv-button.fv-primary.fv-icon
+            i.fa.fa-chevron-left
+          .fv-title.fv-no-wrap
+            h2 Twitter
+          .fv-icon
+            a.fv-link I'm Link
+        br
+        h4 Modified height:
+        fv-header.fv-invert(:height="35")
+          fv-button.fv-primary.fv-icon
+            i.fa.fa-apple
+          .fv-title.fv-no-wrap
+            h3 Simple app
+          .fv-icon
+            small 18:49
+    doc-code
       = "<fv-header>\n"
       = "\t<!-- contents -->\n"
       = "</fv-header>\n"
-    doc-api(:rows="{prop: [{name: 'height', type: 'Number', default: 55, description: 'Height of header'}]}")
+    doc-api(:rows="api")

@@ -1,9 +1,18 @@
 fv-content
   div(:class="$root.mainClass")
-    doc-description This is main part of framevuerk. The #[a.fv-link fvHeader], #[a.fv-link fvFooter], #[a.fv-link fvContent] and #[a.fv-link fvSidebar] components usually uses this container for best styles matching. It's easy. Look bellow:
+    doc-description
+      | This is main part of framevuerk. The 
+      a.fv-link(@click="$router.push(`/components/fvHeader`)") fvHeader
+      | , 
+      a.fv-link(@click="$router.push(`/components/fvFooter`)") fvFooter
+      | , 
+      a.fv-link(@click="$router.push(`/components/fvContent`)") fvContent
+      |  and 
+      a.fv-link(@click="$router.push(`/components/fvSidebar`)") fvSidebar
+      |  components uses this container for best styles matching. It's easy. Look bellow:
     doc-example
     doc-code(v-pre)
       = "<fv-main>\n"
       = "\t<!-- contents -->\n"
       = "</fv-main>\n"
-    doc-api(:rows="{}")
+    doc-api(:rows="api")

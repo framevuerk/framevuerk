@@ -11,5 +11,19 @@ export default {
     docExample,
     docCode
   },
+  data () {
+    return {
+      api: {
+        prop: [
+          {
+            name: 'height',
+            type: 'Number',
+            default: 55,
+            description: 'Height of header'
+          }
+        ]
+      }
+    }
+  },
   render: template.render
 }
