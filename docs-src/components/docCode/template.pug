@@ -1,0 +1,8 @@
+span
+  h3 Code:
+  pre.doc-code.fv-padding(v-if="$slots.default")
+    code
+      slot
+  div(v-else)
+    p.fv-text-center Nothing to show!
+  br
