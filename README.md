@@ -4,7 +4,8 @@
 
 Framevuerk is designed to be a lightweight and both rtl and ltr support [Vue.js](http://vuejs.org) UI framework with a simple API.
 
-`There is no stable api before 1.x.x :)`
+
+`Please do not use this before 1.x.x for production! Still in developmenting!`
 
 ## Installation
 
@@ -15,8 +16,6 @@ npm install framevuerk --save
 ## Usage
 
 ### CommonJS
-> Make sure to include `dist/framevuerk.css` file.
-
 ```js
 var Vue = require('vue');
 var framevuerk = require('framevuerk');
@@ -31,8 +30,6 @@ new Vue({
 
 ### ES6
 
-> Make sure to include `dist/framevuerk.css` file.
-
 ```js
 import Vue from 'vue';
 import framevuerk from 'framevuerk';
@@ -46,15 +43,13 @@ new Vue({
 
 ### Globals
 
-First, add a stylesheet link to the Framevuerk CSS file in `dist/framevuerk.css`. Then, add a script tag pointing to `dist/framevuerk.js` _after_ adding Vue.
+Just add `path/to/framevuerk.js` to your page with `script` tag and use it!
 
 Example:
 
 ```html
 <html>
     <head>
-        ...
-        <link rel="stylesheet" href="path/to/framevuerk.css">
         ...
     </head>
     <body>
