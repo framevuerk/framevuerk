@@ -6,7 +6,8 @@ export default {
     sidebarItems () {
       const ret = []
       const components = [
-        'fvMain'
+        'fvMain',
+        'fvHeader'
       ]
       components.forEach(component => {
         ret.push({
