@@ -1,0 +1,8 @@
+body .doc-brand {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px;
+  & .doc-brand-logo {
+    height: 60px;
+  }
+}
