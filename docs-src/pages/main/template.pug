@@ -7,14 +7,14 @@ fv-main#app
     .fv-icon
       a.fv-link(:href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
         target="_blank") View Source
-  fv-sidebar.sidebar(:pin="null", ref="sidebar", :width="300")
+  router-view.fv-row
+  fv-sidebar.sidebar(:pin="null", ref="sidebar", :width="270")
     fv-header(:height="150")
       .fv-title.fv-text-center
         h1 Framevuerk
         p.fv-word-wrap Awesome fully responsive Vue.js framevuerk!
     fv-tabs(:tabs="sidebarTabs")
       fv-list.no-outline-border(:items="sidebarItems", slot="components")
-  router-view.fv-row
   fv-footer(:height="40")
     .fv-grow
     a.fv-link
