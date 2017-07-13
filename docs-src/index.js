@@ -6,6 +6,7 @@ import 'font-awesome/css/font-awesome.css'
 
 import './index.html'
 import main from './pages/main'
+import welcome from './pages/welcome'
 // Components Page
 import fvMain from './pages/component_fvMain'
 import fvHeader from './pages/component_fvHeader'
@@ -19,10 +20,6 @@ Vue.use(framevuerk)
 // Routes
 const router = new VueRouter({
   routes: [
-    {
-      name: '',
-      path: '/'
-    },
     {
       name: 'fvMain',
       path: '/components/fvMain',
@@ -44,8 +41,9 @@ const router = new VueRouter({
       component: fvFooter
     },
     {
-      name: 'notfound',
-      path: '/*'
+      name: 'Framevuerk',
+      path: '/*',
+      component: welcome
     }
   ]
 })
@@ -53,7 +51,8 @@ export default new Vue({
   data () {
     return {
       mainClass: ['fv-col-lg-10', 'fv-col-offset-lg-1', 'fv-col-xl-8', 'fv-col-offset-xl-2'],
-      githubRepo: 'https://github.com/nainemom/framevuerk'
+      githubRepo: 'https://github.com/nainemom/framevuerk',
+      npmRepo: 'https://www.npmjs.com/package/framevuerk'
     }
   },
   router,

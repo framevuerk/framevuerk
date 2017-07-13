@@ -4969,11 +4969,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _template = __webpack_require__(148);
+var _template = __webpack_require__(154);
 
 var _template2 = _interopRequireDefault(_template);
 
-var _style = __webpack_require__(149);
+var _style = __webpack_require__(155);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -5004,11 +5004,11 @@ exports.default = {
     fields: function fields(type) {
       switch (type) {
         case 'prop':
-          return ['name', 'type', 'default', 'description'];
+          return ['name', 'type', { value: 'default', class: 'fv-hide-on-only-xs' }, { value: 'description', class: 'fv-hide-on-only-xs' }];
         case 'event':
-          return ['name', 'params', 'description'];
+          return ['name', 'params', { value: 'description', class: 'fv-hide-on-only-xs' }];
         case 'method':
-          return ['name', 'params', 'description'];
+          return ['name', 'params', { value: 'description', class: 'fv-hide-on-only-xs' }];
       }
     }
   },
@@ -5027,7 +5027,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _template = __webpack_require__(151);
+var _template = __webpack_require__(157);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -5048,11 +5048,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _template = __webpack_require__(152);
+var _template = __webpack_require__(158);
 
 var _template2 = _interopRequireDefault(_template);
 
-var _style = __webpack_require__(153);
+var _style = __webpack_require__(159);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -5078,11 +5078,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _template = __webpack_require__(155);
+var _template = __webpack_require__(161);
 
 var _template2 = _interopRequireDefault(_template);
 
-var _style = __webpack_require__(156);
+var _style = __webpack_require__(162);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -16403,32 +16403,36 @@ var _main = __webpack_require__(142);
 
 var _main2 = _interopRequireDefault(_main);
 
-var _component_fvMain = __webpack_require__(146);
+var _welcome = __webpack_require__(146);
+
+var _welcome2 = _interopRequireDefault(_welcome);
+
+var _component_fvMain = __webpack_require__(152);
 
 var _component_fvMain2 = _interopRequireDefault(_component_fvMain);
 
-var _component_fvHeader = __webpack_require__(158);
+var _component_fvHeader = __webpack_require__(164);
 
 var _component_fvHeader2 = _interopRequireDefault(_component_fvHeader);
 
-var _component_fvSidebar = __webpack_require__(160);
+var _component_fvSidebar = __webpack_require__(166);
 
 var _component_fvSidebar2 = _interopRequireDefault(_component_fvSidebar);
 
+var _component_fvFooter = __webpack_require__(168);
+
+var _component_fvFooter2 = _interopRequireDefault(_component_fvFooter);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_framevuerk2.default.use(_momentJalaali2.default);
 // Components Page
-
+_framevuerk2.default.use(_momentJalaali2.default);
 _vue2.default.use(_vueRouter2.default);
 _vue2.default.use(_framevuerk2.default);
 
 // Routes
 var router = new _vueRouter2.default({
   routes: [{
-    name: '',
-    path: '/'
-  }, {
     name: 'fvMain',
     path: '/components/fvMain',
     component: _component_fvMain2.default
@@ -16441,15 +16445,21 @@ var router = new _vueRouter2.default({
     path: '/components/fvSidebar',
     component: _component_fvSidebar2.default
   }, {
-    name: 'notfound',
-    path: '/*'
+    name: 'fvFooter',
+    path: '/components/fvFooter',
+    component: _component_fvFooter2.default
+  }, {
+    name: 'Framevuerk',
+    path: '/*',
+    component: _welcome2.default
   }]
 });
 exports.default = new _vue2.default({
   data: function data() {
     return {
       mainClass: ['fv-col-lg-10', 'fv-col-offset-lg-1', 'fv-col-xl-8', 'fv-col-offset-xl-2'],
-      githubRepo: 'https://github.com/nainemom/framevuerk'
+      githubRepo: 'https://github.com/nainemom/framevuerk',
+      npmRepo: 'https://www.npmjs.com/package/framevuerk'
     };
   },
 
@@ -27786,7 +27796,7 @@ exports.default = {
       var _this = this;
 
       var ret = [];
-      var components = ['fvMain', 'fvHeader', 'fvSidebar'];
+      var components = ['fvMain', 'fvHeader', 'fvSidebar', 'fvFooter'];
       components.forEach(function (component) {
         ret.push({
           key: component,
@@ -27814,7 +27824,7 @@ exports.default = {
 
 
     module.exports = {
-      render: function(){with(this){return _c('fv-main',{attrs:{"id":"app"}},[_c('fv-header',[_c('fv-button',{staticClass:"fv-primary fv-icon fv-hide-on-lg",nativeOn:{"click":function($event){$refs.sidebar.toggle()}}},[_c('i',{staticClass:"fa fa-bars"})]),_c('div',{staticClass:"fv-title"},[_c('h2',{staticClass:"fv-no-wrap"},[_v(_s($route.name))])]),_c('div',{staticClass:"fv-icon"},[_c('a',{staticClass:"fv-link",attrs:{"href":$root.githubRepo + '/tree/master/src/components/' + $route.name,"target":"_blank"}},[_v("View Source")])])],1),_c('fv-sidebar',{ref:"sidebar",staticClass:"sidebar",attrs:{"pin":null,"width":300}},[_c('fv-header',{attrs:{"height":150}},[_c('div',{staticClass:"fv-title fv-text-center"},[_c('h1',[_v("Framevuerk")]),_c('p',{staticClass:"fv-word-wrap"},[_v("Awesome fully responsive Vue.js framevuerk!")])])]),_c('fv-tabs',{attrs:{"tabs":sidebarTabs}},[_c('fv-list',{staticClass:"no-outline-border",attrs:{"items":sidebarItems},slot:"components"})],1)],1),_c('router-view',{staticClass:"fv-row"}),_c('fv-footer',{attrs:{"height":40}},[_c('div',{staticClass:"fv-grow"}),_c('a',{staticClass:"fv-link"},[_c('i',{staticClass:"fa fa fa-github"}),_v(" Github page")])])],1)}},
+      render: function(){with(this){return _c('fv-main',{attrs:{"id":"app"}},[_c('fv-header',[_c('fv-button',{staticClass:"fv-primary fv-icon fv-hide-on-lg",nativeOn:{"click":function($event){$refs.sidebar.toggle()}}},[_c('i',{staticClass:"fa fa-bars"})]),_c('div',{staticClass:"fv-title"},[_c('h2',{staticClass:"fv-no-wrap"},[_v(_s($route.name))])]),_c('div',{staticClass:"fv-icon"},[_c('a',{staticClass:"fv-link",attrs:{"href":$root.githubRepo + '/tree/master/src/components/' + $route.name,"target":"_blank"}},[_v("View Source")])])],1),_c('router-view',{staticClass:"fv-row"}),_c('fv-sidebar',{ref:"sidebar",staticClass:"sidebar",attrs:{"pin":null,"width":270}},[_c('fv-header',{attrs:{"height":150}},[_c('a',{staticClass:"fv-title fv-text-center",on:{"click":function($event){$router.push('/')}}},[_c('h1',[_v("Framevuerk")]),_c('p',{staticClass:"fv-word-wrap"},[_v("Awesome fully responsive Vue.js framevuerk!")])])]),_c('fv-tabs',{attrs:{"tabs":sidebarTabs}},[_c('fv-list',{staticClass:"no-outline-border",attrs:{"items":sidebarItems},slot:"components"})],1)],1),_c('fv-footer',{attrs:{"height":40}},[_c('div',{staticClass:"fv-grow"}),_c('a',{staticClass:"fv-link"},[_c('i',{staticClass:"fa fa fa-github"}),_v(" Github page")])])],1)}},
       staticRenderFns: []
     };
   
@@ -27879,6 +27889,104 @@ var _template = __webpack_require__(147);
 
 var _template2 = _interopRequireDefault(_template);
 
+var _style = __webpack_require__(148);
+
+var _style2 = _interopRequireDefault(_style);
+
+__webpack_require__(150);
+
+__webpack_require__(151);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  render: _template2.default.render,
+  style: _style2.default
+};
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports) {
+
+
+    module.exports = {
+      render: function(){with(this){return _c('fv-content',{staticClass:"fv-text-center"},[_c('div',{class:$root.mainClass},[_c('h1',[_v("Framevuerk")]),_c('p',{staticClass:"fv-word-wrap"},[_v("Awesome fully responsive Vue.js framevuerk!")]),_c('br'),_c('p',[_v("Available on:")]),_c('a',{staticClass:"doc-brand",attrs:{"href":$root.githubRepo,"target":"_blank"}},[_c('img',{staticClass:"doc-brand-logo",attrs:{"src":"github.svg"}})]),_c('a',{staticClass:"doc-brand",attrs:{"href":$root.npmRepo,"target":"_blank"}},[_c('img',{staticClass:"doc-brand-logo",attrs:{"src":"npm.svg"}})])])])}},
+      staticRenderFns: []
+    };
+  
+
+/***/ }),
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(149);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(2)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js??ref--3-1!../../../node_modules/sass-loader/lib/loader.js??ref--3-2!./style.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js??ref--3-1!../../../node_modules/sass-loader/lib/loader.js??ref--3-2!./style.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 149 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)();
+// imports
+
+
+// module
+exports.push([module.i, "body .doc-brand{display:inline-block;margin:10px;padding:10px}body .doc-brand .doc-brand-logo{height:60px}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 150 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "./github.svg";
+
+/***/ }),
+/* 151 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "./npm.svg";
+
+/***/ }),
+/* 152 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _template = __webpack_require__(153);
+
+var _template2 = _interopRequireDefault(_template);
+
 var _docApi = __webpack_require__(3);
 
 var _docApi2 = _interopRequireDefault(_docApi);
@@ -27914,7 +28022,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 147 */
+/* 153 */
 /***/ (function(module, exports) {
 
 
@@ -27925,7 +28033,7 @@ exports.default = {
   
 
 /***/ }),
-/* 148 */
+/* 154 */
 /***/ (function(module, exports) {
 
 
@@ -27936,13 +28044,13 @@ exports.default = {
   
 
 /***/ }),
-/* 149 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(150);
+var content = __webpack_require__(156);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -27967,7 +28075,7 @@ if(false) {
 }
 
 /***/ }),
-/* 150 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
@@ -27981,7 +28089,7 @@ exports.push([module.i, "body .doc-api-table table{font-size:.85em}", ""]);
 
 
 /***/ }),
-/* 151 */
+/* 157 */
 /***/ (function(module, exports) {
 
 
@@ -27992,7 +28100,7 @@ exports.push([module.i, "body .doc-api-table table{font-size:.85em}", ""]);
   
 
 /***/ }),
-/* 152 */
+/* 158 */
 /***/ (function(module, exports) {
 
 
@@ -28003,13 +28111,13 @@ exports.push([module.i, "body .doc-api-table table{font-size:.85em}", ""]);
   
 
 /***/ }),
-/* 153 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(154);
+var content = __webpack_require__(160);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -28034,7 +28142,7 @@ if(false) {
 }
 
 /***/ }),
-/* 154 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
@@ -28048,7 +28156,7 @@ exports.push([module.i, "body .doc-example{border:1px solid rgba(0,0,0,.19);box-
 
 
 /***/ }),
-/* 155 */
+/* 161 */
 /***/ (function(module, exports) {
 
 
@@ -28059,13 +28167,13 @@ exports.push([module.i, "body .doc-example{border:1px solid rgba(0,0,0,.19);box-
   
 
 /***/ }),
-/* 156 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(157);
+var content = __webpack_require__(163);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -28090,7 +28198,7 @@ if(false) {
 }
 
 /***/ }),
-/* 157 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
@@ -28104,7 +28212,7 @@ exports.push([module.i, "body .doc-code{background:rgba(0,0,0,.8);color:#20da3a}
 
 
 /***/ }),
-/* 158 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28114,7 +28222,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _template = __webpack_require__(159);
+var _template = __webpack_require__(165);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -28160,18 +28268,18 @@ exports.default = {
 };
 
 /***/ }),
-/* 159 */
+/* 165 */
 /***/ (function(module, exports) {
 
 
     module.exports = {
-      render: function(){with(this){return _c('fv-content',[_c('div',{class:$root.mainClass},[_c('doc-description',[_v("To creating header inside "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvMain`)}}},[_v("fvMain")]),_v(", use this component. ")]),_c('doc-example',[_c('div',{staticClass:"fv-padding"},[_c('h4',[_v("Default:")]),_c('fv-header',[_c('div',{staticClass:"fv-title fv-no-wrap"},[_c('h2',[_v("Hello")])])]),_c('br'),_c('h4',[_v("Inverted Color")]),_c('fv-header',{staticClass:"fv-invert"},[_c('div',{staticClass:"fv-title fv-no-wrap"},[_c('h2',[_v("Bye Bye!")])])]),_c('br'),_c('h4',[_v("With Buttons and description:")]),_c('fv-header',[_c('fv-button',{staticClass:"fv-primary fv-icon"},[_c('i',{staticClass:"fa fa-chevron-left"})]),_c('div',{staticClass:"fv-title fv-no-wrap"},[_c('h2',[_v("Framevuerk")]),_c('p',[_v("Support both rtl and ltr.")])]),_c('fv-button',{staticClass:"fv-primary fv-icon"},[_c('i',{staticClass:"fa fa-bars"})])],1),_c('br'),_c('h4',[_v("With link:")]),_c('fv-header',[_c('fv-button',{staticClass:"fv-primary fv-icon"},[_c('i',{staticClass:"fa fa-chevron-left"})]),_c('div',{staticClass:"fv-title fv-no-wrap"},[_c('h2',[_v("Twitter")])]),_c('div',{staticClass:"fv-icon"},[_c('a',{staticClass:"fv-link"},[_v("I'm Link")])])],1),_c('br'),_c('h4',[_v("Modified height:")]),_c('fv-header',{staticClass:"fv-invert",attrs:{"height":35}},[_c('fv-button',{staticClass:"fv-primary fv-icon"},[_c('i',{staticClass:"fa fa-apple"})]),_c('div',{staticClass:"fv-title fv-no-wrap"},[_c('h3',[_v("Simple app")])]),_c('div',{staticClass:"fv-icon"},[_c('small',[_v("18:49")])])],1)],1)]),_c('doc-code',[_v("<fv-header>\n\t<!-- contents -->\n</fv-header>\n")]),_c('doc-api',{attrs:{"rows":api}})],1)])}},
+      render: function(){with(this){return _c('fv-content',[_c('div',{class:$root.mainClass},[_c('doc-description',[_v("To creating header inside "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvMain`)}}},[_v("fvMain")]),_v(", use this component. ")]),_c('doc-example',[_c('div',{staticClass:"fv-padding"},[_c('h4',[_v("Default:")]),_c('fv-header',[_c('div',{staticClass:"fv-title fv-no-wrap"},[_c('h2',[_v("Hello")])])]),_c('br'),_c('h4',[_v("Inverted Color")]),_c('fv-header',{staticClass:"fv-invert"},[_c('div',{staticClass:"fv-title fv-no-wrap"},[_c('h2',[_v("Bye Bye!")])])]),_c('br'),_c('h4',[_v("With Buttons and description:")]),_c('fv-header',[_c('fv-button',{staticClass:"fv-primary fv-icon"},[_c('i',{staticClass:"fa fa-chevron-left"})]),_c('div',{staticClass:"fv-title fv-no-wrap"},[_c('h2',[_v("Framevuerk")]),_c('p',[_v("Support both rtl and ltr.")])]),_c('fv-button',{staticClass:"fv-primary fv-icon"},[_c('i',{staticClass:"fa fa-bars"})])],1),_c('br'),_c('h4',[_v("With link:")]),_c('fv-header',[_c('fv-button',{staticClass:"fv-primary fv-icon"},[_c('i',{staticClass:"fa fa-chevron-left"})]),_c('div',{staticClass:"fv-title fv-no-wrap"},[_c('h2',[_v("Twitter")])]),_c('div',{staticClass:"fv-icon"},[_c('a',{staticClass:"fv-link"},[_v("I'm Link")])])],1),_c('br'),_c('h4',[_v("Modified height:")]),_c('fv-header',{staticClass:"fv-invert",attrs:{"height":35}},[_c('div',{staticClass:"fv-icon"},[_c('i',{staticClass:"fa fa-apple"})]),_c('div',{staticClass:"fv-title fv-no-wrap"},[_c('h3',[_v("Simple app")])]),_c('div',{staticClass:"fv-icon"},[_c('small',[_v("18:49")])])])],1)]),_c('doc-code',[_v("<fv-header>\n\t<!-- contents -->\n</fv-header>\n")]),_c('doc-api',{attrs:{"rows":api}})],1)])}},
       staticRenderFns: []
     };
   
 
 /***/ }),
-/* 160 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28181,7 +28289,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _template = __webpack_require__(161);
+var _template = __webpack_require__(167);
 
 var _template2 = _interopRequireDefault(_template);
 
@@ -28259,12 +28367,79 @@ exports.default = {
 };
 
 /***/ }),
-/* 161 */
+/* 167 */
 /***/ (function(module, exports) {
 
 
     module.exports = {
-      render: function(){with(this){return _c('fv-content',[_c('div',{class:$root.mainClass},[_c('doc-description',[_v("To creating sidebar inside "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvMain`)}}},[_v("fvMain")]),_v(", use this component. ")]),_c('doc-example',[_c('fv-sidebar',{ref:"pinnedright",attrs:{"pin":true,"position":"right"}},[_c('h3',{staticClass:"fv-text-center fv-padding"},[_v("I'm Pinned at Right!")])]),_c('fv-sidebar',{ref:"unpinnedleft",attrs:{"pin":false,"position":"left"}},[_c('h3',{staticClass:"fv-text-center fv-padding"},[_v("I'm Unpinned at Left!")])]),_c('fv-sidebar',{ref:"unpinnedleftmodifiedwidth",attrs:{"pin":false,"position":"left","width":100}},[_c('h3',{staticClass:"fv-text-center fv-padding"},[_v("I've modified Width!")])]),_c('fv-content',{staticClass:"fv-row"},[_c('fv-button',{staticClass:"fv-block fv-warning",nativeOn:{"click":function($event){$refs.pinnedright.toggle()}}},[_v("Toggle Pinned at Right")]),_c('br'),_c('fv-button',{staticClass:"fv-block fv-primary",nativeOn:{"click":function($event){$refs.unpinnedleft.toggle()}}},[_v("Toggle Unpinned at Left")]),_c('br'),_c('fv-button',{staticClass:"fv-block fv-danger",nativeOn:{"click":function($event){$refs.unpinnedleftmodifiedwidth.toggle()}}},[_v("Modified Width")])],1)],1),_c('doc-code',[_v("<fv-sidebar>\n\t<!-- contents -->\n</fv-sidebar>\n")]),_c('doc-api',{attrs:{"rows":api}})],1)])}},
+      render: function(){with(this){return _c('fv-content',[_c('div',{class:$root.mainClass},[_c('doc-description',[_v("To creating sidebar inside "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvMain`)}}},[_v("fvMain")]),_v(", use this component. ")]),_c('doc-example',[_c('fv-sidebar',{ref:"pinnedright",attrs:{"pin":true,"position":"right","width":170}},[_c('h3',{staticClass:"fv-text-center fv-padding"},[_v("I'm Pinned at Right!")])]),_c('fv-sidebar',{ref:"unpinnedleft",attrs:{"pin":false,"position":"left","width":170}},[_c('h3',{staticClass:"fv-text-center fv-padding"},[_v("I'm Unpinned at Left!")])]),_c('fv-sidebar',{ref:"unpinnedleftmodifiedwidth",attrs:{"pin":false,"position":"left","width":50}},[_c('ul',[_c('li',{staticClass:"fv-text-center fv-vertical-padding"},[_c('i',{staticClass:"fa fa-facebook fa-2x"})]),_c('li',{staticClass:"fv-text-center fv-vertical-padding"},[_c('i',{staticClass:"fa fa-telegram fa-2x"})]),_c('li',{staticClass:"fv-text-center fv-vertical-padding"},[_c('i',{staticClass:"fa fa-twitter fa-2x"})])])]),_c('fv-content',{staticClass:"fv-row"},[_c('fv-button',{staticClass:"fv-block fv-warning",nativeOn:{"click":function($event){$refs.pinnedright.toggle()}}},[_v("Pinned at Right")]),_c('br'),_c('fv-button',{staticClass:"fv-block fv-primary",nativeOn:{"click":function($event){$refs.unpinnedleft.toggle()}}},[_v("Unpinned at Left")]),_c('br'),_c('fv-button',{staticClass:"fv-block fv-danger",nativeOn:{"click":function($event){$refs.unpinnedleftmodifiedwidth.toggle()}}},[_v("Modified Width")])],1)],1),_c('doc-code',[_v("<fv-sidebar>\n\t<!-- contents -->\n</fv-sidebar>\n")]),_c('doc-api',{attrs:{"rows":api}})],1)])}},
+      staticRenderFns: []
+    };
+  
+
+/***/ }),
+/* 168 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _template = __webpack_require__(169);
+
+var _template2 = _interopRequireDefault(_template);
+
+var _docApi = __webpack_require__(3);
+
+var _docApi2 = _interopRequireDefault(_docApi);
+
+var _docDescription = __webpack_require__(4);
+
+var _docDescription2 = _interopRequireDefault(_docDescription);
+
+var _docExample = __webpack_require__(5);
+
+var _docExample2 = _interopRequireDefault(_docExample);
+
+var _docCode = __webpack_require__(6);
+
+var _docCode2 = _interopRequireDefault(_docCode);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  components: {
+    docApi: _docApi2.default,
+    docDescription: _docDescription2.default,
+    docExample: _docExample2.default,
+    docCode: _docCode2.default
+  },
+  data: function data() {
+    return {
+      api: {
+        prop: [{
+          name: 'height',
+          type: 'Number',
+          default: 65,
+          description: 'Height of footer'
+        }]
+      }
+    };
+  },
+
+  render: _template2.default.render
+};
+
+/***/ }),
+/* 169 */
+/***/ (function(module, exports) {
+
+
+    module.exports = {
+      render: function(){with(this){return _c('fv-content',[_c('div',{class:$root.mainClass},[_c('doc-description',[_v("To creating footer inside "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvMain`)}}},[_v("fvMain")]),_v(", use this component. ")]),_c('doc-example',[_c('div',{staticClass:"fv-padding"},[_c('h4',[_v("With Buttons:")]),_c('fv-footer',[_c('fv-button',{staticClass:"fv-default fv-block fv-sm"},[_v("Cancel")]),_c('fv-button',{staticClass:"fv-default fv-block fv-sm"},[_v("No")]),_c('fv-button',{staticClass:"fv-primary fv-block fv-sm"},[_v("Yes")])],1),_c('br'),_c('h4',[_v("With Texts:")]),_c('fv-footer',[_c('div',{staticClass:"fv-grow"}),_c('div',{staticClass:"fv-title"},[_c('p',[_v("Footer content")])]),_c('div',{staticClass:"fv-grow"})]),_c('br'),_c('h4',[_v("Modified Height:")]),_c('fv-footer',{attrs:{"height":35}},[_c('div',{staticClass:"fv-grow"}),_c('a',{staticClass:"fv-link"},[_c('i',{staticClass:"fa fa fa-github"}),_v(" Link")])])],1)]),_c('doc-code',[_v("<fv-footer>\n\t<!-- contents -->\n</fv-footer>\n")]),_c('doc-api',{attrs:{"rows":api}})],1)])}},
       staticRenderFns: []
     };
   
