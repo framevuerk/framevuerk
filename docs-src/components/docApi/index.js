@@ -29,11 +29,11 @@ export default {
     fields (type) {
       switch (type) {
       case 'prop':
-        return ['name', 'type', 'default', 'description']
+        return ['name', 'type', {value: 'default', class: 'fv-hide-on-only-xs'}, {value: 'description', class: 'fv-hide-on-only-xs'}]
       case 'event':
-        return ['name', 'params', 'description']
+        return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
       case 'method':
-        return ['name', 'params', 'description']
+        return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
       }
     }
   },
