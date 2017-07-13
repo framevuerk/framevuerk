@@ -10,7 +10,7 @@ fv-main#app
   router-view.fv-row
   fv-sidebar.sidebar(:pin="null", ref="sidebar", :width="270")
     fv-header(:height="150")
-      .fv-title.fv-text-center
+      a.fv-title.fv-text-center(@click="$router.push('/')")
         h1 Framevuerk
         p.fv-word-wrap Awesome fully responsive Vue.js framevuerk!
     fv-tabs(:tabs="sidebarTabs")
