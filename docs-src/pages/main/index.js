@@ -8,7 +8,8 @@ export default {
       const components = [
         'fvMain',
         'fvHeader',
-        'fvSidebar'
+        'fvSidebar',
+        'fvFooter'
       ]
       components.forEach(component => {
         ret.push({
