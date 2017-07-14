@@ -1,5 +1,6 @@
 import template from './template.pug'
 import style from './style.scss'
+import '../../assets/logo-white.svg'
 
 export default {
   computed: {
