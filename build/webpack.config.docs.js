@@ -41,7 +41,7 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
           exclude: /(node_modules|dist)/
         },
         {
-          test: /\.(png|jpg|gif|svg|woff|woff2|eot|ttf|html)/,
+          test: /\.(png|jpg|gif|svg|woff|woff2|eot|ttf|ico|html)/,
           loader: 'file-loader?name=./[name].[ext]'
         },
         {
