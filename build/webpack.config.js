@@ -27,7 +27,10 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
     new webpack.DefinePlugin({
       'CONFIG': JSON.stringify(CONFIG),
       'PKG_NAME': JSON.stringify(pkg.name),
-      'PKG_VERSION': JSON.stringify(pkg.version)
+      'PKG_VERSION': JSON.stringify(pkg.version),
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
     }),
     new webpack.BannerPlugin(
       pkg.name + ' ' + pkg.version + '\n' +
