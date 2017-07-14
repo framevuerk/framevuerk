@@ -3,16 +3,18 @@ fv-main#app
     fv-button.fv-primary.fv-icon.fv-hide-on-lg(@click.native="$refs.sidebar.toggle()")
       i.fa.fa-bars
     .fv-title
-      h2.fv-no-wrap {{$route.name}}
+      h2.fv-no-wrap(v-show="$route.name !== 'welcome'") {{$route.name}}
     .fv-icon
       a.fv-link(:href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
         target="_blank") View Source
   router-view.fv-row
   fv-sidebar.sidebar(:pin="null", ref="sidebar", :width="270")
-    fv-header(:height="150")
-      a.fv-title.fv-text-center(@click="$router.push('/')")
-        h1 Framevuerk
-        p.fv-word-wrap Awesome fully responsive Vue.js framevuerk!
+    transition(name="doc-sidebar-header")
+      fv-header(:height="250", v-if="$route.name !== 'welcome'")
+        a.fv-title.fv-text-center(@click="$router.push('/')")
+          img.doc-logo(src="./logo-white.svg")
+          h1 Framevuerk
+          p.fv-word-wrap Awesome fully responsive Vue.js framevuerk!
     fv-tabs(:tabs="sidebarTabs")
       fv-list.no-outline-border(:items="sidebarItems", slot="components")
   fv-footer(:height="40")
