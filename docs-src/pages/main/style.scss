@@ -1,6 +1,10 @@
 body .sidebar {
   & .fv-header {
     background: #313840;
+    & .doc-logo{
+      height: 90px;
+      display: block;
+    }
     & .fv-title h1 {
       font-size: 2em;
     }
@@ -9,7 +13,7 @@ body .sidebar {
     }
   }
   & .fv-tabs {
-    max-height: calc(100% - 150px);
+    height: auto;
   }
   & .fv-list {
     & .fa {
@@ -19,5 +23,17 @@ body .sidebar {
     & .fv-item.selected {
       background: rgba(255, 255, 255, .1);
     }
+  }
+
+
+  & .doc-sidebar-header-enter-active,
+  & .doc-sidebar-header-leave-active {
+    transition: all .5s;
+  }
+  & .doc-sidebar-header-enter,
+  & .doc-sidebar-header-leave-active {
+    height: 0 !important;
+    max-height: 0 !important;
+    min-height: 0 !important;
   }
 }
