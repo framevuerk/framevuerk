@@ -33,6 +33,21 @@ export default {
       ]
     }
   },
+  watch: {
+    $route () {
+      this.routeChange()
+    }
+  },
+  methods: {
+    routeChange () {
+      if (!this.$refs.sidebar.pPin) {
+        this.$refs.sidebar.close()
+      }
+    }
+  },
+  mounted () {
+    this.routeChange()
+  },
   style,
   render: template.render
 }
