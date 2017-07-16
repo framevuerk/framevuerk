@@ -32381,7 +32381,7 @@ exports.push([module.i, "body .doc-api-table table {\n  font-size: .85em; }\n", 
 
 
     module.exports = {
-      render: function(){with(this){return _c('span',[_c('div',{staticClass:"fv-row fv-no-padding"},[_c('h3',{staticClass:"fv-pull-left"},[_v("Example:")]),_v(" "),($slots.default)?_c('a',{staticClass:"fv-link fv-pull-right",attrs:{"href":$root.githubRepo + '/tree/master/docs-src/pages/component_' + $route.name,"target":"_blank"}},[_v("View Source")]):_e()]),($slots.default)?_c('div',{staticClass:"doc-example"},[_c('fv-main',[_t("default")],2)],1):_c('div',[_c('p',{staticClass:"fv-text-center"},[_v("Not Available")])]),_c('br')])}},
+      render: function(){with(this){return _c('span',[_c('div',{staticClass:"fv-row fv-no-padding"},[_c('h3',{staticClass:"fv-pull-left"},[_v("Example(s):")]),_v(" "),($slots.default)?_c('a',{staticClass:"fv-link fv-pull-right",attrs:{"href":$root.githubRepo + '/tree/master/docs-src/pages/component_' + $route.name,"target":"_blank","title":$route.name + ' source code on GitHub'}},[_v("View Source")]):_e()]),($slots.default)?_c('div',{staticClass:"doc-example"},[_c('fv-main',[_t("default")],2)],1):_c('div',[_c('p',{staticClass:"fv-text-center"},[_v("Not Available")])]),_c('br')])}},
       staticRenderFns: []
     };
   
