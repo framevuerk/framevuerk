@@ -1,0 +1,24 @@
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | To create full featured input in your application, use this!
+    doc-example
+      .fv-padding
+        h4 Default: (value: {{inputs.d1}})
+        fv-input(v-model="inputs.d1", placeholder="Enter your name")
+        br
+        br
+        h4 With display value and required: (value: {{inputs.d2.value}})
+        fv-input(v-model="inputs.d2.value", :display-value="inputs.d2.displayValue", placeholder="I'm required!", required)
+        |  
+        fv-button(@click.native="inputs.d2.value = undefined; inputs.d2.displayValue = null;") Clear
+        |  
+        fv-button(@click.native="inputs.d2.value = new Date().getTime(); inputs.d2.displayValue = new Date(inputs.d2.value).toTimeString();") Change
+        br
+        br
+        h4 Advanced usage:
+        fv-menu(ref="d3", :options="['English', 'Persian']", @click-item="inputs.d3 = $event")
+        fv-input(v-model="inputs.d3", :display-value="inputs.d3", @enter="$refs.d3.open()", caret-icon="fa fa-language", placeholder="Select your locale")
+    doc-code
+      = "<fv-input></fv-input>"
+    doc-api(:rows="api")

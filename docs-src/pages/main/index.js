@@ -25,6 +25,11 @@ export default {
           this.sidebarItem('fvDialog'),
           this.sidebarItem('fvMenu')
         ]
+      }, {
+        text: 'Form',
+        items: [
+          this.sidebarItem('fvInput')
+        ]
       }]
     },
     sidebarTabs () {

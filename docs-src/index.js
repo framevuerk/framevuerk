@@ -16,6 +16,7 @@ import fvFooter from './pages/component_fvFooter'
 import fvContent from './pages/component_fvContent'
 import fvDialog from './pages/component_fvDialog'
 import fvMenu from './pages/component_fvMenu'
+import fvInput from './pages/component_fvInput'
 
 framevuerk.use(moment)
 Vue.use(VueRouter)
@@ -58,6 +59,11 @@ const router = new VueRouter({
       name: 'fvMenu',
       path: '/components/fvMenu',
       component: fvMenu
+    },
+    {
+      name: 'fvInput',
+      path: '/components/fvInput',
+      component: fvInput
     },
     {
       name: 'welcome',
