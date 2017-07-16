@@ -32359,7 +32359,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, "body .doc-api-table table {\n  font-size: .85em; }\n", ""]);
+exports.push([module.i, "body .doc-api-table table {\n  font-size: .85em; }\n  body .doc-api-table table th {\n    cursor: default; }\n  body .doc-api-table table tr {\n    transition: all 300ms; }\n    body .doc-api-table table tr:hover {\n      background-color: rgba(0, 0, 0, 0.02); }\n", ""]);
 
 // exports
 
@@ -32611,7 +32611,7 @@ exports.default = {
           name: 'pin',
           type: 'Enum [true, false, null]',
           default: 'null',
-          description: 'Pin state of sidebar.<br>If it\'s null, sidebar will pin or unpin based on viewport size!'
+          description: 'Determines whether the sidebar should be pinned or not.<br>Null means sidebar will be pinned/unpinned depends on the viewport.'
         }],
         event: [{
           name: 'open',
