@@ -10,7 +10,6 @@
     max-height: 100%;
     max-width: 100%;
   }
-  border-radius: $border-radius;
   box-shadow: 0 5px 15px $shadow-color;
   height: auto;
   margin: 0;
@@ -34,6 +33,7 @@
     width: 100%;
   }
   &.fv-dialog-center {
+    border-radius: $border-radius;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
