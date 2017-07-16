@@ -5,7 +5,11 @@
   border: solid 1px $shadow-color;
   clear: both;
   &.no-outline-border {
-    border: 0;
+    //border: 0;
+  }
+  &:focus,
+  &.focus {
+    border-color: $theme-color;
   }
   & .fv-list-item {
     border-bottom: solid 1px $shadow-color-light;

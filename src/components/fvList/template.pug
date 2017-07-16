@@ -1,10 +1,12 @@
-ul.fv-list
-  fv-list-item(v-for="item in items",
+ul.fv-list(tabindex="0",
+  @keydown="pKeyDown($event)")
+  fv-list-item(v-for="(item, index) in items",
+    ref="items",
     :icon="item.icon || ''",
     :text="item.text || item || ''",
     :disabled="item.disabled || false",
     :selected="item.selected || false",
-    :highlighted="item.highlighted || false",
+    :highlighted="item.highlighted || highlightedOption === index",
     :expanded="expanded || item.expanded || false",
-    @click="clickItem(item)",
+    @click="clickItem(item, index)",
     :items="item.items || []")

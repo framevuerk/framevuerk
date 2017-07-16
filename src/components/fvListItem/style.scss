@@ -35,6 +35,7 @@
   &:active:not(.disabled) {
     & > .text {
       background-color: $shadow-color-light;
+      text-decoration: underline;
     }
   }
 }

@@ -1,5 +1,6 @@
 import template from './template.pug'
 import style from './style.scss'
+import utility from '../../utility'
 
 export default {
   props: {
@@ -45,9 +46,33 @@ export default {
     click () {
       if (!this.disabled) {
         this.$emit('click')
+        this.toggle()
+      }
+    },
+    expand () {
+      if (!this.disabled) {
         if (this.hasItems) {
-          this.pExpanded = !this.pExpanded
+          this.pExpanded = true
+          this.$emit('expand')
+          utility.doIt(() => {
+            this.$refs.list.$el.focus()
+          })
         }
+      }
+    },
+    collapse () {
+      if (!this.disabled) {
+        if (this.hasItems) {
+          this.$emit('collapse')
+          this.pExpanded = false
+        }
+      }
+    },
+    toggle () {
+      if (this.pExpanded) {
+        this.collapse()
+      } else {
+        this.expand()
       }
     }
   },
