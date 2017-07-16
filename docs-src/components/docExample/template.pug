@@ -1,6 +1,6 @@
 span
   .fv-row.fv-no-padding
-    h3.fv-pull-left Example's:
+    h3.fv-pull-left Example:
     |  
     a.fv-link.fv-pull-right(v-if="$slots.default", 
       :href="$root.githubRepo + '/tree/master/docs-src/pages/component_' + $route.name",
@@ -9,5 +9,5 @@ span
     fv-main
       slot
   div(v-else)
-    p.fv-text-center Nothing to show!
+    p.fv-text-center Not Available
   br
