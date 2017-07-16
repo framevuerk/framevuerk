@@ -32426,7 +32426,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, "body .doc-example {\n  border: solid 1px rgba(0, 0, 0, 0.19);\n  box-shadow: 0 1em 1em rgba(0, 0, 0, 0.06);\n  background: #f8f9fa;\n  overflow: hidden; }\n", ""]);
+exports.push([module.i, "body .doc-example {\n  border: solid 1px rgba(0, 0, 0, 0.19);\n  box-shadow: 0 1em 1em rgba(0, 0, 0, 0.06);\n  background: #f8f9fa;\n  overflow: hidden; }\n  body .doc-example h4 {\n    margin-bottom: 4px; }\n", ""]);
 
 // exports
 
