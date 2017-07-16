@@ -4,6 +4,10 @@
 
 Framevuerk is designed to be a lightweight and both rtl and ltr support [Vue.js](http://vuejs.org) UI framework with a simple API.
 
+[Documention and Demo](http://nainemom.github.io/framevuerk)
+
+
+## Installation
 
 `Please do not use this before 1.x.x for production! Still in developmenting!`
 
