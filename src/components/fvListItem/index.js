@@ -1,4 +1,3 @@
-import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
 
