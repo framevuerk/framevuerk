@@ -22,7 +22,8 @@ export default {
       }, {
         text: 'Dialog',
         items: [
-          this.sidebarItem('fvDialog')
+          this.sidebarItem('fvDialog'),
+          this.sidebarItem('fvMenu')
         ]
       }]
     },

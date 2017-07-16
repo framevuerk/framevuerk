@@ -1,0 +1,14 @@
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | To create full featured menu in your application, use this!
+    doc-example
+      fv-menu(ref="m1", :sheet="false", :options="['Option 1', 'Option 2']", title="Simple")
+      fv-menu(ref="m2", :sheet="true", :options="[{text: 'Google', icon: 'fa fa-google'}, {text: 'Yahoo', icon: 'fa fa-yahoo'}, {text: 'Microsoft', icon: 'fa fa-windows'}]", title="Select uour favorite company")
+      fv-content.fv-row
+        fv-button.fv-block.fv-warning(@click.native="$refs.m1.open()") Simple
+        br
+        fv-button.fv-block.fv-primary(@click.native="$refs.m2.open()") Sheet
+    doc-code
+      = "<fv-menu></fv-menu>"
+    doc-api(:rows="api")
