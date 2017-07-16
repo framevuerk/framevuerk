@@ -3,27 +3,22 @@ import style from './style.scss'
 import '../../assets/logo-white.svg'
 
 export default {
+  data() {
+    return {
+
+    }
+  },
   computed: {
     sidebarItems () {
-      const ret = []
-      const components = [
-        'fvMain',
-        'fvHeader',
-        'fvSidebar',
-        'fvFooter'
-      ]
-      components.forEach(component => {
-        ret.push({
-          key: component,
-          icon: 'fa fa-puzzle-piece',
-          text: ` ${component}`,
-          selected: this.$route.name === component,
-          action: () => {
-            this.$router.push(`/components/${component}`)
-          }
-        })
-      })
-      return ret
+      return [{
+        text: 'Main',
+        items: [
+          this.sidebarItem('fvMain'),
+          this.sidebarItem('fvHeader'),
+          this.sidebarItem('fvFooter'),
+          this.sidebarItem('fvSidebar')
+        ]
+      }]
     },
     sidebarTabs () {
       return [
@@ -39,6 +34,16 @@ export default {
     }
   },
   methods: {
+    sidebarItem(name){
+      return {
+        text: name,
+        icon: 'fa fa fa-puzzle-piece',
+        selected: this.$route.name === name,
+        action: () => {
+          this.$router.push(`/components/${name}`)
+        }
+      }
+    },
     routeChange () {
       if (!this.$refs.sidebar.pPin) {
         this.$refs.sidebar.close()
