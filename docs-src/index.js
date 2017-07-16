@@ -14,6 +14,7 @@ import fvHeader from './pages/component_fvHeader'
 import fvSidebar from './pages/component_fvSidebar'
 import fvFooter from './pages/component_fvFooter'
 import fvContent from './pages/component_fvContent'
+import fvDialog from './pages/component_fvDialog'
 
 framevuerk.use(moment)
 Vue.use(VueRouter)
@@ -46,6 +47,11 @@ const router = new VueRouter({
       name: 'fvFooter',
       path: '/components/fvFooter',
       component: fvFooter
+    },
+    {
+      name: 'fvDialog',
+      path: '/components/fvDialog',
+      component: fvDialog
     },
     {
       name: 'welcome',
