@@ -13,6 +13,7 @@ import fvMain from './pages/component_fvMain'
 import fvHeader from './pages/component_fvHeader'
 import fvSidebar from './pages/component_fvSidebar'
 import fvFooter from './pages/component_fvFooter'
+import fvContent from './pages/component_fvContent'
 
 framevuerk.use(moment)
 Vue.use(VueRouter)
@@ -35,6 +36,11 @@ const router = new VueRouter({
       name: 'fvSidebar',
       path: '/components/fvSidebar',
       component: fvSidebar
+    },
+    {
+      name: 'fvContent',
+      path: '/components/fvContent',
+      component: fvContent
     },
     {
       name: 'fvFooter',

@@ -1,0 +1,12 @@
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | To creating content section inside 
+      a.fv-link(@click="$router.push(`/components/fvMain`)") fvMain
+      | , use this component.
+    doc-example
+    doc-code(v-pre)
+      = "<fv-content>\n"
+      = "\t<!-- contents -->\n"
+      = "</fv-content>\n"
+    doc-api(:rows="api")

@@ -15,8 +15,14 @@ export default {
         items: [
           this.sidebarItem('fvMain'),
           this.sidebarItem('fvHeader'),
+          this.sidebarItem('fvContent'),
           this.sidebarItem('fvFooter'),
           this.sidebarItem('fvSidebar')
+        ]
+      }, {
+        text: 'Dialog',
+        items: [
+          this.sidebarItem('fvDialog')
         ]
       }]
     },
