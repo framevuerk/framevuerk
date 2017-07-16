@@ -19,6 +19,7 @@ export default {
   },
   methods: {
     clickItem (item) {
+      this.$emit('click-item', item)
       if (item.action) {
         item.action()
       }
