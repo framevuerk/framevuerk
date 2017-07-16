@@ -10,4 +10,4 @@ fv-dialog.fv-menu(ref="menu",
     ref="justFocusEl")
   fv-list.no-outline-border(:items="pOptions",
     @click-item="clickOption($event)",
-    @click="pFocus()")
+    @click.native="pFocus()")

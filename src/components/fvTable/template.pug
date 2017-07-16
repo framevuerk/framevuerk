@@ -17,7 +17,7 @@
       tr
         td(:colspan="pFields.length")
           .page-control-continer(v-if="paginate && !local")
-            fv-button(@click="fetch(previousPage)",
+            fv-button(@click.native="fetch(previousPage)",
               :disabled="previousPage === false",
               v-html="prevPageBtnContent") 
             fv-input.fv-form-control(type="number",
@@ -28,6 +28,6 @@
               ref="userInputPage",
               :disabled="totalPages == 1") 
             span(v-if="totalPages !== false") {{locale.fromN(totalPages)}} 
-            fv-button(@click="fetch(nextPage)",
+            fv-button(@click.native="fetch(nextPage)",
               :disabled="nextPage === false",
               v-html="nextPageBtnContent")
