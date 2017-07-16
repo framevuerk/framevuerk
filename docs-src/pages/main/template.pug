@@ -16,7 +16,7 @@ fv-main#app
           h1 Framevuerk
           p.fv-word-wrap Awesome fully responsive Vue.js framevuerk!
     fv-tabs(:tabs="sidebarTabs")
-      fv-list.no-outline-border(:items="sidebarItems", slot="components")
+      fv-list.no-outline-border(:items="sidebarItems", expanded, slot="components")
   fv-footer(:height="40")
     .fv-grow
     a.fv-link
