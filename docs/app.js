@@ -32437,7 +32437,7 @@ exports.push([module.i, "body .doc-example {\n  border: solid 1px rgba(0, 0, 0, 
 
 
     module.exports = {
-      render: function(){with(this){return _c('span',[_c('h3',[_v("Simple usage:")]),($slots.default)?_c('div',{staticClass:"doc-code fv-padding"},[_c('pre',[_c('code',[_t("default")],2)])]):_c('div',[_c('p',{staticClass:"fv-text-center"},[_v("Nothing to show!")])]),_c('br')])}},
+      render: function(){with(this){return _c('span',[_c('h3',[_v("Code:")]),($slots.default)?_c('div',{staticClass:"doc-code fv-padding"},[_c('pre',[_c('code',[_t("default")],2)])]):_c('div',[_c('p',{staticClass:"fv-text-center"},[_v("Nothing to show!")])]),_c('br')])}},
       staticRenderFns: []
     };
   
