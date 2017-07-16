@@ -8,10 +8,10 @@
   <body>
     <fv-main id="app">
         <fv-header class="fv-invert">
-          <fv-button class="fv-primary fv-icon fv-hide-on-lg"  @click="$refs.sidebar.toggle()"> <i class="fa fa-bars"></i> </fv-button>
+          <fv-button class="fv-primary fv-icon fv-hide-on-lg"  @click.native="$refs.sidebar.toggle()"> <i class="fa fa-bars"></i> </fv-button>
           <div class="fv-title"> <h2 v-html="title"></h2> </div>
           <fv-button class="fv-primary fv-icon"> <i class="fa fa-user"></i> </fv-button>
-          <fv-button class="fv-primary fv-icon" @click="$refs.menu.open($event, 'button-balayi')"> <i class="fa fa-ellipsis-v"></i> </fv-button>
+          <fv-button class="fv-primary fv-icon" @click.native="$refs.menu.open($event, 'button-balayi')"> <i class="fa fa-ellipsis-v"></i> </fv-button>
         </fv-header>
         <fv-sidebar ref="sidebar" :pin="null">
           <fv-tabs :tabs="[
