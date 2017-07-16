@@ -1,7 +1,7 @@
 ul.fv-list
   fv-list-item(v-for="item in items",
     :icon="item.icon || ''",
-    :text="item.text || ''",
+    :text="item.text || item || ''",
     :disabled="item.disabled || false",
     :selected="item.selected || false",
     :highlighted="item.highlighted || false",
