@@ -27,7 +27,10 @@ export default {
       default: ''
     },
     firstFocusOn: {
-      default: false // can be index or false (lastindex) or true (firstindex)
+      default: false, // can be index or false (lastindex) or true (firstindex)
+      validator: (value) => {
+        return [true, false].indexOf(value) > -1 || !isNaN(value)
+      }
     }
   },
   data () {
