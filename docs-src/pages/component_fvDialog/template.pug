@@ -10,7 +10,7 @@ fv-content
       fv-dialog(ref="d3", position="bottom", content-class="fv-row")
         .fv-pull-left I can also show like a sheet.
         .fv-pull-right
-          a.fv-link(@click="$refs.d3.close()") OK
+          a.fv-link(@click="$refs.d3.close()", tabindex="0") OK
       fv-content.fv-row
         fv-button.fv-block.fv-warning(@click.native="$refs.d1.open()") Simple
         br
