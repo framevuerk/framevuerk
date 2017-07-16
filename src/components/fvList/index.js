@@ -15,7 +15,8 @@ export default {
   },
   data () {
     return {
-      highlightedOption: null
+      highlightedOption: this.items.length ? 0 : null,
+      focused: false
     }
   },
   methods: {

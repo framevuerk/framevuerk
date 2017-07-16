@@ -1,12 +1,14 @@
 ul.fv-list(tabindex="0",
-  @keydown="pKeyDown($event)")
+  @keydown="pKeyDown($event)",
+  @focus="focused = true",
+  @blur="focused = false")
   fv-list-item(v-for="(item, index) in items",
     ref="items",
     :icon="item.icon || ''",
     :text="item.text || item || ''",
     :disabled="item.disabled || false",
     :selected="item.selected || false",
-    :highlighted="item.highlighted || highlightedOption === index",
+    :highlighted="(item.highlighted || highlightedOption === index) && focused",
     :expanded="expanded || item.expanded || false",
     @click="clickItem(item, index)",
     :items="item.items || []")

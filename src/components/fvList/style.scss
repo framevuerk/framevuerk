@@ -5,30 +5,12 @@
   border: solid 1px $shadow-color;
   clear: both;
   &.no-outline-border {
-    //border: 0;
-  }
-  &:focus,
-  &.focus {
-    border-color: $theme-color;
+    border: 0;
   }
   & .fv-list-item {
     border-bottom: solid 1px $shadow-color-light;
     &:last-child {
       border-bottom: 0;
     }
-
-    // & > .text{
-    //   clear: both;
-    //   cursor: pointer;
-    //   overflow: hidden;
-    //   padding: $padding-small $padding;
-    //   & > .icon,
-    //   & > .text {
-    //     float: $block-start;
-    //   }
-    //   & > .caret {
-    //     float: $block-end;
-    //   }
-    // }
   }
 }
