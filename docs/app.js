@@ -4574,13 +4574,13 @@ exports.default = {
   data: function data() {
     return {
       tabs: [{
-        title: 'Prop\'s',
+        title: 'Props',
         slot: 'prop'
       }, {
-        title: 'Event\'s',
+        title: 'Events',
         slot: 'event'
       }, {
-        title: 'Method\'s',
+        title: 'Methods',
         slot: 'method' }]
     };
   },
@@ -27908,7 +27908,7 @@ exports.default = {
 
 
     module.exports = {
-      render: function(){with(this){return _c('fv-content',[_c('div',{class:$root.mainClass},[_c('doc-description',[_v("This is main part of framevuerk. The "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvHeader`)}}},[_v("fvHeader")]),_v(", "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvFooter`)}}},[_v("fvFooter")]),_v(", "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvContent`)}}},[_v("fvContent")]),_v(" and "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvSidebar`)}}},[_v("fvSidebar")]),_v(" components uses this container for best styles matching. It's easy. Look bellow:")]),_c('doc-example'),_c('doc-code',{pre:true},[_v("<fv-main>\n\t<!-- contents -->\n</fv-main>\n")]),_c('doc-api',{attrs:{"rows":api}})],1)])}},
+      render: function(){with(this){return _c('fv-content',[_c('div',{class:$root.mainClass},[_c('doc-description',[_v("This is the main part of framevuerk."),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvHeader`)}}},[_v("fvHeader")]),_v(", "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvFooter`)}}},[_v("fvFooter")]),_v(", "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvContent`)}}},[_v("fvContent")]),_v(" and "),_c('a',{staticClass:"fv-link",on:{"click":function($event){$router.push(`/components/fvSidebar`)}}},[_v("fvSidebar")]),_v(" components make use of this container for best styles matching. It's very simple as follows:")]),_c('doc-example'),_c('doc-code',{pre:true},[_v("<fv-main>\n\t<!-- contents -->\n</fv-main>\n")]),_c('doc-api',{attrs:{"rows":api}})],1)])}},
       staticRenderFns: []
     };
   
@@ -27919,7 +27919,7 @@ exports.default = {
 
 
     module.exports = {
-      render: function(){with(this){return _c('span',[_c('h3',[_v("API")]),_c('fv-tabs',{attrs:{"tabs":tabs}},_l((tabs),function(tab){return _c('div',{slot:tab.slot},[_c('br'),(rows[tab.slot] && rows[tab.slot].length > 0)?_c('fv-table',{staticClass:"fv-no-border doc-api-table",attrs:{"local":"local","fields":fields(tab.slot),"footer":false,"rows":rows[tab.slot],"clickable-rows":false}}):_c('p',{staticClass:"fv-text-center"},[_v("There is no special "+_s(tab.title)+"!")])],1)})),_c('br')],1)}},
+      render: function(){with(this){return _c('span',[_c('h3',[_v("API")]),_c('fv-tabs',{attrs:{"tabs":tabs}},_l((tabs),function(tab){return _c('div',{slot:tab.slot},[_c('br'),(rows[tab.slot] && rows[tab.slot].length > 0)?_c('fv-table',{staticClass:"fv-no-border doc-api-table",attrs:{"local":"local","fields":fields(tab.slot),"footer":false,"rows":rows[tab.slot],"clickable-rows":false}}):_c('p',{staticClass:"fv-text-center"},[_v("No "+_s(tab.title)+" are available!")])],1)})),_c('br')],1)}},
       staticRenderFns: []
     };
   
@@ -27964,7 +27964,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, "body .doc-api-table table{font-size:.85em}", ""]);
+exports.push([module.i, "body .doc-api-table table{font-size:.85em}body .doc-api-table table th{cursor:default}body .doc-api-table table tr{transition:all .3s}body .doc-api-table table tr:hover{background-color:rgba(0,0,0,.02)}", ""]);
 
 // exports
 
@@ -27986,7 +27986,7 @@ exports.push([module.i, "body .doc-api-table table{font-size:.85em}", ""]);
 
 
     module.exports = {
-      render: function(){with(this){return _c('span',[_c('div',{staticClass:"fv-row fv-no-padding"},[_c('h3',{staticClass:"fv-pull-left"},[_v("Example's:")]),_v(" "),($slots.default)?_c('a',{staticClass:"fv-link fv-pull-right",attrs:{"href":$root.githubRepo + '/tree/master/docs-src/pages/component_' + $route.name,"target":"_blank"}},[_v("View Source")]):_e()]),($slots.default)?_c('div',{staticClass:"doc-example"},[_c('fv-main',[_t("default")],2)],1):_c('div',[_c('p',{staticClass:"fv-text-center"},[_v("Nothing to show!")])]),_c('br')])}},
+      render: function(){with(this){return _c('span',[_c('div',{staticClass:"fv-row fv-no-padding"},[_c('h3',{staticClass:"fv-pull-left"},[_v("Example(s):")]),_v(" "),($slots.default)?_c('a',{staticClass:"fv-link fv-pull-right",attrs:{"href":$root.githubRepo + '/tree/master/docs-src/pages/component_' + $route.name,"target":"_blank","title":$route.name + ' source code on GitHub'}},[_v("View Source")]):_e()]),($slots.default)?_c('div',{staticClass:"doc-example"},[_c('fv-main',[_t("default")],2)],1):_c('div',[_c('p',{staticClass:"fv-text-center"},[_v("Not Available")])]),_c('br')])}},
       staticRenderFns: []
     };
   
@@ -28031,7 +28031,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, "body .doc-example{border:1px solid rgba(0,0,0,.19);box-shadow:0 1em 1em rgba(0,0,0,.06);background:#f8f9fa;overflow:hidden}", ""]);
+exports.push([module.i, "body .doc-example{border:1px solid rgba(0,0,0,.19);box-shadow:0 1em 1em rgba(0,0,0,.06);background:#f8f9fa;overflow:hidden}body .doc-example h4{margin-bottom:4px}", ""]);
 
 // exports
 
@@ -28042,7 +28042,7 @@ exports.push([module.i, "body .doc-example{border:1px solid rgba(0,0,0,.19);box-
 
 
     module.exports = {
-      render: function(){with(this){return _c('span',[_c('h3',[_v("Simple usage:")]),($slots.default)?_c('div',{staticClass:"doc-code fv-padding"},[_c('pre',[_c('code',[_t("default")],2)])]):_c('div',[_c('p',{staticClass:"fv-text-center"},[_v("Nothing to show!")])]),_c('br')])}},
+      render: function(){with(this){return _c('span',[_c('h3',[_v("Code:")]),($slots.default)?_c('div',{staticClass:"doc-code fv-padding"},[_c('pre',[_c('code',[_t("default")],2)])]):_c('div',[_c('p',{staticClass:"fv-text-center"},[_v("Nothing to show!")])]),_c('br')])}},
       staticRenderFns: []
     };
   
@@ -28216,7 +28216,7 @@ exports.default = {
           name: 'pin',
           type: 'Enum [true, false, null]',
           default: 'null',
-          description: 'Pin state of sidebar.<br>If it\'s null, sidebar will pin or unpin based on viewport size!'
+          description: 'Determines whether the sidebar should be pinned or not.<br>Null means sidebar will be pinned/unpinned depends on the viewport.'
         }],
         event: [{
           name: 'open',
