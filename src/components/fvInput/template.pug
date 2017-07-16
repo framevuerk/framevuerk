@@ -6,16 +6,18 @@
   @focus="checkInvalid(); focus = true;",
   @click="pClick($event)",
   @blur="focus = false;",
-  @invalid.prevent="pFocus()")
+  @invalid.prevent="pFocus()",
+  @keydown.enter="$emit('enter')",
+  @click.ative="$emit('enter')")
   span.placeholder(v-if="typeof displayValue == 'undefined' || displayValue === null || displayValue.length === 0",
     v-html="placeholder")
   span.fv-input-select-item(v-else-if="displayValue.constructor == Array",
     v-for="val in displayValue",
     v-html="val")
-  span.fv-input-select-item(v-else,
+  span.fv-input-select-item-single(v-else,
     v-html="displayValue")
-  i.fv-arrow(v-if="icon",
-    :class="icon")
+  i.fv-caret-icon(v-if="caretIcon",
+    :class="caretIcon")
   input.fv-hidden(tabindex="999999999",
     :value="value",
     :required="required",

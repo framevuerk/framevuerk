@@ -4,7 +4,7 @@ import style from './style.scss'
 export default {
   props: {
     value: {
-      default: null
+      default: undefined
     },
     displayValue: {
       default: undefined
@@ -21,8 +21,8 @@ export default {
       type: String,
       default: ''
     },
-    icon: {
-      default: 'fa fa-chevron-down'
+    caretIcon: {
+      default: ''
     }
   },
   data () {
@@ -39,7 +39,7 @@ export default {
   methods: {
     checkInvalid () {
       if (this.required) {
-        if (this.value === null || (this.value.constructor === Array && this.value.length === 0)) {
+        if (this.value === undefined || (this.value.constructor === Array && this.value.length === 0)) {
           this.invalid = true
         } else {
           this.invalid = false
