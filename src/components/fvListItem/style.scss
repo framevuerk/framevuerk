@@ -25,16 +25,4 @@
       @include yiq($theme-color);
     }
   }
-  .fv-list-expand-enter-active,
-  .fv-list-expand-leave-active {
-    opacity: 1;
-    transform: translateY(0%);
-    transition-duration: $transition-speed / 2;
-    transition-property: opacity, transform;
-  }
-  .fv-list-expand-enter,
-  .fv-list-expand-leave-active {
-    opacity: 0;
-    transform: translateY(-50%);
-  }
 }

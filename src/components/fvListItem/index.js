@@ -34,8 +34,7 @@ export default {
   },
   data () {
     return {
-      pExpanded: this.expanded,
-      animationName: ''
+      pExpanded: this.expanded
     }
   },
   computed: {
@@ -59,9 +58,6 @@ export default {
         if (item.selected) {
           this.pExpanded = true
         }
-      })
-      utility.doIt(() => {
-        this.animationName = 'fv-list-expand'
       })
     }
   },
