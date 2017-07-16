@@ -6,6 +6,10 @@ export default {
     items: {
       type: Array,
       default: () => []
+    },
+    expanded: {
+      type: Boolean,
+      default: false
     }
   },
   data () {

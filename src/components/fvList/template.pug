@@ -5,6 +5,6 @@ ul.fv-list
     :disabled="item.disabled || false",
     :selected="item.selected || false",
     :highlighted="item.highlighted || false",
-    :expanded="item.expanded || false",
+    :expanded="expanded || item.expanded || false",
     @click="clickItem(item)",
     :items="item.items || []")
