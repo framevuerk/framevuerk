@@ -39,3 +39,4 @@ jspm_packages
 
 # dist folder
 dist/
+.idea/
