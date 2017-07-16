@@ -1,8 +1,10 @@
 ul.fv-list
-  li.fv-item(v-for="item in pItems",
-    :class="{'disabled': item.disabled, 'selected': item.selected, 'highlighted': item.highlighted}",
-    @click="clickItem(item)")
-    i(v-if="item.icon",
-      :class="item.icon")
-    |  
-    span(v-html="item.text")
+  fv-list-item(v-for="item in items",
+    :icon="item.icon || ''",
+    :text="item.text || ''",
+    :disabled="item.disabled || false",
+    :selected="item.selected || false",
+    :highlighted="item.highlighted || false",
+    :expanded="item.expanded || false",
+    @click="clickItem(item)",
+    :items="item.items || []")

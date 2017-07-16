@@ -3,30 +3,28 @@
 @import '../../styles/mixins';
 .fv-list {
   border: solid 1px $shadow-color;
+  clear: both;
   &.no-outline-border {
     border: 0;
   }
-  & .fv-item {
+  & .fv-list-item {
     border-bottom: solid 1px $shadow-color-light;
-    cursor: pointer;
-    overflow: hidden;
-    padding: $padding-small $padding;
     &:last-child {
       border-bottom: 0;
     }
-    &.disabled {
-      @include disabled;
-    }
-    &.highlighted,
-    &:active:not(.disabled) {
-      background-color: $shadow-color-light;
-    }
-    &.selected {
-      @include yiq($theme-color);
-      &:active,
-      &.highlighted {
-        @include yiq($theme-color-dark);
-      }
-    }
+
+    // & > .text{
+    //   clear: both;
+    //   cursor: pointer;
+    //   overflow: hidden;
+    //   padding: $padding-small $padding;
+    //   & > .icon,
+    //   & > .text {
+    //     float: $block-start;
+    //   }
+    //   & > .caret {
+    //     float: $block-end;
+    //   }
+    // }
   }
 }
