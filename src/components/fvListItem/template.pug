@@ -1,8 +1,10 @@
 li.fv-list-item(:class="{'disabled': disabled, 'selected': selected, 'highlighted': highlighted}")
-    div.text(@click="click()")
-      i.icon(:class="icon")
-      span(v-html="text")
-      span.expand(v-if="hasItems")
-        i.fa(:class="{'fa-caret-down': !pExpanded,'fa-caret-up': pExpanded}")
-    transition(:name="animationName")
-      fv-list.no-outline-border(v-if="hasItems", v-show="pExpanded", :items="items")
+  .text(@click="click()")
+    i.icon(:class="icon")
+    span(v-html="text")
+    span.expand(v-if="hasItems")
+      i.fa(:class="{'fa-caret-down': !pExpanded,'fa-caret-up': pExpanded}")
+  transition(:name="animationName")
+    fv-list.no-outline-border(v-if="hasItems",
+      v-show="pExpanded",
+      :items="items")

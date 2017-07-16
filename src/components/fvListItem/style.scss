@@ -1,28 +1,27 @@
 @import '../../styles/variables';
 @import '../../styles/functions';
 @import '../../styles/mixins';
-.fv-list-item{
-  overflow: hidden;
+.fv-list-item {
   clear: both;
-  & .text{
-    padding: $padding-small $padding;
+  overflow: hidden;
+  & .text {
     cursor: pointer;
-    & .icon{
+    padding: $padding-small $padding;
+    & .icon {
       margin-#{$block-end}: .4em;
     }
-    & .expand{
+    & .expand {
       float: $block-end;
     }
   }
-  & .fv-list{
-    background: rgba(0,0,0,.1);
-    //padding-#{$block-start}: 1em;
+  & .fv-list {
+    background: rgba(0, 0, 0, .1);
   }
   &.disabled {
     @include disabled;
   }
   &.selected {
-    & > .text{
+    & > .text {
       @include yiq($theme-color);
     }
   }

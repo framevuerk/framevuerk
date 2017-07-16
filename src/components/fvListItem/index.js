@@ -32,38 +32,37 @@ export default {
       default: []
     }
   },
-  data() {
+  data () {
     return {
       pExpanded: this.expanded,
       animationName: ''
     }
   },
   computed: {
-    hasItems() {
-      return this.items && this.items.length;
+    hasItems () {
+      return this.items && this.items.length
     }
   },
   methods: {
-    click() {
-      if( !this.disabled ){
+    click () {
+      if (!this.disabled) {
         this.$emit('click')
-        if( this.hasItems ) {
-          this.pExpanded = !this.pExpanded;
+        if (this.hasItems) {
+          this.pExpanded = !this.pExpanded
         }
       }
     }
   },
-  mounted() {
-    if( this.hasItems ){
-      this.items.forEach(item=>{
-        if( item.selected ){
-          this.pExpanded = true;
+  mounted () {
+    if (this.hasItems) {
+      this.items.forEach(item => {
+        if (item.selected) {
+          this.pExpanded = true
         }
-      });
-      utility.doIt(()=>{
-        this.animationName = 'fv-list-expand';
       })
-      
+      utility.doIt(() => {
+        this.animationName = 'fv-list-expand'
+      })
     }
   },
   style,

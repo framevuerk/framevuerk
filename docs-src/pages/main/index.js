@@ -3,7 +3,7 @@ import style from './style.scss'
 import '../../assets/logo-white.svg'
 
 export default {
-  data() {
+  data () {
     return {
 
     }
@@ -34,7 +34,7 @@ export default {
     }
   },
   methods: {
-    sidebarItem(name){
+    sidebarItem (name) {
       return {
         text: name,
         icon: 'fa fa fa-puzzle-piece',
