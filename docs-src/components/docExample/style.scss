@@ -3,4 +3,8 @@ body .doc-example {
   box-shadow: 0 1em 1em rgba(0,0,0,0.06);
   background: #f8f9fa;
   overflow: hidden;
+
+  h4 {
+    margin-bottom: 4px;
+  }
 }

@@ -31,7 +31,7 @@ export default {
             name: 'pin',
             type: 'Enum [true, false, null]',
             default: 'null',
-            description: 'Pin state of sidebar.<br>If it\'s null, sidebar will pin or unpin based on viewport size!'
+            description: 'Determines whether the sidebar should be pinned or not.<br>Null means sidebar will be pinned/unpinned depends on the viewport.'
           }
         ],
         event: [

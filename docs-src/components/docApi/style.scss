@@ -1,5 +1,17 @@
 body .doc-api-table {
   & table {
     font-size: .85em;
+
+    th {
+      cursor: default;
+    }
+
+    tr {
+      transition: all 300ms;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+    }
   }
 }
