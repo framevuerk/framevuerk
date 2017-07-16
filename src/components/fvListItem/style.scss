@@ -1,0 +1,41 @@
+@import '../../styles/variables';
+@import '../../styles/functions';
+@import '../../styles/mixins';
+.fv-list-item{
+  overflow: hidden;
+  clear: both;
+  & .text{
+    padding: $padding-small $padding;
+    cursor: pointer;
+    & .icon{
+      margin-#{$block-end}: .4em;
+    }
+    & .expand{
+      float: $block-end;
+    }
+  }
+  & .fv-list{
+    background: rgba(0,0,0,.1);
+    //padding-#{$block-start}: 1em;
+  }
+  &.disabled {
+    @include disabled;
+  }
+  &.selected {
+    & > .text{
+      @include yiq($theme-color);
+    }
+  }
+  .fv-list-expand-enter-active,
+  .fv-list-expand-leave-active {
+    opacity: 1;
+    transform: translateY(0%);
+    transition-duration: $transition-speed / 2;
+    transition-property: opacity, transform;
+  }
+  .fv-list-expand-enter,
+  .fv-list-expand-leave-active {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+}
