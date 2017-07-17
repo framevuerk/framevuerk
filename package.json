@@ -1,15 +1,15 @@
 {
   "name": "framevuerk",
-  "version": "0.7.55",
+  "version": "0.7.69",
   "description": "Awesome fully responsive Vue.js framevuerk!",
   "main": "dist/framevuerk-en.js",
   "scripts": {
     "lint:js": "eslint ./ -c ./build/.eslintrc.js --ignore-path ./build/.eslintignore",
     "lint:js:fix": "eslint ./ --fix -c ./build/.eslintrc.js --ignore-path ./build/.eslintignore",
     "lint:scss": "sass-lint -v -q -c ./build/.sass-lint.yml",
-    "lint:scss:fix": "echo \"Error: sorry. We have no scss lint fixer now. Use local editor extension instead.\" && exit 1",
+    "lint:scss:fix": "echo \"Error: sorry. We have no scss lint fixer now. Use local editor extension instead.\"",
     "lint:pug": "pug-lint ./ -c ./build/.pug-lintrc.js",
-    "lint:pug:fix": "echo \"Error: sorry. We have no pug lint fixer now. Use local editor extension instead.\" && exit 1",
+    "lint:pug:fix": "echo \"Error: sorry. We have no pug lint fixer now. Use local editor extension instead.\"",
     "lint": "npm run lint:js && npm run lint:scss && npm run lint:pug",
     "lint:fix": "npm run lint:js:fix && npm run lint:scss:fix && npm run lint:pug:fix",
     "test": "npm run lint",

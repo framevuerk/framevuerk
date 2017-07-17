@@ -1,6 +1,6 @@
 fv-main.fv-tabs
   fv-header
-    fv-button.fv-tab-button.fv-grow(v-for="tab in pTabs",
+    fv-button.fv-tab-button.fv-sm.fv-grow(v-for="tab in pTabs",
       :key="tab.slot",
       :class="{'fv-selected': tab.slot == pValue}",
       @click.native="changeTab(tab.slot)")

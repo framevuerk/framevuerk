@@ -15,9 +15,9 @@ export default {
       },
       default: 'center'
     },
-    autoClose: {
+    modal: {
       type: Boolean,
-      default: true
+      default: false
     },
     buttons: {
       type: Array,
@@ -84,7 +84,7 @@ export default {
       this.$emit('close', this.pProp)
     },
     closeIf () {
-      if (this.autoClose === true) {
+      if (this.modal === false) {
         this.close()
       }
     },
@@ -119,7 +119,6 @@ export default {
     clickButton (button) {
       this.$emit('click-button', button.key, this.pProp)
       button.action(this.pProp)
-      this.closeIf()
     }
   },
   style,

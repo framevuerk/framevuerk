@@ -20,6 +20,9 @@ html > body {
   display: block !important;
   width: 100%;
 }
+.fv-flex {
+  display: flex !important;
+}
 .fv-inline-block {
   display: inline-block !important;
 }
@@ -140,11 +143,6 @@ html > body {
   white-space: nowrap !important;
 }
 
-.fv-form-control,
-.fv-button {
-  font-size: .9em;
-  line-height: 3em;
-}
 .fv-control-label {
   @include nowrap;
   color: $color-light;
@@ -164,6 +162,24 @@ html > body {
     padding: inherit;
   }
 }
+.fv-input-group {
+  display: inline-block;
+  & > *:first-child {
+    border-bottom-#{$block-end}-radius: 0;
+    border-top-#{$block-end}-radius: 0;
+  }
+  & > *:last-child {
+    border-bottom-#{$block-start}-radius: 0;
+    border-top-#{$block-start}-radius: 0;
+  }
+  & > *:not(:last-child):not(:first-child) {
+    border-radius: 0;
+  }
+  & > *:not(:last-child):not(:focus):not(.focus) {
+    border-#{$block-end}: 0;
+  }
+}
+
 .fv-no-transition {
   transition: 0s !important;
 }

@@ -30,10 +30,16 @@ export default {
             description: 'Value of input'
           },
           {
+            name: 'render-type',
+            type: 'Enum ["normal", "display"]',
+            default: '"normal"',
+            description: 'Render type of input'
+          },
+          {
             name: 'display-value',
             type: '',
             default: 'undefined',
-            description: 'Display value of input.<br>Normally used for models like Id or something like that to show meaningful data, so normal usability of input by using this will be lost.'
+            description: 'Display value of input.<br>Only used when render-type = "display"<br>Normally used for models like Id or something like that to show meaningful data, so normal usability of input by using this will be lost.'
           },
           {
             name: 'required',
@@ -57,7 +63,7 @@ export default {
             name: 'caretIcon',
             type: '---',
             default: '""',
-            description: 'Icon of input (only used when display-value is not undefined)'
+            description: 'Icon of input<br>Only used when render-type = "display"'
           }
         ],
         event: [
@@ -69,7 +75,7 @@ export default {
           {
             name: 'enter',
             params: '---',
-            description: 'Fired When used click or press enter key on focused state.<br>(Only fired on when display-value is not undefined)'
+            description: 'Fired When used click or press enter key on focused state.<br>Only used when render-type = "display"'
           }
         ],
         method: []

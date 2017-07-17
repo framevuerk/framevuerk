@@ -21,6 +21,13 @@ export default {
       type: String,
       default: ''
     },
+    renderType: {
+      type: String,
+      validator: (v) => {
+        return ['normal', 'display']
+      },
+      default: 'normal'
+    },
     caretIcon: {
       default: ''
     }
@@ -54,6 +61,11 @@ export default {
     pClick (event) {
       if (!this.disabled) {
         this.$emit('click', event)
+      }
+    },
+    pEnter (event) {
+      if (!this.disabled) {
+        this.$emit('enter', event)
       }
     }
   },
