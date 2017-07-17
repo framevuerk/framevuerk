@@ -46,15 +46,15 @@
   &.fv-input-datepicker {
     cursor: pointer;
     & > .fv-input-select-item {
-      @include yiq($gray-color-light);
-      border: 1px solid $shadow-color;
-      border-radius: .5em;
-      box-shadow: 0 2px 1px $shadow-color-light;
-      margin-#{$block-end}: .5em;
-      padding: 0 .5em;
+      &::after {
+        color: $gray-color-dark;
+        content: ',';
+        display: inline-block;
+        padding-#{$block-end}: .3em;
+        padding-#{$block-start}: .1em;
+      }
     }
     & > .fv-input-select-item-single {
-      margin-#{$block-end}: .5em;
       padding: 0 .5em;
     }
     & > .fv-caret-icon {

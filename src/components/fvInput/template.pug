@@ -1,4 +1,4 @@
-.fv-input.fv-input-select(v-if="displayValue !== undefined",
+.fv-input.fv-input-select(v-if="renderType === 'display'",
   ref="inputEl",
   :class="{invalid: invalid, focus: focus, disabled: disabled}",
   :tabindex="disabled? '': 0",
@@ -7,8 +7,8 @@
   @click="pClick($event)",
   @blur="focus = false;",
   @invalid.prevent="pFocus()",
-  @keydown.enter="$emit('enter')",
-  @click.ative="$emit('enter')")
+  @keydown.enter="pEnter($event)",
+  @click.ative="pEnter($event)")
   span.placeholder(v-if="typeof displayValue == 'undefined' || displayValue === null || displayValue.length === 0",
     v-html="placeholder")
   span.fv-input-select-item(v-else-if="displayValue.constructor == Array",
