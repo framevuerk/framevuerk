@@ -14,65 +14,103 @@ export default {
   data () {
     return {
       inputs: {
-        d1: '',
-        d2: {
-          value: undefined,
-          displayValue: null
-        },
-        d3: null
+        d1: undefined,
+        d2: undefined,
+        d3: undefined,
+        d4: undefined
       },
       api: {
         prop: [
           {
             name: 'value',
-            type: '',
+            type: '---',
             default: 'undefined',
-            description: 'Value of input'
+            description: 'Value of select'
           },
           {
-            name: 'display-value',
-            type: '',
-            default: 'undefined',
-            description: 'Display value of input.<br>Normally used for models like Id or something like that to show meaningful data, so normal usability of input by using this will be lost.'
+            name: 'input-class',
+            type: '---',
+            default: '""',
+            description: 'Class attr of fv-input'
+          },
+          {
+            name: 'dialog-class',
+            type: '---',
+            default: '""',
+            description: 'Class attr of fv-dialog'
           },
           {
             name: 'required',
             type: 'Boolean',
             default: 'false',
-            description: 'Just like normal input required attribute'
+            description: 'Just like normal select required attribute'
           },
           {
             name: 'disabled',
             type: 'Boolean',
             default: 'false',
-            description: 'Just like normal input disabled attribute'
+            description: 'Just like normal select disabled attribute'
+          },
+          {
+            name: 'search',
+            type: 'Boolean',
+            default: 'true',
+            description: 'Allow user to search in options'
           },
           {
             name: 'placeholder',
             type: 'String',
             default: '""',
-            description: 'Just like normal input placeholder attribute'
+            description: 'Just like normal select placeholder attribute'
           },
           {
-            name: 'caretIcon',
-            type: '---',
-            default: '""',
-            description: 'Icon of input (only used when display-value is not undefined)'
+            name: 'multiple',
+            type: 'Boolean',
+            default: 'false',
+            description: 'Allow user to select multiple options'
+          },
+          {
+            name: 'allow-insert',
+            type: 'Boolean',
+            default: 'false',
+            description: 'Allow user to insert option to options'
+          },
+          {
+            name: 'options',
+            type: 'Array',
+            default: '[]',
+            description: 'Options of menu.<br>Each item in array, is object that can have<br>key:String, icon:String, text:String, action:Function, class:String and disabled:Boolean prop.'
           }
         ],
         event: [
           {
-            name: 'click',
+            name: 'open',
             params: '---',
-            description: 'Fired when input clicked'
+            description: 'Fired when dialog opened'
           },
           {
-            name: 'enter',
+            name: 'close',
             params: '---',
-            description: 'Fired When used click or press enter key on focused state.<br>(Only fired on when display-value is not undefined)'
+            description: 'Fired when dialog closed'
           }
         ],
-        method: []
+        method: [
+          {
+            name: 'open',
+            params: '---',
+            description: 'Open dialog'
+          },
+          {
+            name: 'close',
+            params: '---',
+            description: 'Close dialog'
+          },
+          {
+            name: 'toggle',
+            params: '---',
+            description: 'Toggle dialog'
+          }
+        ]
       }
     }
   },

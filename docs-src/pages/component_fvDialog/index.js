@@ -28,10 +28,10 @@ export default {
             description: 'Position of dialog'
           },
           {
-            name: 'auto-close',
+            name: 'modal',
             type: 'Boolean',
-            default: 'true',
-            description: 'Close dialog by clicking buttons'
+            default: 'false',
+            description: 'Close dialog by clicking overlay'
           },
           {
             name: 'buttons',
