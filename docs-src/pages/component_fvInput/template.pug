@@ -3,22 +3,56 @@ fv-content
     doc-description
       | To create full featured input in your application, use this!
     doc-example
-      .fv-padding
-        h4 Default: (value: {{inputs.d1}})
-        fv-input(v-model="inputs.d1", placeholder="Enter your name")
-        br
-        br
-        h4 With display value and required: (value: {{inputs.d2.value}})
-        fv-input(v-model="inputs.d2.value", :display-value="inputs.d2.displayValue", placeholder="I'm required!", required)
-        |  
-        fv-button(@click.native="inputs.d2.value = undefined; inputs.d2.displayValue = null;") Clear
-        |  
-        fv-button(@click.native="inputs.d2.value = new Date().getTime(); inputs.d2.displayValue = new Date(inputs.d2.value).toTimeString();") Change
-        br
-        br
-        h4 Advanced usage:
-        fv-menu(ref="d3", :options="['English', 'Persian']", @click-item="inputs.d3 = $event")
-        fv-input(v-model="inputs.d3", :display-value="inputs.d3", @enter="$refs.d3.open()", caret-icon="fa fa-language", placeholder="Select your locale")
+      .fv-row
+        .fv-col-xs-12 
+          h4 Sizes:
+        .fv-col-sm-6
+          p X-Small
+          fv-input.fv-xs.fv-block(placeholder=".fv-xs")
+        .fv-col-sm-6
+          p Small
+          fv-input.fv-sm.fv-block(placeholder=".fv-sm")
+        .fv-col-sm-6
+          p Medium (default)
+          fv-input.fv-md.fv-block(placeholder=".fv-md")
+        .fv-col-sm-6
+          p Large
+          fv-input.fv-lg.fv-block(placeholder=".fv-lg")
+        .fv-col-sm-6
+          p X-Large
+          fv-input.fv-xl.fv-block(placeholder=".fv-xl")
+        .fv-row
+          hr
+      .fv-row
+        .fv-col-xs-12 
+          h4 States:
+        .fv-col-sm-6
+          p Focus
+          fv-input.focus.fv-block(placeholder=".focus :focus")
+        .fv-col-sm-6
+          p Invalid
+          fv-input.focus.invalid.fv-block(placeholder=".invalid :invalid")
+        .fv-col-sm-6
+          p Disabled
+          fv-input.fv-block(placeholder="[disabled]", disabled)
+        .fv-row
+          hr
+      .fv-row
+        .fv-col-xs-12 
+          h4 Usage:
+        .fv-col-sm-6
+          p Default: {{inputs.d1}}
+          fv-input.fv-block(v-model="inputs.d1", placeholder="Enter your age")
+        .fv-col-sm-6
+          p Display value + required: {{inputs.d2.value}}
+          .fv-input-group.fv-flex
+            fv-input.fv-grow(v-model="inputs.d2.value", :display-value="inputs.d2.displayValue", placeholder="I'm required!", required)
+            fv-button(@click.native="inputs.d2.value = undefined; inputs.d2.displayValue = null;") Clear
+            fv-button(@click.native="inputs.d2.value = new Date().getTime(); inputs.d2.displayValue = new Date(inputs.d2.value).getMilliseconds();") Change
+        .fv-col-sm-6
+          p Advanced usage:
+          fv-menu(ref="d3", :options="['English', 'Persian']", @click-item="inputs.d3 = $event")
+          fv-input.fv-block(v-model="inputs.d3", :display-value="inputs.d3", @enter="$refs.d3.open()", caret-icon="fa fa-language", placeholder="Select your locale")
     doc-code
       = "<fv-input></fv-input>"
     doc-api(:rows="api")
