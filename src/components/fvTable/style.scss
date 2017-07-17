@@ -13,6 +13,7 @@
     border: solid 1px $shadow-color;
     border-spacing: 0;
     box-shadow: 0 1em 1em $shadow-color-light;
+    cursor: default;
     width: 100%;
     &.tf-loading {
       opacity: .4;
@@ -31,10 +32,11 @@
     & > tfoot > tr > td {
       padding: $padding-small $padding;
       text-align: center;
+      vertical-align: middle;
     }
     & > tbody {
       @include yiq($bg-color-light);
-      & > tr &:nth-child(2n) {
+      & > tr:nth-child(even) {
         & td {
           @include yiq(darken($bg-color-light, 2%));
         }
