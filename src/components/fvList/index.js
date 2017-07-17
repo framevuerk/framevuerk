@@ -20,13 +20,16 @@ export default {
     },
     selected: {
       default: undefined
+    },
+    getFocus: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
     return {
       highlightedOption: this.items.length ? 0 : null,
-      focused: false,
-      locale
+      focused: false
     }
   },
   computed: {
@@ -59,8 +62,8 @@ export default {
         }
       }
     },
-    pKeyDown (event) {
-      if (event.target !== this.$el) {
+    keydown (event) {
+      if (event.target !== this.$el && this.getFocus !== false) {
         return
       }
       switch (event.which) {
@@ -74,12 +77,12 @@ export default {
         break
       case CONFIG.DIRECTION === 'ltr' ? 37 : 39: // 37: left, 39: right,
         if (this.highlightedOption !== null) {
-          this.$refs.pItems[this.highlightedOption].collapse()
+          this.$refs.items[this.highlightedOption].collapse()
         }
         break
       case CONFIG.DIRECTION === 'ltr' ? 39 : 37: // 37: left, 39: right,
         if (this.highlightedOption !== null) {
-          this.$refs.pItems[this.highlightedOption].expand()
+          this.$refs.items[this.highlightedOption].expand()
         }
         break
       case 13: // enter
