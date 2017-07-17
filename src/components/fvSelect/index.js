@@ -53,8 +53,8 @@ export default {
     }
   },
   computed: {
-    showInput(){
-      return this.search || this.allowInsert;
+    showInput () {
+      return this.search || this.allowInsert
     },
     displayValue () {
       let ret = []
@@ -74,24 +74,22 @@ export default {
       if (this.allowInsert && this.searchQuery) {
         ret.push({
           icon: 'fa fa-plus-circle',
-          text: locale.add( this.searchQuery ),
+          text: locale.add(this.searchQuery),
           class: 'fv-default fv-block',
           action: () => {
             this.localItems.push(this.searchQuery)
             this.searchQuery = ''
-            utility.doIt(()=>{
-              if( this.showInput ){
-                this.$refs.searchQueryEl.$el.focus();
-              }
-              else{
+            utility.doIt(() => {
+              if (this.showInput) {
+                this.$refs.searchQueryEl.$el.focus()
+              } else {
                 this.$refs.list.$el.focus()
               }
-              this.$refs.list.highlightedOption = this.$refs.list.pItems.length - 1;
+              this.$refs.list.highlightedOption = this.$refs.list.pItems.length - 1
             })
           }
         })
-      }
-      else{
+      } else {
         ret.push({
           icon: 'fa fa-times',
           text: locale.cancel(),
@@ -146,7 +144,7 @@ export default {
       if (this.multiple) {
         newValue = this.pValue
         if (this.pIsSelected(value)) {
-          if( !this.required || this.pValue.length > 1 ){
+          if (!this.required || this.pValue.length > 1) {
             newValue.splice(newValue.indexOf(value), 1)
           }
         } else {
@@ -154,8 +152,8 @@ export default {
         }
       } else {
         if (this.pIsSelected(value)) {
-          if( !this.required ){
-            newValue = undefined;
+          if (!this.required) {
+            newValue = undefined
           }
         } else {
           newValue = value

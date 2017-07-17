@@ -54,7 +54,7 @@ export default {
     expand () {
       this.pExpanded = true
       this.$emit('expand')
-      if( this.hasItems ){
+      if (this.hasItems) {
         utility.doIt(() => {
           this.$refs.list.$el.focus()
         })
