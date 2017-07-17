@@ -16,8 +16,9 @@
     v-html="val")
   span.fv-input-select-item-single(v-else,
     v-html="displayValue")
-  i.fv-caret-icon(v-if="caretIcon",
-    :class="caretIcon")
+  span.fv-caret-icon
+    i(v-if="caretIcon",
+      :class="caretIcon")
   input.fv-hidden(tabindex="999999999",
     :value="value",
     :required="required",
