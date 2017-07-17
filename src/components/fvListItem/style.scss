@@ -15,7 +15,7 @@
     }
   }
   & .fv-list {
-    background: rgba(0, 0, 0, .1);
+    background: $shadow-color-light;
   }
   &.disabled {
     @include disabled;
@@ -27,7 +27,10 @@
   }
   &.highlighted {
     & > .text {
-      text-decoration: underline;
+      background: $shadow-color-light;
+    }
+    &.selected > .text {
+      @include yiq($theme-color-dark);
     }
   }
 }
