@@ -24,17 +24,9 @@
     & > .text {
       @include yiq($theme-color);
     }
-    &:active,
-    &.highlighted {
-      & > .text {
-        @include yiq($theme-color-dark);
-      }
-    }
   }
-  &.highlighted,
-  &:active:not(.disabled) {
+  &.highlighted {
     & > .text {
-      background-color: $shadow-color-light;
       text-decoration: underline;
     }
   }
