@@ -54,7 +54,7 @@ export default {
       return ret
     },
     focusableItems () {
-      return this.$refs.dialog.$el.querySelectorAll('select, input, textarea, button, a, [tabindex]')
+      return this.$refs.dialog.$el.querySelectorAll('select, input, textarea, button, a, [tabindex]:not([tabindex=""])')
     },
     animationName () {
       return `fv-dialog-${this.position}`
