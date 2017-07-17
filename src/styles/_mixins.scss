@@ -32,6 +32,39 @@
   }
 }
 
+@mixin sizes {
+  max-width: 100%;
+  &.fv-rounded {
+    border-radius: $border-radius-large;
+  }
+  &.fv-xs {
+    font-size: .7em;
+    height: 2.7em;
+    line-height: 2.5em;
+  }
+  &.fv-sm {
+    font-size: .8em;
+    height: 2.8em;
+    line-height: 2.6em;
+  }
+  &,
+  &.fv-md {
+    font-size: 1em;
+    height: 3em;
+    line-height: 2.8em;
+  }
+  &.fv-lg {
+    font-size: 1.2em;
+    height: 3.2em;
+    line-height: 3em;
+  }
+  &.fv-xl {
+    font-size: 1.4em;
+    height: 3.3em;
+    line-height: 3.1em;
+  }
+}
+
 @mixin respond-to($media) {
   @if $media == all {
     @content;
