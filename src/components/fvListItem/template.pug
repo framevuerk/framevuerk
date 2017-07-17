@@ -1,5 +1,5 @@
 li.fv-list-item(:class="{'disabled': disabled, 'selected': selected, 'highlighted': highlighted}")
-  .text(@click="click()")
+  .text(@click="click($event)")
     i.icon(:class="icon")
     span(v-html="text")
     span.expand(v-if="hasItems")

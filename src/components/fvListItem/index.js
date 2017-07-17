@@ -43,30 +43,24 @@ export default {
     }
   },
   methods: {
-    click () {
-      if (!this.disabled) {
+    click (event) {
+      if (!this.disabled && event.detail) {
         this.$emit('click')
-        this.toggle()
+        if (this.hasItems) {
+          this.toggle()
+        }
       }
     },
     expand () {
-      if (!this.disabled) {
-        if (this.hasItems) {
-          this.pExpanded = true
-          this.$emit('expand')
-          utility.doIt(() => {
-            this.$refs.list.$el.focus()
-          })
-        }
-      }
+      this.pExpanded = true
+      this.$emit('expand')
+      utility.doIt(() => {
+        this.$refs.list.$el.focus()
+      })
     },
     collapse () {
-      if (!this.disabled) {
-        if (this.hasItems) {
-          this.$emit('collapse')
-          this.pExpanded = false
-        }
-      }
+      this.$emit('collapse')
+      this.pExpanded = false
     },
     toggle () {
       if (this.pExpanded) {
