@@ -1,3 +1,4 @@
+import utility from '../../utility'
 import locale from 'locale'
 import template from './template.pug'
 
@@ -52,9 +53,12 @@ export default {
     }
   },
   computed: {
+    showInput(){
+      return this.search || this.allowInsert;
+    },
     displayValue () {
       let ret = []
-      this.options.forEach(option => {
+      this.options.concat(this.localItems).forEach(option => {
         const value = option.value || option || ''
         const text = option.text || option || ''
         if (this.multiple && this.value && this.value.indexOf(value) !== -1) {
@@ -67,47 +71,45 @@ export default {
     },
     dialogButtons () {
       const ret = []
-
       if (this.allowInsert && this.searchQuery) {
         ret.push({
-          key: 'insert',
-          icon: 'fa fa-check',
-          text: locale.add(this.searchQuery),
-          class: 'fv-default',
+          icon: 'fa fa-plus-circle',
+          text: locale.add( this.searchQuery ),
+          class: 'fv-default fv-block',
           action: () => {
             this.localItems.push(this.searchQuery)
             this.searchQuery = ''
-            this.$refs.list.$el.focus()
+            utility.doIt(()=>{
+              if( this.showInput ){
+                this.$refs.searchQueryEl.$el.focus();
+              }
+              else{
+                this.$refs.list.$el.focus()
+              }
+              this.$refs.list.highlightedOption = this.$refs.list.pItems.length - 1;
+            })
           }
         })
       }
-      ret.push({
-        key: 'reset',
-        icon: 'fa fa-circle-o',
-        text: locale.selectNone(),
-        class: 'fv-default',
-        action: () => {
-          this.pValue = this.multiple ? [] : undefined
-        }
-      })
-      ret.push({
-        key: 'cancel',
-        text: locale.cancel(),
-        class: 'fv-default',
-        action: () => {
-          this.close()
-        }
-      })
-      ret.push({
-        key: 'ok',
-        icon: 'fa fa-check',
-        text: locale.ok(),
-        class: 'fv-primary',
-        action: () => {
-          this.$emit('input', this.pValue)
-          this.close()
-        }
-      })
+      else{
+        ret.push({
+          icon: 'fa fa-times',
+          text: locale.cancel(),
+          class: 'fv-default',
+          action: () => {
+            this.close()
+          }
+        })
+        ret.push({
+          icon: 'fa fa-check',
+          text: locale.ok(),
+          class: 'fv-primary',
+          action: () => {
+            this.$emit('input', this.pValue)
+            this.close()
+          }
+        })
+      }
       return ret
     }
   },
@@ -144,12 +146,20 @@ export default {
       if (this.multiple) {
         newValue = this.pValue
         if (this.pIsSelected(value)) {
-          newValue.splice(newValue.indexOf(value), 1)
+          if( !this.required || this.pValue.length > 1 ){
+            newValue.splice(newValue.indexOf(value), 1)
+          }
         } else {
           newValue.push(value)
         }
       } else {
-        newValue = value
+        if (this.pIsSelected(value)) {
+          if( !this.required ){
+            newValue = undefined;
+          }
+        } else {
+          newValue = value
+        }
       }
       this.pValue = newValue
       this.searchQuery = ''

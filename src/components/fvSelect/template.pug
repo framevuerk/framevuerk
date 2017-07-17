@@ -14,15 +14,19 @@ span
     :buttons="dialogButtons",
     @close="$emit('close')",
     @open="$emit('open')",
-    :first-focus-on="0",
+    :first-focus-on="true",
     content-class="fv-no-padding")
     fv-main(ref="select")
-      fv-header.fv-invert(v-if="search || allowInsert")
+      fv-header.fv-invert(v-if="showInput")
         fv-input.fv-form-control.fv-search-style.fv-grow(:placeholder="locale.search()",
           v-model="searchQuery",
+          @keydown.native="showInput? $refs.list.keydown($event): function(){}",
           ref="searchQueryEl")
-      fv-list.no-outline-border(:items="options.concat(localItems)",
-        ref="list",
-        :search-query="searchQuery",
-        :selected="pValue",
-        @click-item="clickItem($event, true)")
+      fv-content.fv-no-padding
+        fv-list.no-outline-border(:items="options.concat(localItems)",
+          :get-focus="showInput? false: true",
+          ref="list",
+          :search-query="searchQuery",
+          :selected="pValue",
+          @click.native="showInput? $refs.searchQueryEl.$el.focus(): function(){}",
+          @click-item="clickItem($event, true)")
