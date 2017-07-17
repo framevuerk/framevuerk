@@ -6,6 +6,10 @@
   box-shadow: 0 0 2px 1px rgba($color, .4);
   outline: none;
 }
+@mixin textoutline($color: $theme-color) {
+  outline: none;
+  text-shadow: 0 0 10px $color;
+}
 @mixin bottom-outline($color: $theme-color) {
   border-color: $color;
   box-shadow: none;
@@ -33,35 +37,36 @@
 }
 
 @mixin sizes {
+  height: auto;
   max-width: 100%;
   &.fv-rounded {
     border-radius: $border-radius-large;
   }
   &.fv-xs {
     font-size: .7em;
-    height: 2.7em;
     line-height: 2.5em;
+    min-height: 2.7em;
   }
   &.fv-sm {
     font-size: .8em;
-    height: 2.8em;
     line-height: 2.6em;
+    min-height: 2.8em;
   }
   &,
   &.fv-md {
     font-size: 1em;
-    height: 3em;
     line-height: 2.8em;
+    min-height: 3em;
   }
   &.fv-lg {
     font-size: 1.2em;
-    height: 3.2em;
     line-height: 3em;
+    min-height: 3.2em;
   }
   &.fv-xl {
     font-size: 1.4em;
-    height: 3.3em;
     line-height: 3.1em;
+    min-height: 3.3em;
   }
 }
 
