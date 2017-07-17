@@ -54,9 +54,11 @@ export default {
     expand () {
       this.pExpanded = true
       this.$emit('expand')
-      utility.doIt(() => {
-        this.$refs.list.$el.focus()
-      })
+      if( this.hasItems ){
+        utility.doIt(() => {
+          this.$refs.list.$el.focus()
+        })
+      }
     },
     collapse () {
       this.$emit('collapse')
