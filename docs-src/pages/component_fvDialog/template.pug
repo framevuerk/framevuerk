@@ -2,10 +2,14 @@ fv-content
   div(:class="$root.mainClass")
     doc-description
       | To create full featured dialog in your application, use this!
+    doc-code
+      = "<fv-dialog>\n"
+      = "\t<!-- contents -->\n"
+      = "</fv-dialog>\n"
     doc-example
       fv-dialog(ref="d1", position="center", :buttons="['Cancel', {class: 'fv-primary',icon: 'fa fa-check',text: 'OK'}]", title="Simple")
         | This is simple dialog. not?
-      fv-dialog(ref="d2", content-class="fv-text-center", position="center", :auto-close="false")
+      fv-dialog(ref="d2", content-class="fv-text-center", position="center", :auto-close="false", :modal="true")
         fv-button.fv-primary.fv-xl(:style="{borderRadius: '100px', width: '100px', height: '100px'}", @click.native="$refs.d2.close()") OK
       fv-dialog(ref="d3", position="bottom", content-class="fv-row")
         .fv-pull-left I can also show like a sheet.
@@ -14,11 +18,7 @@ fv-content
       fv-content.fv-row
         fv-button.fv-block.fv-warning(@click.native="$refs.d1.open()") Simple
         br
-        fv-button.fv-block.fv-primary(@click.native="$refs.d2.open()") Without built-in Buttons and auto-close
+        fv-button.fv-block.fv-primary(@click.native="$refs.d2.open()") Modal, Without built-in Buttons
         br
         fv-button.fv-block.fv-danger(@click.native="$refs.d3.open()") Modified Style at Bottom
-    doc-code
-      = "<fv-dialog>\n"
-      = "\t<!-- contents -->\n"
-      = "</fv-dialog>\n"
     doc-api(:rows="api")

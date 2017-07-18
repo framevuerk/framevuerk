@@ -2,6 +2,8 @@ fv-content
   div(:class="$root.mainClass")
     doc-description
       | To create full featured input in your application, use this!
+    doc-code
+      = "<fv-input></fv-input>"
     doc-example
       .fv-row
         .fv-col-xs-12 
@@ -46,13 +48,11 @@ fv-content
         .fv-col-sm-12
           p Display value + required: {{inputs.d2.value}}
           .fv-input-group.fv-flex
-            fv-input.fv-grow(v-model="inputs.d2.value", :display-value="inputs.d2.displayValue", placeholder="I'm required!", required)
+            fv-input.fv-grow(v-model="inputs.d2.value", :display-value="inputs.d2.displayValue", render-type="display", placeholder="I'm required!", required)
             fv-button(@click.native="inputs.d2.value = undefined; inputs.d2.displayValue = null;") Clear
             fv-button(@click.native="inputs.d2.value = new Date().getTime(); inputs.d2.displayValue = new Date(inputs.d2.value).getMilliseconds();") Change
         .fv-col-sm-12
           p Advanced usage:
-          fv-menu(ref="d3", :options="['English', 'Persian']", @click-item="inputs.d3 = $event")
+          fv-menu(ref="d3", :items="['English', 'Persian']", @click-item="inputs.d3 = $event")
           fv-input.fv-block(v-model="inputs.d3", render-type="display", :display-value="inputs.d3", @enter="$refs.d3.open()", caret-icon="fa fa-language", placeholder="Select your locale")
-    doc-code
-      = "<fv-input></fv-input>"
     doc-api(:rows="api")

@@ -4,6 +4,10 @@ fv-content
       | To creating footer inside 
       a.fv-link(@click="$router.push(`/components/fvMain`)") fvMain
       | , use this component. 
+    doc-code
+      = "<fv-footer>\n"
+      = "\t<!-- contents -->\n"
+      = "</fv-footer>\n"
     doc-example
       .fv-padding
         h4 With Buttons:
@@ -25,8 +29,5 @@ fv-content
           a.fv-link
             i.fa.fa.fa-github
             |  Link
-    doc-code
-      = "<fv-footer>\n"
-      = "\t<!-- contents -->\n"
-      = "</fv-footer>\n"
+
     doc-api(:rows="api")

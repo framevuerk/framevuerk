@@ -1,11 +1,15 @@
 fv-content
   div(:class="$root.mainClass")
     doc-description
-      | To create full featured select (dropdown) in your application, use this! Note that this is just alias for merging 
+      | To create full featured select (dropdown) in your application, use this! Note that this use 
       a.fv-link(@click="$router.push(`/components/fvInput`)") fvInput
-      |  and 
+      | ,  
       a.fv-link(@click="$router.push(`/components/fvDialog`)") fvDialog
+      |  and 
+      a.fv-link(@click="$router.push(`/components/fvList`)") fvList
       | .
+    doc-code
+      = "<fv-select></fv-select>"
     doc-example
       .fv-row
         .fv-col-xs-12 
@@ -22,6 +26,5 @@ fv-content
         .fv-col-sm-6
           p Disabled:
           fv-select(v-model="inputs.d4", disabled, input-class="fv-block", placeholder="You can't select me!")
-    doc-code
-      = "<fv-select></fv-select>"
+
     doc-api(:rows="api")

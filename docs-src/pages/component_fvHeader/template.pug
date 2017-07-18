@@ -4,6 +4,10 @@ fv-content
       | To creating header inside 
       a.fv-link(@click="$router.push(`/components/fvMain`)") fvMain
       | , use this component. 
+    doc-code
+      = "<fv-header>\n"
+      = "\t<!-- contents -->\n"
+      = "</fv-header>\n"
     doc-example
       .fv-padding
         h4 Default:
@@ -43,8 +47,5 @@ fv-content
             h3 Simple app
           .fv-icon
             small 18:49
-    doc-code
-      = "<fv-header>\n"
-      = "\t<!-- contents -->\n"
-      = "</fv-header>\n"
+
     doc-api(:rows="api")

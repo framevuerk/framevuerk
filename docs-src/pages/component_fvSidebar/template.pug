@@ -4,6 +4,10 @@ fv-content
       | To creating sidebar inside 
       a.fv-link(@click="$router.push(`/components/fvMain`)") fvMain
       | , use this component. 
+    doc-code
+      = "<fv-sidebar>\n"
+      = "\t<!-- contents -->\n"
+      = "</fv-sidebar>\n"
     doc-example
       fv-sidebar(ref="pinnedright", :pin="true", position="right", :width="170")
         h3.fv-text-center.fv-padding I'm Pinned at Right!
@@ -23,8 +27,4 @@ fv-content
         fv-button.fv-block.fv-primary(@click.native="$refs.unpinnedleft.toggle()") Unpinned at Left
         br
         fv-button.fv-block.fv-danger(@click.native="$refs.unpinnedleftmodifiedwidth.toggle()") Modified Width
-    doc-code
-      = "<fv-sidebar>\n"
-      = "\t<!-- contents -->\n"
-      = "</fv-sidebar>\n"
     doc-api(:rows="api")
