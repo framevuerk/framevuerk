@@ -1,10 +1,10 @@
 li.fv-list-item(:class="{'disabled': disabled, 'selected': selected, 'highlighted': highlighted}")
-  .text(@click="click($event)")
+  .text(@click="click($event, null)")
     i.icon(:class="icon")
     span(v-html="text")
     span.expand(v-if="hasItems")
       i.fa(:class="{'fa-caret-down': !pExpanded,'fa-caret-up': pExpanded}")
-  fv-list.no-outline-border(v-if="hasItems",
+  fv-list.fv-no-border(v-if="hasItems",
     ref="list",
     v-show="pExpanded",
     :items="items")

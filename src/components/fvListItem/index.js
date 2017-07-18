@@ -43,9 +43,9 @@ export default {
     }
   },
   methods: {
-    click (event) {
+    click (event, param) {
       if (!this.disabled && event.detail) {
-        this.$emit('click')
+        this.$emit('click', param)
         if (this.hasItems) {
           this.toggle()
         }
