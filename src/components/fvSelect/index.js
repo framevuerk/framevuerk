@@ -44,9 +44,9 @@ export default {
   },
   data () {
     return {
-      locale,
       pValue: undefined,
       localItems: [],
+      searchText: locale.search(),
       pShow: false,
       searchQuery: '',
       highlightedOption: null
@@ -80,12 +80,12 @@ export default {
             this.localItems.push(this.searchQuery)
             this.searchQuery = ''
             utility.doIt(() => {
+              this.$refs.list.highlightedOption = this.$refs.list.pItems.length - 1
               if (this.showInput) {
                 this.$refs.searchQueryEl.$el.focus()
               } else {
                 this.$refs.list.$el.focus()
               }
-              this.$refs.list.highlightedOption = this.$refs.list.pItems.length - 1
             })
           }
         })
@@ -138,7 +138,7 @@ export default {
         return this.pValue === value
       }
     },
-    clickItem (item, setHighlight = false) {
+    clickItem (item) {
       const value = item.value || item || ''
       let newValue = this.pValue
       if (this.multiple) {
