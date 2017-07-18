@@ -3,7 +3,8 @@ fv-main#app
     fv-button.fv-primary.fv-icon.fv-hide-on-lg(@click.native="$refs.sidebar.toggle()")
       i.fa.fa-bars
     .fv-title
-      h2.fv-no-wrap(v-show="$route.name !== 'welcome'") {{$route.name}}
+      h2.fv-no-wrap(v-if="$route.name !== 'welcome'") {{$route.name}}
+      h2.fv-no-wrap(v-else) Framevuerk
     .fv-icon
       a.fv-link(:href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
         target="_blank") View Source
