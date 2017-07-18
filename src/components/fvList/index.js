@@ -1,3 +1,4 @@
+import locale from 'locale'
 import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
@@ -20,6 +21,9 @@ export default {
     selected: {
       default: undefined
     },
+    param: {
+      default: null
+    },
     getFocus: {
       type: Boolean,
       default: true
@@ -28,7 +32,8 @@ export default {
   data () {
     return {
       highlightedOption: this.items.length ? 0 : null,
-      focused: false
+      focused: false,
+      notFoundText: locale.notFound()
     }
   },
   computed: {
@@ -37,12 +42,12 @@ export default {
     }
   },
   methods: {
-    clickItem (item, index = false) {
-      this.$emit('click-item', item)
-      if (item.action) {
-        item.action()
-      }
-      if (index !== false) {
+    clickItem (item, index) {
+      if (!item.disabled) {
+        this.$emit('click-item', item, this.param)
+        if (typeof item.action === 'function') {
+          item.action(this.param)
+        }
         this.highlightedOption = index
       }
     },
@@ -76,18 +81,18 @@ export default {
         break
       case CONFIG.DIRECTION === 'ltr' ? 37 : 39: // 37: left, 39: right,
         if (this.highlightedOption !== null) {
-          this.$refs.items[this.highlightedOption].collapse()
+          this.$refs.pItems[this.highlightedOption].collapse()
         }
         break
       case CONFIG.DIRECTION === 'ltr' ? 39 : 37: // 37: left, 39: right,
         if (this.highlightedOption !== null) {
-          this.$refs.items[this.highlightedOption].expand()
+          this.$refs.pItems[this.highlightedOption].expand()
         }
         break
       case 13: // enter
         event.preventDefault()
         if (this.highlightedOption !== null) {
-          this.clickItem(this.items[ this.highlightedOption ])
+          this.clickItem(this.pItems[ this.highlightedOption ], this.highlightedOption)
         }
         break
       }

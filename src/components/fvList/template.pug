@@ -12,3 +12,6 @@ ul.fv-list(:tabindex="pItems.length && getFocus !== false? 0: ''",
     :expanded="expanded || item.expanded || false",
     @click="clickItem(item, index)",
     :items="item.items || []")
+  fv-list-item(v-show="!pItems.length",
+    icon="fa fa-exclamation-triangle",
+    :text="notFoundText")
