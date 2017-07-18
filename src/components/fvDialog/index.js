@@ -19,6 +19,10 @@ export default {
       type: Boolean,
       default: false
     },
+    autoClose: {
+      type: Boolean,
+      default: true
+    },
     buttons: {
       type: Array,
       default: () => []
@@ -34,7 +38,7 @@ export default {
   data () {
     return {
       pShow: false,
-      pProp: null,
+      param: null,
       focusBackElem: null
     }
   },
@@ -64,24 +68,23 @@ export default {
     toggle () {
       this[this.pShow ? 'close' : 'open']()
     },
-    open (prop = null) {
+    open (param = null) {
       this.pShow = true
-      this.pProp = prop
+      this.param = param
       this.focusBackElem = document.querySelector(':focus')
-      this.$emit('open', this.pProp)
+      this.$emit('open', this.param)
       utility.doIt(() => {
         this.pFocus(this.firstFocusOn)
       })
     },
     close () {
       this.pShow = false
-      this.pProp = null
       if (this.focusBackElem) {
         utility.doIt(() => {
           this.focusBackElem.focus()
         })
       }
-      this.$emit('close', this.pProp)
+      this.$emit('close', this.param)
     },
     closeIf () {
       if (this.modal === false) {
@@ -117,8 +120,11 @@ export default {
       }
     },
     clickButton (button) {
-      this.$emit('click-button', button.key, this.pProp)
-      button.action(this.pProp)
+      this.$emit('click-button', button, this.param)
+      button.action(this.param)
+      if (this.autoClose) {
+        this.close()
+      }
     }
   },
   style,
