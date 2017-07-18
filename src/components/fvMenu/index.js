@@ -2,7 +2,7 @@ import template from './template.pug'
 
 export default {
   props: {
-    options: {
+    items: {
       type: Array,
       default: () => []
     },
@@ -27,24 +27,7 @@ export default {
       pShow: false,
       pSheet: false,
       highlightedOption: null,
-      pParam: null
-    }
-  },
-  computed: {
-    pOptions () {
-      let ret = []
-      this.options.forEach((value, index) => {
-        ret.push({
-          index: index,
-          key: value.key || value.text || value,
-          icon: value.icon || false,
-          text: value.text || value,
-          highlighted: this.highlightedOption === index,
-          disabled: value.disabled || false,
-          action: value.action || function () {}
-        })
-      })
-      return ret
+      param: null
     }
   },
   watch: {
@@ -58,29 +41,18 @@ export default {
   methods: {
     open (param = null) {
       this.highlightedOption = null
-      this.$refs.menu.open(param)
+      this.param = param
+      this.$refs.dialog.open()
     },
     close () {
-      this.$refs.menu.close()
+      this.$refs.dialog.close()
     },
     toggle (domElem = null) {
       this[this.pShow ? 'close' : 'open'](domElem)
     },
-    clickOption (option) {
-      if (!option.disabled) {
-        this.$emit('click-item', option.key, this.pParam)
-        option.action(this.pParam)
-        if (this.autoClose) {
-          this.close()
-        }
-      }
-    },
-    highlightOption (option = {index: null}) {
-      this.highlightedOption = option.index
-    },
-    pKeyDown (event) {
-      switch (event.which) {
-      case 27: // esc
+    clickItem (p1, p2) {
+      this.$emit('click-item', p1, p2)
+      if (this.autoClose) {
         this.close()
       }
     },

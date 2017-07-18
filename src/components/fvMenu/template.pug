@@ -1,9 +1,9 @@
-fv-dialog.fv-menu(ref="menu",
+fv-dialog.fv-menu(ref="dialog",
   content-class="fv-no-padding",
   :position="pSheet? 'bottom': 'center'",
   :title="title",
-  @keydown.native="pKeyDown($event)",
   @close="$emit('close')",
   @open="$emit('open')")
-  fv-list.no-outline-border(:items="pOptions",
-    @click-item="clickOption($event)")
+  fv-list.fv-no-border(:items="items",
+    :param="param",
+    @click-item="clickItem")
