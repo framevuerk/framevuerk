@@ -29,7 +29,8 @@ export default {
         text: 'Form',
         items: [
           this.sidebarItem('fvInput'),
-          this.sidebarItem('fvSelect')
+          this.sidebarItem('fvSelect'),
+          this.sidebarItem('fvDatepicker')
         ]
       }]
     },
