@@ -1,36 +1,34 @@
 span
   fv-input(:class="inputClass",
     :display-value="displayValue",
-    :value="value",
     :placeholder="placeholder",
     :required="required",
     :disabled="disabled",
-    @keydown.native.enter="open()",
-    @click.ative="open()",
+    :value="value",
+    render-type="display",
+    caret-icon="fa fa-calendar-o",
+    @enter="open()",
     ref="inputEl")
   fv-dialog.fv-datepicker(ref="dialog",
     :class="dialogClass",
     :buttons="dialogButtons",
-    @click-button="clickButton($event)",
-    @click="pFocus('search')",
-    @keydown="pKeyDown($event)",
-    @close="$emit('close'); pFocus('input');",
-    @open="$emit('open')")
+    @close="$emit('close')",
+    @open="$emit('open')",
+    :title="displayValue || placeholder",
+    :first-focus-on="true",
+    :auto-close="false",
+    content-class="fv-no-padding")
     fv-main(ref="datepicker")
       fv-content.fv-no-padding
-        .fv-row
-          section(v-for="(val, index) in pSections",
-            :class="{'fv-pick-section': val.type=='pick','fv-col-xs-4': val.type=='pick','fv-sp': val.type=='sp','fv-focused': highlightedOption==index}")
-            label.fv-control-label.fv-title(v-if="val.type=='pick'",
-              v-html="val.title")
-            fv-button.fv-up(v-if="val.type=='pick'",
-              tabindex="-1",
-              @click.native.prevent="pMath('add', val.name)")
+        .fv-row(tabindex="0",
+          @keydown="keydown",
+          @blur="highlightedOption = null",
+          @focus="highlightedOption = 0")
+          section.fv-pick-section(v-for="(val, index) in pick",
+            :class="{highlighted: highlightedOption===index, 'fv-col-xs-4': sectionSize === 4, 'fv-col-xs-6': sectionSize === 6, 'fv-col-xs-12': sectionSize === 12}")
+            label.fv-control-label.fv-title(v-html="locale[val]()")
+            .fv-button.fv-up(@click.prevent="pMath('add', val); highlightedOption = index;")
               i.fa.fa-chevron-up
-            .fv-value.fv-text-center(v-if="val.type=='pick'",
-              v-html="pValue[val.name]")
-            fv-button.fv-bottom(v-if="val.type=='pick'",
-              tabindex="-1",
-              @click.native.prevent="pMath('subtract', val.name)")
+            .fv-value.fv-text-center(v-html="pValue? pValue.format(locale.momentDisplayFormat(val)): '---'")
+            .fv-button.fv-bottom(@click.prevent="pMath('subtract', val); highlightedOption = index;")
               i.fa.fa-chevron-down
-            hr(v-if="val.type=='sp'")

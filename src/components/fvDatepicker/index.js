@@ -3,13 +3,11 @@ import locale from 'locale'
 import template from './template.pug'
 import style from './style.scss'
 /* global CONFIG */
-let moment
 
 export default {
   props: {
     value: {
-      default: null,
-      required: true
+      default: undefined
     },
     inputClass: {
       default: ''
@@ -27,15 +25,22 @@ export default {
     },
     pick: {
       type: Array,
-      default: () => [
-        'year',
-        'month',
-        'day',
-        'sp',
-        'hour',
-        'minute',
-        'second'
-      ]
+      validator: (v) => {
+        for (let i = 0; i < v.length; i++) {
+          if ([
+            'year',
+            'month',
+            'day',
+            'hour',
+            'minute',
+            'second'
+          ].indexOf(v) === -1) {
+            return false
+          }
+        }
+        return true
+      },
+      default: () => ['year', 'month', 'day', 'hour', 'minute', 'second']
     },
     placeholder: {
       type: String,
@@ -47,176 +52,114 @@ export default {
   },
   data () {
     return {
-      pDate: {}, // moment.utc(),
-      pValue: {},
-      displayValue: null,
-      pShow: false,
-      highlightedOption: null,
-      dialogButtons: [
-        {
-          key: 'reset',
-          icon: 'fa fa-circle-o',
-          text: locale.selectNone(),
-          class: 'fv-default'
-        },
-        {
-          key: 'ok',
-          icon: 'fa fa-check',
-          text: locale.ok(),
-          class: 'fv-primary'
-        }
-      ]
-    }
-  },
-  computed: {
-    pSections () {
-      return this.pick.map((v) => {
-        switch (v) {
-        case 'year': return {
-          type: 'pick',
-          name: v,
-          title: locale.year()
-        }
-        case 'month': return {
-          type: 'pick',
-          name: v,
-          title: locale.month()
-        }
-        case 'day': return {
-          type: 'pick',
-          name: v,
-          title: locale.day()
-        }
-        case 'hour': return {
-          type: 'pick',
-          name: v,
-          title: locale.hour()
-        }
-        case 'minute': return {
-          type: 'pick',
-          name: v,
-          title: locale.minute()
-        }
-        case 'second': return {
-          type: 'pick',
-          name: v,
-          title: locale.second()
-        }
-        case 'sp': return {
-          type: 'sp'
-        }
-        default: throw new Error('error in fv-datepicker pick attribute.')
-        }
-      })
+      locale,
+      moment: undefined, // will set on created
+      pValue: undefined,
+      highlightedOption: 0
     }
   },
   created () {
-    moment = utility._dependencies.moment
-    if (moment) {
+    this.moment = utility._dependencies.moment
+    if (this.moment) {
       if (CONFIG.LOCALE === 'fa') {
-        moment.loadPersian()
+        this.moment.loadPersian()
       }
-      this.pSetValue(this.value === null ? null : moment.utc())
     } else {
       throw new Error('Moment not found!')
     }
   },
+  computed: {
+    dialogButtons () {
+      const ret = []
+      ret.push({
+        icon: 'fa fa-times',
+        text: locale.cancel(),
+        class: 'fv-default',
+        action: () => {
+          this.close()
+        }
+      })
+      if (this.value) {
+        ret.push({
+          icon: 'fa fa-circle-o',
+          text: locale.clear(),
+          class: 'fv-default',
+          action: () => {
+            this.$emit('input', undefined)
+            this.close()
+          }
+        })
+      }
+      ret.push({
+        icon: 'fa fa-check',
+        text: locale.ok(),
+        class: 'fv-primary',
+        action: () => {
+          this.$emit('input', this.pValue.toDate())
+          this.close()
+        }
+      })
+      return ret
+    },
+    displayValue () {
+      if (this.value) {
+        return this.moment.utc(this.value).format(this.displayFormat)
+      } else {
+        return undefined
+      }
+    },
+    sectionSize () {
+      if (this.pick.length % 3 === 0) {
+        return 4
+      }
+      if (this.pick.length % 2 === 0) {
+        return 6
+      }
+      if (this.pick.length % 1 === 0) {
+        return 12
+      }
+      return 4
+    }
+  },
   methods: {
     open () {
+      let date
+      if (this.value && this.value.constructor === Date) {
+        date = this.value
+      } else {
+        date = new Date()
+      }
+      this.pValue = this.moment.utc(date)
       this.$refs.dialog.open()
     },
     close () {
       this.$refs.dialog.close()
     },
     pMath (action = 'add', type = 'day') {
-      this.pDate[action](1, type + 's')
-      this.pSetValue(this.pDate)
+      this.pValue[action](1, type + 's')
+      this.$forceUpdate()
     },
-    highlightOption (option = {index: null}) {
-      this.highlightedOption = option.index
-    },
-    pFocus (el = 'input') {
-      if (el === 'input') {
-        this.$refs.inputEl.$el.focus()
-      } else {
-        this.$refs.dialog.pFocus()
-      }
-    },
-    pIsSelected (option = {index: null, value: null}) {
-      if (this.multiple && typeof this.value === 'object' && this.value !== null) {
-        return this.value.indexOf(option.value) !== -1
-      } else {
-        return this.value === option.value
-      }
-    },
-    pKeyDown (event) {
+    keydown (event) {
       switch (event.which) {
       case 38: // up
         if (this.highlightedOption !== null) {
-          this.pMath('add', this.pSections[this.highlightedOption].name)
+          this.pMath('add', this.pick[this.highlightedOption])
         }
         break
       case 40: // down
         if (this.highlightedOption !== null) {
-          this.pMath('subtract', this.pSections[this.highlightedOption].name)
+          this.pMath('subtract', this.pick[this.highlightedOption])
         }
         break
-      case 37: // left
+      case CONFIG.DIRECTION === 'ltr' ? 37 : 39: // 37: left, 39: right,
+        this.highlightedOption = this.highlightedOption == null ? this.pick.length : this.highlightedOption
+        this.highlightedOption = this.highlightedOption - 1 < 0 ? this.pick.length - 1 : this.highlightedOption - 1
+        break
+      case CONFIG.DIRECTION === 'ltr' ? 39 : 37: // 37: left, 39: right,
         this.highlightedOption = this.highlightedOption == null ? -1 : this.highlightedOption
-        this.highlightedOption = this.highlightedOption + 1 >= this.pSections.length ? 0 : this.highlightedOption + 1
-        this.highlightedOption = this.pSections[this.highlightedOption].type === 'sp' ? this.highlightedOption + 1 : this.highlightedOption
+        this.highlightedOption = this.highlightedOption + 1 >= this.pick.length ? 0 : this.highlightedOption + 1
         break
-      case 39: // right
-        this.highlightedOption = this.highlightedOption == null ? this.pSections.length : this.highlightedOption
-        this.highlightedOption = this.highlightedOption - 1 < 0 ? this.pSections.length - 1 : this.highlightedOption - 1
-        this.highlightedOption = this.pSections[this.highlightedOption].type === 'sp' ? this.highlightedOption - 1 : this.highlightedOption
-        break
-      default:
-        this.highlightedOption = null
       }
-    },
-    clickButton (action) {
-      switch (action) {
-      case 'reset':
-        this.pSetValue()
-        this.close()
-        break
-      default:
-        this.pSetValue(this.pDate)
-        this.close()
-      }
-    },
-    pSetValue (date = null) { // receive moment date and set date to value
-      let newValue = null
-      if (date === null) {
-        this.pDate = moment.utc()
-      } else {
-        this.pDate = date
-        newValue = this.pDate.toDate()
-      }
-      this.pValue = {
-        year: this.pDate.format(`${locale.momentFormatPrefix()}YYYY`),
-        month: this.pDate.format(`${locale.momentFormatPrefix()}MMMM`),
-        day: this.pDate.format(`${locale.momentFormatPrefix()}D`),
-        hour: this.pDate.format('HH'),
-        minute: this.pDate.format('mm'),
-        second: this.pDate.format('ss')
-      }
-      this.$emit('input', newValue)
-      this.$emit('change')
-      if (date === null) {
-        this.displayValue = null
-      } else {
-        this.displayValue = this.pDate.format(this.displayFormat)
-      }
-    },
-    closeIf () {
-      utility.doIt(() => {
-        var focusedElem = document.querySelector(':focus')
-        if (focusedElem !== null && !utility.isDescendant(this.$refs.datepicker.$el, focusedElem)) {
-          this.close()
-        }
-      })
     }
   },
   style,
