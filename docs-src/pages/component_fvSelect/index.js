@@ -22,7 +22,7 @@ export default {
       api: {
         prop: [
           {
-            name: 'value',
+            name: 'value || v-model (required)',
             type: '---',
             default: 'undefined',
             description: 'Value of select'
@@ -104,11 +104,6 @@ export default {
             name: 'close',
             params: '---',
             description: 'Close dialog'
-          },
-          {
-            name: 'toggle',
-            params: '---',
-            description: 'Toggle dialog'
           }
         ]
       }

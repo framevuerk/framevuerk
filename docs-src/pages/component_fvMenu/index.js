@@ -34,10 +34,10 @@ export default {
             description: 'Close dialog by clicking buttons'
           },
           {
-            name: 'options',
+            name: 'items',
             type: 'Array',
             default: '[]',
-            description: 'Options of menu.<br>Each item in array, is object that can have<br>key:String, icon:String, text:String, action:Function, class:String and disabled:Boolean prop. '
+            description: 'Items of menu.<br>Each item in array, is object that can have<br>key:String, icon:String, text:String, action:Function, class:String and disabled:Boolean prop. '
           }
         ],
         event: [
