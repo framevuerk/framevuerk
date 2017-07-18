@@ -11,17 +11,35 @@ export default {
   selectNone () {
     return 'Select none'
   },
+  clear () {
+    return 'Clear'
+  },
   notFound () {
     return 'Not found anything!'
   },
   search () {
     return 'Search...'
   },
-  momentDisplayFormat () {
-    return 'D MMMM YYYY, HH:mm'
-  },
-  momentFormatPrefix () {
-    return ''
+  momentDisplayFormat (part = false) {
+    if (!part) {
+      return 'D MMMM YYYY, HH:mm'
+    }
+    switch (part) {
+    case 'year':
+      return 'YYYY'
+    case 'month':
+      return 'MMMM'
+    case 'day':
+      return 'D'
+    case 'hour':
+      return 'HH'
+    case 'minute':
+      return 'mm'
+    case 'second':
+      return 'ss'
+    default:
+      return ''
+    }
   },
   second () {
     return 'Second'
