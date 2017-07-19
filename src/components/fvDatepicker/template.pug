@@ -12,19 +12,19 @@ span
   fv-dialog.fv-datepicker(ref="dialog",
     :class="dialogClass",
     :buttons="dialogButtons",
+    position="center-bottom",
     @close="$emit('close')",
     @open="$emit('open')",
     :title="displayValue || placeholder",
     :first-focus-on="true",
-    :auto-close="false",
-    content-class="fv-no-padding")
+    :auto-close="false")
     fv-main(ref="datepicker")
       fv-content.fv-no-padding
         .fv-row
           section.fv-pick-section(v-for="(val, index) in pick",
             :class="{'fv-col-xs-4': sectionSize === 4, 'fv-col-xs-6': sectionSize === 6, 'fv-col-xs-12': sectionSize === 12}")
-            label.fv-control-label.fv-title(v-html="locale[val]()")
-            fv-input.fv-search-style.fv-value.fv-lg.fv-text-center(ref="input",
+            label.fv-control-label.fv-text-center(v-html="locale[val]()")
+            fv-input.fv-search-style.fv-block.fv-lg.fv-text-center(ref="input",
               :value="pValue?  pValue.format(locale.momentDisplayFormat(val)): ''",
               @blur.native="$event.target.value = pValue.format(locale.momentDisplayFormat(val))",
               @input="pSet(val, $event)",

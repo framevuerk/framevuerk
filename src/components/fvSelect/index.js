@@ -1,7 +1,6 @@
 import utility from '../../utility'
 import locale from 'locale'
 import template from './template.pug'
-import style from './style.scss'
 
 export default {
   props: {
@@ -164,6 +163,5 @@ export default {
       this.searchQuery = ''
     }
   },
-  style,
   render: template.render
 }

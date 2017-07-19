@@ -1,7 +1,6 @@
 import utility from '../../utility'
 import locale from 'locale'
 import template from './template.pug'
-import style from './style.scss'
 /* global CONFIG */
 
 export default {
@@ -146,6 +145,5 @@ export default {
       this.$forceUpdate()
     }
   },
-  style,
   render: template.render
 }

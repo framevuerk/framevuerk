@@ -12,12 +12,12 @@ span
   fv-dialog.fv-select(ref="dialog",
     :class="dialogClass",
     :buttons="dialogButtons",
+    position="center-bottom",
     @close="$emit('close')",
     @open="$emit('open')",
     :title="!showInput && placeholder? placeholder: ''",
     :first-focus-on="true",
-    :auto-close="false",
-    content-class="fv-no-padding")
+    :auto-close="false")
     fv-main(ref="select")
       fv-header.fv-invert(v-if="showInput")
         fv-input.fv-form-control.fv-search-style.fv-grow(:placeholder="placeholder || searchText",
