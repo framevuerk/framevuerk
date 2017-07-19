@@ -20,6 +20,7 @@ fv-main#app
       fv-list.fv-no-border(:items="sidebarItems", expanded, slot="components")
   fv-footer(:height="40")
     .fv-grow
-    a.fv-link
+    a.fv-link(:href="$root.githubRepo",
+      target="_blank")
       i.fa.fa.fa-github
       |  Github page
