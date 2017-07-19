@@ -1,6 +1,7 @@
 import utility from '../../utility'
 import locale from 'locale'
 import template from './template.pug'
+import style from './style.scss'
 
 export default {
   props: {
@@ -82,7 +83,7 @@ export default {
             utility.doIt(() => {
               this.$refs.list.highlightedOption = this.$refs.list.pItems.length - 1
               if (this.showInput) {
-                this.$refs.searchQueryEl.$el.focus()
+                this.$refs.input.$el.focus()
               } else {
                 this.$refs.list.$el.focus()
               }
@@ -163,5 +164,6 @@ export default {
       this.searchQuery = ''
     }
   },
+  style,
   render: template.render
 }
