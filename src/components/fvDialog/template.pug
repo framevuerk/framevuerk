@@ -12,8 +12,7 @@ span
         v-if="title.length > 0")
         .fv-title
           label.fv-control-label(v-html="title")
-      fv-content(:class="contentClass")
-        slot
+      slot
       fv-footer(v-if="pButtons.length > 0")
         .fv-grow
         fv-button(v-for="button in pButtons",

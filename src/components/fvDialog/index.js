@@ -11,7 +11,7 @@ export default {
     position: {
       type: String,
       validator: (value) => {
-        return ['bottom', 'center'].indexOf(value) > -1
+        return ['bottom', 'center', 'fill', 'center-fill', 'center-bottom'].indexOf(value) > -1
       },
       default: 'center'
     },
@@ -26,9 +26,6 @@ export default {
     buttons: {
       type: Array,
       default: () => []
-    },
-    contentClass: {
-      default: ''
     },
     firstFocusOn: {
       type: [Number, Boolean],

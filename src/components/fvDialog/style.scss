@@ -4,20 +4,72 @@
 .fv-dialog-overlay {
   z-index: 20000;
 }
+
+@mixin fv-dialog-center($part) {
+  @if($part == 'style') {
+    border-radius: $border-radius;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  } @else if ($part == 'animation-enter') {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    transition-duration: $transition-speed;
+    transition-property: transform, opacity;
+  } @else if($part == 'animation-leave') {
+    opacity: 0;
+    transform: translate(-50%, -34%);
+  }
+}
+@mixin fv-dialog-bottom($part) {
+  @if($part == 'style') {
+    bottom: 0;
+    left: 0;
+    max-width: 100%;
+    top: auto;
+    width: 100%;
+  } @else if($part == 'animation-enter') {
+    transform: translateY(0);
+    transition-duration: $transition-speed;
+    transition-property: transform;
+  } @else if($part == 'animation-leave') {
+    transform: translateY(100%);
+  }
+}
+@mixin fv-dialog-fill($part) {
+  @if($part == 'style') {
+    border-radius: 0;
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 100%;
+  } @else if($part == 'animation-enter') {
+    opacity: 1;
+    transform: translate(0, 0);
+    transition-duration: $transition-speed;
+    transition-property: transform, opacity;
+  } @else if($part == 'animation-leave') {
+    opacity: 0;
+    transform: translate(0, 34%);
+  }
+}
+
+
+
 .fv-dialog {
   @include yiq($bg-color);
   @include respond-to(only-xs) {
     max-height: 100%;
     max-width: 100%;
   }
+  @include respond-to(sm) {
+    max-height: 90%;
+    max-width: 90%;
+  }
   box-shadow: 0 5px 15px $shadow-color;
   height: auto;
-  margin: 0;
-  max-height: 90%;
-  max-width: 90%;
   min-width: 300px;
   overflow: auto;
-  padding: 0;
   position: fixed;
   width: auto;
   z-index: 20002;
@@ -25,39 +77,85 @@
     border: 0;
     box-shadow: none;
   }
-  &.fv-dialog-bottom {
-    bottom: 0;
-    left: 0;
-    max-width: 100%;
-    top: auto;
-    width: 100%;
-  }
+
   &.fv-dialog-center {
-    border-radius: $border-radius;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    @include fv-dialog-center(style);
   }
-  &.fv-dialog-center-enter-active,
-  &.fv-dialog-center-leave-active {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-    transition-duration: $transition-speed;
-    transition-property: transform, opacity;
+  &.fv-dialog-bottom {
+    @include fv-dialog-bottom(style);
   }
-  &.fv-dialog-center-enter,
-  &.fv-dialog-center-leave-active {
-    opacity: 0;
-    transform: translate(-50%, -34%);
+  &.fv-dialog-fill {
+    @include fv-dialog-fill(style);
   }
-  &.fv-dialog-bottom-enter-active,
-  &.fv-dialog-bottom-leave-active {
-    transform: translateY(0);
-    transition-duration: $transition-speed;
-    transition-property: transform;
+  &.fv-dialog-center-bottom {
+    @include respond-to(sm) {
+      @include fv-dialog-center(style);
+    }
+    @include respond-to(only-xs) {
+      @include fv-dialog-bottom(style);
+    }
   }
-  &.fv-dialog-bottom-enter,
-  &.fv-dialog-bottom-leave-active {
-    transform: translateY(100%);
+  &.fv-dialog-center-fill {
+    @include respond-to(sm) {
+      @include fv-dialog-center(style);
+    }
+    @include respond-to(only-xs) {
+      @include fv-dialog-fill(style);
+    }
+  }
+
+  @include vue-animation(fv-dialog-center, enter) {
+    @include fv-dialog-center(animation-enter);
+  }
+  @include vue-animation(fv-dialog-center, leave) {
+    @include fv-dialog-center(animation-leave);
+  }
+
+  @include vue-animation(fv-dialog-bottom, enter) {
+    @include fv-dialog-bottom(animation-enter);
+  }
+  @include vue-animation(fv-dialog-bottom, leave) {
+    @include fv-dialog-bottom(animation-leave);
+  }
+
+  @include vue-animation(fv-dialog-fill, enter) {
+    @include fv-dialog-fill(animation-enter);
+  }
+  @include vue-animation(fv-dialog-fill, leave) {
+    @include fv-dialog-fill(animation-leave);
+  }
+
+  @include vue-animation(fv-dialog-center-bottom, enter) {
+    @include respond-to(sm) {
+      @include fv-dialog-center(animation-enter);
+    }
+    @include respond-to(only-xs) {
+      @include fv-dialog-bottom(animation-enter);
+    }
+  }
+  @include vue-animation(fv-dialog-center-bottom, leave) {
+    @include respond-to(sm) {
+      @include fv-dialog-center(animation-leave);
+    }
+    @include respond-to(only-xs) {
+      @include fv-dialog-bottom(animation-leave);
+    }
+  }
+
+  @include vue-animation(fv-dialog-center-fill, enter) {
+    @include respond-to(sm) {
+      @include fv-dialog-center(animation-enter);
+    }
+    @include respond-to(only-xs) {
+      @include fv-dialog-fill(animation-enter);
+    }
+  }
+  @include vue-animation(fv-dialog-center-fill, leave) {
+    @include respond-to(sm) {
+      @include fv-dialog-center(animation-leave);
+    }
+    @include respond-to(only-xs) {
+      @include fv-dialog-fill(animation-leave);
+    }
   }
 }
