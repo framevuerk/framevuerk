@@ -14,7 +14,6 @@
   transition-duration: $transition-speed;
   transition-property: height;
   width: 100%;
-  z-index: 9999;
   &.fv-invert {
     @include yiq($bg-color, 70%);
     border-bottom: solid 1px $shadow-color;
