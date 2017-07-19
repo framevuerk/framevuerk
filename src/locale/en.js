@@ -28,15 +28,15 @@ export default {
     case 'year':
       return 'YYYY'
     case 'month':
-      return 'MMMM'
+      return 'M'
     case 'day':
       return 'D'
     case 'hour':
-      return 'HH'
+      return 'H'
     case 'minute':
-      return 'mm'
+      return 'm'
     case 'second':
-      return 'ss'
+      return 's'
     default:
       return ''
     }
