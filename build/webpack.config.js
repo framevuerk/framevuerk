@@ -90,6 +90,16 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
               }
             },
             {
+              loader: 'postcss-loader',
+              options: {
+                plugins: [
+                  require('autoprefixer')({
+                    browsers: 'last 15 versions'
+                  })
+                ]
+              }
+            },
+            {
               loader: 'sass-loader',
               options: {
                 data: '' +
