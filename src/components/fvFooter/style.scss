@@ -21,6 +21,8 @@
     }
   }
   & .fv-button {
-    margin: 0 .5em;
+    &:not(:last-child) {
+      margin-#{$block-end}: $padding;
+    }
   }
 }
