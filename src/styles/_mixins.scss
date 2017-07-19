@@ -28,11 +28,11 @@
 }
 
 @mixin disabled {
-  //opacity: .5;
-  filter: opacity(50%);
+  //opacity: .4;
+  filter: opacity(40%);
   &,
   & * {
-    cursor: not-allowed;
+    cursor: not-allowed !important;
   }
 }
 
