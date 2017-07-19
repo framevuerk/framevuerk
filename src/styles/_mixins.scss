@@ -28,7 +28,6 @@
 }
 
 @mixin disabled {
-  //opacity: .4;
   filter: opacity(40%);
   &,
   & * {
@@ -36,6 +35,19 @@
   }
 }
 
+@mixin vue-animation($selector, $on) {
+  @if $on == enter {
+    &.#{$selector}-enter-active,
+    &.#{$selector}-leave-active {
+      @content;
+    }
+  } @else {
+    &.#{$selector}-enter,
+    &.#{$selector}-leave-active {
+      @content;
+    }
+  }
+}
 @mixin sizes {
   height: auto;
   max-width: 100%;
