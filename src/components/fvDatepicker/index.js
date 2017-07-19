@@ -54,12 +54,12 @@ export default {
     return {
       locale,
       moment: undefined, // will set on created
-      pValue: undefined,
-      highlightedOption: 0
+      pValue: undefined
     }
   },
   created () {
     this.moment = utility._dependencies.moment
+    global.moment = utility._dependencies.moment
     if (this.moment) {
       if (CONFIG.LOCALE === 'fa') {
         this.moment.loadPersian()
@@ -109,16 +109,13 @@ export default {
       }
     },
     sectionSize () {
-      if (this.pick.length % 3 === 0) {
+      if (this.pick.length === 1) {
+        return 12
+      } else if (this.pick.length === 2 || this.pick.length === 4) {
+        return 6
+      } else {
         return 4
       }
-      if (this.pick.length % 2 === 0) {
-        return 6
-      }
-      if (this.pick.length % 1 === 0) {
-        return 12
-      }
-      return 4
     }
   },
   methods: {
@@ -135,31 +132,18 @@ export default {
     close () {
       this.$refs.dialog.close()
     },
-    pMath (action = 'add', type = 'day') {
-      this.pValue[action](1, type + 's')
-      this.$forceUpdate()
-    },
-    keydown (event) {
-      switch (event.which) {
-      case 38: // up
-        if (this.highlightedOption !== null) {
-          this.pMath('add', this.pick[this.highlightedOption])
-        }
-        break
-      case 40: // down
-        if (this.highlightedOption !== null) {
-          this.pMath('subtract', this.pick[this.highlightedOption])
-        }
-        break
-      case CONFIG.DIRECTION === 'ltr' ? 37 : 39: // 37: left, 39: right,
-        this.highlightedOption = this.highlightedOption == null ? this.pick.length : this.highlightedOption
-        this.highlightedOption = this.highlightedOption - 1 < 0 ? this.pick.length - 1 : this.highlightedOption - 1
-        break
-      case CONFIG.DIRECTION === 'ltr' ? 39 : 37: // 37: left, 39: right,
-        this.highlightedOption = this.highlightedOption == null ? -1 : this.highlightedOption
-        this.highlightedOption = this.highlightedOption + 1 >= this.pick.length ? 0 : this.highlightedOption + 1
-        break
+    pSet (unit, value) {
+      const oldValue = parseInt(this.pValue.format(locale.momentDisplayFormat(unit)))
+      const newValue = parseInt(value)
+      if (newValue > oldValue) {
+        this.pValue.add(newValue - oldValue, `${unit}s`)
+      } else if (newValue < oldValue) {
+        this.pValue.subtract(oldValue - newValue, `${unit}s`)
+      } else {
+        this.pValue.subtract(0, `${unit}s`)
       }
+      this.inputPick = undefined
+      this.$forceUpdate()
     }
   },
   style,

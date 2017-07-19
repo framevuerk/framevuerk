@@ -20,15 +20,13 @@ span
     content-class="fv-no-padding")
     fv-main(ref="datepicker")
       fv-content.fv-no-padding
-        .fv-row(tabindex="0",
-          @keydown="keydown",
-          @blur="highlightedOption = null",
-          @focus="highlightedOption = 0")
+        .fv-row
           section.fv-pick-section(v-for="(val, index) in pick",
-            :class="{highlighted: highlightedOption===index, 'fv-col-xs-4': sectionSize === 4, 'fv-col-xs-6': sectionSize === 6, 'fv-col-xs-12': sectionSize === 12}")
+            :class="{'fv-col-xs-4': sectionSize === 4, 'fv-col-xs-6': sectionSize === 6, 'fv-col-xs-12': sectionSize === 12}")
             label.fv-control-label.fv-title(v-html="locale[val]()")
-            .fv-button.fv-up(@click.prevent="pMath('add', val); highlightedOption = index;")
-              i.fa.fa-chevron-up
-            .fv-value.fv-text-center(v-html="pValue? pValue.format(locale.momentDisplayFormat(val)): '---'")
-            .fv-button.fv-bottom(@click.prevent="pMath('subtract', val); highlightedOption = index;")
-              i.fa.fa-chevron-down
+            fv-input.fv-search-style.fv-value.fv-lg.fv-text-center(ref="input",
+              :value="pValue?  pValue.format(locale.momentDisplayFormat(val)): ''",
+              @blur.native="$event.target.value = pValue.format(locale.momentDisplayFormat(val))",
+              @input="pSet(val, $event)",
+              required,
+              type="number")
