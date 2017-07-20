@@ -30,7 +30,8 @@ export default {
         items: [
           this.sidebarItem('fvInput'),
           this.sidebarItem('fvSelect'),
-          this.sidebarItem('fvDatepicker')
+          this.sidebarItem('fvDatepicker'),
+          this.sidebarItem('fvSwitch')
         ]
       }]
     },

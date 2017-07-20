@@ -19,6 +19,7 @@ import fvMenu from './pages/component_fvMenu'
 import fvInput from './pages/component_fvInput'
 import fvSelect from './pages/component_fvSelect'
 import fvDatepicker from './pages/component_fvDatepicker'
+import fvSwitch from './pages/component_fvSwitch'
 
 framevuerk.use(moment)
 Vue.use(VueRouter)
@@ -76,6 +77,11 @@ const router = new VueRouter({
       name: 'fvDatepicker',
       path: '/components/fvDatepicker',
       component: fvDatepicker
+    },
+    {
+      name: 'fvSwitch',
+      path: '/components/fvSwitch',
+      component: fvSwitch
     },
     {
       name: 'welcome',

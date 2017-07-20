@@ -1,0 +1,21 @@
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | To create switch in your application, use this!
+    doc-code
+      = "<fv-switch></fv-switch>"
+    doc-example
+      .fv-row
+        .fv-col-sm-3
+          p Normal
+          fv-switch(v-model="inputs.d1")
+        .fv-col-sm-3
+          p Focus
+          fv-switch.focus
+        .fv-col-sm-3
+          p Invalid
+          fv-switch.focus.invalid
+        .fv-col-sm-3
+          p Disabled
+          fv-switch.fv-block(disabled)
+    doc-api(:rows="api")
