@@ -40,34 +40,21 @@ export default {
     this.setStructure()
   },
   methods: {
-    pSetValue (value) {
-      this.$emit('input', value)
-      this.$emit('change')
-    },
-    pToggle () {
-      this.pSetValue(this.value === this.onValue ? this.offValue : this.onValue)
-    },
-    pFocus () {
+    toggle () {
       if (!this.disabled) {
-        this.$refs.switch.focus()
-      }
-    },
-    pClick () {
-      if (!this.disabled) {
-        this.pToggle()
-        this.focus = true
+        this.$emit('input', this.value === this.onValue ? this.offValue : this.onValue)
       }
     },
     setStructure () {
       if ([this.offValue, this.onValue].indexOf(this.value) === -1) {
-        this.pSetValue(this.offValue)
+        this.$emit('input', this.offValue)
       }
     },
-    pKeyDown (event) {
+    keydown (event) {
       switch (event.which) {
       case 13: case 32: // enter, space
         event.preventDefault()
-        this.pToggle()
+        this.toggle()
         break
       }
     }

@@ -2,32 +2,31 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-switch {
-  background: $gray-color;
-  border: solid 1px $gray-color-dark;
+  background: $shadow-color-light;
+  border: solid 1px $shadow-color;
   border-radius: #{$border-radius * 6};
   cursor: pointer;
   direction: $direction;
   display: inline-block;
-  height: 1.2em;
+  height: 2em;
   margin: .9em 0;
-  padding: 0;
+  padding: .1em;
   vertical-align: middle;
-  width: 3.2em;
+  width: 3.8em;
   & > .fv-handler {
-    background: $gray-color-light;
+    background: $bg-color-light;
     border: solid 1px $shadow-color;
     border-radius: 25px;
     box-shadow: 0 1px 4px $shadow-color;
     display: inline-block;
-    height: 1.8em;
-    margin: calc(-.3em - 1px);
-    width: 1.8em;
+    height: 100%;
+    width: calc(1.8em - 2px);
   }
   &.on {
-    background: rgba($theme-color-light, .8);
+    background: $theme-color-light;
     & > .fv-handler {
-      background: $theme-color;
-      margin-#{$block-start}: 1.65em;
+      border: solid 1px $shadow-color-light;
+      margin-#{$block-start}: 1.8em;
     }
   }
   &:focus,
