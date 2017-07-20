@@ -24,7 +24,7 @@ export default {
       api: {
         prop: [
           {
-            name: 'value',
+            name: 'value || v-model (required)',
             type: '',
             default: 'undefined',
             description: 'Value of input'
