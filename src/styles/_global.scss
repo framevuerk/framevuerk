@@ -30,16 +30,19 @@ html > body {
   display: inline !important;
 }
 .fv-full-width {
-  width: 100% important;
+  width: 100% !important;
 }
 
 .fv-hide {
   display: none !important;
 }
 .fv-hidden {
+  border: 0 !important;
+  display: inline-block !important;
   height: 0 !important;
-  margin: -99999999px !important;
+  margin: 0 !important;
   opacity: 0 !important;
+  outline: none !important;
   padding: 0 !important;
   position: absolute !important;
   width: 0 !important;
