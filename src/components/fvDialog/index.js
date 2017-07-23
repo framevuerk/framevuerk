@@ -5,8 +5,10 @@ import style from './style.scss'
 export default {
   props: {
     title: {
-      default: '',
-      required: false
+      default: ''
+    },
+    content: {
+      default: ''
     },
     position: {
       type: String,
