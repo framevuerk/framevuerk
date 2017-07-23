@@ -1,33 +1,29 @@
 @import '../../styles/variables';
 @import '../../styles/functions';
 @import '../../styles/mixins';
-.fv-radio {
+.fv-check {
   display: inline-block;
-  height: 1.2em;
-  margin: .7em 0;
+  height: 2em;
+  margin: .9em 0;
   & > .fv-button {
     padding-#{$block-end}: 1.5em;
     padding-#{$block-start}: 1.5em;
   }
-  & .fv-radio-check:not(:last-child) {
+  & .fv-check-item:not(:last-child) {
     margin-#{$block-end}: .7em;
   }
-  & .fv-radio-check {
+  & .fv-check-item {
     border-radius: $border-radius;
     color: inherit;
     &,
     & * {
       cursor: pointer;
     }
-    &.fv-disabled {
-      opacity: .5;
-      &,
-      & * {
-        cursor: not-allowed;
-      }
+    &.disabled {
+      @include disabled;
     }
-    &.fv-checked,
-    &.fv-checked * {
+    &.checked,
+    &.checked * {
       color: $primary-color;
     }
     &:focus,
@@ -35,12 +31,14 @@
       @include outline;
     }
   }
-  & .fv-radio-icon {
-    display: inline;
-    font-size: 1.2em;
+  & .fv-check-icon {
+    font-size: 18px;
+    overflow: hidden;
     vertical-align: middle;
+    width: 20px;
   }
   & .fv-control-label {
     display: inline;
+    vertical-align: middle;
   }
 }
