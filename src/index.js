@@ -21,7 +21,7 @@ import fvSwitch from './components/fvSwitch'
 import fvDialog from './components/fvDialog'
 import fvTable from './components/fvTable'
 import fvTabs from './components/fvTabs'
-import fvRadio from './components/fvRadio'
+import fvCheck from './components/fvCheck'
 import fvTextarea from './components/fvTextarea'
 // Directives
 import fvScroll from './directives/fvScroll'
@@ -44,7 +44,7 @@ const framevuerk = {
   fvDialog,
   fvTable,
   fvTabs,
-  fvRadio,
+  fvCheck,
   fvTextarea,
   use (lib = null) {
     if (lib && (lib.name === 'jMoment' || lib.name === 'moment')) {
@@ -70,7 +70,7 @@ const framevuerk = {
     Vue.component('fvDialog', fvDialog)
     Vue.component('fvTable', fvTable)
     Vue.component('fvTabs', fvTabs)
-    Vue.component('fvRadio', fvRadio)
+    Vue.component('fvCheck', fvCheck)
     Vue.component('fvTextarea', fvTextarea)
     // Directives
     Vue.directive('fvScroll', fvScroll)

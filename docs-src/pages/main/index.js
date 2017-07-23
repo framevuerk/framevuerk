@@ -31,7 +31,8 @@ export default {
           this.sidebarItem('fvInput'),
           this.sidebarItem('fvSelect'),
           this.sidebarItem('fvDatepicker'),
-          this.sidebarItem('fvSwitch')
+          this.sidebarItem('fvSwitch'),
+          this.sidebarItem('fvCheck')
         ]
       }]
     },
