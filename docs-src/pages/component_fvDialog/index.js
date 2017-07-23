@@ -19,7 +19,13 @@ export default {
             name: 'title',
             type: 'String',
             default: '""',
-            description: 'Title of dialog'
+            description: 'Title of dialog (if it\'s empty, title container not rendered'
+          },
+          {
+            name: 'content',
+            type: 'String',
+            default: '""',
+            description: 'Content of dialog (if it\'s empty, content container not rendered'
           },
           {
             name: 'position',
@@ -44,12 +50,6 @@ export default {
             type: 'Array',
             default: '[]',
             description: 'Buttons of dialog.<br>Each item in array, is object that can have<br>key:String, icon:String, text:String, action:Function, class:String and disabled:Boolean prop. '
-          },
-          {
-            name: 'content-class',
-            type: '---',
-            default: '""',
-            description: 'Class attribute of <fv-content> section inside dialog.'
           },
           {
             name: 'first-focus-on',

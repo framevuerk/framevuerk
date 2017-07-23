@@ -79,7 +79,7 @@ export default {
             name: 'options',
             type: 'Array',
             default: '[]',
-            description: 'Options of menu.<br>Each item in array, is object that can have<br>key:String, icon:String, text:String, action:Function, class:String and disabled:Boolean prop.'
+            description: 'Options of select.<br>Each item in array, is object that can have<br>key:String, icon:String, text:String, action:Function, class:String and disabled:Boolean prop.'
           }
         ],
         event: [
