@@ -1,0 +1,29 @@
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | To create form in your application to handle inputs inside it, use this!
+    doc-code
+      = "<fv-form></fv-form>"
+    doc-example
+      fv-form.fv-row(@submit.native="console.log('s')")
+        .fv-col-sm-4
+          p Check Box
+          fv-check(v-model="inputs.d1", :options="['A.C. Milan', 'Juventus', 'Inter Milan']", multiple, required)
+        .fv-col-sm-4
+          p Radio Button
+          fv-check(v-model="inputs.d2", :options="['Reza', 'Hashem', 'Omid']", required)
+        .fv-col-sm-3
+          p Normal
+          fv-switch(v-model="inputs.d5", required)
+        .fv-col-sm-12
+          p Display value + required: {{inputs.d2.value}}
+          .fv-input-group.fv-flex
+            fv-input.fv-grow(v-model="inputs.d3.value", :display-value="inputs.d3.displayValue", render-type="display", placeholder="I'm required!", required)
+            fv-button(@click.native.prevent="inputs.d3.value = undefined; inputs.d3.displayValue = null;") Clear
+            fv-button(@click.native.prevent="inputs.d3.value = new Date().getTime(); inputs.d3.displayValue = new Date(inputs.d3.value).getMilliseconds();") Change
+        .fv-col-sm-12
+          p Default: {{inputs.d1}}
+          fv-input.fv-block(v-model="inputs.d4", placeholder="Enter your age", required)
+        .fv-col-sm-12
+          fv-button.fv-block(type="submit") Submit!
+    doc-api(:rows="api")

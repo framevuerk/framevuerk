@@ -16,7 +16,9 @@ import fvFooter from './pages/component_fvFooter'
 import fvContent from './pages/component_fvContent'
 import fvDialog from './pages/component_fvDialog'
 import fvMenu from './pages/component_fvMenu'
+import fvForm from './pages/component_fvForm'
 import fvInput from './pages/component_fvInput'
+import fvTextarea from './pages/component_fvTextarea'
 import fvSelect from './pages/component_fvSelect'
 import fvDatepicker from './pages/component_fvDatepicker'
 import fvSwitch from './pages/component_fvSwitch'
@@ -65,9 +67,19 @@ const router = new VueRouter({
       component: fvMenu
     },
     {
+      name: 'fvForm',
+      path: '/components/fvForm',
+      component: fvForm
+    },
+    {
       name: 'fvInput',
       path: '/components/fvInput',
       component: fvInput
+    },
+    {
+      name: 'fvTextarea',
+      path: '/components/fvTextarea',
+      component: fvTextarea
     },
     {
       name: 'fvSelect',
