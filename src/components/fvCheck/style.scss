@@ -5,16 +5,13 @@
   display: inline-block;
   height: 2em;
   margin: .9em 0;
-  & > .fv-button {
-    padding-#{$block-end}: 1.5em;
-    padding-#{$block-start}: 1.5em;
-  }
   & .fv-check-item:not(:last-child) {
     margin-#{$block-end}: .7em;
   }
   & .fv-check-item {
     border-radius: $border-radius;
     color: inherit;
+    padding: .2em;
     &,
     & * {
       cursor: pointer;
@@ -29,6 +26,10 @@
     &:focus,
     &.focus {
       @include outline;
+      &:invalid,
+      &.invalid {
+        @include outline($danger-color);
+      }
     }
   }
   & .fv-check-icon {

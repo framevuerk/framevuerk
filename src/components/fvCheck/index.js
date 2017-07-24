@@ -13,9 +13,18 @@ export default {
       type: Boolean,
       default: false
     },
+    required: {
+      type: Boolean,
+      default: false
+    },
     disabled: {
       type: Boolean,
       default: false
+    }
+  },
+  data () {
+    return {
+      isValid: true
     }
   },
   computed: {
@@ -29,9 +38,22 @@ export default {
         })
       })
       return ret
+    },
+    fvValidate () {
+      if (this.required) {
+        if (this.multiple) {
+          return this.value && this.value.constructor === Array && this.value.length
+        } else {
+          return !!this.value
+        }
+      }
+      return true
     }
   },
   methods: {
+    focus () {
+      this.$refs.option[0].focus()
+    },
     clickOption (option) {
       if (!option.disabled && !this.disabled) {
         let newValue

@@ -21,14 +21,12 @@ export default {
       default: false
     }
   },
-  data () {
-    return {
-      focus: false
-    }
-  },
   computed: {
-    invalid () {
-      return this.required === true && this.value !== this.onValue
+    fvValidate () {
+      if (this.required) {
+        return this.value === this.onValue
+      }
+      return true
     }
   },
   watch: {

@@ -68,6 +68,9 @@ export default {
     }
   },
   computed: {
+    fvValidate () {
+      return this.$refs.inputEl.fvValidate || false
+    },
     dialogButtons () {
       const ret = []
       ret.push({

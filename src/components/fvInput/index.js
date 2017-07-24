@@ -32,38 +32,20 @@ export default {
       default: ''
     }
   },
-  data () {
-    return {
-      invalid: false,
-      focus: false
-    }
-  },
-  watch: {
-    value () {
-      this.checkInvalid()
+  computed: {
+    fvValidate () {
+      if (this.required) {
+        if (!this.value || (this.value.constructor === Array && this.value.length === 0)) {
+          return false
+        } else {
+          return true
+        }
+      }
+      return true
     }
   },
   methods: {
-    checkInvalid () {
-      if (this.required) {
-        if (this.value === undefined || (this.value.constructor === Array && this.value.length === 0)) {
-          this.invalid = true
-        } else {
-          this.invalid = false
-        }
-      } else {
-        this.invalid = false
-      }
-    },
-    pFocus () {
-      this.$refs.inputEl.focus()
-    },
-    pClick (event) {
-      if (!this.disabled) {
-        this.$emit('click', event)
-      }
-    },
-    pEnter (event) {
+    enter (event) {
       if (!this.disabled) {
         this.$emit('enter', event)
       }

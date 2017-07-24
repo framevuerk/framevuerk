@@ -1,12 +1,6 @@
-span.fv-switch(:class="{on: onValue === value, invalid: invalid, disabled: disabled}",
+span.fv-switch(:class="{on: onValue === value, invalid: !fvValidate, disabled: disabled}",
   ref="switch",
   @click="toggle",
   :tabindex="disabled? '': 0",
   @keydown="keydown")
   span.fv-handler
-  input.fv-hidden(type="checkbox",
-    :required="required",
-    tabindex="-1",
-    :disabled="disabled",
-    :checked="onValue === value",
-    @invalid.prevent="$refs.switch.focus()")

@@ -53,6 +53,9 @@ export default {
     }
   },
   computed: {
+    fvValidate () {
+      return this.$refs.inputEl.fvValidate || false
+    },
     showInput () {
       return this.search || this.allowInsert
     },

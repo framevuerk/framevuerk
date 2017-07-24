@@ -1,13 +1,10 @@
 .fv-input.fv-input-select(v-if="renderType === 'display'",
   ref="inputEl",
-  :class="{invalid: invalid, focus: focus}",
+  :class="{invalid: !fvValidate}",
   :tabindex="disabled? '': 0",
   :disabled="disabled",
-  @focus="checkInvalid(); focus = true;",
-  @click="pClick($event)",
-  @blur="focus = false;",
-  @keydown.enter="pEnter($event)",
-  @click.ative="pEnter($event)")
+  @keydown.enter="enter",
+  @click="enter")
   span.placeholder(v-if="typeof displayValue == 'undefined' || displayValue === null || displayValue.length === 0",
     v-html="placeholder")
   span.fv-input-select-item(v-else-if="displayValue.constructor == Array",
@@ -18,16 +15,10 @@
   span.fv-caret-icon
     i(v-if="caretIcon",
       :class="caretIcon")
-  input.fv-hidden(tabindex="-1",
-    :value="value",
-    :required="required",
-    @invalid.prevent="pFocus()",
-    @focus="pFocus()")
 input.fv-input(v-else,
   ref="inputEl",
   :disabled="disabled",
+  :class="{invalid: !fvValidate}",
   :value="value",
-  :required="required",
   :placeholder="placeholder",
-  @input="$emit('input', $event.target.value)",
-  @invalid.prevent="pFocus()")
+  @input="$emit('input', $event.target.value)")
