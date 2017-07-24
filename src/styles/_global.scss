@@ -199,49 +199,8 @@ html > body {
 }
 
 .fv-form-control {
-  @include yiq($bg-color-light);
-  border: 1px solid $shadow-color;
-  border-radius: $border-radius;
-  box-shadow: inset 0 .3em .5em $shadow-color-light;
   display: inline-block;
   font-family: inherit;
   max-width: 100%;
-  min-height: 3em;
-  padding: 0 .6em;
-  vertical-align: middle;
   width: 100%;
-  &.fv-rounded {
-    border-radius: $border-radius-large;
-  }
-  &.fv-search-style {
-    border-left: 0;
-    border-radius: 0;
-    border-right: 0;
-    border-top: 0;
-    box-shadow: none;
-    &:focus,
-    &.focus {
-      @include bottom-outline;
-      &:invalid,
-      &.invalid {
-        @include bottom-outline($danger-color);
-      }
-    }
-  }
-  &:focus,
-  &.focus {
-    @include outline;
-    &:invalid,
-    &.invalid {
-      @include outline($danger-color);
-    }
-  }
-  &[disabled],
-  &.disabled {
-    @include disabled;
-  }
-  &::placeholder,
-  & > .placeholder {
-    color: $gray-color-dark;
-  }
 }
