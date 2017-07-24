@@ -1,2 +1,3 @@
-textarea.fv-textarea
-  slot
+textarea.fv-textarea.fv-input(:class="{'auto-height': autoHeight}",
+  :value="value",
+  @input="$emit('input', $event.target.value); setHeight($event.target.value)")

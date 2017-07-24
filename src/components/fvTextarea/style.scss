@@ -1,0 +1,10 @@
+@import '../../styles/variables';
+@import '../../styles/functions';
+@import '../../styles/mixins';
+.fv-textarea {
+  &.auto-height {
+    @include nowrap;
+    overflow-x: auto;
+    resize: none;
+  }
+}
