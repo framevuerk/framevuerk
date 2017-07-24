@@ -33,6 +33,12 @@ export default {
             description: 'Allow user to select multiple options'
           },
           {
+            name: 'required',
+            type: 'Boolean',
+            default: 'false',
+            description: 'Should user select atleast one option?'
+          },
+          {
             name: 'disabled',
             type: 'Boolean',
             default: 'false',

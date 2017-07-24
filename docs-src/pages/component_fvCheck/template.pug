@@ -10,8 +10,8 @@ fv-content
           p Check Box
           fv-check(v-model="inputs.d1", :options="['A.C. Milan', 'Juventus', 'Inter Milan']", multiple)
         .fv-col-sm-6
-          p Radio
-          fv-check(v-model="inputs.d2", :options="['Amir', 'Farzad', 'Jeff']")
+          p Radio + Required
+          fv-check(v-model="inputs.d2", :options="['Amir', 'Farzad', 'Jeff']", required)
         .fv-col-sm-6
           p Option Disabled
           fv-check(v-model="inputs.d3", :options="['Ghazvin', {value: 'Tehran', disabled: true}, {value: 'Qom', disabled: true}]", multiple)
