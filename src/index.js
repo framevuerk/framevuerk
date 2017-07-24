@@ -9,6 +9,7 @@ import fvContent from './components/fvContent'
 import fvHeader from './components/fvHeader'
 import fvFooter from './components/fvFooter'
 import fvSidebar from './components/fvSidebar'
+import fvForm from './components/fvForm'
 import fvSelect from './components/fvSelect'
 import fvDatepicker from './components/fvDatepicker'
 import fvList from './components/fvList'
@@ -32,6 +33,7 @@ const framevuerk = {
   fvHeader,
   fvFooter,
   fvSidebar,
+  fvForm,
   fvSelect,
   fvDatepicker,
   fvList,
@@ -58,6 +60,7 @@ const framevuerk = {
     Vue.component('fvHeader', fvHeader)
     Vue.component('fvFooter', fvFooter)
     Vue.component('fvSidebar', fvSidebar)
+    Vue.component('fvForm', fvForm)
     Vue.component('fvSelect', fvSelect)
     Vue.component('fvDatepicker', fvDatepicker)
     Vue.component('fvList', fvList)
