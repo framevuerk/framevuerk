@@ -40,6 +40,20 @@
       @include yiq($default-color-light);
     }
   }
+  &.fv-ok {
+    background: $default-color;
+    color: $primary-color;
+    &:active,
+    &.active {
+      background: $default-color-dark;
+      color: $primary-color-light;
+    }
+    &:focus,
+    &.focus {
+      background: $default-color-light;
+      color: $primary-color;
+    }
+  }
   &.fv-primary {
     @include yiq($primary-color);
     &:active,
