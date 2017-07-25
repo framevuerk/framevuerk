@@ -19,11 +19,13 @@
       opacity: .4;
     }
     & > thead {
+      border-bottom: solid 1px $shadow-color-light;
       font-weight: bold;
       position: sticky;
       top: 0;
     }
     & > tfoot {
+      border-top: solid 1px $shadow-color-light;
       bottom: 0;
       position: sticky;
     }
@@ -55,7 +57,7 @@
     }
     & > thead > tr > th,
     & > tfoot > tr > td {
-      @include yiq($default-color-light);
+      @include yiq($bg-color-dark);
     }
 
     & > tfoot > tr > td {

@@ -16,7 +16,7 @@
     tfoot(v-if="footer")
       tr
         td(:colspan="pFields.length")
-          .page-control-continer(v-if="paginate && !local")
+          .page-control-continer
             fv-button(@click.native="fetch(previousPage)",
               :disabled="previousPage === false",
               v-html="prevPageBtnContent") 
