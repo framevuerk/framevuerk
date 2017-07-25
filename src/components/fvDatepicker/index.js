@@ -85,7 +85,7 @@ export default {
         ret.push({
           icon: 'fa fa-circle-o',
           text: locale.clear(),
-          class: 'fv-ok',
+          class: 'fv-default',
           action: () => {
             this.$emit('input', undefined)
             this.close()
@@ -95,7 +95,7 @@ export default {
       ret.push({
         icon: 'fa fa-check',
         text: locale.ok(),
-        class: 'fv-primary',
+        class: 'fv-ok',
         action: () => {
           this.$emit('input', this.pValue.toDate())
           this.close()
