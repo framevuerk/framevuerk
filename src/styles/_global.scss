@@ -54,6 +54,7 @@ html > body {
   position: fixed;
   text-align: center;
   top: 0;
+  transform: translateZ(10000px);
   width: 100%;
   z-index: 10000;
   &.fv-light {

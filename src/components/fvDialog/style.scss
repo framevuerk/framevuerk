@@ -2,6 +2,7 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-dialog-overlay {
+  transform: translateZ(20000px);
   z-index: 20000;
 }
 
@@ -10,15 +11,15 @@
     border-radius: $border-radius;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate3d(-50%, -50%, 20002px);
   } @else if ($part == 'animation-enter') {
     opacity: 1;
-    transform: translate(-50%, -50%);
+    transform: translate3d(-50%, -50%, 20002px);
     transition-duration: $transition-speed;
     transition-property: transform, opacity;
   } @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate(-50%, -34%);
+    transform: translate3d(-50%, -34%, 20002px);
   }
 }
 @mixin fv-dialog-bottom($part) {
@@ -29,11 +30,11 @@
     top: auto;
     width: 100%;
   } @else if($part == 'animation-enter') {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 20002px);
     transition-duration: $transition-speed;
     transition-property: transform;
   } @else if($part == 'animation-leave') {
-    transform: translateY(100%);
+    transform: translate3d(0, 100%, 20002px);
   }
 }
 @mixin fv-dialog-fill($part) {
@@ -45,12 +46,12 @@
     width: 100%;
   } @else if($part == 'animation-enter') {
     opacity: 1;
-    transform: translate(0, 0);
+    transform: translate3d(0, 0, 20002px);
     transition-duration: $transition-speed;
     transition-property: transform, opacity;
   } @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate(0, 34%);
+    transform: translate3d(0, 34%, 20002px);
   }
 }
 
@@ -71,6 +72,7 @@
   min-width: 300px;
   overflow: auto;
   position: fixed;
+  transform: translate3d(0, 0, 20002px);
   width: auto;
   z-index: 20002;
   & > .fv-header {

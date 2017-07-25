@@ -8,6 +8,7 @@
   overflow-y: auto;
   position: absolute;
   top: 0;
+  transform: translate3d(0, 0, 10000px);
   z-index: 10000;
   &.fv-right {
     right: 0;
@@ -24,7 +25,7 @@
   &.fv-sidebar-left-leave-active,
   &.fv-sidebar-right-enter-active,
   &.fv-sidebar-right-leave-active {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 10000px);
     transition-duration: $transition-speed;
     transition-property: transform;
     transition-timing-function: ease;
@@ -32,11 +33,11 @@
 
   &.fv-sidebar-left-enter,
   &.fv-sidebar-left-leave-active {
-    transform: translateX(-100%);
+    transform: translate3d(-100%, 0, 10000px);
   }
 
   &.fv-sidebar-right-enter,
   &.fv-sidebar-right-leave-active {
-    transform: translateX(100%);
+    transform: translate3d(100%, 0, 10000px);
   }
 }
