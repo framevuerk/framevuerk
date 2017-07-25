@@ -66,6 +66,9 @@ export default {
       if (!this.$refs.sidebar.pPin) {
         this.$refs.sidebar.close()
       }
+      if( this.$route.name==='notfound' ){
+        this.$router.push(`/components/fvMain`)
+      }
     }
   },
   mounted () {
