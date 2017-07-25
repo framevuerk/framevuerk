@@ -5,7 +5,6 @@ import moment from 'moment-jalaali'
 import 'font-awesome/css/font-awesome.css'
 
 import './index.html'
-import './assets/favicon.ico'
 import main from './pages/main'
 // Components Page
 import fvMain from './pages/component_fvMain'
