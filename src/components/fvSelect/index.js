@@ -104,7 +104,7 @@ export default {
         ret.push({
           icon: 'fa fa-check',
           text: locale.ok(),
-          class: 'fv-primary',
+          class: 'fv-ok',
           action: () => {
             this.$emit('input', this.pValue)
             this.close()

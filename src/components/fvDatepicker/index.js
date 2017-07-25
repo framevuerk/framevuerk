@@ -85,7 +85,7 @@ export default {
         ret.push({
           icon: 'fa fa-circle-o',
           text: locale.clear(),
-          class: 'fv-default',
+          class: 'fv-ok',
           action: () => {
             this.$emit('input', undefined)
             this.close()
