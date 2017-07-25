@@ -7,10 +7,10 @@ fv-content
       = "\t<!-- contents -->\n"
       = "</fv-dialog>\n"
     doc-example
-      fv-dialog(ref="d1", position="center", :buttons="['Cancel', {class: 'fv-primary',icon: 'fa fa-check',text: 'OK'}]", content="This is simple dialog. not?", title="Simple")
+      fv-dialog(ref="d1", position="center", :buttons="['Cancel', {class: 'fv-ok',icon: 'fa fa-check',text: 'OK'}]", content="This is simple dialog. not?", title="Simple")
       fv-dialog(ref="d2", content-class="fv-text-center", position="center", :auto-close="false", :modal="true")
         fv-content.fv-text-center
-          fv-button.fv-primary.fv-xl(:style="{borderRadius: '100px', width: '100px', height: '100px'}", @click.native="$refs.d2.close()") OK
+          fv-button.fv-ok.fv-xl(:style="{borderRadius: '100px', width: '100px', height: '100px'}", @click.native="$refs.d2.close()") OK
       fv-dialog(ref="d3", position="bottom")
         fv-content
           .fv-pull-left I can also show like a sheet.
