@@ -7,7 +7,6 @@ import 'font-awesome/css/font-awesome.css'
 import './index.html'
 import './assets/favicon.ico'
 import main from './pages/main'
-import welcome from './pages/welcome'
 // Components Page
 import fvMain from './pages/component_fvMain'
 import fvHeader from './pages/component_fvHeader'
@@ -102,9 +101,8 @@ const router = new VueRouter({
       component: fvCheck
     },
     {
-      name: 'welcome',
-      path: '/*',
-      component: welcome
+      name: 'notfound',
+      path: '/*'
     }
   ]
 })
