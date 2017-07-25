@@ -9,9 +9,9 @@ $transition-speed: .3s;
 $block-start: if($direction == rtl, right, left);
 $block-end: if($direction == rtl, left, right);
 
-$bg-color: #ecf0f1 !default;
+$bg-color: #f9f9f9 !default;
 $bg-color-light: lighten($bg-color, 4%) !default;
-$bg-color-dark: darken($bg-color, 5%) !default;
+$bg-color-dark: darken($bg-color, 2%) !default;
 
 $color: yiq($bg-color) !default;
 $color-light: lighten($color, 18%) !default;
@@ -29,7 +29,7 @@ $highlight-color-light: rgba(255, 255, 255, .06) !default;
 $highlight-color-dark: rgba(255, 255, 255, .35) !default;
 
 
-$gray-color: #e7e7e7 !default;
+$gray-color: #f5f5f5 !default;
 $gray-color-light: lighten($gray-color, 4%) !default;
 $gray-color-dark: darken($gray-color, 18%) !default;
 
@@ -68,8 +68,8 @@ $padding: 15px !default;
 $padding-small: 11px !default;
 $padding-large: 25px !default;
 
-$border-radius: 4px;
-$border-radius-small: 2px;
+$border-radius: 2px;
+$border-radius-small: 1px;
 $border-radius-large: 12px;
 
 
