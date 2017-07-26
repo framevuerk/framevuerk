@@ -1,6 +1,6 @@
 lang: node_js
 node_js:
-  - 6.11.0
+  - "6"
 
 before_install:
   - npm install
@@ -13,9 +13,9 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
   local_dir: docs
+  repo: framevuerk/public
   target_branch: master
   fqdn: framevuerk.com
-  repo: framevuerk/public
   script:
     - npm run build
   on:
