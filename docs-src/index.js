@@ -4,7 +4,9 @@ import framevuerk from 'framevuerk'
 import moment from 'moment-jalaali'
 import 'font-awesome/css/font-awesome.css'
 
+import './doc.html'
 import './index.html'
+import './CNAME.none'
 import main from './pages/main'
 // Components Page
 import fvMain from './pages/component_fvMain'

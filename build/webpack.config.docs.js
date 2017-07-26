@@ -48,6 +48,10 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
           loader: 'file-loader?name=./[name].[ext]'
         },
         {
+          test: /\.none$/,
+          loader: 'file-loader?name=./[name]'
+        },
+        {
           test: /\.pug$/,
           loader: ['vue-template-compiler-loader', 'pug-html-loader'],
           exclude: /node_modules/
