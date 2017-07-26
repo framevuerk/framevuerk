@@ -29,7 +29,7 @@ export default {
       default: false
     },
     items: {
-      default: []
+      default: () => []
     }
   },
   data () {
