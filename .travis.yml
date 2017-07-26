@@ -3,6 +3,12 @@ sudo: false
 node_js:
   - "6"
 
+build:
+  script:
+    - npm run build
+  on:
+    branch: master
+
 deploy:
   provider: pages
   skip_cleanup: true
@@ -11,7 +17,5 @@ deploy:
   repo: framevuerk/public
   target_branch: master
   fqdn: framevuerk.com
-  script:
-    - npm run build
   on:
     branch: master
