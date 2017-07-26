@@ -5,12 +5,10 @@ node_js:
 
 before_install:
   - npm install
-
-before_script:
-  - npm run test
   
-script:
-  - npm run build
+test:
+  before_script:
+    - npm run test
 
 deploy:
   provider: pages
@@ -20,5 +18,7 @@ deploy:
   target_branch: master
   fqdn: framevuerk.com
   repo: framevuerk/public
+  script:
+    - npm run build
   on:
     branch: master
