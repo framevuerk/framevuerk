@@ -6,6 +6,7 @@ import 'font-awesome/css/font-awesome.css'
 
 import './doc.html'
 import './index.html'
+import './favicon.ico'
 import './CNAME.none'
 import main from './pages/main'
 // Components Page
