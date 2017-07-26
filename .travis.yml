@@ -1,7 +1,6 @@
 lang: node_js
-
 node_js:
-  - "6"
+  - 6.11.0
 
 before_install:
   - npm install
