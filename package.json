@@ -22,6 +22,7 @@
     "clean": "npm run clean:lib && npm run clean:docs",
     "build": "npm run build:lib && npm run build:docs",
     "start": "lite-server",
+    "push": "./build/push.sh",
     "dev": "npm run build:lib:watch & npm run build:docs:watch & npm run start"
   },
   "devDependencies": {

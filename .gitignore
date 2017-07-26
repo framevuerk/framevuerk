@@ -40,4 +40,5 @@ jspm_packages
 # dist folders
 dist/
 docs/
+public/
 .idea/
