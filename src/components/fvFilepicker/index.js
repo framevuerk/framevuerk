@@ -1,15 +1,15 @@
 import locale from 'locale'
 import template from './template.pug'
-
 export default {
   props: {
     value: {
-      default: null
-    },
-    extension: {
-      default: 'jpg,png,gif'
+      default: undefined
     },
     required: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     },
@@ -17,43 +17,52 @@ export default {
       type: Boolean,
       default: false
     },
+    buttonClass: {
+      default: ''
+    },
+    defaultText: {
+      default: locale.browse()
+    },
     type: {
       type: String,
-      enum: ['blob', 'file'],
-      default: 'blob' // or file
+      validator: (value) => {
+        return ['blob', 'file'].indexOf(value) > -1
+      },
+      default: 'blob'
     }
   },
-  data () {
-    return {
-      invalid: false,
-      focus: false,
-      displayValue: '',
-      selected: false
-    }
-  },
-  watch: {
-    value () {
-      this.checkInvalid()
-      this.valueChanges()
-    }
-  },
-  created () {
-    this.valueChanges()
-  },
-  methods: {
-    checkInvalid () {
-      if (this.required) {
-        const filesCount = this.$refs.fileinput.files.length
-        this.invalid = !(filesCount > 0)
+  computed: {
+    selected () {
+      return !!this.value
+    },
+    displayValue () {
+      if (!this.selected) {
+        return this.defaultText
+      } else {
+        const count = this.value.constructor === Array ? this.value.length : 1
+        if (count === 1 && this.value.name) {
+          return this.value.name
+        }
+        return locale.nFileSelected(count)
       }
     },
+    fvValidate () {
+      if (this.required) {
+        return this.selected
+      }
+      return true
+    }
+  },
+  methods: {
     choose () {
-      this.$refs.fileinput.click()
+      if (event.detail) {
+        this.$refs.input.click()
+      }
     },
-    pFocus () {
-      this.$refs.btnEl.$el.focus()
+    focus () {
+      this.$refs.button.$el.focus()
     },
-    pick () { // here, should fire when input type file changed by user
+    pick () {
       const loadAsBlob = (file) => {
         return new Promise((resolve, reject) => {
           const reader = new FileReader()
@@ -62,7 +71,6 @@ export default {
               type: file.type,
               endings: 'native'
             }))
-            this.$emit('change')
           })
           reader.addEventListener('error', reject)
           reader.readAsArrayBuffer(file)
@@ -70,51 +78,25 @@ export default {
       }
       let value = []
       let j = 0
-      const filesCount = this.$refs.fileinput.files.length
+      const filesCount = this.$refs.input.files.length
       if (filesCount === 0) {
         this.$emit('input', this.multiple ? [] : null)
       } else {
         switch (this.type) {
         case 'blob':
           for (let i = 0; i < filesCount; i++) {
-            loadAsBlob(this.$refs.fileinput.files[i]).then((result) => {
+            loadAsBlob(this.$refs.input.files[i]).then((result) => {
               value.push(result)
-              j++
-              if (j === filesCount) {
+              if (++j === filesCount) {
                 this.$emit('input', this.multiple ? value : value[0])
               }
             })
           }
           break
         case 'file':
-          this.$emit('input', this.multiple ? this.$refs.fileinput.files : this.$refs.fileinput.files[0])
+          this.$emit('input', this.multiple ? this.$refs.input.files : this.$refs.input.files[0])
           break
         }
-      }
-    },
-    valueChanges () {
-      if (this.value == null) {
-        this.displayValue = locale.browse()
-        this.selected = false
-        return
-      }
-      const filesCount = this.$refs.fileinput.files.length
-      this.selected = true
-      switch (this.type) {
-      case 'blob':
-        if (this.multiple) {
-          this.displayValue = locale.nFileSelected(filesCount)
-        } else {
-          this.displayValue = locale.nFileSelected(1)
-        }
-        break
-      case 'file':
-        if (this.multiple) {
-          this.displayValue = locale.nFileSelected(filesCount)
-        } else {
-          this.displayValue = this.value.name
-        }
-        break
       }
     }
   },
