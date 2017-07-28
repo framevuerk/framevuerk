@@ -14,13 +14,14 @@ import fvFooter from './pages/component_fvFooter'
 import fvContent from './pages/component_fvContent'
 import fvDialog from './pages/component_fvDialog'
 import fvMenu from './pages/component_fvMenu'
-import fvForm from './pages/component_fvForm'
 import fvInput from './pages/component_fvInput'
 import fvTextarea from './pages/component_fvTextarea'
 import fvSelect from './pages/component_fvSelect'
 import fvDatepicker from './pages/component_fvDatepicker'
 import fvSwitch from './pages/component_fvSwitch'
 import fvCheck from './pages/component_fvCheck'
+import fvFilepicker from './pages/component_fvFilepicker'
+import fvForm from './pages/component_fvForm'
 
 framevuerk.use(moment)
 Vue.use(VueRouter)
@@ -65,11 +66,6 @@ const router = new VueRouter({
       component: fvMenu
     },
     {
-      name: 'fvForm',
-      path: '/components/fvForm',
-      component: fvForm
-    },
-    {
       name: 'fvInput',
       path: '/components/fvInput',
       component: fvInput
@@ -98,6 +94,16 @@ const router = new VueRouter({
       name: 'fvCheck',
       path: '/components/fvCheck',
       component: fvCheck
+    },
+    {
+      name: 'fvFilepicker',
+      path: '/components/fvFilepicker',
+      component: fvFilepicker
+    },
+    {
+      name: 'fvForm',
+      path: '/components/fvForm',
+      component: fvForm
     },
     {
       name: 'notfound',

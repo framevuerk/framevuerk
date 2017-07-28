@@ -28,13 +28,14 @@ export default {
       }, {
         text: 'Form',
         items: [
-          this.sidebarItem('fvForm'),
           this.sidebarItem('fvInput'),
           this.sidebarItem('fvTextarea'),
           this.sidebarItem('fvSelect'),
           this.sidebarItem('fvDatepicker'),
           this.sidebarItem('fvSwitch'),
-          this.sidebarItem('fvCheck')
+          this.sidebarItem('fvCheck'),
+          this.sidebarItem('fvFilepicker'),
+          this.sidebarItem('fvForm')
         ]
       }]
     },
@@ -66,7 +67,7 @@ export default {
       if (!this.$refs.sidebar.pPin) {
         this.$refs.sidebar.close()
       }
-      if( this.$route.name==='notfound' ){
+      if (this.$route.name === 'notfound') {
         this.$router.push(`/components/fvMain`)
       }
     }
