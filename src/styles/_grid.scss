@@ -13,8 +13,7 @@ $width-1: 8.33333333333333333333333%;
 }
 
 [class*='fv-col'] {
-  display: block;
-  float: $block-start;
+  display: inline-block;
   padding: #{$padding / 2};
   width: 100%;
 }
