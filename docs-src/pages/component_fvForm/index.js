@@ -16,48 +16,40 @@ export default {
       inputs: {
         d1: '',
         d2: '',
-        d3: {
+        d3: '',
+        d4: {
           value: '',
           displayValud: ''
         },
-        d4: '',
-        d5: ''
+        d5: '',
+        d6: "salam\nkhubi?",
+        d7: '',
+        d8: '',
+        d9: '',
+        d10: '',
+        d11: '',
       },
       api: {
-        prop: [
+        prop: [],
+        event: [
           {
-            name: 'value || v-model (required)',
-            type: '',
-            default: 'undefined',
-            description: 'Value of input'
+            name: 'submit',
+            params: '---',
+            description: 'Fired when form submitted'
           },
           {
-            name: 'multiple',
-            type: 'Boolean',
-            default: 'false',
-            description: 'Allow user to select multiple options'
-          },
-          {
-            name: 'required',
-            type: 'Boolean',
-            default: 'false',
-            description: 'Should user select atleast one option?'
-          },
-          {
-            name: 'disabled',
-            type: 'Boolean',
-            default: 'false',
-            description: 'Disable all options'
-          },
-          {
-            name: 'options',
-            type: 'Array',
-            default: '[]',
-            description: 'List of options.<br>Each item in array, is object that can have<br>text:String, value:String and disabled:Boolean prop.'
+            name: 'reject',
+            params: '(first-invalid-child)',
+            description: 'Fired when form submitted, but rejected!'
           }
         ],
-        event: [],
-        method: []
+        method: [
+          {
+            name: 'submit',
+            params: '---',
+            description: 'Submit form.'
+          }
+        ]
       }
     }
   },
