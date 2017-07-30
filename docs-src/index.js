@@ -1,3 +1,4 @@
+import GoogleAnalytics from './google-analytics.js'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import framevuerk from 'framevuerk'
@@ -123,5 +124,19 @@ export default new Vue({
     }
   },
   router,
+  methods: {
+    routeChange(path){
+      const url = `doc.html#${path}`;
+      global.ga('send', 'pageview', url);
+    }
+  },
+  created(){
+    this.routeChange(this.$route.path);
+  },
+  watch: {
+    '$route.path'(path){
+      this.routeChange(path);
+    }
+  },
   render: h => h(main)
 }).$mount('#app')
