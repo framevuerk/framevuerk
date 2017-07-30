@@ -16,29 +16,32 @@ export default {
           child.$el.focus()
         }
       }
-      function handleChilds (parent) {
-        let succeed = 0
-        parent.$children.every(child => {
-          if (fvValidate(child)) {
-            succeed++
-          } else {
-            focus(child)
-            return false
-          }
-          if (parent.$children.length) {
-            return handleChilds(child)
+      function getChilds (parent) {
+        let ret = [];
+        parent.$children.forEach(child => {
+          ret.push(child);
+          if (child.$children.length) {
+            ret = ret.concat( getChilds(child) );
           }
         })
-
-        if (succeed === parent.$children.length) {
-          return true
-        }
-        return false
+        return ret;
       }
-      if (handleChilds(this)) {
+
+      const childs = getChilds(this);
+      let firstInvalidChild;
+      childs.every(child => {
+        if (fvValidate(child)) {
+          return true;
+        } else {
+          focus(child)
+          firstInvalidChild = child;
+          return false
+        }
+      })
+      if (!firstInvalidChild) {
         this.$emit('submit')
       } else {
-        this.$emit('reject')
+        this.$emit('reject', firstInvalidChild)
       }
     }
   },
