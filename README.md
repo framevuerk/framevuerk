@@ -4,7 +4,7 @@
 
 Framevuerk is designed to be a lightweight and both rtl and ltr support [Vue.js](http://vuejs.org) UI framework with a simple API.
 
-[Documention and Demo](http://nainemom.github.io/framevuerk)
+[Documention and Demo](http://framevuerk.com)
 
 
 ## Installation
@@ -61,7 +61,7 @@ Example:
             <fv-button>Hello world!</fv-button>
         </div>
         <script src="path/to/vue.js"></script>
-        <script src="path/to/framevuerk.js"></script>
+        <script src="path/to/framevuerk-en.js"></script>
         <script>
             Vue.use(framevuerk);
             new Vue({
