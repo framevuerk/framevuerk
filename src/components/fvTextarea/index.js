@@ -31,6 +31,9 @@ export default {
       return true
     }
   },
+  mounted(){
+    this.setHeight(this.value);
+  },
   methods: {
     setHeight (val) {
       if (this.autoHeight) {
@@ -42,6 +45,11 @@ export default {
         }
         this.$el.style.height = `${height * 3}em`
       }
+    }
+  },
+  watch: {
+    value(val){
+      this.setHeight(val);
     }
   },
   style,

@@ -1,3 +1,3 @@
-textarea.fv-textarea.fv-input(:class="{'auto-height': autoHeight}",
+textarea.fv-textarea.fv-input(:class="{'auto-height': autoHeight, invalid: !fvValidate}",
   :value="value",
-  @input="$emit('input', $event.target.value); setHeight($event.target.value)")
+  @input="$emit('input', $event.target.value)")
