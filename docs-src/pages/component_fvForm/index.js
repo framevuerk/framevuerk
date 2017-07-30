@@ -22,12 +22,12 @@ export default {
           displayValud: ''
         },
         d5: '',
-        d6: "salam\nkhubi?",
+        d6: 'salam\nkhubi?',
         d7: '',
         d8: '',
         d9: '',
         d10: '',
-        d11: '',
+        d11: ''
       },
       api: {
         prop: [],

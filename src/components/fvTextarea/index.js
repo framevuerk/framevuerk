@@ -31,8 +31,8 @@ export default {
       return true
     }
   },
-  mounted(){
-    this.setHeight(this.value);
+  mounted () {
+    this.setHeight(this.value)
   },
   methods: {
     setHeight (val) {
@@ -48,8 +48,8 @@ export default {
     }
   },
   watch: {
-    value(val){
-      this.setHeight(val);
+    value (val) {
+      this.setHeight(val)
     }
   },
   style,

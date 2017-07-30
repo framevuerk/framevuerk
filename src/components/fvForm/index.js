@@ -17,24 +17,24 @@ export default {
         }
       }
       function getChilds (parent) {
-        let ret = [];
+        let ret = []
         parent.$children.forEach(child => {
-          ret.push(child);
+          ret.push(child)
           if (child.$children.length) {
-            ret = ret.concat( getChilds(child) );
+            ret = ret.concat(getChilds(child))
           }
         })
-        return ret;
+        return ret
       }
 
-      const childs = getChilds(this);
-      let firstInvalidChild;
+      const childs = getChilds(this)
+      let firstInvalidChild
       childs.every(child => {
         if (fvValidate(child)) {
-          return true;
+          return true
         } else {
           focus(child)
-          firstInvalidChild = child;
+          firstInvalidChild = child
           return false
         }
       })
