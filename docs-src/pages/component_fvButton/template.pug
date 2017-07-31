@@ -1,0 +1,72 @@
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | To create button in your application, use this!
+    doc-code
+      = "<fv-button></fv-button>"
+    doc-example
+      .fv-row
+        .fv-col-xs-12 
+          h4 Themes:
+        .fv-col-sm-4
+          fv-button.fv-block
+            i.fa.fa-check
+            |  Default
+        .fv-col-sm-4
+          fv-button.fv-primary.fv-block
+            i.fa.fa-check
+            |  Primary
+        .fv-col-sm-4
+          fv-button.fv-danger.fv-block
+            i.fa.fa-check
+            |  Danger
+        .fv-col-sm-4
+          fv-button.fv-warning.fv-block
+            i.fa.fa-check
+            |  Warning
+        .fv-col-sm-4
+          fv-button.fv-info.fv-block
+            i.fa.fa-check
+            |  Info
+      .fv-row
+        hr
+        .fv-col-xs-12 
+          h4 Sizes:
+        .fv-col-sm-4
+          fv-button.fv-xl.fv-block
+            i.fa.fa-check
+            |  XL
+        .fv-col-sm-4
+          fv-button.fv-lg.fv-block
+            i.fa.fa-check
+            |  LG
+        .fv-col-sm-4
+          fv-button.fv-md.fv-block
+            i.fa.fa-check
+            |  MD
+        .fv-col-sm-4
+          fv-button.fv-sm.fv-block
+            i.fa.fa-check
+            |  SM
+        .fv-col-sm-4
+          fv-button.fv-xs.fv-block
+            i.fa.fa-check
+            |  XS
+      .fv-row
+        .fv-col-xs-12 
+          h4 States:
+        .fv-col-sm-6
+          p Focus
+          fv-button.focus.fv-block Focus
+        .fv-col-sm-6
+          p Invalid
+          fv-button.focus.invalid.fv-block Invalid
+        .fv-col-sm-6
+          p Disabled
+          fv-button.fv-block(disabled) Disabled
+        .fv-col-sm-6
+          p Loading
+          fv-button.fv-block(loading)
+        .fv-row
+          hr
+    doc-api(:rows="api")

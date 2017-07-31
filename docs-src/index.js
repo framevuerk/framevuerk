@@ -1,4 +1,4 @@
-import GoogleAnalytics from './google-analytics.js'
+import './google-analytics.js.none'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import framevuerk from 'framevuerk'
@@ -18,6 +18,7 @@ import fvFooter from './pages/component_fvFooter'
 import fvContent from './pages/component_fvContent'
 import fvDialog from './pages/component_fvDialog'
 import fvMenu from './pages/component_fvMenu'
+import fvButton from './pages/component_fvButton'
 import fvInput from './pages/component_fvInput'
 import fvTextarea from './pages/component_fvTextarea'
 import fvSelect from './pages/component_fvSelect'
@@ -68,6 +69,11 @@ const router = new VueRouter({
       name: 'fvMenu',
       path: '/components/fvMenu',
       component: fvMenu
+    },
+    {
+      name: 'fvButton',
+      path: '/components/fvButton',
+      component: fvButton
     },
     {
       name: 'fvInput',
@@ -125,17 +131,17 @@ export default new Vue({
   },
   router,
   methods: {
-    routeChange(path){
-      const url = `doc.html#${path}`;
-      global.ga('send', 'pageview', url);
+    routeChange (path) {
+      const url = `doc.html#${path}`
+      global.ga('send', 'pageview', url)
     }
   },
-  created(){
-    this.routeChange(this.$route.path);
+  created () {
+    this.routeChange(this.$route.path)
   },
   watch: {
-    '$route.path'(path){
-      this.routeChange(path);
+    '$route.path' (path) {
+      this.routeChange(path)
     }
   },
   render: h => h(main)

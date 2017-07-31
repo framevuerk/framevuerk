@@ -28,6 +28,7 @@ export default {
       }, {
         text: 'Form',
         items: [
+          this.sidebarItem('fvButton'),
           this.sidebarItem('fvInput'),
           this.sidebarItem('fvTextarea'),
           this.sidebarItem('fvSelect'),
