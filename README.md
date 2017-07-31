@@ -9,7 +9,7 @@ Framevuerk is designed to be a lightweight and both rtl and ltr support [Vue.js]
 
 ## Installation
 
-`Please do not use this before 1.x.x version for production! It's still under development!`
+`Please do not use this before 1.x.x version for production! It is still under development!`
 
 ## Installation
 
