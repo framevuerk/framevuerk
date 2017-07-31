@@ -16,8 +16,8 @@
   & span {
     @include nowrap;
   }
-  &:focus,
-  &.focus {
+  &:focus:not(.loading),
+  &.focus:not(.loading) {
     @include outline($theme-color);
     &:invalid,
     &.invalid {
@@ -109,8 +109,8 @@
       @include yiq($success-color-dark);
     }
   }
-  &:active,
-  &.active {
+  &:active:not(.loading),
+  &.active:not(.loading) {
     box-shadow: inset 0 1em 1em $shadow-color-light;
   }
 }

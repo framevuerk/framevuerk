@@ -1,2 +1,3 @@
-button.fv-button
-  slot
+button.fv-button(:class="{'loading': loading}")
+  slot(v-if="!loading")
+  i.fa.fa-spin.fa-circle-o-notch(v-else)
