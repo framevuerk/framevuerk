@@ -27,6 +27,7 @@ import fvSwitch from './pages/component_fvSwitch'
 import fvCheck from './pages/component_fvCheck'
 import fvFilepicker from './pages/component_fvFilepicker'
 import fvForm from './pages/component_fvForm'
+import fvTable from './pages/component_fvTable'
 
 framevuerk.use(moment)
 Vue.use(VueRouter)
@@ -114,6 +115,11 @@ const router = new VueRouter({
       name: 'fvForm',
       path: '/components/fvForm',
       component: fvForm
+    },
+    {
+      name: 'fvTable',
+      path: '/components/fvTable',
+      component: fvTable
     },
     {
       name: 'notfound',

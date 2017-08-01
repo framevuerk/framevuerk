@@ -38,6 +38,11 @@ export default {
           this.sidebarItem('fvFilepicker'),
           this.sidebarItem('fvForm')
         ]
+      }, {
+        text: 'Other',
+        items: [
+          this.sidebarItem('fvTable')
+        ]
       }]
     },
     sidebarTabs () {
