@@ -16,10 +16,13 @@ fv-content
           .fv-pull-left I can also show like a sheet.
           .fv-pull-right
             a.fv-link(@click="$refs.d3.close()", tabindex="0") OK
+      fv-dialog(ref="d4", position="fill", :buttons="[{class: 'fv-ok',icon: 'fa fa-check',text: 'OK'}]", content="This is fill dialog.", title="Fill")
       fv-content.fv-row
         fv-button.fv-block.fv-warning(@click.native="$refs.d1.open()") Simple
         br
         fv-button.fv-block.fv-primary(@click.native="$refs.d2.open()") Modal, Without built-in Buttons
         br
         fv-button.fv-block.fv-danger(@click.native="$refs.d3.open()") Modified Style at Bottom
+        br
+        fv-button.fv-block(@click.native="$refs.d4.open()") Fill
     doc-api(:rows="api")
