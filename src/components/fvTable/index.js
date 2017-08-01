@@ -29,23 +29,24 @@ export default {
       type: Boolean,
       default: true
     },
-    paginate: {
-      type: Boolean,
-      default: true
-    },
     apiRowsKey: {
+      type: [String, Object],
       default: null
     },
-    apiNextPageKey: {
-      default: null
-    },
-    apiPreviousPageKey: {
+    apiTotalCountKey: {
+      type: [String, Object],
       default: null
     },
     apiFinishedKey: {
+      type: [String, Object],
       default: null // also you can use '!' at start of this string to reverse value in api response
     },
-    apiTotalCountKey: {
+    apiNextPageKey: {
+      type: [String, Object],
+      default: null
+    },
+    apiPreviousPageKey: {
+      type: [String, Object],
       default: null
     },
     clickableRows: {
@@ -88,6 +89,7 @@ export default {
         ret.push({
           value: field.value || field,
           text: field.text || (field.value ? utility.capitalizeFirstLetter(field.value) : null) || utility.capitalizeFirstLetter(field),
+          icon: field.icon || '',
           class: field.class || '',
           formatter: field.formatter || (x => x)
         })
@@ -126,7 +128,7 @@ export default {
       return this.api.replace('{page}', this.page).replace('{limit}', this.limit)
     },
     totalPages () {
-      if (this.local || !this.paginate) {
+      if (this.local || !this.footer) {
         return 1
       } else if (!this.apiResponse || this.apiResponse.status < 200 || this.apiResponse > 299 || this.apiFinishedKey !== null) {
         return false
@@ -142,7 +144,7 @@ export default {
       }
     },
     nextPage () {
-      if (!this.paginate || !this.apiResponse || !this.apiRowsKey) {
+      if (this.local || !this.apiResponse || !this.apiRowsKey) {
         return false
       } else { // { rows: [...], total: 50 }
         let page = this.page
@@ -186,7 +188,7 @@ export default {
       }
     },
     previousPage () {
-      if (!this.paginate || !this.apiResponse || !this.apiRowsKey) {
+      if (this.local || !this.apiResponse || !this.apiRowsKey) {
         return false
       } else { // { rows: [...], total: 50 } or { rows: [...], is_lastpage: false }
         let page = this.page

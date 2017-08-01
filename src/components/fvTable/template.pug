@@ -3,8 +3,10 @@
     thead
       tr
         th(v-for="field in pFields",
-          :class="field.class",
-          v-html="field.text")
+          :class="field.class")
+          i(v-if="field.icon", :class="field.icon")
+          |  
+          span(v-html="field.text")
     tbody
       tr(v-for="(row, index) in pRows",
         :class="{'fv-clickable': clickableRows}",

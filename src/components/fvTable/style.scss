@@ -32,7 +32,7 @@
     & > thead > tr > th,
     & > tbody > tr > td,
     & > tfoot > tr > td {
-      padding: $padding-small $padding;
+      padding: $padding-small;
       text-align: center;
       vertical-align: middle;
     }
@@ -57,6 +57,7 @@
     }
     & > thead > tr > th,
     & > tfoot > tr > td {
+      @include nowrap;
       @include yiq($bg-color-dark);
     }
 
