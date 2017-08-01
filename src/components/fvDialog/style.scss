@@ -40,10 +40,10 @@
 @mixin fv-dialog-fill($part) {
   @if($part == 'style') {
     border-radius: 0;
-    height: 100%;
-    left: 0;
-    top: 0;
-    width: 100%;
+    height: 90%;
+    left: 5%;
+    top: 5%;
+    width: 90%;
   } @else if($part == 'animation-enter') {
     opacity: 1;
     transform: translate3d(0, 0, 20002px);
