@@ -10,6 +10,8 @@
   @if($part == 'style') {
     border-radius: $border-radius;
     left: 50%;
+    max-height: 90%;
+    max-width: 90%;
     top: 50%;
     transform: translate3d(-50%, -50%, 20002px);
   } @else if ($part == 'animation-enter') {
@@ -26,6 +28,7 @@
   @if($part == 'style') {
     bottom: 0;
     left: 0;
+    max-height: 90%;
     max-width: 100%;
     top: auto;
     width: 100%;
@@ -40,10 +43,12 @@
 @mixin fv-dialog-fill($part) {
   @if($part == 'style') {
     border-radius: 0;
-    height: 90%;
-    left: 5%;
-    top: 5%;
-    width: 90%;
+    height: 100%;
+    left: 0;
+    max-height: 100%;
+    max-width: 100%;
+    top: 0;
+    width: 100%;
   } @else if($part == 'animation-enter') {
     opacity: 1;
     transform: translate3d(0, 0, 20002px);
@@ -59,14 +64,6 @@
 
 .fv-dialog {
   @include yiq($bg-color);
-  @include respond-to(only-xs) {
-    max-height: 100%;
-    max-width: 100%;
-  }
-  @include respond-to(sm) {
-    max-height: 90%;
-    max-width: 90%;
-  }
   box-shadow: 0 5px 15px $shadow-color;
   height: auto;
   min-width: 300px;
