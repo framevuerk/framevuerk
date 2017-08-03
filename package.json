@@ -70,7 +70,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nainemom/framevuerk.git"
+    "url": "git+https://github.com/framevuerk/framevuerk.git"
   },
   "keywords": [
     "vue",
@@ -82,7 +82,7 @@
   "author": "nainemom <nainemom@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nainemom/framevuerk/issues"
+    "url": "https://github.com/framevuerk/framevuerk/issues"
   },
-  "homepage": "https://github.com/nainemom/framevuerk#readme"
+  "homepage": "https://github.com/framevuerk/framevuerk#readme"
 }
