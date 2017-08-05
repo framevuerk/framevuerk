@@ -3,7 +3,7 @@ var fs = require('fs')
 var pkg = require(path.resolve(__dirname, '../package.json'))
 var webpack = require('webpack')
 
-var ENV = process.env.NODE_ENV || 'production'
+process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
 var generateConfig = (LOCALE, THEME_COLOR) => {
   let DIRECTION
@@ -14,33 +14,22 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
   default:
     DIRECTION = 'ltr'
   }
-  const CONFIG = {
-    ENV,
-    LOCALE,
-    DIRECTION,
-    THEME_COLOR
-  }
 
-  const fileName = pkg.name + '-' + CONFIG.LOCALE
+  const fileName = pkg.name + '-' + LOCALE
 
   const plugins = [
     new webpack.DefinePlugin({
-      'CONFIG': JSON.stringify(CONFIG),
-      'PKG_NAME': JSON.stringify(pkg.name),
-      'PKG_VERSION': JSON.stringify(pkg.version),
+      'PKG_NAME': '"'+pkg.name+'"',
+      'PKG_VERSION': '"'+pkg.version+'"',
       'process.env': {
-        NODE_ENV: '"production"'
+        NODE_ENV: '"'+process.env.NODE_ENV+'"',
+        LOCALE: '"'+LOCALE+ '"',
+        DIRECTION: '"'+DIRECTION+ '"',
+        THEME_COLOR: '"'+THEME_COLOR+ '"'
       }
-    }),
-    new webpack.BannerPlugin(
-      pkg.name + ' ' + pkg.version + '\n' +
-        pkg.description + '\n' +
-        'Author: ' + pkg.author + '\n' +
-        'Homepage: ' + pkg.homepage + '\n' +
-        'CONFIG: ' + JSON.stringify(CONFIG) + '\n'
-    )
+    })
   ]
-  if (ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     plugins.push(new webpack.optimize.UglifyJsPlugin({
       minimize: true,
       compress: {
@@ -59,7 +48,7 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
     },
     resolve: {
       alias: {
-        locale: path.resolve(__dirname, `../src/locale/${CONFIG.LOCALE}.js`)
+        locale: path.resolve(__dirname, `../src/locale/${LOCALE}.js`)
       }
     },
     module: {
@@ -86,7 +75,7 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
             {
               loader: 'css-loader',
               options: {
-                minimize: CONFIG.ENV === 'production'
+                minimize: process.env.NODE_ENV === 'production'
               }
             },
             {
@@ -103,10 +92,10 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
               loader: 'sass-loader',
               options: {
                 data: '' +
-                  '$env:' + CONFIG.ENV + ';' +
-                  '$direction:' + CONFIG.DIRECTION + ';' +
-                  '$theme-color:' + CONFIG.THEME_COLOR + ';' +
-                  '$locale:' + CONFIG.LOCALE + ';'
+                  '$env:' + process.env.NODE_ENV + ';' +
+                  '$direction:' + DIRECTION + ';' +
+                  '$theme-color:' + THEME_COLOR + ';' +
+                  '$locale:' + LOCALE + ';'
               }
             }
           ]

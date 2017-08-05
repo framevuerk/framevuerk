@@ -2,20 +2,16 @@ var path = require('path')
 var pkg = require(path.resolve(__dirname, '../package.json'))
 var webpack = require('webpack')
 
-var ENV = process.env.NODE_ENV || 'production'
+process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
-var generateConfig = (LOCALE, THEME_COLOR) => {
+var generateConfig = () => {
   const fileName = 'app'
-  const CONFIG = {
-    ENV
-  }
   const plugins = [
     new webpack.DefinePlugin({
-      'CONFIG': JSON.stringify(CONFIG),
-      'PKG_NAME': JSON.stringify(pkg.name),
-      'PKG_VERSION': JSON.stringify(pkg.version),
+      'PKG_NAME': '"'+pkg.name+'"',
+      'PKG_VERSION': '"'+pkg.version+'"',
       'process.env': {
-        NODE_ENV: '"production"'
+        NODE_ENV: '"'+process.env.NODE_ENV+'"'
       }
     })
   ]
@@ -65,7 +61,7 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
             {
               loader: 'css-loader',
               options: {
-                minimize: CONFIG.ENV === 'production'
+                minimize: process.env.NODE_ENV === 'production'
               }
             },
             {
@@ -81,7 +77,7 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
             {
               loader: 'sass-loader',
               options: {
-                data: '$env:' + CONFIG.ENV + ';'
+                data: '$env:' + process.env.NODE_ENV + ';'
               }
             }
           ]
