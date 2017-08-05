@@ -131,7 +131,7 @@ export default new Vue({
   data () {
     return {
       mainClass: ['fv-col-lg-10', 'fv-col-offset-lg-1', 'fv-col-xl-8', 'fv-col-offset-xl-2'],
-      githubRepo: 'https://github.com/nainemom/framevuerk',
+      githubRepo: 'https://github.com/framevuerk/framevuerk',
       npmRepo: 'https://www.npmjs.com/package/framevuerk'
     }
   },
