@@ -1,7 +1,7 @@
 // import { name, version } from '../package.json'
 import './style.scss'
 import utility from './utility'
-/* global process.env, PKG_NAME, PKG_VERSION */
+/* global PKG_NAME, PKG_VERSION */
 
 // Components
 import fvMain from './components/fvMain'

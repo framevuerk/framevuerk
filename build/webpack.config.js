@@ -19,13 +19,13 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
 
   const plugins = [
     new webpack.DefinePlugin({
-      'PKG_NAME': '"'+pkg.name+'"',
-      'PKG_VERSION': '"'+pkg.version+'"',
+      'PKG_NAME': '"' + pkg.name + '"',
+      'PKG_VERSION': '"' + pkg.version + '"',
       'process.env': {
-        NODE_ENV: '"'+process.env.NODE_ENV+'"',
-        LOCALE: '"'+LOCALE+ '"',
-        DIRECTION: '"'+DIRECTION+ '"',
-        THEME_COLOR: '"'+THEME_COLOR+ '"'
+        NODE_ENV: '"' + process.env.NODE_ENV + '"',
+        LOCALE: '"' + LOCALE + '"',
+        DIRECTION: '"' + DIRECTION + '"',
+        THEME_COLOR: '"' + THEME_COLOR + '"'
       }
     })
   ]

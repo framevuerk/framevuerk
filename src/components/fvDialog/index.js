@@ -68,6 +68,7 @@ export default {
       this[this.pShow ? 'close' : 'open']()
     },
     open (param = null) {
+      document.body.appendChild( this.$el );
       this.pShow = true
       this.param = param
       this.focusBackElem = document.querySelector(':focus')

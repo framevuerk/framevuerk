@@ -1,7 +1,7 @@
 import utility from '../../utility'
 import locale from 'locale'
 import template from './template.pug'
-/* global process.env */
+/* global process */
 
 export default {
   props: {

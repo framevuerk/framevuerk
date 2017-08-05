@@ -2,7 +2,7 @@ import locale from 'locale'
 import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
-/* global process.env */
+/* global process */
 
 export default {
   props: {
