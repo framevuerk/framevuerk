@@ -1,6 +1,7 @@
 import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
+/* global document */
 
 export default {
   props: {
@@ -68,7 +69,7 @@ export default {
       this[this.pShow ? 'close' : 'open']()
     },
     open (param = null) {
-      document.body.appendChild( this.$el );
+      document.body.appendChild(this.$el)
       this.pShow = true
       this.param = param
       this.focusBackElem = document.querySelector(':focus')
