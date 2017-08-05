@@ -1,6 +1,6 @@
 import template from './template.pug'
 import style from './style.scss'
-/* global CONFIG */
+/* global process.env */
 
 export default {
   props: {
@@ -13,7 +13,7 @@ export default {
       validator: (value) => {
         return ['right', 'left'].indexOf(value) > -1
       },
-      default: CONFIG.DIRECTION === 'ltr' ? 'left' : 'right'
+      default: process.env.DIRECTION === 'ltr' ? 'left' : 'right'
     },
     pin: {
       type: [Object, Boolean],

@@ -2,7 +2,7 @@ import template from './template.pug'
 import style from './style.scss'
 import utility from '../../utility'
 import locale from 'locale'
-/* global CONFIG */
+/* global process.env */
 
 export default {
   props: {
@@ -70,14 +70,14 @@ export default {
   },
   computed: {
     nextPageBtnContent () {
-      if (CONFIG.DIRECTION === 'rtl') {
+      if (process.env.DIRECTION === 'rtl') {
         return `${locale.nextPage()} <i class="fa fa-arrow-left"></i>`
       } else {
         return `${locale.nextPage()} <i class="fa fa-arrow-right"></i>`
       }
     },
     prevPageBtnContent () {
-      if (CONFIG.DIRECTION === 'rtl') {
+      if (process.env.DIRECTION === 'rtl') {
         return `<i class="fa fa-arrow-right"></i> ${locale.prevPage()}`
       } else {
         return `<i class="fa fa-arrow-left"></i> ${locale.prevPage()}`

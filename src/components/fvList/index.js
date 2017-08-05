@@ -2,7 +2,7 @@ import locale from 'locale'
 import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
-/* global CONFIG */
+/* global process.env */
 
 export default {
   props: {
@@ -79,12 +79,12 @@ export default {
         this.highlightedOption = this.highlightedOption == null ? -1 : this.highlightedOption
         this.highlightedOption = this.highlightedOption + 1 >= this.pItems.length ? 0 : this.highlightedOption + 1
         break
-      case CONFIG.DIRECTION === 'ltr' ? 37 : 39: // 37: left, 39: right,
+      case process.env.DIRECTION === 'ltr' ? 37 : 39: // 37: left, 39: right,
         if (this.highlightedOption !== null) {
           this.$refs.pItems[this.highlightedOption].collapse()
         }
         break
-      case CONFIG.DIRECTION === 'ltr' ? 39 : 37: // 37: left, 39: right,
+      case process.env.DIRECTION === 'ltr' ? 39 : 37: // 37: left, 39: right,
         if (this.highlightedOption !== null) {
           this.$refs.pItems[this.highlightedOption].expand()
         }

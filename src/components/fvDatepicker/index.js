@@ -1,7 +1,7 @@
 import utility from '../../utility'
 import locale from 'locale'
 import template from './template.pug'
-/* global CONFIG */
+/* global process.env */
 
 export default {
   props: {
@@ -60,7 +60,7 @@ export default {
     this.moment = utility._dependencies.moment
     global.moment = utility._dependencies.moment
     if (this.moment) {
-      if (CONFIG.LOCALE === 'fa') {
+      if (process.env.LOCALE === 'fa') {
         this.moment.loadPersian()
       }
     } else {
