@@ -14,16 +14,14 @@
     "lint:fix": "npm run lint:js:fix && npm run lint:scss:fix && npm run lint:pug:fix",
     "test": "npm run lint",
     "clean:lib": "rimraf ./dist",
-    "build:lib": "npm run clean:lib && webpack --config ./build/webpack.config.js --hide-modules true --progress",
-    "build:lib:watch": "cross-env NODE_ENV=development webpack --config ./build/webpack.config.js --display minimal --watch",
+    "build:lib": "npm run clean:lib && webpack --config ./build/webpack.config.js",
     "clean:docs": "rimraf ./docs",
-    "build:docs": "npm run clean:docs && webpack --config ./build/webpack.config.docs.js --hide-modules true --progress",
-    "build:docs:watch": "cross-env NODE_ENV=development webpack --config ./build/webpack.config.docs.js --display minimal --watch",
+    "build:docs": "npm run clean:docs && webpack --config ./build/webpack.config.docs.js",
     "clean": "npm run clean:lib && npm run clean:docs",
     "build": "npm run build:lib && npm run build:docs",
-    "start": "lite-server",
     "publish-all": "./build/publish-all.sh",
-    "dev": "npm run build:lib:watch & npm run build:docs:watch & npm run start"
+    "dev": "webpack --env development --config ./build/webpack.config.js --display minimal --watch & webpack-dev-server --env development --inline --config ./build/webpack.config.docs.js",
+    "start": "npm run build && http-server ./docs"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -49,6 +47,7 @@
     "file-loader": "^0.10.1",
     "font-awesome": "^4.7.0",
     "html-loader": "^0.4.5",
+    "http-server": "^0.10.0",
     "lite-server": "^2.2.2",
     "moment": "^2.18.1",
     "moment-jalaali": "^0.7.0",
@@ -66,7 +65,8 @@
     "vue-router": "^2.7.0",
     "vue-template-compiler": "^2.3.4",
     "vue-template-compiler-loader": "^1.0.4",
-    "webpack": "^3.0.0"
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.6.1"
   },
   "repository": {
     "type": "git",
