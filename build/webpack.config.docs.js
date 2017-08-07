@@ -2,7 +2,7 @@ var path = require('path')
 var pkg = require(path.resolve(__dirname, '../package.json'))
 var webpack = require('webpack')
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'production'
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 var generateConfig = () => {
   const fileName = 'app'
