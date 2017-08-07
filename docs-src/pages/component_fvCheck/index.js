@@ -34,9 +34,9 @@ export default {
           },
           {
             name: 'required',
-            type: 'Boolean',
+            type: '[Boolean, Function]',
             default: 'false',
-            description: 'Should user select atleast one option?'
+            description: 'Should user select atleast one option? Also you can pass a function to check validity of value as you want.'
           },
           {
             name: 'disabled',

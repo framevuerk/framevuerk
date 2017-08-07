@@ -26,5 +26,8 @@ fv-content
         .fv-col-sm-6
           p Disabled:
           fv-select(v-model="inputs.d4", disabled, input-class="fv-block", placeholder="You can't select me!")
+        .fv-col-sm-6
+          p Advanced Required:
+          fv-select(v-model="inputs.d5", multiple, input-class="fv-block", placeholder="Select 3 items!", :required="function(){ return this.value.length === 3 }", :options=['Pato', 'Robinho', 'Ronaldinho', 'Ronaldo', 'Roberto Carlos'])
 
     doc-api(:rows="api")

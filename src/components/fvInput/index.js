@@ -10,7 +10,7 @@ export default {
       default: undefined
     },
     required: {
-      type: Boolean,
+      type: [Boolean, Function],
       default: false
     },
     disabled: {
@@ -34,12 +34,14 @@ export default {
   },
   computed: {
     fvValidate () {
-      if (this.required) {
+      if (this.required === true) {
         if (!this.value || (this.value.constructor === Array && this.value.length === 0)) {
           return false
         } else {
           return true
         }
+      } else if (typeof this.required === 'function') {
+        return this.required()
       }
       return true
     }

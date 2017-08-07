@@ -17,7 +17,8 @@ export default {
         d1: undefined,
         d2: undefined,
         d3: undefined,
-        d4: undefined
+        d4: undefined,
+        d5: []
       },
       api: {
         prop: [
@@ -41,9 +42,9 @@ export default {
           },
           {
             name: 'required',
-            type: 'Boolean',
+            type: '[Boolean, Function]',
             default: 'false',
-            description: 'Just like normal select required attribute'
+            description: 'Just like normal select required attribute. Also you can pass a function to check validity of value as you want.'
           },
           {
             name: 'disabled',

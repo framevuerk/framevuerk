@@ -15,7 +15,7 @@ export default {
       default: ''
     },
     required: {
-      type: Boolean,
+      type: [Boolean, Function],
       default: false
     },
     disabled: {

@@ -13,7 +13,7 @@ export default {
       default: false
     },
     required: {
-      type: Boolean,
+      type: [Boolean, Function],
       default: false
     },
     disabled: {
@@ -23,8 +23,10 @@ export default {
   },
   computed: {
     fvValidate () {
-      if (this.required) {
+      if (this.required === true) {
         return this.value === this.onValue
+      } else if (typeof this.required === 'function') {
+        return this.required()
       }
       return true
     }

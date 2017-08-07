@@ -14,7 +14,7 @@ export default {
       default: false
     },
     required: {
-      type: Boolean,
+      type: [Boolean, Function],
       default: false
     },
     disabled: {
@@ -40,12 +40,14 @@ export default {
       return ret
     },
     fvValidate () {
-      if (this.required) {
+      if (this.required === true) {
         if (this.multiple) {
           return this.value && this.value.constructor === Array && this.value.length
         } else {
           return !!this.value
         }
+      } else if (typeof this.required === 'function') {
+        return this.required()
       }
       return true
     }

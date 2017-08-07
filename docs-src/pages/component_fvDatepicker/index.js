@@ -42,9 +42,9 @@ export default {
           },
           {
             name: 'required',
-            type: 'Boolean',
+            type: '[Boolean, Function]',
             default: 'false',
-            description: 'Just like normal select required attribute'
+            description: 'Just like normal select required attribute. Also you can pass a function to check validity of value as you want.'
           },
           {
             name: 'disabled',

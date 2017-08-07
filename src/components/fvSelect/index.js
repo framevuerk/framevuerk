@@ -22,7 +22,7 @@ export default {
       default: false
     },
     required: {
-      type: Boolean,
+      type: [Boolean, Function],
       default: false
     },
     disabled: {

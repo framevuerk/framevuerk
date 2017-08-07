@@ -12,4 +12,7 @@ fv-content
         .fv-col-sm-12
           p Auto-height
           fv-textarea.fv-form-control(v-model="inputs.d2", auto-height, placeholder="Enter your message...")
+        .fv-col-sm-12
+          p Advanced Required
+          fv-textarea.fv-form-control(v-model="inputs.d3", auto-height, placeholder="Enter 3 line of stuff!", :required="function(){ return this.value.split('\\n').length === 3 }")
     doc-api(:rows="api")

@@ -6,7 +6,7 @@ export default {
       default: undefined
     },
     required: {
-      type: Boolean,
+      type: [Boolean, Function],
       default: false
     },
     disabled: {
@@ -47,8 +47,10 @@ export default {
       }
     },
     fvValidate () {
-      if (this.required) {
+      if (this.required === true) {
         return this.selected
+      } else if (typeof this.required === 'function') {
+        return this.required()
       }
       return true
     }
