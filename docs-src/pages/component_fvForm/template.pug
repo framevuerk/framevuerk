@@ -5,7 +5,7 @@ fv-content
     doc-code
       = "<fv-form></fv-form>"
     doc-example
-      fv-form.fv-row(@submit="console.log('s')", @reject="console.log('r')")
+      fv-form.fv-row
         .fv-col-sm-4
           fv-check(v-model="inputs.d1", :options="['A.C. Milan', 'Juventus', 'Inter Milan']", multiple, required)
         .fv-col-sm-4
