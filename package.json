@@ -14,13 +14,13 @@
     "lint:fix": "npm run lint:js:fix && npm run lint:scss:fix && npm run lint:pug:fix",
     "test": "npm run lint",
     "clean:lib": "rimraf ./dist",
-    "build:lib": "npm run clean:lib && webpack --config ./build/webpack.config.js",
+    "build:lib": "npm run clean:lib && cross-env NODE_ENV=production webpack --config ./build/webpack.config.js",
     "clean:docs": "rimraf ./docs",
-    "build:docs": "npm run clean:docs && webpack --config ./build/webpack.config.docs.js",
+    "build:docs": "npm run clean:docs && cross-env NODE_ENV=production webpack --config ./build/webpack.config.docs.js",
     "clean": "npm run clean:lib && npm run clean:docs",
     "build": "npm run build:lib && npm run build:docs",
     "publish-all": "./build/publish-all.sh",
-    "dev": "webpack --env development --config ./build/webpack.config.js --display minimal --watch & webpack-dev-server --env development --inline --config ./build/webpack.config.docs.js",
+    "dev": "webpack --config ./build/webpack.config.js --display minimal --watch & webpack-dev-server --inline --config ./build/webpack.config.docs.js",
     "start": "npm run build && http-server ./docs"
   },
   "devDependencies": {
