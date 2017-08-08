@@ -66,6 +66,9 @@ export default {
       this.pAnimation = true
     }, 300)
   },
+  beforeDestroy(){
+    this.bindEvents(false);
+  },
   methods: {
     open () {
       this.pShow = true
