@@ -16,18 +16,21 @@ export default {
           child.$el.focus()
         }
       }
-      function getChilds (parent) {
+      function getChilds (parent, force=false) {
         let ret = []
+        if( parent.$el.classList.contains('fv-form') && !force ){
+          return [];
+        }
         parent.$children.forEach(child => {
           ret.push(child)
           if (child.$children.length) {
-            ret = ret.concat(getChilds(child))
+            ret = ret.concat(getChilds(child, false))
           }
         })
         return ret
       }
 
-      const childs = getChilds(this)
+      const childs = getChilds(this, true)
       let firstInvalidChild
       childs.every(child => {
         if (fvValidate(child)) {
