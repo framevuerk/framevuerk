@@ -67,7 +67,7 @@ export default {
         el = el.parentElement
       }
     } while (el !== null)
-    this.parentMain = el;
+    this.parentMain = el
 
     this.pSetPosition()
     this.pSetWidth()
@@ -82,10 +82,10 @@ export default {
   },
   methods: {
     open () {
-      if( this.parentMain ){
-        //this.parentMain.appendChild(this.$el)
+      if (this.parentMain) {
+        this.parentMain.appendChild(this.$el)
       }
-      
+
       this.pShow = true
       this.pMainPadding()
       this.$emit('open')
