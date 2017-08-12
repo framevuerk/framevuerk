@@ -51,7 +51,7 @@ html > body {
   background: $shadow-color;
   height: 100%;
   left: 0;
-  position: fixed;
+  position: absolute;
   text-align: center;
   top: 0;
   transform: translateZ(10000px);
