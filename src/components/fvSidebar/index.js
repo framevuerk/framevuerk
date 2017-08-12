@@ -29,7 +29,8 @@ export default {
       pShow: false,
       pPosition: this.position,
       pWidth: 250,
-      pPin: false
+      pPin: false,
+      parentMain: null
     }
   },
   computed: {
@@ -58,6 +59,16 @@ export default {
     this.pAnimation = false
   },
   mounted () {
+    let el = this.$refs.sidebar
+    do {
+      if (el.classList.contains('fv-main')) {
+        break
+      } else {
+        el = el.parentElement
+      }
+    } while (el !== null)
+    this.parentMain = el;
+
     this.pSetPosition()
     this.pSetWidth()
     this.pSetPin()
@@ -71,6 +82,10 @@ export default {
   },
   methods: {
     open () {
+      if( this.parentMain ){
+        //this.parentMain.appendChild(this.$el)
+      }
+      
       this.pShow = true
       this.pMainPadding()
       this.$emit('open')
@@ -128,22 +143,14 @@ export default {
       }
     },
     pMainPadding () {
-      let el = this.$refs.sidebar
-      do {
-        if (el.classList.contains('fv-main')) {
-          break
-        } else {
-          el = el.parentElement
-        }
-      } while (el !== null)
-      if (el === null) {
+      if (this.parentMain === null) {
         return false
       }
       const paddingDir = `padding${(this.position === 'right' ? 'Right' : 'Left')}`
       if (this.pPin && this.pShow) {
-        el.style[paddingDir] = this.pWidth + 'px'
+        this.parentMain.style[paddingDir] = this.pWidth + 'px'
       } else {
-        el.style[paddingDir] = ''
+        this.parentMain.style[paddingDir] = ''
       }
       return true
     }
