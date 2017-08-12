@@ -134,6 +134,9 @@ export default {
     close () {
       this.$refs.dialog.close()
     },
+    focus () {
+      this.$refs.inputEl.$el.focus()
+    },
     pSet (unit, value) {
       const oldValue = parseInt(this.pValue.format(locale.momentDisplayFormat(unit)))
       const newValue = parseInt(value)

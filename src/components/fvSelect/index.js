@@ -131,6 +131,9 @@ export default {
       this.highlightedOption = null
       this.$refs.dialog.open()
     },
+    focus () {
+      this.$refs.inputEl.$el.focus()
+    },
     close () {
       this.$refs.dialog.close()
     },
