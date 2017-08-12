@@ -1,6 +1,6 @@
 span
   transition(name="fv-fade")
-    .fv-overlay.fv-sidebar-overlay(v-show="pShow && !pPin",
+    .fv-overlay(v-show="pShow && !pPin",
       @click="close()")
   transition(:name="animationName")
     aside.fv-sidebar(v-show="pShow",
