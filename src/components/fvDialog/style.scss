@@ -1,10 +1,6 @@
 @import '../../styles/variables';
 @import '../../styles/functions';
 @import '../../styles/mixins';
-.fv-dialog-overlay {
-  transform: translateZ(20000px);
-  z-index: 20000;
-}
 
 @mixin fv-dialog-center($part) {
   @if($part == 'style') {
@@ -71,7 +67,6 @@
   position: fixed;
   transform: translate3d(0, 0, 20002px);
   width: auto;
-  z-index: 20002;
   & > .fv-header {
     border: 0;
     box-shadow: none;

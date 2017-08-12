@@ -1,6 +1,6 @@
 span
   transition(name="fv-fade")
-    .fv-overlay.fv-dialog-overlay(v-show="pShow",
+    .fv-overlay(v-show="pShow",
       @click="closeIf()")
   transition(:name="animationName")
     fv-main.fv-dialog(:class="animationName",

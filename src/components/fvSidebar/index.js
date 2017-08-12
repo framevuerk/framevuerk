@@ -66,8 +66,8 @@ export default {
       this.pAnimation = true
     }, 300)
   },
-  beforeDestroy(){
-    this.bindEvents(false);
+  beforeDestroy () {
+    this.bindEvents(false)
   },
   methods: {
     open () {

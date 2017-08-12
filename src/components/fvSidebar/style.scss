@@ -1,6 +1,10 @@
 @import '../../styles/variables';
 @import '../../styles/functions';
 @import '../../styles/mixins';
+.fv-sidebar-overlay {
+  transform: translate3d(0, 0, 10000px);
+  z-index: 10000;
+}
 .fv-sidebar {
   @include yiq($sidebar-bg-color);
   height: 100%;

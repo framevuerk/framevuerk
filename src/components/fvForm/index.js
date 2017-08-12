@@ -16,10 +16,10 @@ export default {
           child.$el.focus()
         }
       }
-      function getChilds (parent, force=false) {
+      function getChilds (parent, force = false) {
         let ret = []
-        if( parent.$el.classList.contains('fv-form') && !force ){
-          return [];
+        if (parent.$el.classList.contains('fv-form') && !force) {
+          return []
         }
         parent.$children.forEach(child => {
           ret.push(child)
