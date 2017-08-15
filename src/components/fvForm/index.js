@@ -18,7 +18,9 @@ export default {
       }
       function getChilds (parent, force = false) {
         let ret = []
-        if (parent.$el.classList.contains('fv-form') && !force) {
+        if (
+          (parent.$el.classList.contains('fv-form') || typeof parent.fvValidate !== 'undefined') &&
+          !force) {
           return []
         }
         parent.$children.forEach(child => {
