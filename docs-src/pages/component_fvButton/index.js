@@ -20,9 +20,21 @@ export default {
             type: 'Boolean',
             default: 'false',
             description: 'Show loading spinner instead of content'
+          },
+          {
+            name: 'disabled',
+            type: 'Boolean',
+            default: 'false',
+            description: 'Just like normal button disabled prop'
           }
         ],
-        event: [],
+        event: [
+          {
+            name: 'click',
+            params: 'event',
+            description: 'Fired when user clicked on button and both disabled and loading props are false.'
+          }
+        ],
         method: []
       }
     }
