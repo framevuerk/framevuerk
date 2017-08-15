@@ -5,6 +5,17 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    click (e) {
+      if (!this.loading) {
+        this.$emit('click', e)
+      }
     }
   },
   style,
