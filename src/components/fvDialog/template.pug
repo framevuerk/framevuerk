@@ -20,7 +20,7 @@ span
         fv-button(v-for="button in pButtons",
           :key="button.key",
           :class="button.class",
-          @click.native.prevent="clickButton(button)",
+          @click.prevent="clickButton(button)",
           :disabled="button.disabled") 
           i(v-if="button.icon",
             :class="button.icon")

@@ -1,5 +1,5 @@
 span
-  fv-button.fv-file-picker(@click.native.prevent="choose",
+  fv-button.fv-file-picker(@click.prevent="choose",
     :class="[buttonClass, {invalid: !fvValidate}]",
     :disabled="disabled",
     ref="button")
