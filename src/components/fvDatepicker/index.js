@@ -33,7 +33,7 @@ export default {
             'hour',
             'minute',
             'second'
-          ].indexOf(v) === -1) {
+          ].indexOf(v[i]) === -1) {
             return false
           }
         }
