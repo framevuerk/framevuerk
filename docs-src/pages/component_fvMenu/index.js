@@ -24,8 +24,8 @@ export default {
           {
             name: 'sheet',
             type: 'Enum [null, true, false]',
-            default: '"center"',
-            description: 'Menu sheet style'
+            default: 'null',
+            description: 'Menu sheet style. If null, it is calced by viewport size.'
           },
           {
             name: 'auto-close',

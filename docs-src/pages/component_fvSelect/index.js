@@ -20,6 +20,7 @@ export default {
         d4: undefined,
         d5: []
       },
+      d3opts: ['USA', {text: 'USB', value: 'USB'}, 'USC'],
       api: {
         prop: [
           {
@@ -54,9 +55,9 @@ export default {
           },
           {
             name: 'search',
-            type: 'Boolean',
+            type: 'Enum [null, true, false]',
             default: 'true',
-            description: 'Allow user to search in options'
+            description: 'Allow user to search in options. If it is null, search input will show, but does not affect to the list.'
           },
           {
             name: 'placeholder',
@@ -93,6 +94,16 @@ export default {
             name: 'close',
             params: '---',
             description: 'Fired when dialog closed'
+          },
+          {
+            name: 'insert',
+            params: '(inserted-option-text)',
+            description: 'Fired when user insrted new option'
+          },
+          {
+            name: 'search',
+            params: '(search-query)',
+            description: 'Fired when search query changed'
           }
         ],
         method: [
