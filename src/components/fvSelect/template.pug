@@ -22,12 +22,13 @@ span
       fv-header.fv-invert(v-if="showInput")
         fv-input.fv-form-control.fv-search-style.fv-grow(:placeholder="placeholder || searchText",
           v-model="searchQuery",
+          @input="$emit('search', searchQuery)",
           @keydown.native="$refs.list.keydown",
           ref="input")
       fv-content.fv-no-padding
-        fv-list.fv-no-border(:items="options.concat(localItems)",
+        fv-list.fv-no-border(:items="options",
           :get-focus="showInput? false: true",
           ref="list",
-          :search-query="searchQuery",
+          :search-query="search === true? searchQuery: ''",
           :selected="pValue",
           @click-item="clickItem($event)")

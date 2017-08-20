@@ -30,7 +30,10 @@ export default {
       default: false
     },
     search: {
-      type: Boolean,
+      type: [Object, Boolean],
+      validator: (value) => {
+        return [true, false, null].indexOf(value) > -1
+      },
       default: true
     },
     placeholder: {
@@ -45,7 +48,6 @@ export default {
   data () {
     return {
       pValue: undefined,
-      localItems: [],
       searchText: locale.search(),
       pShow: false,
       searchQuery: '',
@@ -57,11 +59,11 @@ export default {
       return this.$refs.inputEl.fvValidate || false
     },
     showInput () {
-      return this.search || this.allowInsert
+      return this.search !== false || this.allowInsert
     },
     displayValue () {
       let ret = []
-      this.options.concat(this.localItems).forEach(option => {
+      this.options.forEach(option => {
         const value = option.value || option || ''
         const text = option.text || option || ''
         if (this.multiple && this.value && this.value.indexOf(value) !== -1) {
@@ -80,7 +82,7 @@ export default {
           text: locale.add(this.searchQuery),
           class: 'fv-default fv-block',
           action: () => {
-            this.localItems.push(this.searchQuery)
+            this.$emit('insert', this.searchQuery)
             this.searchQuery = ''
             utility.doIt(() => {
               this.$refs.list.highlightedOption = this.$refs.list.pItems.length - 1
