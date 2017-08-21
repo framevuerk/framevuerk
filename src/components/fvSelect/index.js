@@ -76,7 +76,7 @@ export default {
           })
           return ret
         }
-      } else {
+      } else if (typeof this.value !== 'undefined') {
         const result = this.options.findIndex(opt => (opt.value && opt.value === this.value) || opt === this.value)
         if (result !== -1) {
           return this.options[result].text || this.options[result].value || this.options[result]
