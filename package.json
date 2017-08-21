@@ -1,6 +1,6 @@
 {
   "name": "framevuerk",
-  "version": "0.8.81",
+  "version": "0.8.82",
   "description": "Awesome fully responsive Vue.js framevuerk!",
   "main": "dist/framevuerk-en.js",
   "scripts": {
