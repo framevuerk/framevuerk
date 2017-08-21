@@ -66,7 +66,7 @@ export default {
         const ret = []
         if (this.value && this.value.constructor === Array) {
           this.value.forEach(vl => {
-            const result = this.options.filter(opt => opt.value === vl || opt === vl)
+            const result = this.options.filter(opt => (opt.value && opt.value === vl) || opt === vl)
             if (result.length) {
               ret.push(result[0].text || result[0].value || result[0])
             } else {
@@ -77,26 +77,15 @@ export default {
           return ret
         }
       } else {
-        const result = this.options.filter(opt => opt.value === this.value || opt === this.value)
-        if (result.length) {
-          return result[0].text || result[0].value || result[0]
+        const result = this.options.findIndex(opt => (opt.value && opt.value === this.value) || opt === this.value)
+        if (result !== -1) {
+          return this.options[result].text || this.options[result].value || this.options[result]
         } else {
           this.$emit('insert', this.value)
           return this.value
         }
       }
       return []
-      // let ret = []
-      // this.options.forEach(option => {
-      //   const value = option.value || option || ''
-      //   const text = option.text || option || ''
-      //   if (this.multiple && this.value && this.value.indexOf(value) !== -1) {
-      //     ret.push(text)
-      //   } else if (value === this.value) {
-      //     ret = text
-      //   }
-      // })
-      // return ret
     },
     dialogButtons () {
       const ret = []
