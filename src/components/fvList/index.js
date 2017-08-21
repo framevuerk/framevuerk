@@ -52,7 +52,7 @@ export default {
       }
     },
     isSelected (item) {
-      const value = item.value || item || ''
+      const value = typeof item.value !== 'undefined' ? item.value : item || ''
       if (item.selected) {
         return true
       }

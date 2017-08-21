@@ -64,9 +64,9 @@ export default {
     displayValue () {
       if (this.multiple) {
         const ret = []
-        if (this.value && this.value.constructor === Array) {
+        if (typeof this.value !== 'undefined' && this.value.constructor === Array) {
           this.value.forEach(vl => {
-            const result = this.options.filter(opt => (opt.value && opt.value === vl) || opt === vl)
+            const result = this.options.filter(opt => (typeof opt.value !== 'undefined' && opt.value && opt.value === vl) || opt === vl)
             if (result.length) {
               ret.push(result[0].text || result[0].value || result[0])
             } else {
@@ -77,7 +77,7 @@ export default {
           return ret
         }
       } else if (typeof this.value !== 'undefined') {
-        const result = this.options.findIndex(opt => (opt.value && opt.value === this.value) || opt === this.value)
+        const result = this.options.findIndex(opt => (typeof opt.value !== 'undefined' && opt.value === this.value) || opt === this.value)
         if (result !== -1) {
           return this.options[result].text || this.options[result].value || this.options[result]
         } else {
@@ -131,7 +131,7 @@ export default {
   },
   methods: {
     open () {
-      if (this.value) {
+      if (typeof this.value !== 'undefined') {
         if (this.value.constructor === Array) {
           this.pValue = this.value.concat([])
         } else if (this.multiple) {
@@ -153,14 +153,14 @@ export default {
       this.$refs.dialog.close()
     },
     pIsSelected (value = null) {
-      if (this.multiple && this.pValue !== null) {
+      if (this.multiple && this.pValue !== undefined) {
         return this.pValue.indexOf(value) !== -1
       } else {
         return this.pValue === value
       }
     },
     clickItem (item) {
-      const value = item.value || item || ''
+      const value = typeof item.value !== 'undefined' ? item.value : item || ''
       let newValue = this.pValue
       if (this.multiple) {
         newValue = this.pValue
