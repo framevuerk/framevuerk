@@ -97,8 +97,8 @@ export default {
           },
           {
             name: 'insert',
-            params: '(inserted-option-text)',
-            description: 'Fired when user insrted new option'
+            params: '(inserted-option-text, requested-by)',
+            description: 'Fired when user insrted new option. First argument inserted text and second is request source. It is \'user\'(when user add something) or \'value\'(when selected value is not in options).'
           },
           {
             name: 'search',
