@@ -70,7 +70,7 @@ export default {
             if (result.length) {
               ret.push(result[0].text || result[0].value || result[0])
             } else {
-              this.$emit('insert', vl)
+              this.$emit('insert', vl, 'value')
               ret.push(vl)
             }
           })
@@ -81,7 +81,7 @@ export default {
         if (result !== -1) {
           return this.options[result].text || this.options[result].value || this.options[result]
         } else {
-          this.$emit('insert', this.value)
+          this.$emit('insert', this.value, 'value')
           return this.value
         }
       }
@@ -95,7 +95,7 @@ export default {
           text: locale.add(this.searchQuery),
           class: 'fv-default fv-block',
           action: () => {
-            this.$emit('insert', this.searchQuery)
+            this.$emit('insert', this.searchQuery, 'user')
             this.searchQuery = ''
             utility.doIt(() => {
               this.$refs.list.highlightedOption = this.$refs.list.pItems.length - 1
