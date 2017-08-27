@@ -1,8 +1,15 @@
 fv-content
   div(:class="$root.mainClass")
     doc-description
-      | To create switch in your application, use this!
+      | To create switch in your application, use this! Note that before using this, you can add 
+      a.fv-link(href="http://hammerjs.github.io/", target="_blank") HammerJs
+      |  as dependency of framevuerk to allow touch actions.
     doc-code
+      = "`javascript\n"
+      = "import framevuerk from 'framevuerk'\n"
+      = "import Hammer from 'hammerjs'\n"
+      = "framevuerk.use(Hammer)\n\n"
+      = "`html\n"
       = "<fv-switch></fv-switch>"
     doc-example
       .fv-row
