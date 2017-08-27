@@ -36,13 +36,17 @@
   }
 }
 
-@mixin vue-animation($selector, $on) {
-  @if $on == enter {
+@mixin vue-animation($selector, $on, $static: false) {
+  @if $static == true {
+    &.#{$selector}-#{$on} {
+      @content;
+    }
+  } @else if $on == enter {
     &.#{$selector}-enter-active,
     &.#{$selector}-leave-active {
       @content;
     }
-  } @else {
+  } @else if $on == leave {
     &.#{$selector}-enter,
     &.#{$selector}-leave-active {
       @content;
