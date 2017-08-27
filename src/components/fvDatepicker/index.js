@@ -58,7 +58,6 @@ export default {
   },
   created () {
     this.moment = utility._dependencies.moment
-    global.moment = utility._dependencies.moment
     if (this.moment) {
       if (process.env.LOCALE === 'fa') {
         this.moment.loadPersian()
