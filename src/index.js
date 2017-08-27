@@ -24,6 +24,7 @@ import fvTable from './components/fvTable'
 import fvTabs from './components/fvTabs'
 import fvCheck from './components/fvCheck'
 import fvTextarea from './components/fvTextarea'
+import fvImg from './components/fvImg'
 // Directives
 import fvScroll from './directives/fvScroll'
 
@@ -48,9 +49,18 @@ const framevuerk = {
   fvTabs,
   fvCheck,
   fvTextarea,
+  fvImg,
   use (lib = null) {
-    if (lib && (lib.name === 'jMoment' || lib.name === 'moment')) {
-      utility._dependencies.moment = lib
+    if (lib) {
+      switch (lib.name) {
+      case 'jMoment':
+      case 'moment':
+        utility._dependencies.moment = lib
+        break
+      case 'Hammer':
+        utility._dependencies.hammer = lib
+        break
+      }
     }
   },
   install (Vue) {
@@ -75,6 +85,7 @@ const framevuerk = {
     Vue.component('fvTabs', fvTabs)
     Vue.component('fvCheck', fvCheck)
     Vue.component('fvTextarea', fvTextarea)
+    Vue.component('fvImg', fvImg)
     // Directives
     Vue.directive('fvScroll', fvScroll)
   },

@@ -3,6 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import framevuerk from 'framevuerk'
 import moment from 'moment-jalaali'
+import hammer from 'hammerjs'
 import 'font-awesome/css/font-awesome.css'
 
 import './doc.html'
@@ -28,7 +29,9 @@ import fvCheck from './pages/component_fvCheck'
 import fvFilepicker from './pages/component_fvFilepicker'
 import fvForm from './pages/component_fvForm'
 import fvTable from './pages/component_fvTable'
+import fvImg from './pages/component_fvImg'
 
+framevuerk.use(hammer)
 framevuerk.use(moment)
 Vue.use(VueRouter)
 Vue.use(framevuerk)
@@ -120,6 +123,11 @@ const router = new VueRouter({
       name: 'fvTable',
       path: '/components/fvTable',
       component: fvTable
+    },
+    {
+      name: 'fvImg',
+      path: '/components/fvImg',
+      component: fvImg
     },
     {
       name: 'notfound',
