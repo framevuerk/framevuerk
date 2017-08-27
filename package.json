@@ -1,6 +1,6 @@
 {
   "name": "framevuerk",
-  "version": "0.8.83",
+  "version": "0.9.0",
   "description": "Awesome fully responsive Vue.js framevuerk!",
   "main": "dist/framevuerk-en.js",
   "scripts": {
@@ -84,5 +84,8 @@
   "bugs": {
     "url": "https://github.com/framevuerk/framevuerk/issues"
   },
-  "homepage": "https://github.com/framevuerk/framevuerk#readme"
+  "homepage": "https://github.com/framevuerk/framevuerk#readme",
+  "dependencies": {
+    "hammerjs": "^2.0.8"
+  }
 }
