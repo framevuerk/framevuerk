@@ -1,5 +1,7 @@
+import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
+/* global process */
 
 export default {
   props: {
@@ -21,6 +23,15 @@ export default {
       default: false
     }
   },
+  data () {
+    return {
+      hammer: undefined,
+      dirs: {
+        off: process.env.DIRECTION === 'ltr' ? 'left' : 'right',
+        on: process.env.DIRECTION === 'ltr' ? 'right' : 'left'
+      }
+    }
+  },
   computed: {
     fvValidate () {
       if (this.required === true) {
@@ -38,11 +49,25 @@ export default {
   },
   created () {
     this.setStructure()
+    this.hammer = utility._dependencies.hammer
+  },
+  mounted () {
+    this.initHammer()
   },
   methods: {
     toggle () {
       if (!this.disabled) {
         this.$emit('input', this.value === this.onValue ? this.offValue : this.onValue)
+      }
+    },
+    on () {
+      if (!this.disabled) {
+        this.$emit('input', this.onValue)
+      }
+    },
+    off () {
+      if (!this.disabled) {
+        this.$emit('input', this.offValue)
       }
     },
     setStructure () {
@@ -56,6 +81,17 @@ export default {
         event.preventDefault()
         this.toggle()
         break
+      }
+    },
+    initHammer () {
+      if (this.hammer) {
+        const mc = new this.hammer.Manager(this.$el, {
+          recognizers: [
+            [this.hammer.Swipe, { direction: this.hammer.DIRECTION_HORIZONTAL }]
+          ]
+        })
+        mc.on(`swipe${this.dirs.on}`, this.on)
+        mc.on(`swipe${this.dirs.off}`, this.off)
       }
     }
   },
