@@ -25,6 +25,10 @@ export default {
       type: String,
       default: '/items?page:{page}&limit={limit}'
     },
+    header: {
+      type: Boolean,
+      default: true
+    },
     footer: {
       type: Boolean,
       default: true
