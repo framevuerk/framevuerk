@@ -72,10 +72,10 @@ export default {
     return `${n} files selected!`
   },
   nextPage () {
-    return 'Next page'
+    return 'Next'
   },
   prevPage () {
-    return 'Prev page'
+    return 'Prev'
   },
   fromN (n = 1) {
     return `from ${n}`

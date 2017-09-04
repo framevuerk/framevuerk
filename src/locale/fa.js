@@ -69,10 +69,10 @@ export default {
     return `${n} فایل انتخاب شد!`
   },
   nextPage () {
-    return 'صفحه بعد'
+    return 'بعدی'
   },
   prevPage () {
-    return 'صفحه قبل'
+    return 'قبلی'
   },
   fromN (n = 1) {
     return `از ${n}`
