@@ -2,18 +2,12 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-table {
-  @include respond-to(only-xs) {
-    overflow-x: auto;
-    overflow-y: hidden;
-    & > table {
-      max-width: 100%;
-    }
-  }
   & > table {
     border: solid 1px $shadow-color;
     border-spacing: 0;
     box-shadow: 0 1em 1em $shadow-color-light;
     cursor: default;
+    max-width: 100%;
     width: 100%;
     &.tf-loading {
       opacity: .4;
@@ -21,13 +15,9 @@
     & > thead {
       border-bottom: solid 1px $shadow-color-light;
       font-weight: bold;
-      position: sticky;
-      top: 0;
     }
     & > tfoot {
       border-top: solid 1px $shadow-color-light;
-      bottom: 0;
-      position: sticky;
     }
     & > thead > tr > th,
     & > tbody > tr > td,
