@@ -1,6 +1,6 @@
 .fv-table
   table(:class="{'tf-loading': loading}")
-    thead
+    thead(v-if="header")
       tr
         th(v-for="field in pFields",
           :class="field.class")
@@ -19,17 +19,18 @@
       tr
         td(:colspan="pFields.length")
           .page-control-continer
-            fv-button(@click.prevent="fetch(previousPage)",
+            fv-button.fv-sm(@click.prevent="fetch(previousPage)",
               :disabled="previousPage === false || loading",
               v-html="prevPageBtnContent") 
-            fv-input.fv-form-control(type="number",
+            fv-input.fv-form-control.fv-hide-on-only-xs.fv-sm(type="number",
               :value="page",
               :min="1",
               :max="totalPages",
               @input="setUserPage($event)",
               ref="userInputPage",
-              :disabled="totalPages == 1") 
+              :disabled="totalPages == 1")
+            span.fv-hide-on-sm(v-html="page")
             span(v-if="totalPages !== false") {{locale.fromN(totalPages)}} 
-            fv-button(@click.prevent="fetch(nextPage)",
+            fv-button.fv-sm(@click.prevent="fetch(nextPage)",
               :disabled="nextPage === false || loading",
               v-html="nextPageBtnContent")
