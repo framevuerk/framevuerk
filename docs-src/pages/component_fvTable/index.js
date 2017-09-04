@@ -48,10 +48,16 @@ export default {
             description: 'Api url, if it\'s not local.<br>{page} and {limit} part inside api, passed by fv-table automatically.'
           },
           {
+            name: 'header',
+            type: 'Boolean',
+            default: 'true',
+            description: 'Show table header.'
+          },
+          {
             name: 'footer',
             type: 'Boolean',
             default: 'true',
-            description: 'Show footer next to table.'
+            description: 'Show table footer.'
           },
           {
             name: 'paginate',
