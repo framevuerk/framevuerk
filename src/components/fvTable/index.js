@@ -95,6 +95,7 @@ export default {
           text: field.text || (field.value ? utility.capitalizeFirstLetter(field.value) : null) || utility.capitalizeFirstLetter(field),
           icon: field.icon || '',
           class: field.class || '',
+          width: field.width || `${(100 / this.fields.length)}%`,
           formatter: field.formatter || (x => x)
         })
       })
@@ -245,9 +246,10 @@ export default {
     setUserPage (page) {
       clearTimeout(this.setUserPageTimeout)
       this.setUserPageTimeout = setTimeout(() => {
+        console.log(page)
         page = parseInt(page)
         if (page > this.totalPages || page < 1) {
-          this.userInputPage.$el.value = this.page
+          this.$refs.userInputPage.$el.value = this.page
         } else {
           this.fetch(page)
         }

@@ -1,36 +1,34 @@
-.fv-table
-  table(:class="{'tf-loading': loading}")
-    thead(v-if="header")
-      tr
-        th(v-for="field in pFields",
-          :class="field.class")
-          i(v-if="field.icon", :class="field.icon")
-          |  
-          span(v-html="field.text")
-    tbody
-      tr(v-for="(row, index) in pRows",
-        :class="{'fv-clickable': clickableRows}",
-        ref="rowElem",
-        @click="rowClick(row, index)")
-        td(v-for="field in pFields",
-          :class="field.class",
-          v-html="row[field.value]")
-    tfoot(v-if="footer")
-      tr
-        td(:colspan="pFields.length")
-          .page-control-continer
-            fv-button.fv-sm(@click.prevent="fetch(previousPage)",
-              :disabled="previousPage === false || loading",
-              v-html="prevPageBtnContent") 
-            fv-input.fv-form-control.fv-hide-on-only-xs.fv-sm(type="number",
-              :value="page",
-              :min="1",
-              :max="totalPages",
-              @input="setUserPage($event)",
-              ref="userInputPage",
-              :disabled="totalPages == 1")
-            span.fv-hide-on-sm(v-html="page")
-            span(v-if="totalPages !== false") {{locale.fromN(totalPages)}} 
-            fv-button.fv-sm(@click.prevent="fetch(nextPage)",
-              :disabled="nextPage === false || loading",
-              v-html="nextPageBtnContent")
+fv-main.fv-table(:class="{'fv-table-loading': loading}")
+  fv-header.fv-invert(v-if="header", height="auto")
+    .field(v-for="field in pFields",
+      :style="{width: field.width}",
+      :class="field.class")
+      i(v-if="field.icon", :class="field.icon")
+      |  
+      span(v-html="field.text")
+  fv-content
+    .row(v-for="(row, index) in pRows",
+      :class="{'fv-clickable': clickableRows}",
+      ref="rowElem",
+      @click="rowClick(row, index)")
+      .field(v-for="field in pFields",
+        :style="{width: field.width}",
+        :class="field.class",
+        v-html="row[field.value]")
+  fv-footer(v-if="footer", height="auto")
+    fv-button.fv-sm(@click.prevent="fetch(previousPage)",
+      :loading="loading",
+      :disabled="previousPage === false || loading")
+      span(v-html="prevPageBtnContent")
+    fv-input.fv-form-control.fv-sm(type="number",
+      :value="page",
+      :min="1",
+      :max="totalPages",
+      @input="setUserPage($event)",
+      ref="userInputPage",
+      :disabled="totalPages == 1")
+    .from-n(v-if="totalPages !== false") {{locale.fromN(totalPages)}} 
+    fv-button.fv-sm(@click.prevent="fetch(nextPage)",
+      :loading="loading",
+      :disabled="nextPage === false || loading")
+      span(v-html="nextPageBtnContent")

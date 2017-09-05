@@ -2,70 +2,53 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-table {
-  & > table {
     border: solid 1px $shadow-color;
     border-spacing: 0;
     box-shadow: 0 1em 1em $shadow-color-light;
     cursor: default;
     max-width: 100%;
     width: 100%;
-    &.tf-loading {
-      opacity: .4;
-    }
-    & > thead {
-      border-bottom: solid 1px $shadow-color-light;
-      font-weight: bold;
-    }
-    & > tfoot {
-      border-top: solid 1px $shadow-color-light;
-    }
-    & > thead > tr > th,
-    & > tbody > tr > td,
-    & > tfoot > tr > td {
-      padding: $padding-small;
-      text-align: center;
-      vertical-align: middle;
-    }
-    & > tbody {
-      @include yiq($bg-color-light);
-      & > tr:nth-child(even) {
-        & td {
-          @include yiq(darken($bg-color-light, 2%));
-        }
+    & .fv-header{
+      & > .field{
+        padding: $padding-small;
+        text-align: center;
+        flex-grow: 1;
       }
     }
-    & > tbody > tr {
-      &.fv-clickable {
-        cursor: pointer;
-        &:active,
-        &.fv-focused {
-          & td {
+    & .fv-content{
+      padding: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      & > .row{
+        display: flex;
+        &.fv-clickable {
+          cursor: pointer;
+          &:active,
+          &.active {
             background: $shadow-color-light;
           }
         }
+        & > .field{
+          padding: $padding-small;
+          text-align: center;
+          flex-grow: 1;
+        }
+      }
+      & > .row:nth-child(even) {
+        @include yiq(darken($bg-color-light, 4%));
       }
     }
-    & > thead > tr > th,
-    & > tfoot > tr > td {
-      @include nowrap;
-      @include yiq($bg-color-dark);
-    }
-
-    & > tfoot > tr > td {
-      & > * {
-        line-height: 3em;
+    & .fv-footer{
+      .fv-button{
+        flex-grow: 1;
       }
-    }
-    & .page-control-continer {
-      & > * {
-        margin: 0 2px;
+      & .fv-input{
         width: auto;
       }
-      & > .fv-input {
-        text-align: center;
-        width: 70px;
-      }
+    }
+    &.fv-table-loading {
+      opacity: .4;
     }
 
-  }
+
 }
