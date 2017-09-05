@@ -20,7 +20,7 @@
       width: 100%;
     }
   }
-  & .fv-button {
+  & > *{
     &:not(:last-child) {
       margin-#{$block-end}: $padding;
     }
