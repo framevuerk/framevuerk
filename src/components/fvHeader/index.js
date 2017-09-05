@@ -4,7 +4,7 @@ import style from './style.scss'
 export default {
   props: {
     height: {
-      type: Number,
+      type: [Number, String],
       default: 55
     }
   },
@@ -18,9 +18,10 @@ export default {
   },
   methods: {
     setHeight () {
-      this.$el.style.height = `${this.height}px`
-      this.$el.style.minHeight = `${this.height}px`
-      this.$el.style.maxHeight = `${this.height}px`
+      const height = typeof this.height === 'number' ? `${this.height}px` : this.height;
+      this.$el.style.height = height
+      this.$el.style.minHeight = height
+      this.$el.style.maxHeight = height
     }
   },
   style,
