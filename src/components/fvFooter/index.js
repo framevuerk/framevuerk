@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     setHeight () {
-      const height = typeof this.height === 'number' ? `${this.height}px` : this.height;
+      const height = typeof this.height === 'number' ? `${this.height}px` : this.height
       this.$el.style.height = height
       this.$el.style.minHeight = height
       this.$el.style.maxHeight = height

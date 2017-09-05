@@ -20,7 +20,7 @@ export default {
             type: 'Enum [Number, String]',
             default: '65',
             description: 'Height of element'
-          },
+          }
         ]
       }
     }
