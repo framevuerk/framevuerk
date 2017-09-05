@@ -3,7 +3,7 @@ span
   fv-tabs(:tabs="tabs")
     div(v-for="tab in tabs", :slot="tab.slot")
       br
-      fv-table.fv-no-border.doc-api-table(v-if="rows[tab.slot] && rows[tab.slot].length > 0",
+      fv-table.doc-api-table(v-if="rows[tab.slot] && rows[tab.slot].length > 0",
         local,
         :fields="fields(tab.slot)",
         :footer="false",
