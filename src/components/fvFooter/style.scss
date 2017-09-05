@@ -20,7 +20,7 @@
       width: 100%;
     }
   }
-  & > *{
+  & > * {
     &:not(:last-child) {
       margin-#{$block-end}: $padding;
     }
