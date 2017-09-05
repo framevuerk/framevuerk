@@ -1,6 +1,6 @@
 {
   "name": "framevuerk",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Awesome fully responsive Vue.js framevuerk!",
   "main": "dist/framevuerk-en.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "clean": "npm run clean:lib && npm run clean:docs",
     "build": "npm run build:lib && npm run build:docs",
     "publish-all": "./build/publish-all.sh",
-    "dev": "webpack --config ./build/webpack.config.js --display minimal --watch & webpack-dev-server --inline --config ./build/webpack.config.docs.js",
+    "dev": "webpack --config ./build/webpack.config.js --display minimal --watch & webpack-dev-server --inline --config ./build/webpack.config.docs.js --host 0 --open --disable-host-check",
     "start": "npm run build && http-server ./docs"
   },
   "devDependencies": {
