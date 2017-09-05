@@ -21,7 +21,7 @@ export default {
             name: 'fields',
             type: 'Array',
             default: '[]',
-            description: 'List of table fields.<br>Each item in array, is object that can have<br>value:String, icon:String, text:String, class:String and formatter:Function prop.'
+            description: 'List of table fields.<br>Each item in array, is object that can have<br>value:String, icon:String, text:String, class:String, width:[Number, String] and formatter:Function prop.'
           },
           {
             name: 'local',

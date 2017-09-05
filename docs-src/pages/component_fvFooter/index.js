@@ -17,10 +17,10 @@ export default {
         prop: [
           {
             name: 'height',
-            type: 'Number',
-            default: 65,
-            description: 'Height of footer'
-          }
+            type: 'Enum [Number, String]',
+            default: '65',
+            description: 'Height of element'
+          },
         ]
       }
     }

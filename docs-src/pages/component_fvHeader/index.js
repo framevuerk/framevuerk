@@ -17,10 +17,10 @@ export default {
         prop: [
           {
             name: 'height',
-            type: 'Number',
-            default: 55,
-            description: 'Height of header'
-          }
+            type: 'Enum [Number, String]',
+            default: '55',
+            description: 'Height of element'
+          },
         ]
       }
     }
