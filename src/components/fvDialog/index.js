@@ -128,6 +128,9 @@ export default {
       }
     }
   },
+  beforeDestroy(){
+    this.$el.remove();
+  },
   style,
   render: template.render
 }
