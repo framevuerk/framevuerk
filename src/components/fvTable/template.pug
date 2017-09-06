@@ -1,7 +1,7 @@
 fv-main.fv-table(:class="{'fv-table-loading': loading}")
   fv-header.fv-invert(v-if="header", height="auto")
     .field(v-for="field in pFields",
-      :style="{width: field.width}",
+      :style="{width: field.width, maxWidth: field.width, minWidth: field.width}",
       :class="field.class")
       i(v-if="field.icon", :class="field.icon")
       |  
@@ -12,7 +12,7 @@ fv-main.fv-table(:class="{'fv-table-loading': loading}")
       ref="rowElem",
       @click="rowClick(row, index)")
       .field(v-for="field in pFields",
-        :style="{width: field.width}",
+        :style="{width: field.width, maxWidth: field.width, minWidth: field.width}",
         :class="field.class",
         v-html="row[field.value]")
   fv-footer(v-if="footer", height="auto")
