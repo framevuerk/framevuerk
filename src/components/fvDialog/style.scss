@@ -9,15 +9,15 @@
     max-height: 90%;
     max-width: 90%;
     top: 50%;
-    transform: translate(-50%, -50%) scale(1, 1);
+    transform: translate(-50%, -50%);
   } @else if ($part == 'animation-enter') {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1, 1);
+    transform: translate(-50%, -50%);
     transition-duration: $transition-speed;
     transition-property: transform, opacity;
   } @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(.85, .85);
+    transform: translate(-50%, -26%);
   }
 }
 @mixin fv-dialog-bottom($part) {
