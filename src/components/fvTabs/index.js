@@ -1,5 +1,7 @@
+import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
+/* global process */
 
 export default {
   props: {
@@ -12,7 +14,12 @@ export default {
   },
   data () {
     return {
-      pValue: this.value
+      hammer: undefined,
+      pValue: this.value,
+      dirs: {
+        next: process.env.DIRECTION === 'ltr' ? 'left' : 'right',
+        prev: process.env.DIRECTION === 'ltr' ? 'right' : 'left'
+      }
     }
   },
   computed: {
@@ -30,18 +37,46 @@ export default {
       return ret
     }
   },
+  created () {
+    this.hammer = utility._dependencies.hammer
+  },
   mounted () {
     if (!this.value) {
       this.changeTab(this.pTabs[0].slot)
     }
+    this.initHammer()
   },
   methods: {
-    changeTab (slotName, emit = true) {
+    changeTab (slot, emit = true) {
+      let slotName
+      if (typeof slot === 'number') {
+        const currentIndex = this.pTabs.findIndex(t => t.slot === this.pValue)
+        const newIndex = currentIndex + slot
+        const n = newIndex < 0 ? this.pTabs.length - 1 : (newIndex > this.pTabs.length - 1 ? 0 : newIndex)
+        slotName = this.pTabs[n].slot
+      } else {
+        slotName = slot
+      }
+      this.pValue = slotName
       if (emit) {
         this.$emit('input', slotName)
       }
-      this.pValue = slotName
       this.$emit('tab-change', slotName)
+    },
+    initHammer () {
+      if (this.hammer) {
+        const mc = new this.hammer.Manager(this.$el, {
+          recognizers: [
+            [this.hammer.Swipe, { direction: this.hammer.DIRECTION_HORIZONTAL }]
+          ]
+        })
+        mc.on(`swipe${this.dirs.next}`, () => {
+          this.changeTab(1)
+        })
+        mc.on(`swipe${this.dirs.prev}`, () => {
+          this.changeTab(-1)
+        })
+      }
     }
   },
   watch: {
