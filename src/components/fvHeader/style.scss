@@ -7,7 +7,6 @@
   box-shadow: 0 5px 15px $shadow-color-light;
   display: flex;
   justify-content: space-between;
-  line-height: 1;
   overflow: hidden;
   right: 0;
   top: 0;
@@ -17,20 +16,6 @@
   &.fv-invert {
     @include yiq($bg-color, 70%);
     border-bottom: solid 1px $shadow-color;
-    & .fv-icon,
-    & .fv-button {
-      @include yiq($bg-color, 70%);
-      &:focus,
-      &.focus {
-        @include yiq($bg-color-dark, 70%);
-        @include outline($bg-color-dark);
-      }
-      &:disabled,
-      &.disabled {
-        @include yiq($bg-color, 70%);
-        @include disabled;
-      }
-    }
     & .fv-link {
       @include yiq($bg-color, 70%);
     }
