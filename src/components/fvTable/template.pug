@@ -1,20 +1,34 @@
 fv-main.fv-table(:class="{'fv-table-loading': loading}")
   fv-header.fv-invert(v-if="header", height="auto")
+    .field(v-if="checkList",
+      :style="{width: '45px', maxWidth: '45px', minWidth: '45px'}")
+      input(type="checkbox", v-model="checkAll", :value="true")
     .field(v-for="field in pFields",
-      :style="{width: field.width, maxWidth: field.width, minWidth: field.width}",
+      :style="{width: field.width, maxWidth: field.width}",
       :class="field.class")
       i(v-if="field.icon", :class="field.icon")
       |  
       span(v-html="field.text")
+    .field(v-if="menu",
+      :style="{width: '60px', maxWidth: '60px', minWidth: '60px'}")
+      fv-button.menu-btn(v-show="checked.length > 0", @click="$emit('menu', checked)")
+        i.fa.fa-ellipsis-v
   fv-content
     .row(v-for="(row, index) in pRows",
       :class="{'fv-clickable': clickableRows}",
-      ref="rowElem",
-      @click="rowClick(row, index)")
+      ref="rowElem")
+      .field(v-if="checkList",
+        :style="{width: '45px', maxWidth: '45px', minWidth: '45px'}")
+        input(type="checkbox", :value="row", v-model="checked")
       .field(v-for="field in pFields",
-        :style="{width: field.width, maxWidth: field.width, minWidth: field.width}",
+        :style="{width: field.width, maxWidth: field.width}",
         :class="field.class",
+        @click="rowClick(row, index)",
         v-html="row[field.value]")
+      .field(v-if="menu",
+        :style="{width: '60px', maxWidth: '60px', minWidth: '60px'}")
+        fv-button.menu-btn(v-show="checked.length === 0", @click="$emit('menu', [row])")
+          i.fa.fa-ellipsis-v
   fv-footer(v-if="footer", height="auto")
     fv-button.fv-sm(@click.prevent="fetch(previousPage)",
       :loading="loading",

@@ -20,7 +20,9 @@
     overflow-y: auto;
     padding: 0;
     & > .row {
+      align-items: center;
       display: flex;
+      justify-content: space-between;
       &.fv-clickable {
         cursor: pointer;
         &:active,
@@ -48,5 +50,18 @@
   }
   &.fv-table-loading {
     opacity: .4;
+  }
+  & .menu-btn {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    height: 1.6em;
+    line-height: 1.6;
+    max-height: 1.6em;
+    max-width: 30px;
+    min-height: 1.6em;
+    min-width: 30px;
+    padding: 0 $padding-small;
+    width: 30px;
   }
 }

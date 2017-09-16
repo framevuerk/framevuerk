@@ -60,6 +60,14 @@ export default {
     limit: {
       type: Number,
       default: 15
+    },
+    menu: {
+      type: Boolean,
+      default: false
+    },
+    checkList: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -69,7 +77,9 @@ export default {
       totalCount: this.local ? this.rows.length : 0,
       apiResponse: null,
       loading: false,
-      setUserPageTimeout: null
+      setUserPageTimeout: null,
+      checked: [],
+      checkAll: false
     }
   },
   computed: {
@@ -95,7 +105,7 @@ export default {
           text: field.text || (field.value ? utility.capitalizeFirstLetter(field.value) : null) || utility.capitalizeFirstLetter(field),
           icon: field.icon || '',
           class: field.class || '',
-          width: field.width || `${(100 / this.fields.length)}%`,
+          width: field.width || `${100 / this.fields.length}%`,
           formatter: field.formatter || (x => x)
         })
       })
@@ -271,6 +281,15 @@ export default {
         ret = ret[pr]
       })
       return ret
+    }
+  },
+  watch: {
+    checkAll (v) {
+      if (v) {
+        this.checked = JSON.parse(JSON.stringify(this.pRows))
+      } else {
+        this.checked = []
+      }
     }
   },
   style,
