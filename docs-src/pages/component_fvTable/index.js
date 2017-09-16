@@ -106,6 +106,18 @@ export default {
             type: 'Number',
             default: '15',
             description: 'fv-table set this to {limit} part of "api".'
+          },
+          {
+            name: 'menu',
+            type: 'Boolean',
+            default: 'false',
+            description: 'Allow menu button and event.'
+          },
+          {
+            name: 'check-list',
+            type: 'Boolean',
+            default: 'false',
+            description: 'Allow select multiple rows for menu event.'
           }
         ],
         event: [
@@ -123,6 +135,11 @@ export default {
             name: 'click-row',
             params: '(row)',
             description: 'Fired when user clicked on row.'
+          },
+          {
+            name: 'menu',
+            params: '(list-of-rows)',
+            description: 'Fired when user clicked on menu button.'
           }
         ],
         method: [
