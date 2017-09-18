@@ -30,6 +30,7 @@
       background: transparent;
       border: 0;
       border-radius: 0;
+      box-shadow: none;
       color: inherit;
       display: flex;
       height: 100%;
@@ -38,6 +39,7 @@
       &:active,
       &.active {
         background: transparent;
+        box-shadow: none;
         color: inherit;
       }
       &:focus,
