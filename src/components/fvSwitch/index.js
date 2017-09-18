@@ -26,6 +26,7 @@ export default {
   data () {
     return {
       hammer: undefined,
+      pValue: this.value,
       dirs: {
         off: process.env.DIRECTION === 'ltr' ? 'left' : 'right',
         on: process.env.DIRECTION === 'ltr' ? 'right' : 'left'
@@ -43,7 +44,8 @@ export default {
     }
   },
   watch: {
-    value () {
+    value (v) {
+      this.pValue = v
       this.setStructure()
     }
   },
@@ -57,22 +59,25 @@ export default {
   methods: {
     toggle () {
       if (!this.disabled) {
-        this.$emit('input', this.value === this.onValue ? this.offValue : this.onValue)
+        this.pValue = this.pValue === this.onValue ? this.offValue : this.onValue
+        this.$emit('input', this.pValue)
       }
     },
     on () {
       if (!this.disabled) {
-        this.$emit('input', this.onValue)
+        this.pValue = this.onValue
+        this.$emit('input', this.pValue)
       }
     },
     off () {
       if (!this.disabled) {
-        this.$emit('input', this.offValue)
+        this.pValue = this.offValue
+        this.$emit('input', this.pValue)
       }
     },
     setStructure () {
       if ([this.offValue, this.onValue].indexOf(this.value) === -1) {
-        this.$emit('input', this.offValue)
+        this.off()
       }
     },
     keydown (event) {

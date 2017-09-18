@@ -1,4 +1,4 @@
-span.fv-switch(:class="{on: onValue === value, invalid: !fvValidate, disabled: disabled}",
+span.fv-switch(:class="{on: onValue === pValue, invalid: !fvValidate, disabled: disabled}",
   ref="switch",
   @click="toggle",
   :tabindex="disabled? '': 0",
