@@ -1,6 +1,6 @@
 fv-main#app
   fv-header
-    fv-button.fv-primary.fv-icon.fv-hide-on-lg(@click.native="$refs.sidebar.toggle()")
+    fv-button.fv-icon.fv-hide-on-lg(@click.native="$refs.sidebar.toggle()")
       i.fa.fa-bars
     .fv-title
       h2.fv-no-wrap(v-if="$route.name !== 'welcome'") {{$route.name}}
