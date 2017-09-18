@@ -15,16 +15,13 @@ export default {
     return {
       inputs: {
         d1: '',
-        d2: {
-          value: undefined,
-          displayValue: null
-        },
+        d2: false,
         d3: null
       },
       api: {
         prop: [
           {
-            name: 'value || v-model (required)',
+            name: 'value || v-model',
             type: '',
             default: 'undefined',
             description: 'Value of input'
