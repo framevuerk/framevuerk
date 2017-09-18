@@ -38,27 +38,27 @@ $default-color-light: $gray-color-light !default;
 $default-color-dark: $gray-color-dark !default;
 
 //$theme-color: #1f89dd !default;
-$theme-color-light: lighten($theme-color, 4%) !default;
+$theme-color-light: lighten($theme-color, 10%) !default;
 $theme-color-dark: darken($theme-color, 5%) !default;
 
 $primary-color: $theme-color !default;
 $primary-color-light: $theme-color-light !default;
 $primary-color-dark: $theme-color-dark !default;
 
-$danger-color: #e90f0f !default;
-$danger-color-light: lighten($danger-color, 4%) !default;
+$danger-color: #c82b08 !default;
+$danger-color-light: lighten($danger-color, 10%) !default;
 $danger-color-dark: darken($danger-color, 5%) !default;
 
-$warning-color: #fa0 !default;
-$warning-color-light: lighten($warning-color, 4%) !default;
+$warning-color: #ef8f00 !default;
+$warning-color-light: lighten($warning-color, 10%) !default;
 $warning-color-dark: darken($warning-color, 5%) !default;
 
-$info-color: #82c6ef !default;
-$info-color-light: lighten($info-color, 4%) !default;
+$info-color: #1cc1ea !default;
+$info-color-light: lighten($info-color, 10%) !default;
 $info-color-dark: darken($info-color, 5%) !default;
 
-$success-color: #13c10c !default;
-$success-color-light: lighten($success-color, 4%) !default;
+$success-color: #55bb08 !default;
+$success-color-light: lighten($success-color, 10%) !default;
 $success-color-dark: darken($success-color, 5%) !default;
 
 
@@ -68,8 +68,8 @@ $padding: 15px !default;
 $padding-small: 11px !default;
 $padding-large: 25px !default;
 
-$border-radius: 2px;
-$border-radius-small: 1px;
+$border-radius: 0;
+$border-radius-small: 0;
 $border-radius-large: 12px;
 
 
