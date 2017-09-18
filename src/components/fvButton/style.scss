@@ -5,13 +5,17 @@
   @include sizes;
   border: 1px solid $shadow-color;
   border-radius: $border-radius;
-  box-shadow: 0 1em 1em $shadow-color-light;
+  box-shadow: inset 0 -2px 0 $shadow-color-light;
   cursor: pointer;
   display: inline-block;
   font-family: inherit;
   max-width: 100%;
   text-align: center;
   vertical-align: middle;
+  &:active:not(.loading),
+  &.active:not(.loading) {
+    box-shadow: inset 0 2px 1px $shadow-color-light;
+  }
   & > .loading-icon {
     animation-duration: .6s;
     font-size: 1.1em;
@@ -20,9 +24,9 @@
   & span {
     @include nowrap;
   }
-  &:focus:not(.loading),
-  &.focus:not(.loading) {
-    @include outline($theme-color);
+  &:focus:not(.loading):not(:active):not(.active),
+  &.focus:not(.loading):not(:active):not(.active) {
+    //@include textoutline(#fff);
     &:invalid,
     &.invalid {
       @include outline($danger-color);
@@ -81,40 +85,36 @@
     }
   }
   &.fv-danger {
-    @include yiq($danger-color-dark);
+    @include yiq($danger-color);
     &:active,
     &.active {
       @include yiq($danger-color-dark);
     }
     &:focus,
     &.focus {
-      @include yiq($danger-color-dark);
+      @include yiq($danger-color-light);
     }
   }
   &.fv-warning {
-    @include yiq($warning-color-dark);
+    @include yiq($warning-color);
     &:active,
     &.active {
       @include yiq($warning-color-dark);
     }
     &:focus,
     &.focus {
-      @include yiq($warning-color-dark);
+      @include yiq($warning-color-light);
     }
   }
   &.fv-success {
-    @include yiq($success-color-dark);
+    @include yiq($success-color);
     &:active,
     &.active {
       @include yiq($success-color-dark);
     }
     &:focus,
     &.focus {
-      @include yiq($success-color-dark);
+      @include yiq($success-color-light);
     }
-  }
-  &:active:not(.loading),
-  &.active:not(.loading) {
-    box-shadow: inset 0 1em 1em $shadow-color-light;
   }
 }
