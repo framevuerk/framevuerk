@@ -68,6 +68,10 @@ export default {
     checkList: {
       type: Boolean,
       default: false
+    },
+    initialState: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -224,12 +228,23 @@ export default {
     }
   },
   created () {
-    this.fetch(1)
+    if (this.initialState) {
+      this.page = this.initialState.page || 1
+      this.apiResponse = this.initialState.apiResponse || null
+    }
+    this.fetch(this.page)
   },
   methods: {
+    getState () {
+      return {
+        page: this.page,
+        apiResponse: this.apiResponse
+      }
+    },
     fetch (page = 1) {
       const currentPage = this.page
       this.loading = true
+      this.checkAll = false
       if (this.local) {
         this.loading = false
         return false
@@ -288,7 +303,14 @@ export default {
       if (v) {
         this.checked = JSON.parse(JSON.stringify(this.pRows))
       } else {
-        this.checked = []
+        if (this.checked.length === this.pRows.length) {
+          this.checked = []
+        }
+      }
+    },
+    checked (v) {
+      if (v.length !== this.pRows.length) {
+        this.checkAll = false
       }
     }
   },
