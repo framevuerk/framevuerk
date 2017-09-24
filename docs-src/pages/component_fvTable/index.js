@@ -118,6 +118,12 @@ export default {
             type: 'Boolean',
             default: 'false',
             description: 'Allow select multiple rows for menu event.'
+          },
+          {
+            name: 'initial-state',
+            type: 'Object',
+            default: 'null',
+            description: 'Initial state of table in api mode. You can find value by calling getState method.'
           }
         ],
         event: [
@@ -147,6 +153,11 @@ export default {
             name: 'fetch',
             params: '---',
             description: 'Re-fetch current state of fv-table.'
+          },
+          {
+            name: 'getState',
+            params: '---',
+            description: 'Get current state of table.'
           }
         ]
       }
