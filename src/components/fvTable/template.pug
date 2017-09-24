@@ -1,4 +1,4 @@
-fv-main.fv-table(:class="{'fv-table-loading': loading}")
+fv-main.fv-table
   fv-header.fv-invert(v-if="header", height="auto")
     .field(v-if="checkList",
       :style="{width: '45px', maxWidth: '45px', minWidth: '45px'}")
@@ -31,7 +31,6 @@ fv-main.fv-table(:class="{'fv-table-loading': loading}")
           i.fa.fa-ellipsis-v
   fv-footer(v-if="footer", height="auto")
     fv-button.fv-sm(@click.prevent="fetch(previousPage)",
-      :loading="loading",
       :disabled="previousPage === false || loading")
       span(v-html="prevPageBtnContent")
     fv-input.fv-form-control.fv-sm(type="number",
@@ -40,9 +39,8 @@ fv-main.fv-table(:class="{'fv-table-loading': loading}")
       :max="totalPages",
       @input="setUserPage($event)",
       ref="userInputPage",
-      :disabled="totalPages == 1")
+      :disabled="totalPages == 1 || loading")
     .from-n(v-if="totalPages !== false") {{locale.fromN(totalPages)}} 
     fv-button.fv-sm(@click.prevent="fetch(nextPage)",
-      :loading="loading",
       :disabled="nextPage === false || loading")
       span(v-html="nextPageBtnContent")
