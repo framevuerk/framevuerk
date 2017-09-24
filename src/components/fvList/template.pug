@@ -8,7 +8,7 @@ ul.fv-list(:tabindex="pItems.length && getFocus !== false? 0: ''",
     :text="item.text || item || ''",
     :disabled="item.disabled || false",
     :selected="isSelected(item)",
-    :highlighted="(item.highlighted || highlightedOption === index) && (getFocus? focused: true)",
+    :highlighted="(item.highlighted || highlightedOption === index) && (getFocus? focused: false)",
     :expanded="expanded || item.expanded || false",
     @click="clickItem(item, index)",
     :items="item.items || []")
