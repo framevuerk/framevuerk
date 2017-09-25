@@ -26,7 +26,10 @@ span
           @keydown.native="$refs.list.keydown",
           ref="input")
       fv-content.fv-no-padding
-        fv-list.fv-no-border(:items="options",
+        .fv-text-center.fv-padding(v-show="loading")
+          i.loading-icon.fa.fa-spin.fa-spinner
+        fv-list.fv-no-border(v-show="!loading",
+          :items="options",
           :get-focus="showInput? false: true",
           ref="list",
           :search-query="search === true? searchQuery: ''",
