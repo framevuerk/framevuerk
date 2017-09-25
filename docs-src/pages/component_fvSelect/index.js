@@ -16,7 +16,7 @@ export default {
       inputs: {
         d1: undefined,
         d2: undefined,
-        d3: undefined,
+        d3: [],
         d4: undefined,
         d5: []
       },
@@ -76,6 +76,12 @@ export default {
             type: 'Boolean',
             default: 'false',
             description: 'Allow user to insert option to options'
+          },
+          {
+            name: 'loading',
+            type: 'Boolean',
+            default: 'false',
+            description: 'Show loading spinner instead of list'
           },
           {
             name: 'options',
