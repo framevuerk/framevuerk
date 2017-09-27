@@ -1,10 +1,10 @@
 span
   transition(name="fv-fade")
-    .fv-overlay(v-show="pShow",
+    .fv-overlay(v-if="pShow",
       @click="closeIf()")
   transition(:name="animationName")
     fv-main.fv-dialog(:class="animationName",
-      v-show="pShow",
+      v-if="pShow",
       ref="dialog",
       @keydown.native="pKeyDown($event); $emit('keydown', $event)",
       @click.native="$emit('click', $event)")
