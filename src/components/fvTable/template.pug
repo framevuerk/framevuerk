@@ -1,5 +1,5 @@
 fv-main.fv-table
-  fv-header.fv-invert(v-if="header", height="auto")
+  fv-header.fv-invert(v-if="header", :height="47")
     .field(v-if="checkList",
       :style="{width: '45px', maxWidth: '45px', minWidth: '45px'}")
       input(type="checkbox", v-model="checkAll", :value="true")
