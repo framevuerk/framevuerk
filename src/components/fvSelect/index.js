@@ -68,7 +68,7 @@ export default {
     displayValue () {
       if (this.multiple) {
         const ret = []
-        if (typeof this.value !== 'undefined' && this.value.constructor === Array) {
+        if (this.value !== 'undefined' && this.value instanceof Array) {
           this.value.forEach(vl => {
             const result = this.options.filter(opt => (typeof opt.value !== 'undefined' && opt.value && opt.value === vl) || opt === vl)
             if (result.length) {
@@ -136,7 +136,7 @@ export default {
   methods: {
     open () {
       if (typeof this.value !== 'undefined') {
-        if (this.value.constructor === Array) {
+        if (this.value instanceof  Array) {
           this.pValue = this.value.concat([])
         } else if (this.multiple) {
           this.pValue = [this.value]
