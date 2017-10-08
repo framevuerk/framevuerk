@@ -48,7 +48,6 @@ export default {
         if (typeof item.action === 'function') {
           item.action(this.param)
         }
-        this.highlightedOption = index
       }
     },
     isSelected (item) {
