@@ -136,7 +136,7 @@ export default {
   methods: {
     open () {
       if (typeof this.value !== 'undefined') {
-        if (this.value instanceof  Array) {
+        if (this.value instanceof Array) {
           this.pValue = this.value.concat([])
         } else if (this.multiple) {
           this.pValue = [this.value]
