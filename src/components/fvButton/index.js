@@ -6,6 +6,9 @@ export default {
       type: Boolean,
       default: false
     },
+    icon: {
+      default: ''
+    },
     disabled: {
       type: Boolean,
       default: false

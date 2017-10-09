@@ -1,3 +1,5 @@
 button.fv-button(:class="{'loading': loading}", @click="click($event)", :disabled="disabled || loading")
+  i(:class="icon", v-if="!loading")
+  |  
   slot(v-if="!loading")
   i.loading-icon.fa.fa-spin.fa-repeat(v-else)
