@@ -30,7 +30,6 @@ span
           i.loading-icon.fa.fa-spin.fa-spinner
         fv-list.fv-no-border(v-show="!loading",
           :items="options",
-          :get-focus="showInput? false: true",
           ref="list",
           :search-query="search === true? searchQuery: ''",
           :selected="pValue",
