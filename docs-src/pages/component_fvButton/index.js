@@ -22,6 +22,12 @@ export default {
             description: 'Show loading spinner instead of content'
           },
           {
+            name: 'icon',
+            type: '',
+            default: '""',
+            description: 'Icon of button'
+          },
+          {
             name: 'disabled',
             type: 'Boolean',
             default: 'false',
