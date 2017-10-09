@@ -39,7 +39,8 @@ export default {
     return {
       pShow: false,
       param: null,
-      focusBackElem: null
+      focusBackElem: null,
+      focusableItems: []
     }
   },
   computed: {
@@ -56,9 +57,6 @@ export default {
         })
       })
       return ret
-    },
-    focusableItems () {
-      return this.$refs.dialog.$el.querySelectorAll('select, input, textarea, button, a, [tabindex]:not([tabindex=""])')
     },
     animationName () {
       return `fv-dialog-${this.position}`
@@ -93,6 +91,7 @@ export default {
       }
     },
     pFocus (index = true) {
+      this.focusableItems = this.$el.querySelectorAll('select, input, textarea, button, a, [tabindex]:not([tabindex=""])')
       let i
       if (typeof index === 'boolean') {
         i = index ? 0 : this.focusableItems.length - 1
