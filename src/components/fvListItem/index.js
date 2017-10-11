@@ -46,19 +46,11 @@ export default {
     click (event, param) {
       if (!this.disabled && event.detail) {
         this.$emit('click', param)
-        if (this.hasItems) {
-          this.toggle()
-        }
       }
     },
     expand () {
       this.pExpanded = true
       this.$emit('expand')
-      if (this.hasItems) {
-        utility.doIt(() => {
-          this.$refs.list.$el.focus()
-        })
-      }
     },
     collapse () {
       this.$emit('collapse')
