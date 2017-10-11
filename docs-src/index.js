@@ -34,7 +34,6 @@ import fvImg from './pages/component_fvImg'
 import include from './pages/installation_include'
 import usage from './pages/installation_usage'
 
-
 framevuerk.use(hammer)
 framevuerk.use(moment)
 Vue.use(VueRouter)
