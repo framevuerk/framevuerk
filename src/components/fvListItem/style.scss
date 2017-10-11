@@ -4,33 +4,52 @@
 .fv-list-item {
   clear: both;
   overflow: hidden;
-  & .text {
+  & .content {
     cursor: pointer;
-    padding: $padding-small $padding;
-    & .icon {
-      margin-#{$block-end}: .4em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 3.5em;
+    line-height: 3.5em;
+    // & .icon {
+    //   margin-#{$block-end}: .4em;
+    // }
+    & > .text{
+      padding: 0 $padding;
+      flex-grow: 1;
     }
     & .expand {
-      float: $block-end;
+      padding: 0 $padding;
+      height: 100%;
+      background: transparent;
+      border: 0;
+      box-shadow: inset 0 0 0 $theme-color;
+      color: inherit;
+      cursor: pointer;
+      font-weight: bold;
+      text-align: center;
+      &:focus {
+        @include textoutline($info-color-light);
+      }
     }
   }
   & .fv-list {
+    border: 0;
     background: $shadow-color-light;
+    box-shadow: inset 0 0 1em 3px $shadow-color-light;
   }
   &.disabled {
     @include disabled;
   }
   &.selected {
-    & > .text {
+    & > .content > .text {
       @include yiq($theme-color);
     }
   }
   &.highlighted {
-    & > .text {
-      background: $shadow-color-light;
-    }
-    &.selected > .text {
-      @include yiq($theme-color-dark);
+    & > .content > .text {
+      @include textoutline($info-color-light);
     }
   }
 }

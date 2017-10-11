@@ -5,9 +5,6 @@
   border: solid 1px $shadow-color;
   clear: both;
   & .fv-list-item {
-    border-bottom: solid 1px $shadow-color-light;
-    &:last-child {
-      border-bottom: 0;
-    }
+    border-top: solid 1px $shadow-color-light;
   }
 }
