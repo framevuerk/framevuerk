@@ -5,15 +5,15 @@ fv-main#app
     .fv-title
       h2.fv-no-wrap(v-if="$route.name !== 'welcome'") {{$route.name}}
       h2.fv-no-wrap(v-else) Framevuerk
-    .fv-icon
+    .fv-icon(v-if="$route.name.indexOf('/components') !== -1")
       a.fv-link(:href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
         target="_blank") View Source
   router-view.fv-row
-  fv-sidebar.sidebar(:pin="null", ref="sidebar", :width="270")
+  fv-sidebar.sidebar(:pin="null", ref="sidebar", :width="300")
     fv-header.doc-sidebar-header(:height="250")
       a.fv-title.fv-text-center(href="index.html")
         img.doc-logo(src="./logo-white.svg")
         h1 Framevuerk
         p.fv-word-wrap Awesome fully responsive Vue.js framevuerk!
-    fv-tabs(:tabs="sidebarTabs")
-      fv-list.fv-no-border(:items="sidebarItems", expanded, slot="components")
+    fv-content.fv-no-padding
+      fv-list.fv-no-border(:items="sidebarItems", expanded)

@@ -10,48 +10,56 @@ export default {
   },
   computed: {
     sidebarItems () {
-      return [{
-        text: 'Main',
-        items: [
-          this.sidebarItem('fvMain'),
-          this.sidebarItem('fvHeader'),
-          this.sidebarItem('fvContent'),
-          this.sidebarItem('fvFooter'),
-          this.sidebarItem('fvSidebar')
-        ]
-      }, {
-        text: 'Dialog',
-        items: [
-          this.sidebarItem('fvDialog'),
-          this.sidebarItem('fvMenu')
-        ]
-      }, {
-        text: 'Form',
-        items: [
-          this.sidebarItem('fvButton'),
-          this.sidebarItem('fvInput'),
-          this.sidebarItem('fvTextarea'),
-          this.sidebarItem('fvSelect'),
-          this.sidebarItem('fvDatepicker'),
-          this.sidebarItem('fvSwitch'),
-          this.sidebarItem('fvCheck'),
-          this.sidebarItem('fvFilepicker'),
-          this.sidebarItem('fvForm')
-        ]
-      }, {
-        text: 'Other',
-        items: [
-          this.sidebarItem('fvTable'),
-          this.sidebarItem('fvImg')
-        ]
-      }]
-    },
-    sidebarTabs () {
       return [
-        {title: 'Components', slot: 'components'},
-        {title: 'Directives', slot: 'directives'},
-        {title: 'Styles', slot: 'styles'}
-      ]
+        {
+          text: 'Installation',
+          items: [
+            this.sidebarItem('Include', '/Installation/include'),
+            this.sidebarItem('Usage', '/Installation/usage')
+          ]
+        },
+        {
+          text: 'Components',
+          items: [
+            {
+              text: 'Main',
+              items: [
+                this.sidebarItem('fvMain'),
+                this.sidebarItem('fvHeader'),
+                this.sidebarItem('fvContent'),
+                this.sidebarItem('fvFooter'),
+                this.sidebarItem('fvSidebar')
+              ]
+            },
+            {
+              text: 'Dialog',
+              items: [
+                this.sidebarItem('fvDialog'),
+                this.sidebarItem('fvMenu')
+              ]
+            }, {
+              text: 'Form',
+              items: [
+                this.sidebarItem('fvButton'),
+                this.sidebarItem('fvInput'),
+                this.sidebarItem('fvTextarea'),
+                this.sidebarItem('fvSelect'),
+                this.sidebarItem('fvDatepicker'),
+                this.sidebarItem('fvSwitch'),
+                this.sidebarItem('fvCheck'),
+                this.sidebarItem('fvFilepicker'),
+                this.sidebarItem('fvForm')
+              ]
+            }, {
+              text: 'Other',
+              items: [
+                this.sidebarItem('fvTable'),
+                this.sidebarItem('fvImg')
+              ]
+            }
+          ]
+        }
+      ];
     }
   },
   watch: {
@@ -60,13 +68,12 @@ export default {
     }
   },
   methods: {
-    sidebarItem (name) {
+    sidebarItem (name, route) {
       return {
         text: name,
-        icon: 'fa fa fa-puzzle-piece',
         selected: this.$route.name === name,
         action: () => {
-          this.$router.push(`/components/${name}`)
+          this.$router.push(route || `/components/${name}`)
         }
       }
     },
@@ -75,7 +82,7 @@ export default {
         this.$refs.sidebar.close()
       }
       if (this.$route.name === 'notfound') {
-        this.$router.push(`/components/fvMain`)
+        this.$router.push('/Installation/include')
       }
     }
   },
