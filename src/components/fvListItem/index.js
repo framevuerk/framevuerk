@@ -1,6 +1,5 @@
 import template from './template.pug'
 import style from './style.scss'
-import utility from '../../utility'
 
 export default {
   props: {
