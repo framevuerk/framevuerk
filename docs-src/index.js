@@ -31,6 +31,10 @@ import fvForm from './pages/component_fvForm'
 import fvTable from './pages/component_fvTable'
 import fvImg from './pages/component_fvImg'
 
+import include from './pages/installation_include'
+import usage from './pages/installation_usage'
+
+
 framevuerk.use(hammer)
 framevuerk.use(moment)
 Vue.use(VueRouter)
@@ -39,6 +43,16 @@ Vue.use(framevuerk)
 // Routes
 const router = new VueRouter({
   routes: [
+    {
+      name: 'Include',
+      path: '/installation/include',
+      component: include
+    },
+    {
+      name: 'Usage',
+      path: '/installation/usage',
+      component: usage
+    },
     {
       name: 'fvMain',
       path: '/components/fvMain',

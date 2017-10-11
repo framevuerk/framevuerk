@@ -1,0 +1,10 @@
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | First at all, you should install <b>Framevuerk</b> (and of course <b>Vue</b>). 
+    doc-code(v-pre, title="Terminal:")
+      = "npm install vue --save\n"
+      = "npm install framevuerk --save\n"
+    | Or if you are not familier to package managers and this stuff, skip this step and read <b>Globals</b> section in next page. 
+    fv-button.fv-sm(icon="fa fa-long-arrow-right", @click="$router.push('/installation/usage')") Usage
+    
