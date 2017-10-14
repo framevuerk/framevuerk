@@ -56,7 +56,7 @@ export default {
     }
   },
   methods: {
-    choose () {
+    choose (event) {
       if (event.detail) {
         this.$refs.input.click()
       }
