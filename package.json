@@ -46,6 +46,7 @@
     "eslint-plugin-vue": "beta",
     "file-loader": "^0.10.1",
     "font-awesome": "^4.7.0",
+    "hammerjs": "^2.0.8",
     "html-loader": "^0.4.5",
     "http-server": "^0.10.0",
     "lite-server": "^2.2.2",
@@ -60,14 +61,14 @@
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.8",
     "vue": "^2.3.4",
+    "vue-highlightjs": "^1.3.3",
     "vue-loader": "^13.0.0",
     "vue-resource": "^1.3.4",
     "vue-router": "^2.7.0",
     "vue-template-compiler": "^2.3.4",
     "vue-template-compiler-loader": "^1.0.4",
     "webpack": "^3.0.0",
-    "webpack-dev-server": "^2.6.1",
-    "hammerjs": "^2.0.8"
+    "webpack-dev-server": "^2.6.1"
   },
   "repository": {
     "type": "git",

@@ -4,6 +4,8 @@ import VueRouter from 'vue-router'
 import framevuerk from 'framevuerk'
 import moment from 'moment-jalaali'
 import hammer from 'hammerjs'
+import VueHighlightJS from 'vue-highlightjs'
+import 'highlight.js/styles/atom-one-dark.css'
 import 'font-awesome/css/font-awesome.css'
 
 import './doc.html'
@@ -37,7 +39,9 @@ import usage from './pages/installation_usage'
 framevuerk.use(hammer)
 framevuerk.use(moment)
 Vue.use(VueRouter)
+Vue.use(VueHighlightJS)
 Vue.use(framevuerk)
+
 
 // Routes
 const router = new VueRouter({
