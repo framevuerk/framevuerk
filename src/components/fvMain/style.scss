@@ -2,8 +2,11 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-main {
+  @include yiq($bg-color);
+  direction: $direction;
   display: flex;
   flex-direction: column;
+  font-family: sans-serif;
   height: inherit;
   position: relative;
   transition-duration: $transition-speed;
