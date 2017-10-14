@@ -37,7 +37,7 @@
       }
     }
     & > .row:nth-child(even) {
-      @include yiq(darken($bg-color-light, 4%));
+      background: $highlight-color-light;
     }
   }
   & .fv-footer {
