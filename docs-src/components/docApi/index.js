@@ -25,6 +25,14 @@ export default {
       ]
     }
   },
+  computed: {
+    show(){
+      if( this.rows.prop || this.rows.event || this.rows.method ){
+        return true
+      }
+      return false
+    }
+  },
   methods: {
     fields (type) {
       switch (type) {

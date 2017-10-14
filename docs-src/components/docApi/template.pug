@@ -1,4 +1,4 @@
-span
+span(v-show="show")
   h3 API
   fv-tabs(:tabs="tabs")
     div(v-for="tab in tabs", :slot="tab.slot")
