@@ -1,9 +1,9 @@
 span
   h3(v-if="title", v-html="title")
   h3(v-else) Code:
-  .doc-code.fv-padding(v-if="$slots.default")
-    pre
-      code
+  .doc-code(v-if="$slots.default")
+    pre(v-highlightjs)
+      code(:class="lang")
         slot
   div(v-else)
     p.fv-text-center Nothing to show!

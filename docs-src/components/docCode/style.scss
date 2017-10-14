@@ -1,8 +1,6 @@
 body .doc-code {
-  background: rgba(0, 0, 0, .8);
-  color: #20da3a;
   &,
   & * {
-    white-space: pre;
+    user-select: auto;
   }
 }
