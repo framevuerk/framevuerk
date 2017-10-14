@@ -3,7 +3,7 @@ fv-content
     doc-description
       h2 Globals:
       | Just add <a class="fv-link" href="https://cdn.jsdelivr.net/npm/framevuerk@latest/dist/framevuerk-en.js">https://cdn.jsdelivr.net/npm/framevuerk@latest/dist/framevuerk-en.js</a> to your page with script tag and use it!
-    doc-code(v-pre, title="HTML:")
+    doc-code(v-pre, title="HTML:", lang="html")
       = "<html>\n"
       = "\t<head>\n"
       = "\t\t...\n"
@@ -25,7 +25,7 @@ fv-content
       = "</html>\n"
     doc-description
       h2 CommonJS:
-    doc-code(v-pre, title="JS:")
+    doc-code(v-pre, title="JS:", lang="javascript")
       = "var Vue = require('vue');\n"
       = "var framevuerk = require('framevuerk');\n"
       = "\n"
@@ -34,7 +34,7 @@ fv-content
       = "new Vue({\n"
       = "\tel: \"#app\"\n"
       = "});"
-    doc-code(v-pre, title="Template:")
+    doc-code(v-pre, title="Template:", lang="html")
       = "<html>\n"
       = "\t<head>\n"
       = "\t\t...\n"
@@ -48,7 +48,7 @@ fv-content
       = "</html>\n"
     doc-description
       h2 ES6 (and pug):
-    doc-code(v-pre, title="JS:")
+    doc-code(v-pre, title="JS:", lang="javascript")
       = "import Vue from 'vue'\n"
       = "import framevuerk from 'framevuerk'\n"
       = "\n"
@@ -57,7 +57,7 @@ fv-content
       = "new Vue({\n"
       = "\tel: \"#app\"\n"
       = "});"
-    doc-code(v-pre, title="Template (pug):")
+    doc-code(v-pre, title="Template (pug):", lang="pug")
       = "fv-main#app\n"
       = "\t // Your Content"
     doc-description
