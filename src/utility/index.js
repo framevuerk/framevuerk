@@ -22,16 +22,5 @@ export default {
   capitalizeFirstLetter (str = '') {
     return str.charAt(0).toUpperCase() + str.slice(1)
   },
-  vueEvents () {
-    return [
-      'click',
-      'focus',
-      'blur',
-      'keyup',
-      'keydown',
-      'keypress',
-      'invalid'
-    ]
-  },
   _dependencies: {}
 }
