@@ -25,11 +25,10 @@
       cursor: pointer;
       font-weight: bold;
       height: 100%;
-      min-width: 45px;
       max-width: 45px;
-      width: 45px;
+      min-width: 45px;
       padding: 0 $padding;
-      text-align: center;
+      width: 45px;
       &:focus {
         @include textoutline($info-color-light);
       }
