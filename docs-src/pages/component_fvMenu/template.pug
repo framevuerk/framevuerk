@@ -6,7 +6,7 @@ fv-content
       = "<fv-menu></fv-menu>"
     doc-example
       fv-menu(ref="m1", :sheet="false", :items="['Option 1', 'Option 2','Option 1', 'Option 2','Option 1', 'Option 2','Option 1', 'Option 1', 'Option 2','Option 1', 'Option 2','Option 1', 'Option 2','Option 1', 'Option 2','Option 2','Option 1', 'Option 2','Option 1', 'Option 2']", title="Normal")
-      fv-menu(ref="m2", :sheet="true", :items="[{text: 'Google', icon: 'fa fa-google'}, {text: 'Yahoo', icon: 'fa fa-yahoo'}, {text: 'Microsoft', icon: 'fa fa-windows'}]", title="Select uour favorite company")
+      fv-menu(ref="m2", :sheet="true", :items="[{text: 'Google', icon: 'fa fa-google'}, {text: 'Yahoo', icon: 'fa fa-yahoo'}, {text: 'Microsoft', icon: 'fa fa-windows'}]", title="Select your favorite company")
       fv-menu(ref="m3", :sheet="null", :items="[{text: 'Copy', icon: 'fa fa-copy'}, {text: 'Cut', icon: 'fa fa-cut'}, {text: 'Paste', icon: 'fa fa-paste', disabled:true}]")
       fv-content.fv-row
         fv-button.fv-block.fv-warning(@click.native="$refs.m1.open()") Normal
