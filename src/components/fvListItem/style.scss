@@ -19,11 +19,15 @@
     & .expand {
       background: transparent;
       border: 0;
+      border-radius: 0;
       box-shadow: inset 0 0 0 $theme-color;
       color: inherit;
       cursor: pointer;
       font-weight: bold;
       height: 100%;
+      min-width: 45px;
+      max-width: 45px;
+      width: 45px;
       padding: 0 $padding;
       text-align: center;
       &:focus {

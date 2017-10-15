@@ -5,20 +5,16 @@
   @include sizes;
   border: 1px solid $shadow-color;
   border-radius: $border-radius;
-  box-shadow: inset 0 -2px 0 $shadow-color-light;
+  box-shadow: inset 0 -2px 0 0 $shadow-color;
   cursor: pointer;
   display: inline-block;
   font-family: inherit;
   max-width: 100%;
   text-align: center;
   vertical-align: middle;
-  &:active:not(.loading),
-  &.active:not(.loading) {
-    box-shadow: inset 0 2px 1px $shadow-color-light;
-  }
-  & > .loading-icon {
-    animation-duration: .6s;
-    font-size: 1.1em;
+  &:active,
+  &.active {
+    box-shadow: inset 0 1px 0 0 $shadow-color;
   }
   &,
   & span {
@@ -26,7 +22,6 @@
   }
   &:focus:not(.loading):not(:active):not(.active),
   &.focus:not(.loading):not(:active):not(.active) {
-    //@include textoutline(#fff);
     &:invalid,
     &.invalid {
       @include outline($danger-color);
