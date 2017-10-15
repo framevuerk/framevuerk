@@ -6,10 +6,7 @@
   direction: $direction;
   display: flex;
   flex-direction: column;
-  font-family: sans-serif;
   height: inherit;
   position: relative;
-  transition-duration: $transition-speed;
-  transition-property: padding;
   width: inherit;
 }
