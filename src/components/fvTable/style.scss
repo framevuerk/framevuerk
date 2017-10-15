@@ -37,7 +37,7 @@
       }
     }
     & > .row:nth-child(even) {
-      background: $highlight-color-light;
+      background: rgba(#000, .02);
     }
   }
   & .fv-footer {
