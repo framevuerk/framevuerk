@@ -185,6 +185,9 @@ html > body {
 .fv-no-transition {
   transition: 0s !important;
 }
+.fv-fast-animation {
+  animation-duration: .6s !important;
+}
 
 .fv-fade-enter-active,
 .fv-fade-leave-active {
