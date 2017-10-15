@@ -42,7 +42,6 @@ Vue.use(VueRouter)
 Vue.use(VueHighlightJS)
 Vue.use(framevuerk)
 
-
 // Routes
 const router = new VueRouter({
   routes: [

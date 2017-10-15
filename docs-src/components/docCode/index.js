@@ -2,7 +2,7 @@ import template from './template.pug'
 import style from './style.scss'
 
 export default {
-  data(){
+  data () {
     return {
       highlightjs: '',
       v: ''
