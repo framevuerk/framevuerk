@@ -2,7 +2,7 @@ li.fv-list-item(:class="{'disabled': disabled, 'selected': selected, 'highlighte
   .content(@click="click($event, null)")
     span.text
       i.icon(v-if="icon", :class="icon")
-      | {{text}}
+      span(v-html="text")
     fv-button.expand(v-if="hasItems", @click="toggle()", tab-index="1")
       i.fa(:class="{'fa-caret-down': !pExpanded,'fa-caret-up': pExpanded}")
   fv-list(v-if="hasItems",
