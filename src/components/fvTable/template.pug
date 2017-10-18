@@ -29,7 +29,7 @@ fv-main.fv-table
         :style="{width: '60px', maxWidth: '60px', minWidth: '60px'}")
         fv-button.menu-btn(v-show="checked.length === 0", @click="$emit('menu', [row])")
           i.fa.fa-ellipsis-v
-  fv-footer(v-if="footer", height="auto")
+  fv-footer(v-if="footer", :height="57")
     fv-button.fv-sm(@click.prevent="fetch(previousPage)",
       :disabled="previousPage === false || loading")
       span(v-html="prevPageBtnContent")
