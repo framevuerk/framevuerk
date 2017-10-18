@@ -11,10 +11,12 @@
   font-family: inherit;
   max-width: 100%;
   text-align: center;
+  text-shadow: 0 2px 1px $shadow-color;
   vertical-align: middle;
   &:active,
   &.active {
     box-shadow: inset 0 1px 0 0 $shadow-color;
+    text-shadow: 0 -2px 1px $shadow-color;
   }
   &,
   & span {
