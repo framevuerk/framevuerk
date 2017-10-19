@@ -16,23 +16,39 @@
         padding: 0;
         font-family: 'Lato', sans-serif;
         font-size: 17px;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
         overflow-x: hidden;
       }
 
       body .logo-container{
         margin-top: 5.5em;
         text-align: left;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
-        flex-direction: row;
-        align-items: center;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+                flex-direction: row;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
         opacity: 0;
       }
       body .logo{
          width: 11em;
-         transform: translateX(-15%) rotate(-90deg);
+         -webkit-transform: translateX(-15%) rotate(-90deg);
+             -ms-transform: translateX(-15%) rotate(-90deg);
+                 transform: translateX(-15%) rotate(-90deg);
       }
       body .sp{
         width: 1px;
@@ -40,11 +56,15 @@
         height: 5em;
         background: rgba(0, 0, 0, 0.1);
         margin: 0 2em;
-        transform: translateY(70%);
+        -webkit-transform: translateY(70%);
+            -ms-transform: translateY(70%);
+                transform: translateY(70%);
       }
       body .logo-text{
         line-height: 2.35em;
-        transform: translateX(50%);
+        -webkit-transform: translateX(50%);
+            -ms-transform: translateX(50%);
+                transform: translateX(50%);
       }
       body .logo-text h1{
         margin: 0;
@@ -69,7 +89,10 @@
       }
       @media screen and (max-width: 768px) {
           body .logo-container{
-              flex-direction: column;
+              -webkit-box-orient: vertical;
+              -webkit-box-direction: normal;
+                  -ms-flex-direction: column;
+                      flex-direction: column;
           }
           body .sp{
             width: 10em;
@@ -78,14 +101,20 @@
           }
           body .logo-text{
             text-align: center;
-            transform: translateY(50%);
+            -webkit-transform: translateY(50%);
+                -ms-transform: translateY(50%);
+                    transform: translateY(50%);
           }
       }
       body, body *{
+        -webkit-transition: all 1s;
+        -o-transition: all 1s;
         transition: all 1s;
       }
       body.ready *{
-        transform: translate(0) rotate(0deg) !important;
+        -webkit-transform: translate(0) rotate(0deg) !important;
+            -ms-transform: translate(0) rotate(0deg) !important;
+                transform: translate(0) rotate(0deg) !important;
         opacity: 1 !important;
       }
     </style>
