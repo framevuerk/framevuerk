@@ -1,11 +1,12 @@
 import './google-analytics.js.none'
+import 'babel-polyfill'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import framevuerk from 'framevuerk'
 import moment from 'moment-jalaali'
 import hammer from 'hammerjs'
 import VueHighlightJS from 'vue-highlightjs'
-import 'highlight.js/styles/atom-one-dark.css'
+import 'highlight.js/styles/agate.css'
 import 'font-awesome/css/font-awesome.css'
 
 import './doc.html'
