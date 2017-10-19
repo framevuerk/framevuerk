@@ -4,6 +4,7 @@
 .fv-footer {
   @include yiq($bg-color-dark);
   align-items: center;
+  border-top: solid 1px $shadow-color-light;
   bottom: 0;
   display: flex;
   justify-content: space-between;
