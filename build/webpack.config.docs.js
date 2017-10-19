@@ -69,7 +69,7 @@ var generateConfig = () => {
               options: {
                 plugins: [
                   require('autoprefixer')({
-                    browsers: 'last 15 versions'
+                    browsers: 'last 4 versions'
                   })
                 ]
               }
