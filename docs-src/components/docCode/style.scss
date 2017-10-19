@@ -1,4 +1,7 @@
 body .doc-code {
+  & > pre > code{
+    padding: 15px;
+  }
   &,
   & * {
     user-select: auto;
