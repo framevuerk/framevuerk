@@ -6,21 +6,19 @@ fv-content
     doc-code(v-pre, title="HTML:", lang="html")
       = "<html>\n"
       = "\t<head>\n"
-      = "\t\t...\n"
-      = "\t</head>\n"
-      = "\t<body>\n"
-      = "\t\t...\n"
       = "\t\t<script src=\"https://cdn.jsdelivr.net/npm/vue@2.4.4/dist/vue.min.js\"></script>\n"
       = "\t\t<script src=\"https://cdn.jsdelivr.net/npm/framevuerk@latest/dist/framevuerk-en.js\"></script>\n"
-      = "\t\t<fv-main id=\"app\">\n"
-      = "\t\t\t<!-- Your Content -->\n"
-      = "\t\t</fv-main>\n"
       = "\t\t<script>\n"
       = "\t\t\tVue.use(framevuerk);\n"
       = "\t\t\tnew Vue({\n"
       = "\t\t\t\tel: \"#app\"\n"
       = "\t\t\t});\n"
       = "\t\t</script>\n"
+      = "\t</head>\n"
+      = "\t<body>\n"
+      = "\t\t<fv-main id=\"app\">\n"
+      = "\t\t\t<!-- Your Content -->\n"
+      = "\t\t</fv-main>\n"
       = "\t</body>\n"
       = "</html>\n"
     doc-description
@@ -37,10 +35,9 @@ fv-content
     doc-code(v-pre, title="Template:", lang="html")
       = "<html>\n"
       = "\t<head>\n"
-      = "\t\t...\n"
+      = "\t\t<script src=\"path/to/your/app.js\"></script>\n"
       = "\t</head>\n"
       = "\t<body>\n"
-      = "\t\t...\n"
       = "\t\t<fv-main id=\"app\">\n"
       = "\t\t\t<!-- Your Content -->\n"
       = "\t\t</fv-main>\n"
@@ -57,7 +54,7 @@ fv-content
       = "new Vue({\n"
       = "\tel: \"#app\"\n"
       = "});"
-    doc-code(v-pre, title="Template (pug):", lang="pug")
+    doc-code(v-pre, title="Template via pug (after including app.js):", lang="pug")
       = "fv-main#app\n"
       = "\t // Your Content"
     doc-description
