@@ -54,7 +54,8 @@ export default {
               text: 'Other',
               items: [
                 this.sidebarItem('fvTable'),
-                this.sidebarItem('fvImg')
+                this.sidebarItem('fvImg'),
+                this.sidebarItem('fvSlider')
               ]
             }
           ]

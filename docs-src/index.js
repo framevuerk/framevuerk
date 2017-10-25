@@ -33,6 +33,7 @@ import fvFilepicker from './pages/component_fvFilepicker'
 import fvForm from './pages/component_fvForm'
 import fvTable from './pages/component_fvTable'
 import fvImg from './pages/component_fvImg'
+import fvSlider from './pages/component_fvSlider'
 
 import include from './pages/installation_include'
 import usage from './pages/installation_usage'
@@ -145,6 +146,11 @@ const router = new VueRouter({
       name: 'fvImg',
       path: '/components/fvImg',
       component: fvImg
+    },
+    {
+      name: 'fvSlider',
+      path: '/components/fvSlider',
+      component: fvSlider
     },
     {
       name: 'notfound',

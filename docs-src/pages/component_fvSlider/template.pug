@@ -1,0 +1,63 @@
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | To creating image(s) element, use this component. Note that before using this, you can add 
+      a.fv-link(href="http://hammerjs.github.io/", target="_blank") HammerJs
+      |  as dependency of framevuerk to allow touch actions.
+    doc-code
+      = "`javascript\n"
+      = "import framevuerk from 'framevuerk'\n"
+      = "import Hammer from 'hammerjs'\n"
+      = "framevuerk.use(Hammer)\n\n"
+      = "`html\n"
+      = "<fv-slider></fv-slider>"
+    doc-example
+      .fv-padding
+        h4 Default:
+        fv-slider(:items="['A', 'B', 'C']", :show-tabs="false", :show-navs="true", :show-buttons="true", :per-slide="1", v-model="items.s1")
+          fv-content.fv-text-center.fv-no-padding(slot="A")
+            fieldset.fv-form-control-group
+              h2 1: Slide A
+              p Hi. This is blah blah blah.
+              br
+          fv-content.fv-text-center.fv-no-padding(slot="B")
+            fieldset.fv-form-control-group
+              h2 2: Slide B
+              p Hi. This is fooooo.
+              br
+          fv-content.fv-text-center.fv-no-padding(slot="C")
+            fieldset.fv-form-control-group
+              h2 2: Slide C
+              p Hi. And this is baaaaar.
+              br
+        br
+        h4 Show 2 item per slide:
+        fv-slider(:items="['A', 'B', 'C']", :show-tabs="true", :show-navs="false", :show-buttons="false", :per-slide="2", v-model="items.s2")
+          fv-content.fv-text-center.fvz-no-padding(slot="A")
+            fieldset.fv-form-control-group
+              h2 Slide A
+              p Blahhhhh.
+          fv-content.fv-text-center.fvz-no-padding(slot="B")
+            fieldset.fv-form-control-group
+              h2 Slide B
+              p Fooooo.
+          fv-content.fv-text-center.fvz-no-padding(slot="C")
+            fieldset.fv-form-control-group
+              h2 Slide C
+              p Baaaaar.
+        br
+        h4 With interval:
+        fv-slider(:items="['A', 'B', 'C']", :show-tabs="false", :show-navs="false", :show-buttons="false", :per-slide="3", :interval="3000", v-model="items.s3")
+          fv-content.fv-text-center.fvz-no-padding(slot="A")
+            fieldset.fv-form-control-group
+              h2 A
+              p Blah.
+          fv-content.fv-text-center.fvz-no-padding(slot="B")
+            fieldset.fv-form-control-group
+              h2 B
+              p Foo.
+          fv-content.fv-text-center.fvz-no-padding(slot="C")
+            fieldset.fv-form-control-group
+              h2 C
+              p Bar.
+    doc-api(:rows="api")
