@@ -25,6 +25,7 @@ import fvTabs from './components/fvTabs'
 import fvCheck from './components/fvCheck'
 import fvTextarea from './components/fvTextarea'
 import fvImg from './components/fvImg'
+import fvSlider from './components/fvSlider'
 // Directives
 import fvScroll from './directives/fvScroll'
 
@@ -50,6 +51,7 @@ const framevuerk = {
   fvCheck,
   fvTextarea,
   fvImg,
+  fvSlider,
   use (lib = null) {
     if (lib) {
       switch (lib.name) {
@@ -86,6 +88,7 @@ const framevuerk = {
     Vue.component('fvCheck', fvCheck)
     Vue.component('fvTextarea', fvTextarea)
     Vue.component('fvImg', fvImg)
+    Vue.component('fvSlider', fvSlider)
     // Directives
     Vue.directive('fvScroll', fvScroll)
   },

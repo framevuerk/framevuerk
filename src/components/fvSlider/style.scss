@@ -1,0 +1,112 @@
+@import '../../styles/variables';
+@import '../../styles/functions';
+@import '../../styles/mixins';
+.fv-slider {
+  overflow: hidden;
+  & > .fv-header {
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    & > .fv-button {
+      background: transparent;
+      border-bottom: solid .4em transparent;
+      border-top: solid .4em transparent;
+      box-shadow: inset 0 0 0 $theme-color;
+      color: inherit;
+      cursor: pointer;
+      font-weight: bold;
+      height: 100%;
+      max-width: 70%;
+      text-align: center;
+      transition-duration: .25s;
+      transition-property: color, border;
+      &.fv-selected {
+        border-bottom: solid .4em $theme-color;
+        border-top: solid .4em transparent;
+        color: $theme-color;
+      }
+    }
+  }
+  & .fv-slider-page {
+    cursor: move;
+    overflow: hidden;
+    padding: 0;
+    & * {
+      touch-action: pan-y;
+      user-select: none;
+    }
+  }
+
+  & .fv-button.next,
+  & .fv-button.prev {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    &.next {
+      #{$block-end}: 0;
+    }
+    &.prev {
+      #{$block-start}: 0;
+    }
+    &:focus,
+    &.focus {
+      @include textoutline($info-color-light);
+    }
+  }
+  & .nav {
+    bottom: 0;
+    left: 50%;
+    line-height: 1;
+    margin: 0 auto;
+    position: absolute;
+    text-align: center;
+    transform: translateX(-50%);
+    width: auto;
+    & li {
+      background: rgba($color, .5);
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-block;
+      height: 10px;
+      margin: .8em .2em;
+      width: 10px;
+      &.selected {
+        background: $theme-color;
+        box-shadow: 0 0 15px $theme-color-light;
+        cursor: default;
+      }
+    }
+  }
+}
+
+
+.fv-slider-right-enter-active,
+.fv-slider-right-leave-active,
+.fv-slider-left-enter-active,
+.fv-slider-left-leave-active {
+  transform: translateX(0);
+  transition-duration: $transition-speed * 1.5;
+  transition-property: transform, opacity;
+}
+
+.fv-slider-right-leave-active,
+.fv-slider-right-leave-to,
+.fv-slider-left-leave-active,
+.fv-slider-left-leave-to {
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.fv-slider-right-leave-active,
+.fv-slider-right-leave-to {
+  transform: translateX(50%);
+}
+
+.fv-slider-left-leave-active,
+.fv-slider-left-leave-to {
+  transform: translateX(-50%);
+}
