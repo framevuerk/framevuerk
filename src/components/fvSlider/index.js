@@ -40,6 +40,7 @@ export default {
       hammer: undefined,
       timer: null,
       animationName: 'fv-slider-prev',
+      pages: [],
       dirs: {
         next: process.env.DIRECTION === 'ltr' ? 'left' : 'right',
         prev: process.env.DIRECTION === 'ltr' ? 'right' : 'left'
@@ -47,16 +48,6 @@ export default {
     }
   },
   computed: {
-    pages () {
-      const ret = []
-      for (let i = 0; i < this.items.length; i++) {
-        ret[i] = []
-        for (let j = i; j < i + this.perSlide; j++) {
-          ret[i].push(this.items[j % this.items.length])
-        }
-      }
-      return ret
-    },
     itemWidth () {
       return 100 / this.perSlide + '%'
     },
@@ -76,7 +67,13 @@ export default {
     }
   },
   methods: {
-    focus () {
+    calcPages () {
+      this.items.forEach((item, i) => {
+        this.pages[i] = []
+        for (let j = i; j < i + this.perSlide; j++) {
+          this.pages[i].push(this.items[j % this.items.length])
+        }
+      })
     },
     moveSlide (slide) {
       const currentIndex = this.items.findIndex(slide => slide === this.value)
@@ -116,6 +113,7 @@ export default {
   },
   created () {
     this.hammer = utility._dependencies.hammer
+    this.calcPages()
   },
   mounted () {
     this.initerval()
