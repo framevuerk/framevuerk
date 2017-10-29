@@ -168,6 +168,9 @@ export default new Vue({
   },
   router,
   methods: {
+    log (d1, d2, d3) {
+      console.log(d1, d2, d3)
+    },
     routeChange (path) {
       const url = `doc.html#${path}`
       global.ga('send', 'pageview', url)
