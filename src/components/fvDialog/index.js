@@ -113,7 +113,6 @@ export default {
         break
       case 13: // enter
         event.target.click()
-        event.preventDefault()
         break
       case 27: // esc
         this.closeIf()
