@@ -88,7 +88,7 @@
 .fv-slider-left-enter-active,
 .fv-slider-left-leave-active {
   transform: translateX(0);
-  transition-duration: $transition-speed * 1.5;
+  transition-duration: $transition-speed * 2;
   transition-property: transform, opacity;
 }
 
@@ -96,17 +96,17 @@
 .fv-slider-right-leave-to,
 .fv-slider-left-leave-active,
 .fv-slider-left-leave-to {
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   z-index: 1;
 }
 
 .fv-slider-right-leave-active,
 .fv-slider-right-leave-to {
-  transform: translateX(50%);
+  transform: translateX(100%);
 }
 
 .fv-slider-left-leave-active,
 .fv-slider-left-leave-to {
-  transform: translateX(-50%);
+  transform: translateX(-100%);
 }
