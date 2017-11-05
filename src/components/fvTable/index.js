@@ -236,7 +236,7 @@ export default {
       this.pPage = this.initialState.page || this.page || 1
       this.apiResponse = this.initialState.apiResponse || null
     }
-    this.fetch(this.page)
+    this.fetch(this.pPage)
   },
   methods: {
     getState () {
@@ -258,8 +258,13 @@ export default {
         this.pPage = page
         return this.ajax.get(this.pApi).then(response => {
           this.apiResponse = response
-          this.loading = false
-          this.$emit('fetch', this.pPage)
+          if( this.pRows.length === 0 && this.pPage !== 1 ){
+            this.pPage = 1
+            this.fetch(1)
+          } else {
+            this.loading = false
+            this.$emit('fetch', this.pPage)
+          }
         }).catch(response => {
           this.$emit('fetch-error', this.pPage, response)
           this.pPage = currentPage
