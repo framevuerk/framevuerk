@@ -61,6 +61,10 @@ export default {
       type: Number,
       default: 15
     },
+    page: {
+      type: Number,
+      default: 1
+    },
     menu: {
       type: Boolean,
       default: false
@@ -76,8 +80,8 @@ export default {
   },
   data () {
     return {
+      pPage: this.page,
       locale,
-      page: 1,
       totalCount: this.local ? this.rows.length : 0,
       apiResponse: null,
       loading: false,
@@ -144,7 +148,7 @@ export default {
       return ret
     },
     pApi () {
-      return this.api.replace('{page}', this.page).replace('{limit}', this.limit)
+      return this.api.replace('{page}', this.pPage).replace('{limit}', this.limit)
     },
     totalPages () {
       if (this.local || !this.footer) {
@@ -166,7 +170,7 @@ export default {
       if (this.local || !this.apiResponse || !this.apiRowsKey) {
         return false
       } else { // { rows: [...], total: 50 }
-        let page = this.page
+        let page = this.pPage
         if (this.apiTotalCountKey !== null) {
           const totalPages = this.totalPages
           if (page < totalPages) {
@@ -210,7 +214,7 @@ export default {
       if (this.local || !this.apiResponse || !this.apiRowsKey) {
         return false
       } else { // { rows: [...], total: 50 } or { rows: [...], is_lastpage: false }
-        let page = this.page
+        let page = this.pPage
         if (this.apiTotalCountKey !== null || this.apiFinishedKey !== null) {
           if (page > 1) {
             page--
@@ -229,7 +233,7 @@ export default {
   },
   created () {
     if (this.initialState) {
-      this.page = this.initialState.page || 1
+      this.pPage = this.initialState.page || this.page || 1
       this.apiResponse = this.initialState.apiResponse || null
     }
     this.fetch(this.page)
@@ -237,12 +241,12 @@ export default {
   methods: {
     getState () {
       return {
-        page: this.page,
+        page: this.pPage,
         apiResponse: this.apiResponse
       }
     },
     fetch (page = 1) {
-      const currentPage = this.page
+      const currentPage = this.pPage
       this.loading = true
       this.checkAll = false
       if (this.local) {
@@ -251,14 +255,14 @@ export default {
       } else if (!this.ajax) {
         throw new Error('Are you set ajax prop?')
       } else {
-        this.page = page
+        this.pPage = page
         return this.ajax.get(this.pApi).then(response => {
           this.apiResponse = response
           this.loading = false
-          this.$emit('fetch', this.page)
+          this.$emit('fetch', this.pPage)
         }).catch(response => {
-          this.$emit('fetch-error', this.page, response)
-          this.page = currentPage
+          this.$emit('fetch-error', this.pPage, response)
+          this.pPage = currentPage
           this.loading = false
         })
       }
@@ -271,7 +275,6 @@ export default {
     setUserPage (page) {
       clearTimeout(this.setUserPageTimeout)
       this.setUserPageTimeout = setTimeout(() => {
-        console.log(page)
         page = parseInt(page)
         if (page > this.totalPages || page < 1) {
           this.$refs.userInputPage.$el.value = this.page
@@ -312,6 +315,9 @@ export default {
       if (v.length !== this.pRows.length) {
         this.checkAll = false
       }
+    },
+    page (page) {
+      this.fetch(page)
     }
   },
   style,

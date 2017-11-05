@@ -34,7 +34,7 @@ fv-main.fv-table
       :disabled="previousPage === false || loading")
       span(v-html="prevPageBtnContent")
     fv-input.fv-form-control.fv-sm(type="number",
-      :value="page",
+      :value="pPage",
       :min="1",
       :max="totalPages",
       @input="setUserPage($event)",
