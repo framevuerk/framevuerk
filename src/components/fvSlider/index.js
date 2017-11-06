@@ -76,6 +76,12 @@ export default {
       })
     },
     moveSlide (slide) {
+      if( slide > 0 ){
+        this.animationName = `fv-slider-${this.dirs.next}`
+      } else {
+        this.animationName = `fv-slider-${this.dirs.prev}`
+      }
+
       const currentIndex = this.items.findIndex(slide => slide === this.value)
       let newSlideIndex = currentIndex + slide
       if (newSlideIndex >= this.items.length) {
@@ -83,6 +89,7 @@ export default {
       } else if (newSlideIndex < 0) {
         newSlideIndex = this.items.length - 1
       }
+      this.initerval()
       this.$emit('input', this.items[newSlideIndex])
     },
     initHammer () {
@@ -125,18 +132,6 @@ export default {
   watch: {
     interval () {
       this.initerval()
-    },
-    value (newValue, oldValue) {
-      const newIndex = this.items.findIndex(slide => slide === newValue)
-      const oldIndex = this.items.findIndex(slide => slide === oldValue)
-      const lastIndex = this.items.length - 1
-      if (newIndex === lastIndex && oldIndex === 0) {
-        this.animationName = `fv-slider-${this.dirs.prev}`
-      } else if (newIndex > oldIndex || (newIndex === 0 && oldIndex === this.items.length - 1)) {
-        this.animationName = `fv-slider-${this.dirs.next}`
-      } else {
-        this.animationName = `fv-slider-${this.dirs.prev}`
-      }
     }
   },
   style,
