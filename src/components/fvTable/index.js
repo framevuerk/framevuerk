@@ -258,7 +258,7 @@ export default {
         this.pPage = page
         return this.ajax.get(this.pApi).then(response => {
           this.apiResponse = response
-          if( this.pRows.length === 0 && this.pPage !== 1 ){
+          if (this.pRows.length === 0 && this.pPage !== 1) {
             this.pPage = 1
             this.fetch(1)
           } else {

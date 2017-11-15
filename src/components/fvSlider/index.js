@@ -76,7 +76,7 @@ export default {
       })
     },
     moveSlide (slide) {
-      if( slide > 0 ){
+      if (slide > 0) {
         this.animationName = `fv-slider-${this.dirs.next}`
       } else {
         this.animationName = `fv-slider-${this.dirs.prev}`
