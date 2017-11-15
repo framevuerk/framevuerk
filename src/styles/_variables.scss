@@ -4,7 +4,7 @@
 // $theme-color: #1f89dd;
 @import './functions';
 
-$transition-speed: .3s;
+$transition-speed: .25s;
 
 $block-start: if($direction == rtl, right, left);
 $block-end: if($direction == rtl, left, right);
@@ -29,7 +29,7 @@ $highlight-color-light: rgba(255, 255, 255, .06) !default;
 $highlight-color-dark: rgba(255, 255, 255, .35) !default;
 
 
-$gray-color: #f5f5f5 !default;
+$gray-color: #f1f1f1 !default;
 $gray-color-light: lighten($gray-color, 4%) !default;
 $gray-color-dark: darken($gray-color, 18%) !default;
 
@@ -68,7 +68,7 @@ $padding: 15px !default;
 $padding-small: 11px !default;
 $padding-large: 25px !default;
 
-$border-radius: 5px;
+$border-radius: 3px;
 $border-radius-small: 2px;
 $border-radius-large: 12px;
 
