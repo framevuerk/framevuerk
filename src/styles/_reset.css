@@ -32,6 +32,9 @@ footer, header, hgroup, menu, nav, section {
     &:focus{
         outline: none;
     }
+    &::-moz-focus-inner {
+        border: 0;
+    }
 }
 input, textarea, code, pre{
     user-select: text;
