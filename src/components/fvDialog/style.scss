@@ -12,12 +12,12 @@
     transform: translate(-50%, -50%);
   } @else if ($part == 'animation-enter') {
     opacity: 1;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1, 1);
     transition-duration: $transition-speed;
     transition-property: transform, opacity;
   } @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate(-50%, -26%);
+    transform: translate(-50%, -50%) scale(.7, .7);
   }
 }
 @mixin fv-dialog-bottom($part) {
@@ -47,12 +47,10 @@
     width: 100%;
   } @else if($part == 'animation-enter') {
     opacity: 1;
-    transform: translate(0, 0);
     transition-duration: $transition-speed;
-    transition-property: transform, opacity;
+    transition-property: opacity;
   } @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate(0, 34%);
   }
 }
 
