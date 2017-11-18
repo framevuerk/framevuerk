@@ -66,9 +66,9 @@ export default {
       }
     },
     keydown (event) {
-      if (event.target !== this.$el && this.getFocus !== false) {
-        return
-      }
+      // if (event.target !== this.$el && this.getFocus !== false) {
+      //   return
+      // }
       switch (event.which) {
       case 38: // up
         this.highlightedOption = this.highlightedOption == null ? this.pItems.length : this.highlightedOption

@@ -33,4 +33,5 @@ span
           ref="list",
           :search-query="search === true? searchQuery: ''",
           :selected="pValue",
+          :get-focus="!showInput",
           @click-item="clickItem($event)")
