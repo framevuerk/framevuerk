@@ -17,7 +17,7 @@
     transition-property: transform, opacity;
   } @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(.85, .85);
+    transform: translate(-50%, -50%) scale(.9, .9);
   }
 }
 @mixin fv-dialog-bottom($part) {
@@ -58,7 +58,7 @@
 
 .fv-dialog {
   @include yiq($bg-color);
-  box-shadow: 0 5px 15px $shadow-color;
+  box-shadow: 0 5px 5px $shadow-color;
   height: auto;
   min-width: 300px;
   overflow: auto;
