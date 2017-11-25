@@ -27,6 +27,7 @@
     transition-duration: $transition-speed;
     transition-property: transform;
     transition-timing-function: ease;
+    will-change: transform;
   }
 
   &.fv-sidebar-left-enter,
