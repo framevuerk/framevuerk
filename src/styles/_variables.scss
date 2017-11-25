@@ -1,7 +1,7 @@
 // DEFINED FROM WEBPACK
 // $env: production;
 // $direction: rtl;
-// $theme-color: #1f89dd;
+// $theme-color: #1f9cdd;
 @import './functions';
 
 $transition-speed: .25s;
@@ -11,7 +11,7 @@ $block-end: if($direction == rtl, left, right);
 
 $bg-color: #f9f9f9 !default;
 $bg-color-light: lighten($bg-color, 4%) !default;
-$bg-color-dark: darken($bg-color, 2%) !default;
+$bg-color-dark: darken($bg-color, 1%) !default;
 
 $color: yiq($bg-color) !default;
 $color-light: lighten($color, 18%) !default;
@@ -20,8 +20,8 @@ $color-dark: darken($color, 5%) !default;
 $sidebar-bg-color: #383f47 !default;
 
 
-$shadow-color: rgba(0, 0, 0, .19) !default;
-$shadow-color-light: rgba(0, 0, 0, .06) !default;
+$shadow-color: rgba(0, 0, 0, .13) !default;
+$shadow-color-light: rgba(0, 0, 0, .05) !default;
 $shadow-color-dark: rgba(0, 0, 0, .35) !default;
 
 $highlight-color: rgba(255, 255, 255, .19) !default;
@@ -33,11 +33,11 @@ $gray-color: #f1f1f1 !default;
 $gray-color-light: lighten($gray-color, 4%) !default;
 $gray-color-dark: darken($gray-color, 18%) !default;
 
-$default-color: $gray-color !default;
-$default-color-light: $gray-color-light !default;
-$default-color-dark: $gray-color-dark !default;
+$default-color: $bg-color !default;
+$default-color-light: $bg-color-light !default;
+$default-color-dark: $bg-color-dark !default;
 
-//$theme-color: #1f89dd !default;
+//$theme-color: #1f9cdd !default;
 $theme-color-light: lighten($theme-color, 10%) !default;
 $theme-color-dark: darken($theme-color, 5%) !default;
 
@@ -45,7 +45,7 @@ $primary-color: $theme-color !default;
 $primary-color-light: $theme-color-light !default;
 $primary-color-dark: $theme-color-dark !default;
 
-$danger-color: #c82b08 !default;
+$danger-color: #dd4b39 !default;
 $danger-color-light: lighten($danger-color, 10%) !default;
 $danger-color-dark: darken($danger-color, 5%) !default;
 
@@ -53,12 +53,12 @@ $warning-color: #ef8f00 !default;
 $warning-color-light: lighten($warning-color, 10%) !default;
 $warning-color-dark: darken($warning-color, 5%) !default;
 
-$info-color: #1cc1ea !default;
+$info-color: #25c8f1 !default;
 $info-color-light: lighten($info-color, 10%) !default;
 $info-color-dark: darken($info-color, 5%) !default;
 
 $success-color: #55bb08 !default;
-$success-color-light: lighten($success-color, 10%) !default;
+$success-color-light: lighten($success-color, 5%) !default;
 $success-color-dark: darken($success-color, 5%) !default;
 
 

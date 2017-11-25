@@ -113,7 +113,7 @@ fs.readdirSync(path.resolve(__dirname, '../src/locale')).forEach(file => {
 
 var ret = []
 locales.forEach(local => {
-  ret.push(generateConfig(local, process.env.THEME_COLOR || '#1f89dd'))
+  ret.push(generateConfig(local, process.env.THEME_COLOR || '#108dce'))
 })
 
 module.exports = ret
