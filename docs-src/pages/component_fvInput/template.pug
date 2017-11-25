@@ -57,5 +57,5 @@ fv-content
         .fv-col-sm-12
           p Advanced usage:
           fv-menu(ref="d3", :items="['English', 'Persian']", @click-item="inputs.d3 = $event")
-          fv-input.fv-block(v-model="inputs.d3", render-type="display", :display-value="inputs.d3", @enter="$refs.d3.open()", caret-icon="fa fa-language", placeholder="Select your locale")
+          fv-input(v-model="inputs.d3", render-type="display", :display-value="inputs.d3", @enter="$refs.d3.open()", caret-icon="fa fa-language", placeholder="Select your locale")
     doc-api(:rows="api")
