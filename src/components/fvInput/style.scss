@@ -4,12 +4,15 @@
 .fv-input {
   @include yiq($bg-color-light);
   @include sizes;
+  align-items: center;
   border: 1px solid $shadow-color;
   border-radius: $border-radius;
   box-shadow: inset 0 .3em .5em $shadow-color-light;
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
   font-family: inherit;
-  padding: 0 .6em;
+  justify-content: space-between;
+  padding: 7.5px;
   vertical-align: middle;
   &.fv-search-style {
     border-left: 0;
@@ -41,17 +44,25 @@
   &::placeholder,
   & > .placeholder {
     color: $gray-color-dark;
+    display: inline-block;
+    line-height: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 75%;
   }
   &.fv-input-select,
   &.fv-input-datepicker {
     cursor: pointer;
     & > .fv-input-select-item {
-      &::after {
-        color: $gray-color-dark;
-        content: ',';
-        display: inline-block;
-        padding-#{$block-end}: .3em;
-        padding-#{$block-start}: .1em;
+      & > span {
+        &:not(:last-child)::after {
+          color: $gray-color-dark;
+          content: ',';
+          display: inline-block;
+          padding-#{$block-end}: .3em;
+          padding-#{$block-start}: .1em;
+        }
       }
     }
     & > .fv-input-select-item-single {
