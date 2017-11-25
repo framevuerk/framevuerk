@@ -22,17 +22,17 @@ fv-content
           h4 Usage:
         .fv-col-sm-6
           p Default:
-          fv-datepicker(v-model="inputs.d1", input-class="fv-block", placeholder="Pick your favorite time!")
+          fv-datepicker(v-model="inputs.d1", placeholder="Pick your favorite time!")
         .fv-col-sm-6
           p Only Date Picker:
-          fv-datepicker(v-model="inputs.d2", input-class="fv-block", placeholder="Pick your birthday", :pick="['year','month','day']", display-format="YYYY/MM/D")
+          fv-datepicker(v-model="inputs.d2", placeholder="Pick your birthday", :pick="['year','month','day']", display-format="YYYY/MM/D")
         .fv-col-sm-6
           p Only Time Picker + Required:
-          fv-datepicker(v-model="inputs.d3", required, input-class="fv-block", placeholder="Pick alarm time", :pick="['hour','minute']", display-format="HH:mm")
+          fv-datepicker(v-model="inputs.d3", required, placeholder="Pick alarm time", :pick="['hour','minute']", display-format="HH:mm")
         .fv-col-sm-6
           p Custom:
-          fv-datepicker(v-model="inputs.d4", required, input-class="fv-block", :pick="['month']", display-format="MMMM (MM)", placeholder="Select your favorite month")
+          fv-datepicker(v-model="inputs.d4", required, :pick="['month']", display-format="MMMM (MM)", placeholder="Select your favorite month")
         .fv-col-sm-6
           p Disabled:
-          fv-datepicker(v-model="inputs.d5", disabled, input-class="fv-block", placeholder="You can't pick me!")
+          fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
     doc-api(:rows="api")

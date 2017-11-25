@@ -16,21 +16,21 @@ fv-content
           h4 Usage:
         .fv-col-sm-6
           p Default:
-          fv-select(v-model="inputs.d1", input-class="fv-block", :search="false", placeholder="Select your country", :options=['Iran', {text: 'Germany', value: 'ger'}, 'France'])
+          fv-select(v-model="inputs.d1", :search="false", placeholder="Select your country", :options=['Iran', {text: 'Germany', value: 'ger'}, 'France'])
         .fv-col-sm-6
           p Multiple:
-          fv-select(v-model="inputs.d2", multiple, input-class="fv-block", placeholder="Select your favorite Club", :options=['A.C. Milan', 'Real Madrid', 'Esteghlal', 'Al-Ahli'])
+          fv-select(v-model="inputs.d2", multiple, placeholder="Select your favorite Club", :options=['A.C. Milan', 'Real Madrid', 'Esteghlal', 'Al-Ahli'])
         .fv-col-sm-6
           p Allow insert:
-          fv-select(v-model="inputs.d3", :search="null", multiple, allow-insert, @insert="d3opts.push($event); inputs.d3.push($event)", input-class="fv-block", placeholder="Select your favorite countries", :options="d3opts")
+          fv-select(v-model="inputs.d3", :search="null", multiple, allow-insert, @insert="d3opts.push($event); inputs.d3.push($event)", placeholder="Select your favorite countries", :options="d3opts")
         .fv-col-sm-6
           p Disabled:
-          fv-select(v-model="inputs.d4", disabled, input-class="fv-block", placeholder="You can't select me!")
+          fv-select(v-model="inputs.d4", disabled, placeholder="You can't select me!")
         .fv-col-sm-6
           p Advanced Required:
-          fv-select(v-model="inputs.d5", multiple, input-class="fv-block", placeholder="Select 3 items!", :required="function(){ return this.value.length === 3 }", :options=['Pato', 'Robinho', 'Ronaldinho', 'Ronaldo', 'Roberto Carlos'])
+          fv-select(v-model="inputs.d5", multiple, placeholder="Select 3 items!", :required="function(){ return this.value.length === 3 }", :options=['Pato', 'Robinho', 'Ronaldinho', 'Ronaldo', 'Roberto Carlos'])
         .fv-col-sm-6
           p Loading...:
-          fv-select(input-class="fv-block", placeholder="Select me!", :options=['Pato', 'Robinho', 'Ronaldinho', 'Ronaldo', 'Roberto Carlos'], loading)
+          fv-select(placeholder="Select me!", :options=['Pato', 'Robinho', 'Ronaldinho', 'Ronaldo', 'Roberto Carlos'], loading)
 
     doc-api(:rows="api")
