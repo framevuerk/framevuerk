@@ -2,6 +2,7 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-textarea {
+  line-height: 1.3em;
   &.auto-height {
     @include nowrap;
     overflow-x: auto;
