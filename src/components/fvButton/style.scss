@@ -5,18 +5,18 @@
   @include sizes;
   border: 1px solid $shadow-color;
   border-radius: $border-radius;
-  box-shadow: inset 0 -1px 0 0 $shadow-color, inset 0 1px 0 0 $highlight-color-dark;
+  box-shadow: inset 0 -.7em 1em 2px $shadow-color-light, inset 0 1px 0 0 $highlight-color;
   cursor: pointer;
   display: inline-block;
   font-family: inherit;
   max-width: 100%;
   text-align: center;
-  text-shadow: 0 2px 1px $shadow-color;
+  text-shadow: 0 1px 1px $shadow-color;
   vertical-align: middle;
   &:active,
   &.active {
-    box-shadow: inset 0 1px 0 0 $shadow-color, inset 0 -1px 0 0 $highlight-color-dark;;
-    text-shadow: 0 -2px 1px $shadow-color;
+    box-shadow: inset 0 .7em 1em 2px $shadow-color-light, inset 0 -1px 0 0 $highlight-color;
+    text-shadow: 0 -1px 1px $shadow-color;
   }
   &,
   & span {
