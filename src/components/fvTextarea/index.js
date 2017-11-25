@@ -41,11 +41,11 @@ export default {
       if (this.autoHeight) {
         let height
         if (val) {
-          height = val.split('\n').length
+          height = val.split('\n').length + 1
         } else {
           height = 1
         }
-        this.$el.style.height = `${height * 3}em`
+        this.$el.style.height = `${height * 1.3}em`
       }
     }
   },
