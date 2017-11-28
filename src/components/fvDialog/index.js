@@ -14,7 +14,7 @@ export default {
     position: {
       type: String,
       validator: (value) => {
-        return ['bottom', 'center', 'fill', 'center-fill', 'center-bottom'].indexOf(value) > -1
+        return ['bottom', 'top', 'center', 'fill', 'center-fill', 'center-bottom'].indexOf(value) > -1
       },
       default: 'center'
     },

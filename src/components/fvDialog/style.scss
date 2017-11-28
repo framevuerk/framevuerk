@@ -38,6 +38,23 @@
     transform: translate(0, 100%);
   }
 }
+@mixin fv-dialog-top($part) {
+  @if($part == 'style') {
+    bottom: auto;
+    left: 0;
+    max-height: 90%;
+    max-width: 100%;
+    top: .1px;
+    width: 100%;
+  } @else if($part == 'animation-enter') {
+    transform: translate(0, 0);
+    transition-duration: $transition-speed;
+    transition-property: transform;
+    will-change: transform;
+  } @else if($part == 'animation-leave') {
+    transform: translate(0, -100%);
+  }
+}
 @mixin fv-dialog-fill($part) {
   @if($part == 'style') {
     border-radius: 0;
@@ -79,6 +96,9 @@
   &.fv-dialog-bottom {
     @include fv-dialog-bottom(style);
   }
+  &.fv-dialog-top {
+    @include fv-dialog-top(style);
+  }
   &.fv-dialog-fill {
     @include fv-dialog-fill(style);
   }
@@ -111,6 +131,13 @@
   }
   @include vue-animation(fv-dialog-bottom, leave) {
     @include fv-dialog-bottom(animation-leave);
+  }
+
+  @include vue-animation(fv-dialog-top, enter) {
+    @include fv-dialog-top(animation-enter);
+  }
+  @include vue-animation(fv-dialog-top, leave) {
+    @include fv-dialog-top(animation-leave);
   }
 
   @include vue-animation(fv-dialog-fill, enter) {
