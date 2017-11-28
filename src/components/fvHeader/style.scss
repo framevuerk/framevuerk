@@ -46,6 +46,7 @@
       &.focus {
         @include textoutline($info-color-light);
         background: transparent;
+        box-shadow: none;
         color: inherit;
       }
     }
