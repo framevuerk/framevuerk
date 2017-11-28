@@ -5,7 +5,6 @@
   @include sizes;
   border: 1px solid $shadow-color;
   border-radius: $border-radius;
-  box-shadow: inset 0 -.7em 1em 2px $shadow-color-light, inset 0 1px 0 0 $highlight-color;
   cursor: pointer;
   display: inline-block;
   font-family: inherit;
@@ -15,15 +14,16 @@
   vertical-align: middle;
   &:active,
   &.active {
-    box-shadow: inset 0 .7em 1em 2px $shadow-color-light, inset 0 -1px 0 0 $highlight-color;
+    @include textoutline($info-color-light);
     text-shadow: 0 -1px 1px $shadow-color;
   }
   &,
   & span {
     @include nowrap;
   }
-  &:focus:not(.loading):not(:active):not(.active),
-  &.focus:not(.loading):not(:active):not(.active) {
+  &:focus,
+  &.focus {
+    @include outline;
     &:invalid,
     &.invalid {
       @include outline($danger-color);
@@ -35,83 +35,31 @@
   }
   &,
   &.fv-default {
-    @include yiq($default-color);
-    &:active,
-    &.active {
-      @include yiq($default-color-dark);
-    }
-    &:focus,
-    &.focus {
-      @include yiq($default-color-light);
-    }
+    @include button($default-color);
+
   }
   &.fv-ok {
-    background: $default-color;
-    color: $primary-color;
-    &:active,
-    &.active {
-      background: $default-color-dark;
-      color: $primary-color-light;
-    }
-    &:focus,
-    &.focus {
-      background: $default-color-light;
-      color: $primary-color;
-    }
+    @include button($default-color, $primary-color);
+
   }
   &.fv-primary {
-    @include yiq($primary-color);
-    &:active,
-    &.active {
-      @include yiq($primary-color-dark);
-    }
-    &:focus,
-    &.focus {
-      @include yiq($primary-color-light);
-    }
+    @include button($primary-color);
+
   }
   &.fv-info {
-    @include yiq($info-color);
-    &:active,
-    &.active {
-      @include yiq($info-color-dark);
-    }
-    &:focus,
-    &.focus {
-      @include yiq($info-color-light);
-    }
+    @include button($info-color);
+
   }
   &.fv-danger {
-    @include yiq($danger-color);
-    &:active,
-    &.active {
-      @include yiq($danger-color-dark);
-    }
-    &:focus,
-    &.focus {
-      @include yiq($danger-color-light);
-    }
+    @include button($danger-color);
+
   }
   &.fv-warning {
-    @include yiq($warning-color);
-    &:active,
-    &.active {
-      @include yiq($warning-color-dark);
-    }
-    &:focus,
-    &.focus {
-      @include yiq($warning-color-light);
-    }
+    @include button($warning-color);
+
   }
   &.fv-success {
-    @include yiq($success-color);
-    &:active,
-    &.active {
-      @include yiq($success-color-dark);
-    }
-    &:focus,
-    &.focus {
-      @include yiq($success-color-light);
-    }
+    @include button($success-color);
+
   }
 }
