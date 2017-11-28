@@ -5,7 +5,6 @@
   line-height: 1.3em;
   padding: 7.5px;
   &.auto-height {
-    @include nowrap;
     overflow-x: auto;
     resize: none;
   }
