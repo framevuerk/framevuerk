@@ -1,6 +1,20 @@
 @import '../../styles/variables';
 @import '../../styles/functions';
 @import '../../styles/mixins';
+
+@mixin button($bgcolor, $color: false) {
+  background: linear-gradient(to top, darken($bgcolor, 5%), $bgcolor, lighten($bgcolor, 5%));
+  @if $color == false {
+    color: yiq($bgcolor);
+  } @else {
+    color: $color;
+  }
+  &:active,
+  &.active {
+    background: linear-gradient(to bottom, darken($bgcolor, 5%), $bgcolor, lighten($bgcolor, 5%));
+  }
+}
+
 .fv-button {
   @include sizes;
   border: 1px solid $shadow-color;

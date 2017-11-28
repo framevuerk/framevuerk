@@ -27,19 +27,6 @@
   color: yiq($color, $percetange);
 }
 
-@mixin button($bgcolor, $color: false) {
-  background: linear-gradient(to top, darken($bgcolor, 5%), $bgcolor, lighten($bgcolor, 5%));
-  @if $color == false {
-    color: yiq($bgcolor);
-  } @else {
-    color: $color;
-  }
-  &:active,
-  &.active {
-    background: linear-gradient(to bottom, darken($bgcolor, 5%), $bgcolor, lighten($bgcolor, 5%));
-  }
-}
-
 @mixin disabled {
   opacity: .5;
   &,
