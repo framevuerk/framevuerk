@@ -16,6 +16,11 @@ fv-content
           .fv-pull-left I can also show like a sheet.
           .fv-pull-right
             fv-button.fv-xs(@click="$refs.d3.close()", icon="fa fa-check") OK
+      fv-dialog(ref="d5", position="top")
+        fv-content
+          .fv-pull-left I can also show like a sheet at top.
+          .fv-pull-right
+            fv-button.fv-xs(@click="$refs.d5.close()", icon="fa fa-check") OK
       fv-dialog(ref="d4", position="fill", :buttons="[{class: 'fv-ok',icon: 'fa fa-check',text: 'OK'}]", content="This is fill dialog.", title="Fill")
       fv-content.fv-row
         fv-button.fv-block.fv-warning(@click.native="$refs.d1.open()") Simple
@@ -23,6 +28,8 @@ fv-content
         fv-button.fv-block.fv-primary(@click.native="$refs.d2.open()") Modal, Without built-in Buttons
         br
         fv-button.fv-block.fv-danger(@click.native="$refs.d3.open()") Modified Style at Bottom
+        br
+        fv-button.fv-block.fv-info(@click.native="$refs.d5.open()") or Top ;)
         br
         fv-button.fv-block(@click.native="$refs.d4.open()") Fill
     doc-api(:rows="api")
