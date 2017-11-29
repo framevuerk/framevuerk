@@ -3,7 +3,8 @@
 @import '../../styles/mixins';
 
 @mixin button($bgcolor, $color: false) {
-  background: linear-gradient(to top, darken($bgcolor, 5%), $bgcolor, lighten($bgcolor, 5%));
+  $bgcolor-dark: darken($bgcolor, 4%);
+  background: linear-gradient(to top, $bgcolor-dark, $bgcolor .7em);
   @if $color == false {
     color: yiq($bgcolor);
   } @else {
@@ -11,29 +12,7 @@
   }
   &:active,
   &.active {
-    background: linear-gradient(to bottom, darken($bgcolor, 5%), $bgcolor, lighten($bgcolor, 5%));
-  }
-}
-
-.fv-button {
-  @include sizes;
-  border: 1px solid $shadow-color;
-  border-radius: $border-radius;
-  cursor: pointer;
-  display: inline-block;
-  font-family: inherit;
-  max-width: 100%;
-  text-align: center;
-  text-shadow: 0 1px 1px $shadow-color;
-  vertical-align: middle;
-  &:active,
-  &.active {
-    @include textoutline($info-color-light);
-    text-shadow: 0 -1px 1px $shadow-color;
-  }
-  &,
-  & span {
-    @include nowrap;
+    background: linear-gradient(to bottom, $bgcolor-dark, $bgcolor 1em);
   }
   &:focus,
   &.focus {
@@ -47,6 +26,25 @@
   &.disabled {
     @include disabled;
   }
+}
+
+.fv-button {
+  @include sizes;
+  border: 1px solid $shadow-color;
+  border-radius: $border-radius;
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  max-width: 100%;
+  text-align: center;
+  vertical-align: middle;
+
+  &,
+  & span {
+    @include nowrap;
+  }
+
+
   &,
   &.fv-default {
     @include button($default-color);
