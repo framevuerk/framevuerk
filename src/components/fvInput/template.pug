@@ -7,11 +7,11 @@
   @click="enter")
   span.placeholder(v-if="typeof displayValue == 'undefined' || displayValue === null || displayValue.length === 0",
     v-html="placeholder")
-  span.fv-input-select-item(v-else-if="displayValue.constructor == Array")
+  .fv-input-select-item(v-else-if="displayValue.constructor == Array")
     span(v-for="val in displayValue",
     v-html="val")
-  span.fv-input-select-item-single(v-else,
-    v-html="displayValue")
+  .fv-input-select-item(v-else)
+    span(v-html="displayValue")
   span.fv-caret-icon
     i(v-if="caretIcon",
       :class="caretIcon")
