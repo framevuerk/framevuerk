@@ -37,15 +37,12 @@
   & .fv-list {
     background: $shadow-color-light;
     border: 0;
-    box-shadow: inset 0 0 1em 3px $shadow-color-light;
   }
   &.disabled {
     @include disabled;
   }
   &.selected {
-    & > .content > .text {
-      @include yiq($theme-color);
-    }
+    @include yiq($theme-color);
   }
   &.highlighted {
     & > .content > .text {
