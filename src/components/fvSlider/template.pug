@@ -2,14 +2,13 @@ fv-main.fv-slider
   fv-header(v-if="showTabs",
     height="3.5em")
     fv-button.fv-sm.fv-grow(v-for="item in items",
-      :key="item",
       :class="{'fv-selected': value === item}",
       @click.prevent="$emit('input', item)",
       v-html="item")
   transition-group(:name="animationName")
     fv-content.fv-slider-page(
       v-for="page in pages",
-      :key="page",
+      :key="page.toString()",
       v-if="page[0] === value")
       div(:style="{width: itemWidth, display: 'inline-block'}", v-for="slot in page")
         slot(:name="slot")
