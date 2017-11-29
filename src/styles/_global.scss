@@ -72,7 +72,7 @@ html > body {
   &.visited {
     color: $theme-color-light;
     cursor: pointer;
-    text-decoration: underline;
+    text-decoration: none;
   }
   &:focus,
   &.focus {
@@ -81,6 +81,7 @@ html > body {
 }
 
 .fv-hr {
+  border-bottom: 0;
   border-top: dashed 1px $shadow-color;
   height: 0;
 }
