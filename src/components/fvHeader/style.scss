@@ -4,6 +4,7 @@
 .fv-header {
   @include yiq($theme-color);
   align-items: center;
+  border-bottom: solid 1px $shadow-color-light;
   display: flex;
   justify-content: space-between;
   overflow: hidden;
@@ -13,10 +14,9 @@
   transition-property: height;
   width: 100%;
   &.fv-invert {
-    @include yiq($bg-color, 70%);
-    border-bottom: solid 1px $shadow-color;
+    @include yiq($bg-color-dark);
     & .fv-link {
-      @include yiq($bg-color, 70%);
+      @include yiq($bg-color-dark);
     }
   }
   & > * {
@@ -38,14 +38,15 @@
       text-shadow: none;
       &:active,
       &.active {
-        background: transparent;
+        background: linear-gradient(to bottom, $shadow-color, transparent 1em);
+        border: 0;
         box-shadow: none;
         color: inherit;
       }
       &:focus,
       &.focus {
         @include textoutline($info-color-light);
-        background: transparent;
+        border: 0;
         box-shadow: none;
         color: inherit;
       }
@@ -76,7 +77,6 @@
       & > * {
         @include nowrap;
         height: auto;
-        line-height: 1.2;
         margin: 0;
         padding: 0;
         width: 100%;
