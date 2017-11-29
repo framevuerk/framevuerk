@@ -85,11 +85,6 @@
   position: fixed;
   transform: translate(0, 0);
   width: auto;
-  & > .fv-header {
-    border: 0;
-    box-shadow: none;
-  }
-
   &.fv-dialog-center {
     @include fv-dialog-center(style);
   }
