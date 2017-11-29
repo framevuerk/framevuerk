@@ -20,7 +20,7 @@ $color-dark: darken($color, 5%) !default;
 $sidebar-bg-color: #383f47 !default;
 
 
-$shadow-color: rgba(0, 0, 0, .13) !default;
+$shadow-color: rgba(0, 0, 0, .1) !default;
 $shadow-color-light: rgba(0, 0, 0, .05) !default;
 $shadow-color-dark: rgba(0, 0, 0, .35) !default;
 
@@ -53,7 +53,7 @@ $warning-color: #ef8f00 !default;
 $warning-color-light: lighten($warning-color, 10%) !default;
 $warning-color-dark: darken($warning-color, 5%) !default;
 
-$info-color: #25c8f1 !default;
+$info-color: #14b0cf !default;
 $info-color-light: lighten($info-color, 10%) !default;
 $info-color-dark: darken($info-color, 5%) !default;
 
