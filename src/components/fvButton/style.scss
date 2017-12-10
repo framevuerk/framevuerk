@@ -3,8 +3,9 @@
 @import '../../styles/mixins';
 
 @mixin button($bgcolor, $color: false) {
-  $bgcolor-dark: darken($bgcolor, 4%);
-  background: linear-gradient(to top, $bgcolor-dark, $bgcolor .7em);
+  $bgcolor-dark: darken($bgcolor, $shadow-percent-light);
+  background: linear-gradient(to top, $bgcolor-dark, $bgcolor 10%);
+  border: 1px solid darken($bgcolor, $shadow-percent);
   @if $color == false {
     color: yiq($bgcolor);
   } @else {
@@ -12,7 +13,7 @@
   }
   &:active,
   &.active {
-    background: linear-gradient(to bottom, $bgcolor-dark, $bgcolor 1em);
+    background: linear-gradient(to bottom, $bgcolor-dark, $bgcolor 25%);
   }
   &:focus,
   &.focus {
@@ -30,7 +31,6 @@
 
 .fv-button {
   @include sizes;
-  border: 1px solid $shadow-color;
   border-radius: $border-radius;
   cursor: pointer;
   display: inline-block;
