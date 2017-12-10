@@ -20,10 +20,16 @@ $color-dark: darken($color, 5%) !default;
 $sidebar-bg-color: #383f47 !default;
 
 
+$shadow-percent: 10%;
+$shadow-percent-light: 5%;
+$shadow-percent-dark: 35%;
 $shadow-color: rgba(0, 0, 0, .1) !default;
 $shadow-color-light: rgba(0, 0, 0, .05) !default;
 $shadow-color-dark: rgba(0, 0, 0, .35) !default;
 
+$highlight-percent: 19%;
+$highlight-percent-light: 6%;
+$highlight-percent-dark: 35%;
 $highlight-color: rgba(255, 255, 255, .19) !default;
 $highlight-color-light: rgba(255, 255, 255, .06) !default;
 $highlight-color-dark: rgba(255, 255, 255, .35) !default;
