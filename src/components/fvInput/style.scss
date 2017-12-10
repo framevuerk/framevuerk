@@ -5,8 +5,8 @@
   @include yiq($bg-color-light);
   @include sizes;
   align-items: center;
-  background: linear-gradient(to bottom, darken($bg-color-light, 5%), $bg-color-light .5em);
-  border: 1px solid $shadow-color;
+  background: linear-gradient(to bottom, darken($bg-color-light, 5%), $bg-color-light 10%);
+  border: 1px solid darken($bg-color-light, $shadow-percent);
   border-radius: $border-radius;
   display: flex;
   flex-direction: row;
