@@ -28,6 +28,12 @@ export default {
             description: 'Icon of button'
           },
           {
+            name: 'text',
+            type: '',
+            default: '',
+            description: 'Text of button (also you can use slot like normal buttons)'
+          },
+          {
             name: 'disabled',
             type: 'Boolean',
             default: 'false',

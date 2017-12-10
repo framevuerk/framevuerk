@@ -9,6 +9,9 @@ export default {
     icon: {
       default: ''
     },
+    text: {
+      default: undefined
+    },
     disabled: {
       type: Boolean,
       default: false

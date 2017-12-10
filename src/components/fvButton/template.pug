@@ -1,5 +1,6 @@
 button.fv-button(:class="{'loading': loading}", @click="click($event)", :disabled="disabled || loading")
   i(:class="icon", v-if="icon && !loading")
   |  
-  slot(v-if="!loading")
+  slot(v-if="typeof text === 'undefined' && !loading")
+  span(v-else-if="!loading", v-html="text")
   i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation(v-else)
