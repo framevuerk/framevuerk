@@ -1,8 +1,22 @@
 import utility from '../../utility'
 import locale from 'locale'
 import template from './template.pug'
+import fvMain from '../fvMain'
+import fvHeader from '../fvHeader'
+import fvContent from '../fvContent'
+import fvDialog from '../fvDialog'
+import fvInput from '../fvInput'
+import fvList from '../fvList'
 
 export default {
+  components: {
+    fvMain,
+    fvHeader,
+    fvContent,
+    fvDialog,
+    fvInput,
+    fvList
+  },
   props: {
     options: {
       type: Array,

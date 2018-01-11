@@ -1,9 +1,19 @@
 import utility from '../../utility'
 import locale from 'locale'
 import template from './template.pug'
-/* global process */
+import fvMain from '../fvMain'
+import fvContent from '../fvContent'
+import fvDialog from '../fvDialog'
+import fvInput from '../fvInput'
+/* global document */
 
 export default {
+  components: {
+    fvMain,
+    fvContent,
+    fvDialog,
+    fvInput
+  },
   props: {
     value: {
       default: undefined

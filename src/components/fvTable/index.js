@@ -2,9 +2,23 @@ import template from './template.pug'
 import style from './style.scss'
 import utility from '../../utility'
 import locale from 'locale'
-/* global process */
+import fvMain from '../fvMain'
+import fvHeader from '../fvHeader'
+import fvContent from '../fvContent'
+import fvFooter from '../fvFooter'
+import fvButton from '../fvButton'
+import fvInput from '../fvInput'
+/* global document */
 
 export default {
+  components: {
+    fvMain,
+    fvHeader,
+    fvContent,
+    fvFooter,
+    fvButton,
+    fvInput
+  },
   props: {
     fields: {
       type: Array,

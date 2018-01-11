@@ -1,9 +1,19 @@
 import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
-/* global process */
+import fvMain from '../fvMain'
+import fvHeader from '../fvHeader'
+import fvContent from '../fvContent'
+import fvButton from '../fvButton'
+/* global document */
 
 export default {
+  components: {
+    fvMain,
+    fvHeader,
+    fvContent,
+    fvButton
+  },
   props: {
     tabs: {
       type: Array

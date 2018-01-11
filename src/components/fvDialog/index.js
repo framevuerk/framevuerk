@@ -1,9 +1,21 @@
 import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
+import fvMain from '../fvMain'
+import fvHeader from '../fvHeader'
+import fvContent from '../fvContent'
+import fvFooter from '../fvFooter'
+import fvButton from '../fvButton'
 /* global document */
 
 export default {
+  components: {
+    fvMain,
+    fvHeader,
+    fvContent,
+    fvFooter,
+    fvButton
+  },
   props: {
     title: {
       default: ''

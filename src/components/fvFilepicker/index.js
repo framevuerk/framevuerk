@@ -1,6 +1,11 @@
 import locale from 'locale'
 import template from './template.pug'
+import fvButton from '../fvButton'
+
 export default {
+  components: {
+    fvButton
+  },
   props: {
     value: {
       default: undefined

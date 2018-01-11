@@ -2,9 +2,15 @@ import locale from 'locale'
 import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
+import fvListItem from './fvListItem'
+import fvButton from '../fvButton'
 /* global process */
 
 export default {
+  components: {
+    fvListItem,
+    fvButton
+  },
   props: {
     items: {
       type: Array,

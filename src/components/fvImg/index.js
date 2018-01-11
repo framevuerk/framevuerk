@@ -1,9 +1,13 @@
 import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
+import fvButton from '../fvButton'
 /* global process */
 
 export default {
+  components: {
+    fvButton
+  },
   props: {
     value: {
       type: Number,

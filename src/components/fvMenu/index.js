@@ -1,6 +1,14 @@
 import template from './template.pug'
+import fvDialog from '../fvDialog'
+import fvContent from '../fvContent'
+import fvList from '../fvList'
 
 export default {
+  components: {
+    fvDialog,
+    fvContent,
+    fvList
+  },
   props: {
     items: {
       type: Array,
