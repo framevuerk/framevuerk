@@ -1,0 +1,52 @@
+@import '../../../styles/variables';
+@import '../../../styles/functions';
+@import '../../../styles/mixins';
+.fv-list-item {
+  clear: both;
+  overflow: hidden;
+  & .content {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    height: 3.5em;
+    justify-content: space-between;
+    line-height: 3.5em;
+    & > .text {
+      flex-grow: 1;
+      padding: 0 $padding;
+    }
+    & .expand {
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      box-shadow: inset 0 0 0 $theme-color;
+      color: inherit;
+      cursor: pointer;
+      font-weight: bold;
+      height: 100%;
+      max-width: 45px;
+      min-width: 45px;
+      padding: 0 $padding;
+      width: 45px;
+      &:focus {
+        @include textoutline($info-color-light);
+      }
+    }
+  }
+  & .fv-list {
+    background: $shadow-color-light;
+    border: 0;
+  }
+  &.disabled {
+    @include disabled;
+  }
+  &.selected {
+    @include yiq($theme-color);
+  }
+  &.highlighted {
+    & > .content > .text {
+      @include textoutline($info-color-light);
+    }
+  }
+}
