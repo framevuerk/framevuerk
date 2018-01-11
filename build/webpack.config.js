@@ -2,6 +2,7 @@ var path = require('path')
 var fs = require('fs')
 var pkg = require(path.resolve(__dirname, '../package.json'))
 var webpack = require('webpack')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
@@ -18,6 +19,7 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
   const fileName = pkg.name + '-' + LOCALE
 
   const plugins = [
+    new ExtractTextPlugin(fileName + '.css'),
     new webpack.DefinePlugin({
       'PKG_NAME': '"' + pkg.name + '"',
       'PKG_VERSION': '"' + pkg.version + '"',
@@ -68,37 +70,37 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
         },
         {
           test: /\.(scss|css)$/,
-          use: [
-            {
-              loader: 'style-loader'
-            },
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: process.env.NODE_ENV === 'production'
+          use: ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  minimize: process.env.NODE_ENV === 'production'
+                }
+              },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  plugins: [
+                    require('autoprefixer')({
+                      browsers: 'last 4 versions'
+                    })
+                  ]
+                }
+              },
+              {
+                loader: 'sass-loader',
+                options: {
+                  data: '' +
+                    '$env:' + process.env.NODE_ENV + ';' +
+                    '$direction:' + DIRECTION + ';' +
+                    '$theme-color:' + THEME_COLOR + ';' +
+                    '$locale:' + LOCALE + ';'
+                }
               }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: [
-                  require('autoprefixer')({
-                    browsers: 'last 4 versions'
-                  })
-                ]
-              }
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                data: '' +
-                  '$env:' + process.env.NODE_ENV + ';' +
-                  '$direction:' + DIRECTION + ';' +
-                  '$theme-color:' + THEME_COLOR + ';' +
-                  '$locale:' + LOCALE + ';'
-              }
-            }
-          ]
+            ]
+          })
         }
       ]
     },
