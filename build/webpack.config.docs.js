@@ -26,7 +26,7 @@ var generateConfig = () => {
     },
     resolve: {
       alias: {
-        framevuerk: path.resolve(__dirname, '../', pkg.main)
+        framevuerk: path.resolve(__dirname, '../')
       }
     },
     module: {
