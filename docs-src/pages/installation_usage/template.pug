@@ -8,6 +8,7 @@ fv-content
       = "\t<head>\n"
       = "\t\t<script src=\"https://cdn.jsdelivr.net/npm/vue@2.4.4/dist/vue.min.js\"></script>\n"
       = "\t\t<script src=\"https://cdn.jsdelivr.net/npm/framevuerk@latest/dist/framevuerk-en.js\"></script>\n"
+      = "\t\t<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/framevuerk@latest/dist/framevuerk-en.css\"/>\n"
       = "\t\t<script>\n"
       = "\t\t\tVue.use(framevuerk);\n"
       = "\t\t\tnew Vue({\n"
@@ -25,7 +26,7 @@ fv-content
       h2 CommonJS:
     doc-code(v-pre, title="JS:", lang="javascript")
       = "var Vue = require('vue');\n"
-      = "var framevuerk = require('framevuerk');\n"
+      = "var framevuerk = require('framevuerk/dist/framevuerk-en.js');\n"
       = "\n"
       = "Vue.use(framevuerk);"
       = "\n"
@@ -36,6 +37,7 @@ fv-content
       = "<html>\n"
       = "\t<head>\n"
       = "\t\t<script src=\"path/to/your/app.js\"></script>\n"
+      = "\t\t<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/framevuerk@latest/dist/framevuerk-en.css\"/>\n"
       = "\t</head>\n"
       = "\t<body>\n"
       = "\t\t<fv-main id=\"app\">\n"
@@ -44,10 +46,11 @@ fv-content
       = "\t</body>\n"
       = "</html>\n"
     doc-description
-      h2 ES6 (and pug):
+      h2 ES6 (with webpack):
     doc-code(v-pre, title="JS:", lang="javascript")
       = "import Vue from 'vue'\n"
-      = "import framevuerk from 'framevuerk'\n"
+      = "import framevuerk from 'framevuerk/dist/framevuerk-en.js'\n"
+      = "import 'framevuerk/dist/framevuerk-en.css'\n"
       = "\n"
       = "Vue.use(framevuerk);"
       = "\n"
