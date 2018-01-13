@@ -11,11 +11,9 @@ span
     ref="inputEl")
   fv-dialog.fv-select(ref="dialog",
     :class="dialogClass",
-    :buttons="dialogButtons",
     position="center-bottom",
     @close="$emit('close')",
     @open="$emit('open')",
-    :title="!showInput && placeholder? placeholder: ''",
     :first-focus-on="true",
     :auto-close="false")
     fv-main(ref="select")
@@ -23,15 +21,28 @@ span
         fv-input.fv-form-control.fv-search-style.fv-grow(:placeholder="placeholder || searchText",
           v-model="searchQuery",
           @input="$emit('search', searchQuery)",
-          @keydown.native="$refs.list.keydown",
+          @keydown.native="$refs.list.onKeydown($event)",
           ref="input")
       fv-content.fv-no-padding
         .fv-text-center.fv-padding(v-show="loading")
           i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation
         fv-list.fv-no-border(v-show="!loading",
-          :items="options",
-          ref="list",
-          :search-query="search === true? searchQuery: ''",
-          :selected="pValue",
-          :get-focus="!showInput",
-          @click-item="clickItem($event)")
+          :tabindex="-1",
+          ref="list")
+          fv-list-item(v-for="option in options",
+            v-if="equalSearch(option)",
+            @click="clickOption(option)",
+            :selected="isSelected(option)",
+            :disabled="optionProp(option, 'disabled')")
+            slot(v-if="$scopedSlots.default", :option="option")
+            span(v-else) {{optionProp(option, 'text')}}
+      fv-footer(v-if="multiple || allowInsert")
+        .fv-grow(v-if="!allowInsert || !searchQuery")
+        fv-button.fv-ok(v-if="!allowInsert || !searchQuery",
+          icon="fa fa-check",
+          :text="locale.ok()",
+          @click="close()")
+        fv-button.fv-ok.fv-grow(v-if="allowInsert && searchQuery",
+          icon="fa fa-plus-circle",
+          :text="locale.add(searchQuery)",
+          @click="addOption(searchQuery)")

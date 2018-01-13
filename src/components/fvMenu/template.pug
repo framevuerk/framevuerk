@@ -4,6 +4,9 @@ fv-dialog.fv-menu(ref="dialog",
   @close="$emit('close')",
   @open="$emit('open')")
   fv-content.fv-no-padding
-    fv-list.fv-no-border(:items="items",
-      :param="param",
-      @click-item="clickItem")
+    fv-list.fv-no-border(ref="list")
+      fv-list-item(v-for="item in items",
+        @click="clickItem(item)",
+        :disabled="itemProp(item, 'disabled')")
+        slot(v-if="$scopedSlots.default", :item="item", :user-argument="userArgument")
+        span(v-else) {{itemProp(item, 'text')}}

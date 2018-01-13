@@ -14,6 +14,14 @@ export default {
       type: Array,
       default: () => []
     },
+    disabledKey: {
+      type: String,
+      default: 'disabled'
+    },
+    textKey: {
+      type: String,
+      default: 'text'
+    },
     sheet: {
       type: [Object, Boolean],
       validator: (value) => {
@@ -34,14 +42,12 @@ export default {
     return {
       pShow: false,
       pSheet: false,
-      highlightedOption: null,
-      param: null
+      userArgument: null
     }
   },
   methods: {
-    open (param = null) {
-      this.highlightedOption = null
-      this.param = param
+    open (userArgument = null) {
+      this.userArgument = userArgument
       this.$refs.dialog.open()
     },
     close () {
@@ -50,8 +56,16 @@ export default {
     toggle (domElem = null) {
       this[this.pShow ? 'close' : 'open'](domElem)
     },
-    clickItem (p1, p2) {
-      this.$emit('click-item', p1, p2)
+    itemProp (item, prop = 'text') {
+      switch (prop) {
+      case 'text':
+        return this.textKey ? item[this.textKey] : item
+      case 'disabled':
+        return this.disabledKey ? item[this.disabledKey] : false
+      }
+    },
+    clickItem (item) {
+      this.$emit('click-item', item, this.userArgument)
       if (this.autoClose) {
         this.close()
       }

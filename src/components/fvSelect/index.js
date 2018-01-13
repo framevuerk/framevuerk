@@ -7,6 +7,7 @@ import fvContent from '../fvContent'
 import fvDialog from '../fvDialog'
 import fvInput from '../fvInput'
 import fvList from '../fvList'
+import fvListItem from '../fvListItem'
 
 export default {
   components: {
@@ -15,12 +16,25 @@ export default {
     fvContent,
     fvDialog,
     fvInput,
-    fvList
+    fvList,
+    fvListItem
   },
   props: {
     options: {
       type: Array,
       default: () => []
+    },
+    disabledKey: {
+      type: String,
+      default: 'disabled'
+    },
+    valueKey: {
+      type: String,
+      default: 'value'
+    },
+    textKey: {
+      type: String,
+      default: 'text'
     },
     inputClass: {
       default: ''
@@ -65,7 +79,7 @@ export default {
   },
   data () {
     return {
-      pValue: undefined,
+      locale: locale,
       searchText: locale.search(),
       pShow: false,
       searchQuery: '',
@@ -84,11 +98,10 @@ export default {
         const ret = []
         if (this.value !== 'undefined' && this.value instanceof Array) {
           this.value.forEach(vl => {
-            const result = this.options.filter(opt => (typeof opt.value !== 'undefined' && opt.value && opt.value === vl) || opt === vl)
+            const result = this.options.filter(opt => opt[this.valueKey] && opt[this.valueKey] === vl)
             if (result.length) {
-              ret.push(result[0].text || result[0].value || result[0])
+              ret.push(result[0][this.textKey])
             } else {
-              this.$emit('insert', vl, 'value')
               ret.push(vl)
             }
           })
@@ -99,66 +112,20 @@ export default {
         if (result !== -1) {
           return this.options[result].text || this.options[result].value || this.options[result]
         } else {
-          this.$emit('insert', this.value, 'value')
           return this.value
         }
       }
       return []
-    },
-    dialogButtons () {
-      const ret = []
-      if (this.allowInsert && this.searchQuery) {
-        ret.push({
-          icon: 'fa fa-plus-circle',
-          text: locale.add(this.searchQuery),
-          class: 'fv-default fv-block',
-          action: () => {
-            this.$emit('insert', this.searchQuery, 'user')
-            this.searchQuery = ''
-            utility.doIt(() => {
-              this.$refs.list.highlightedOption = this.$refs.list.pItems.length - 1
-              if (this.showInput) {
-                this.$refs.input.$el.focus()
-              } else {
-                this.$refs.list.$el.focus()
-              }
-            })
-          }
-        })
-      } else {
-        ret.push({
-          icon: 'fa fa-times',
-          text: locale.cancel(),
-          class: 'fv-default',
-          action: () => {
-            this.close()
-          }
-        })
-        ret.push({
-          icon: 'fa fa-check',
-          text: locale.ok(),
-          class: 'fv-ok',
-          action: () => {
-            this.$emit('input', this.pValue)
-            this.close()
-          }
-        })
-      }
-      return ret
     }
   },
   methods: {
     open () {
       if (typeof this.value !== 'undefined') {
-        if (this.value instanceof Array) {
-          this.pValue = this.value.concat([])
-        } else if (this.multiple) {
-          this.pValue = [this.value]
-        } else {
-          this.pValue = this.value
+        if (!(this.value instanceof Array) && this.multiple) {
+          this.$emit('input', [this.value])
         }
       } else {
-        this.pValue = this.multiple ? [] : undefined
+        this.$emit('input', this.multiple ? [] : undefined)
       }
       this.searchQuery = ''
       this.highlightedOption = null
@@ -170,36 +137,72 @@ export default {
     close () {
       this.$refs.dialog.close()
     },
-    pIsSelected (value = null) {
-      if (this.multiple && this.pValue !== undefined) {
-        return this.pValue.indexOf(value) !== -1
+    isSelected (option) {
+      if (this.multiple && this.value !== undefined) {
+        return this.value.indexOf(this.optionProp(option, 'value')) !== -1
       } else {
-        return this.pValue === value
+        return this.value === this.optionProp(option, 'value')
       }
     },
-    clickItem (item) {
-      const value = typeof item.value !== 'undefined' ? item.value : item || ''
-      let newValue = this.pValue
+    optionProp (option, prop = 'value') {
+      switch (prop) {
+      case 'value':
+        return this.valueKey ? option[this.valueKey] : option
+      case 'text':
+        return this.textKey ? option[this.textKey] : option
+      case 'disabled':
+        return this.disabledKey ? option[this.disabledKey] : false
+      }
+    },
+    addOption (value) {
+      const options = JSON.parse(JSON.stringify(this.options))
+      let option = this.valueKey ? {} : ''
+      if (this.valueKey) {
+        option[this.valueKey] = value
+      } else {
+        option = value
+      }
+      if (this.textKey) {
+        option[this.textKey] = value
+      }
+      options.unshift(option)
+      this.$emit('update:options', options)
+      this.searchQuery = ''
+      this.$refs.input.$el.focus()
+    },
+    clickOption (option) {
+      let newValue = this.value
       if (this.multiple) {
-        newValue = this.pValue
-        if (this.pIsSelected(value)) {
-          if (!this.required || this.pValue.length > 1) {
-            newValue.splice(newValue.indexOf(value), 1)
-          }
+        newValue = this.value
+        if (this.isSelected(option)) {
+          newValue.splice(newValue.indexOf(this.optionProp(option, 'value')), 1)
         } else {
-          newValue.push(value)
+          newValue.push(this.optionProp(option, 'value'))
         }
       } else {
-        if (this.pIsSelected(value)) {
+        if (this.isSelected(option)) {
           if (!this.required) {
             newValue = undefined
           }
         } else {
-          newValue = value
+          newValue = this.optionProp(option, 'value')
         }
       }
-      this.pValue = newValue
+      this.$emit('input', newValue)
       this.searchQuery = ''
+      if (!this.multiple && !this.allowInsert) {
+        this.close()
+      }
+    },
+    equalSearch (option) {
+      if (this.search !== true ||
+        !this.searchQuery ||
+        utility.contains(this.optionProp(option, 'value'), this.searchQuery) ||
+        utility.contains(this.optionProp(option, 'text'), this.searchQuery)) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   render: template.render
