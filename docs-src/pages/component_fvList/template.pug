@@ -1,0 +1,36 @@
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | To creating fulll-featured list inside your application, use this component. 
+    doc-code
+      = "<fv-list>\n"
+      = "\t<fv-list-item>Item</fv-list-item>\n"
+      = "</fv-list>"
+    doc-example
+      fv-content.fv-row
+        .fv-col-xs-12
+          h4 Default:
+        .fv-col-xs-12
+          fv-list
+            fv-list-item One
+            fv-list-item Two
+            fv-list-item(disabled) Three
+            fv-list-item Four
+            fv-list-item(selected) Five
+        .fv-col-xs-12
+          h4 With Sub-List
+        .fv-col-xs-12
+          fv-list
+            fv-list-item Salam
+            fv-list-item Chetori?
+            fv-list-item(expanded)
+              | Khubi?
+              fv-list(slot="sub-list")
+                fv-list-item Che Khabar?
+                fv-list-item
+                  | Amme ina khuban?
+                  fv-list(slot="sub-list")
+                    fv-list-item Pesar Amuha?
+                    fv-list-item Dige che khabar?
+    doc-api(:rows="listApi", title="List API")
+    doc-api(:rows="listItemApi", title="ListItem API")
