@@ -18,9 +18,10 @@ export default {
         d2: undefined,
         d3: [],
         d4: undefined,
-        d5: []
+        d5: [],
+        d6: undefined
       },
-      d3opts: ['USA', {text: 'USB', value: 'USB'}, 'USC'],
+      d3opts: ['USA', 'USB', 'USC'],
       api: {
         prop: [
           {
@@ -87,7 +88,25 @@ export default {
             name: 'options',
             type: 'Array',
             default: '[]',
-            description: 'Options of select.<br>Each item in array, is object that can have<br>key:String, icon:String, text:String, action:Function, class:String and disabled:Boolean prop.'
+            description: 'List of options in select.'
+          },
+          {
+            name: 'valueKey',
+            type: 'String',
+            default: '"value"',
+            description: 'Value key in each object in options.'
+          },
+          {
+            name: 'textKey',
+            type: 'String',
+            default: '"text"',
+            description: 'Text key in each object in options.'
+          },
+          {
+            name: 'disabledKey',
+            type: 'String',
+            default: '"disabled"',
+            description: 'Disabled key in each object in options.'
           }
         ],
         event: [
@@ -102,9 +121,9 @@ export default {
             description: 'Fired when dialog closed'
           },
           {
-            name: 'insert',
-            params: '(inserted-option-text, requested-by)',
-            description: 'Fired when user insrted new option. First argument inserted text and second is request source. It is \'user\'(when user add something) or \'value\'(when selected value is not in options).'
+            name: 'update:options',
+            params: '---',
+            description: 'Fired when user insrted new option.'
           },
           {
             name: 'search',
