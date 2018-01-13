@@ -123,9 +123,6 @@ export default {
           this.pFocus(true)
         }
         break
-      case 13: // enter
-        event.target.click()
-        break
       case 27: // esc
         this.closeIf()
       }
