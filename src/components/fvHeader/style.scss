@@ -2,7 +2,7 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-header {
-  @include yiq($theme-color);
+  @include yiq($bg-color-dark);
   align-items: center;
   border-bottom: solid 1px $shadow-color-light;
   display: flex;
@@ -13,12 +13,6 @@
   transition-duration: $transition-speed;
   transition-property: height;
   width: 100%;
-  &.fv-invert {
-    @include yiq($bg-color-dark);
-    & .fv-link {
-      @include yiq($bg-color-dark);
-    }
-  }
   & > * {
     max-width: 100%;
     vertical-align: middle;
@@ -35,16 +29,13 @@
       height: 100%;
       justify-content: center;
       padding: 0 $padding;
-      text-shadow: none;
-      &:active,
-      &.active {
+      &.fv-button:active {
         background: linear-gradient(to bottom, $shadow-color, transparent 1em);
         border: 0;
         box-shadow: none;
         color: inherit;
       }
-      &:focus,
-      &.focus {
+      &.fv-button:focus {
         @include textoutline($info-color-light);
         border: 0;
         box-shadow: none;
@@ -52,15 +43,10 @@
       }
     }
     &.fv-icon {
-      font-size: 1.2em;
+      // font-size: 1.2em;
       & > * {
         vertical-align: middle;
       }
-    }
-    & .fv-link {
-      background: transparent;
-      color: inherit;
-      font-size: .9em;
     }
     &.fv-form-control {
       background: $bg-color;
