@@ -19,6 +19,7 @@ import main from './pages/main'
 import fvMain from './pages/component_fvMain'
 import fvHeader from './pages/component_fvHeader'
 import fvSidebar from './pages/component_fvSidebar'
+import fvList from './pages/component_fvList'
 import fvFooter from './pages/component_fvFooter'
 import fvContent from './pages/component_fvContent'
 import fvDialog from './pages/component_fvDialog'
@@ -152,6 +153,11 @@ const router = new VueRouter({
       name: 'fvSlider',
       path: '/components/fvSlider',
       component: fvSlider
+    },
+    {
+      name: 'fvList + fvListItem',
+      path: '/components/fvList+fvListItem',
+      component: fvList
     },
     {
       name: 'notfound',

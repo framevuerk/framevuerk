@@ -28,7 +28,8 @@ export default {
                 this.sidebarItem('fvHeader'),
                 this.sidebarItem('fvContent'),
                 this.sidebarItem('fvFooter'),
-                this.sidebarItem('fvSidebar')
+                this.sidebarItem('fvSidebar'),
+                this.sidebarItem('fvList + fvListItem', '/components/fvList+fvListItem')
               ]
             },
             {
@@ -69,13 +70,15 @@ export default {
     }
   },
   methods: {
+    clickItem (item) {
+      if (item.route) {
+        this.$router.push(item.route)
+      }
+    },
     sidebarItem (name, route) {
       return {
         text: name,
-        selected: this.$route.name === name,
-        action: () => {
-          this.$router.push(route || `/components/${name}`)
-        }
+        route: route || `/components/${name}`
       }
     },
     routeChange () {

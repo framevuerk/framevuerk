@@ -6,6 +6,10 @@ export default {
     rows: {
       type: Object,
       default: () => {}
+    },
+    title: {
+      type: String,
+      default: 'API'
     }
   },
   data () {

@@ -37,7 +37,19 @@ export default {
             name: 'items',
             type: 'Array',
             default: '[]',
-            description: 'Items of menu.<br>Each item in array, is object that can have<br>key:String, icon:String, text:String, action:Function, class:String and disabled:Boolean prop. '
+            description: 'List of items in menu.'
+          },
+          {
+            name: 'textKey',
+            type: 'String',
+            default: '"text"',
+            description: 'Text key in each object in items.'
+          },
+          {
+            name: 'disabledKey',
+            type: 'String',
+            default: '"disabled"',
+            description: 'Disabled key in each object in items.'
           }
         ],
         event: [
@@ -52,16 +64,16 @@ export default {
             description: 'Fired when dialog closed'
           },
           {
-            name: 'click-button',
-            params: '(button-key, user-argument)',
-            description: 'Fired when dialog buttons clicked'
+            name: 'click-item',
+            params: '(item, user-argument)',
+            description: 'Fired when user click on item.'
           }
         ],
         method: [
           {
             name: 'open',
             params: '(user-argument)',
-            description: 'Open dialog.<br>The optional argument can be accessed on click-button event.'
+            description: 'Open menu.<br>The optional argument can be accessed on click-item event and in custom template.'
           },
           {
             name: 'close',
