@@ -4,14 +4,16 @@
 // $theme-color: #1f9cdd;
 @import './functions';
 
-$transition-speed: .25s;
+$transition-speed: .27s;
+$transition-speed-fast: .13s;
+$transition-speed-slow: .7s;
 
 $block-start: if($direction == rtl, right, left);
 $block-end: if($direction == rtl, left, right);
 
 $bg-color: #f9f9f9 !default;
 $bg-color-light: lighten($bg-color, 4%) !default;
-$bg-color-dark: darken($bg-color, 1%) !default;
+$bg-color-dark: darken($bg-color, 2%) !default;
 
 $color: yiq($bg-color) !default;
 $color-light: lighten($color, 18%) !default;
@@ -74,7 +76,7 @@ $padding: 15px !default;
 $padding-small: 11px !default;
 $padding-large: 25px !default;
 
-$border-radius: 3px;
+$border-radius: 4px;
 $border-radius-small: 2px;
 $border-radius-large: 12px;
 
