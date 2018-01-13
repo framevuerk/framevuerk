@@ -136,6 +136,12 @@ html > body {
 .fv-pull-right {
   float: right !important;
 }
+.fv-pull-start {
+  float: $block-start !important;
+}
+.fv-pull-end {
+  float: $block-end !important;
+}
 .fv-clear-both {
   clear: both !important;
 }
