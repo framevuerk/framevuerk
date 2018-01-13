@@ -12,13 +12,13 @@
     transform: translate(-50%, -50%);
   } @else if ($part == 'animation-enter') {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1, 1);
+    transform: translate(-50%, -50%);
     transition-duration: $transition-speed;
     transition-property: transform, opacity;
     will-change: transform, opacity;
   } @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(.9, .9);
+    transform: translate(-50%, -42%);
   }
 }
 @mixin fv-dialog-bottom($part) {
