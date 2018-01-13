@@ -4,10 +4,7 @@
 .fv-list {
   border: solid 1px $shadow-color;
   clear: both;
-  & .fv-list-item {
-    border-top: solid 1px $shadow-color-light;
-    &:first-child {
-      border-top: 0;
-    }
+  & .fv-list-item:not(:last-child) {
+    border-bottom: solid 1px $shadow-color-light;
   }
 }
