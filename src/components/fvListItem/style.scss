@@ -34,7 +34,7 @@
   & .sub-list {
     & > .fv-list {
       border-#{$block-end}: 0;
-      border-#{$block-start}: solid .8em $shadow-color-light;
+      border-#{$block-start}: solid 1em transparent;
       border-bottom: 0;
       border-top: 0;
       & > .fv-list-item:first-child {
@@ -51,7 +51,7 @@
     &.sub-list-enter,
     &.sub-list-leave-to {
       opacity: 0;
-      transform: translateX(-.8em);
+      transform: translateX(if($direction == 'ltr', -1em, 1em));
     }
   }
   &.disabled {
