@@ -12,65 +12,81 @@ export default {
     fvButton
   },
   props: {
-    tabindex: {
-      type: [Number, String],
-      default: 0
+    parent: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
-      highlighted: 0,
+      highlighted: null,
       isFocused: false,
       notFoundText: locale.notFound()
     }
   },
+  computed: {
+    tabindex () {
+      return this.$attrs && this.$attrs.tabindex ? parseInt(this.$attrs.tabindex) : (this.parent ? 0 : -1)
+    }
+  },
   methods: {
-    highlightedEl () {
-      if (this.$children.length > this.highlighted) {
-        return this.$children[this.highlighted]
-      } else {
-        return false
-      }
-    },
     onFocus () {
+      if (!this.highlighted) {
+        this.moveHighlight()
+      }
       utility.doIt(() => {
         this.isFocused = true
       })
     },
     onBlur () {
+      if (this.tabindex > -1) {
+        this.highlighted = null
+      }
       this.isFocused = false
     },
+    moveHighlight (next = true) {
+      const allItems = [...this.$el.querySelectorAll('.fv-list-item')].filter(el => el.offsetHeight)
+      const highlightedIndex = allItems.findIndex(el => this.highlighted === el)
+      if (next) {
+        this.highlighted = highlightedIndex + 1 >= allItems.length ? allItems[0] : allItems[highlightedIndex + 1]
+      } else {
+        this.highlighted = highlightedIndex - 1 < 0 ? allItems[allItems.length - 1] : allItems[highlightedIndex - 1]
+      }
+      return this.highlighted
+    },
     onKeydown (event) {
-      const highlightedEl = this.highlightedEl()
       switch (event.which) {
       case 38: // up
         event.preventDefault()
-        this.highlighted = this.highlighted - 1 < 0 ? this.$children.length - 1 : this.highlighted - 1
+        this.moveHighlight(false)
         break
       case 40: // down
         event.preventDefault()
-        this.highlighted = this.highlighted + 1 >= this.$children.length ? 0 : this.highlighted + 1
+        this.moveHighlight(true)
         break
       case process.env.DIRECTION === 'ltr' ? 37 : 39: // 37: left, 39: right,
         event.preventDefault()
-        if (highlightedEl) {
-          highlightedEl.collapse()
+        if (this.highlighted && this.highlighted.__vue__) {
+          this.highlighted.__vue__.collapse()
         }
         break
       case process.env.DIRECTION === 'ltr' ? 39 : 37: // 37: left, 39: right,
         event.preventDefault()
-        if (highlightedEl) {
-          highlightedEl.expand()
+        if (this.highlighted && this.highlighted.__vue__) {
+          this.highlighted.__vue__.expand()
         }
         break
       case 13: // enter
         event.preventDefault()
-        if (highlightedEl) {
-          highlightedEl.click(event)
+        if (this.highlighted && this.highlighted.__vue__) {
+          this.highlighted.__vue__.onClick(event)
         }
         break
       }
     }
+  },
+  mounted () {
+    this.moveHighlight()
   },
   style,
   render: template.render
