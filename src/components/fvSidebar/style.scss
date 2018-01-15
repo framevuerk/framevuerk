@@ -3,7 +3,9 @@
 @import '../../styles/mixins';
 .fv-sidebar {
   @include yiq($sidebar-bg-color);
+  backface-visibility: hidden;
   height: 100%;
+  max-width: 80%;
   overflow-x: hidden;
   overflow-y: auto;
   position: absolute;
@@ -14,29 +16,22 @@
   &.fv-left {
     left: 0;
   }
-  & .fv-list {
-    & .fv-item.fv-disabled {
-      color: rgba(255, 255, 255, .2);
-    }
-  }
   &.fv-sidebar-left-enter-active,
   &.fv-sidebar-left-leave-active,
   &.fv-sidebar-right-enter-active,
   &.fv-sidebar-right-leave-active {
-    transform: translate(0, 0);
+    transform: translate3d(0, 0, 0);
     transition-duration: $transition-speed;
     transition-property: transform;
     transition-timing-function: ease;
     will-change: transform;
   }
-
   &.fv-sidebar-left-enter,
   &.fv-sidebar-left-leave-active {
-    transform: translate(-100%, 0);
+    transform: translate3d(-100%, 0, 0);
   }
-
   &.fv-sidebar-right-enter,
   &.fv-sidebar-right-leave-active {
-    transform: translate(100%, 0);
+    transform: translate3d(100%, 0, 0);
   }
 }

@@ -1,3 +1,4 @@
+import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
 /* global process */
@@ -20,46 +21,62 @@ export default {
       validator: (value) => {
         return [true, false, null].indexOf(value) > -1
       },
-      default: null // or false or true
+      default: null
     }
   },
   data () {
     return {
-      pAnimation: null,
+      isRendered: false,
       pShow: false,
-      pPosition: this.position,
-      pWidth: 250,
-      pPin: false,
-      parentMain: null
+      isPinned: false,
+      parentMain: null,
+      focusBackElem: null
     }
   },
   computed: {
     animationName () {
-      if (this.pAnimation === true) {
-        return `fv-sidebar-${this.pPosition}`
+      if (this.isRendered === true) {
+        return `fv-sidebar-${this.position}`
       } else {
         return ''
       }
     }
   },
-  watch: {
-    position () {
-      this.pSetPosition()
+  methods: {
+    open () {
+      this.parentMain.appendChild(this.$el)
+      this.pShow = true
+      if (this.isPinned) {
+        this.parentMain.style[`padding${utility.capitalizeFirstLetter(this.position)}`] = typeof this.width === 'number' ? `${this.width}px` : this.width
+      } else {
+        this.focusBackElem = document.querySelector(':focus')
+        utility.doIt(() => {
+          const focusableItems = this.$el.querySelectorAll('select, input, textarea, button, a, [tabindex]:not([tabindex=""])')
+          if (focusableItems.length) {
+            focusableItems[0].focus()
+          }
+        })
+      }
+      this.$emit('open')
     },
-    pin () {
-      this.pSetPin()
-      this.pMainPadding()
+    close () {
+      this.pShow = false
+      this.parentMain.style[`padding${utility.capitalizeFirstLetter(this.position)}`] = '0px'
+      if (!this.isPinned && this.focusBackElem) {
+        this.focusBackElem.focus()
+      }
+      this.$emit('close')
     },
-    width () {
-      this.pSetWidth()
-      this.pMainPadding()
+    toggle () {
+      this[this.pShow ? 'close' : 'open']()
     }
   },
   created () {
-    this.pAnimation = false
+    this.isRendered = false
   },
   mounted () {
-    let el = this.$refs.sidebar
+    // find parentMain
+    let el = this.$parent.$el
     do {
       if (el.classList.contains('fv-main')) {
         break
@@ -69,91 +86,22 @@ export default {
     } while (el !== null)
     this.parentMain = el
 
-    this.pSetPosition()
-    this.pSetWidth()
-    this.pSetPin()
-    this.pMainPadding()
-    setTimeout(() => {
-      this.pAnimation = true
-    }, 300)
-  },
-  beforeDestroy () {
-    this.bindEvents(false)
-  },
-  methods: {
-    open () {
-      if (this.parentMain) {
-        this.parentMain.appendChild(this.$el)
-      }
-
-      this.pShow = true
-      this.pMainPadding()
-      this.$emit('open')
-    },
-    close () {
-      this.pShow = false
-      this.pMainPadding()
-      this.$emit('close')
-    },
-    toggle () {
-      this[this.pShow ? 'close' : 'open']()
-    },
-    pSetPosition () {
-      if (['left', 'right'].indexOf(this.position) !== -1) {
-        this.pPosition = this.position
-      } else {
-        this.pPosition = 'left'
-      }
-    },
-    widthChangeEvent () {
-      const width = (window.innerWidth > 0) ? window.innerWidth : screen.width
-      if (width < 992) {
-        this.pPin = false
-        this.close()
-      } else {
-        this.pPin = true
-        this.open()
-      }
-    },
-    bindEvents (set = true) {
-      if (set) {
-        this.widthChangeEvent()
-        window.addEventListener('resize', this.widthChangeEvent)
-        window.addEventListener('orientationChange', this.widthChangeEvent)
-      } else {
-        window.removeEventListener('resize', this.widthChangeEvent)
-        window.removeEventListener('orientationChange', this.widthChangeEvent)
-      }
-    },
-    pSetPin () {
-      this.pPin = this.pin
-      if (this.pPin === true) {
-        this.bindEvents(false)
-        this.open()
-      } else if (this.pPin === false) {
-        this.bindEvents(false)
-        this.close()
-      } else {
-        this.bindEvents(true)
-      }
-    },
-    pSetWidth () {
-      if (typeof this.width === 'number' && this.width > 0) {
-        this.pWidth = this.width
-      }
-    },
-    pMainPadding () {
-      if (this.parentMain === null) {
-        return false
-      }
-      const paddingDir = `padding${(this.position === 'right' ? 'Right' : 'Left')}`
-      if (this.pPin && this.pShow) {
-        this.parentMain.style[paddingDir] = this.pWidth + 'px'
-      } else {
-        this.parentMain.style[paddingDir] = ''
-      }
-      return true
+    // set width
+    if (this.pin === null) {
+      this.isPinned = !utility.isSmallViewport()
+    } else {
+      this.isPinned = this.pin
     }
+
+    if (this.isPinned) {
+      this.open()
+    } else {
+      this.close()
+    }
+
+    utility.doIt(() => {
+      this.isRendered = true
+    })
   },
   style,
   render: template.render

@@ -9,16 +9,17 @@
     max-height: 90%;
     max-width: 90%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate3d(-50%, -50%, 0);
   } @else if ($part == 'animation-enter') {
     opacity: 1;
-    transform: translate(-50%, -50%);
+    transform: translate3d(-50%, -50%, 0);
     transition-duration: $transition-speed;
     transition-property: transform, opacity;
+    transition-timing-function: ease;
     will-change: transform, opacity;
   } @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate(-50%, -42%);
+    transform: translate3d(-50%, -42%, 0);
   }
 }
 @mixin fv-dialog-bottom($part) {
@@ -30,12 +31,13 @@
     top: auto;
     width: 100%;
   } @else if($part == 'animation-enter') {
-    transform: translate(0, 0);
+    transform: translate3d(0, 0, 0);
     transition-duration: $transition-speed;
     transition-property: transform;
+    transition-timing-function: ease;
     will-change: transform;
   } @else if($part == 'animation-leave') {
-    transform: translate(0, 100%);
+    transform: translate3d(0, 100%, 0);
   }
 }
 @mixin fv-dialog-top($part) {
@@ -47,12 +49,13 @@
     top: .1px;
     width: 100%;
   } @else if($part == 'animation-enter') {
-    transform: translate(0, 0);
+    transform: translate3d(0, 0, 0);
     transition-duration: $transition-speed;
     transition-property: transform;
+    transition-timing-function: ease;
     will-change: transform;
   } @else if($part == 'animation-leave') {
-    transform: translate(0, -100%);
+    transform: translate3d(0, -100%, 0);
   }
 }
 @mixin fv-dialog-fill($part) {
@@ -66,11 +69,14 @@
     width: 100%;
   } @else if($part == 'animation-enter') {
     opacity: 1;
+    transform: translate3d(0, 0, 0);
     transition-duration: $transition-speed;
-    transition-property: opacity;
-    will-change: opacity;
+    transition-property: transform, opacity;
+    transition-timing-function: ease;
+    will-change: transform, opacity;
   } @else if($part == 'animation-leave') {
     opacity: 0;
+    transform: translate3d(0, 8%, 0);
   }
 }
 
@@ -78,12 +84,13 @@
 
 .fv-dialog {
   @include yiq($bg-color);
+  backface-visibility: hidden;
   box-shadow: 0 5px 5px $shadow-color;
   height: auto;
   min-width: 300px;
   overflow: auto;
   position: fixed;
-  transform: translate(0, 0);
+  transform: translate3d(0, 0, 0);
   width: auto;
   &.fv-dialog-center {
     @include fv-dialog-center(style);
