@@ -1,8 +1,10 @@
-.fv-img(:style="{width: size.width, height: size.height}")
-  transition-group(:name="animationName")
-    .img(v-for="(src, i) in images", :style="{backgroundImage: getUrl(src.image)}", v-show="index === i", :key="'img-'+i")
-      .caption(v-if="src.caption.text", v-html="src.caption.text", :class="src.caption.class")
-  fv-button.fv-lg.next(v-if="pNav", @click.prevent="moveIndex(1)", v-html="nextPageBtnContent")
-  fv-button.fv-lg.prev(v-if="pNav", @click.prevent="moveIndex(-1)", v-html="prevPageBtnContent")
-  ul.nav(v-if="pNav")
-    li(v-for="(src, i) in images", @click="index = i", :class="{selected: index === i}")
+fv-slider.fv-img(v-model="value",
+  :interval="interval",
+  :show-tabs="false",
+  :show-buttons="showButtons && images.length > 1",
+  :show-navs="images.length > 1")
+  img.img(v-for="image in images",
+    draggable="false",
+    :src="image",
+    alt="fv-img",
+    :slot="image")
