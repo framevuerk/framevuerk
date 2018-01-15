@@ -26,34 +26,16 @@ export default {
       api: {
         prop: [
           {
-            name: 'value',
-            type: 'Number',
-            default: '0',
-            description: 'Index of selected image.'
-          },
-          {
             name: 'src',
-            type: 'Enum [String, Array]',
+            type: '[String, Array]',
             default: '',
-            description: 'Source of image(s).<br>If it\'s string, src is just like normal img tag.<br>But if Array, you can put Array of String or Array of Object.<br>The object can have<br>image:String, caption:String Or caption.text:String, caption.class.'
+            description: 'Source of image(s).<br>If it\'s string, src is just like normal img tag.<br>But if Array, you can put Array of src.'
           },
           {
-            name: 'height',
-            type: 'Enum [Number, String]',
-            default: '"25em"',
-            description: 'Height of element'
-          },
-          {
-            name: 'width',
-            type: 'Enum [Number, String]',
-            default: '"100%"',
-            description: 'Width of element'
-          },
-          {
-            name: 'nav',
+            name: 'show-buttons',
             type: 'Boolean',
-            default: 'true',
-            description: 'Show navigation and buttons when src is array and more than one image.'
+            default: 'false',
+            description: 'Show next and prev buttons if available.'
           },
           {
             name: 'interval',

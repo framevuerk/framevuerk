@@ -76,7 +76,7 @@ export default {
             name: 'allow-insert',
             type: 'Boolean',
             default: 'false',
-            description: 'Allow user to insert option to options'
+            description: 'Allow user to insert option to options. Note that you should pass options as variable and add .sync modifier to options prop to using this.'
           },
           {
             name: 'loading',

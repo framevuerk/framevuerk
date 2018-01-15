@@ -12,40 +12,35 @@ fv-content
       .fv-padding
         h4 Default:
         fv-header
-          .fv-title.fv-no-wrap
+          .title
             h2 Hello
         br
-        h4 Inverted Color
-        fv-header.fv-invert
-          .fv-title.fv-no-wrap
-            h2 Bye Bye!
+        h4 Custom elements:
+        fv-header
+          .title
+            fv-input.fv-form-control.fv-search-style(placeholder="Type anything to search!")
+          fv-button(icon="fa fa-search")
         br
         h4 With Buttons and description:
         fv-header
-          fv-button.fv-icon
-            i.fa.fa-chevron-left
-          .fv-title.fv-no-wrap
+          fv-button(icon="fa fa-chevron-left")
+          .title
             h2 Framevuerk
             p Support both rtl and ltr.
-          fv-button.fv-icon
-            i.fa.fa-bars
+          fv-button(icon="fa fa-bars")
         br
         h4 With link:
         fv-header
-          fv-button.fv-icon
-            i.fa.fa-chevron-left
-          .fv-title.fv-no-wrap
+          fv-button(icon="fa fa-chevron-left")
+          .title
             h2 Twitter
-          .fv-icon
-            a.fv-link I'm Link
+          a.fv-link I'm Link
         br
         h4 Modified height:
-        fv-header.fv-invert(:height="35")
-          .fv-icon
-            i.fa.fa-apple
-          .fv-title.fv-no-wrap
-            h3 Simple app
-          .fv-icon
-            small 18:49
+        fv-header(:height="35")
+          i.fa.fa-apple
+          .title
+            h4 Simple app
+          small 18:49
 
     doc-api(:rows="api")

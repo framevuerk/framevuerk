@@ -37,12 +37,6 @@ export default {
             description: 'Selected slot.'
           },
           {
-            name: 'items',
-            type: 'Array',
-            default: '[]',
-            description: 'List of slots.'
-          },
-          {
             name: 'show-tabs',
             type: 'Boolean',
             default: 'true',
@@ -61,16 +55,10 @@ export default {
             description: 'Show nav at bottom of slider.'
           },
           {
-            name: 'per-slide',
-            type: 'Number',
-            default: '1',
-            description: 'Show x item in each slide.'
-          },
-          {
             name: 'interval',
             type: 'Number',
             default: '0',
-            description: 'Interval time of auto slide. If zero or src length < 2, it\'s not affect.'
+            description: 'Interval time of auto slide. If zero or slots length < 2, it\'s not affect.'
           }
         ]
       }
