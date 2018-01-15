@@ -26,7 +26,8 @@ export default {
         {
           title: 'Methods',
           slot: 'method'}
-      ]
+      ],
+      value: 'prop'
     }
   },
   computed: {

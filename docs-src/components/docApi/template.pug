@@ -1,6 +1,8 @@
 span(v-show="show")
   h3 {{title}}
-  fv-tabs(:tabs="tabs")
+  fv-slider(v-model="value")
+    template(scope="scope", slot="button")
+      | {{ tabs.filter(function(tab){ return tab.slot===scope.value; })[0].title }}
     div(v-for="tab in tabs", :slot="tab.slot")
       br
       fv-table.doc-api-table(v-if="rows[tab.slot] && rows[tab.slot].length > 0",
