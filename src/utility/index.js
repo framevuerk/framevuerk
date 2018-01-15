@@ -22,5 +22,9 @@ export default {
   capitalizeFirstLetter (str = '') {
     return str.charAt(0).toUpperCase() + str.slice(1)
   },
+  isSmallViewport () {
+    const width = (window.innerWidth > 0) ? window.innerWidth : screen.width
+    return width < 992
+  },
   _dependencies: {}
 }
