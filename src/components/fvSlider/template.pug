@@ -1,18 +1,23 @@
 fv-main.fv-slider
   fv-header(v-if="showTabs",
     height="3.5em")
-    fv-button.fv-sm.fv-grow(v-for="item in items",
-      :class="{'fv-selected': value === item}",
-      @click.prevent="$emit('input', item)",
-      v-html="item")
+    fv-button.fv-sm.fv-grow(v-for="(i, slot) in $slots",
+      :class="{'fv-selected': value === slot}",
+      @click.prevent="setValue(slot)")
+      slot(v-if="$scopedSlots.button", :value="slot", name="button")
+      span(v-else) {{slot}}
   transition-group(:name="animationName")
     fv-content.fv-slider-page(
-      v-for="page in pages",
-      :key="page.toString()",
-      v-if="page[0] === value")
-      div(:style="{width: itemWidth, display: 'inline-block'}", v-for="slot in page")
-        slot(:name="slot")
-      fv-button.fv-xl.next(v-if="showButtons", @click.prevent="moveSlide(1)", v-html="nextPageBtnContent")
-      fv-button.fv-xl.prev(v-if="showButtons", @click.prevent="moveSlide(-1)", v-html="prevPageBtnContent")
-      ul.nav(v-if="showNavs")
-        li(v-for="item in items", @click="$emit('input', item)", :class="{selected: value === item}")
+      v-for="(i, slot) in $slots",
+      :key="slot",
+      ref="slot",
+      v-if="slot === value")
+      slot(:name="value")
+  fv-button.fv-xl.next(v-if="showButtons",
+    @click.prevent="moveSlide(true)",
+    :icon="'fa fa-chevron-'+dirs.prev")
+  fv-button.fv-xl.prev(v-if="showButtons",
+    @click.prevent="moveSlide(false)",
+    :icon="'fa fa-chevron-'+dirs.next")
+  ul.nav(v-if="showNavs")
+    li(v-for="(i, slot) in $slots", @click.prevent="setValue(slot)", :class="{selected: value === slot}")

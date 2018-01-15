@@ -2,6 +2,7 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-slider {
+  cursor: move;
   overflow: hidden;
   & > .fv-header {
     background: transparent;
@@ -27,13 +28,8 @@
     }
   }
   & .fv-slider-page {
-    cursor: move;
     overflow: hidden;
     padding: 0;
-    & * {
-      touch-action: pan-y;
-      user-select: none;
-    }
   }
 
   & .fv-button.next,
@@ -82,22 +78,37 @@
 }
 
 
+.fv-slider-fade-enter-active,
+.fv-slider-fade-leave-active,
 .fv-slider-right-enter-active,
 .fv-slider-right-leave-active,
 .fv-slider-left-enter-active,
 .fv-slider-left-leave-active {
   transform: translateX(0);
-  transition-duration: $transition-speed * 2;
+  transition-duration: $transition-speed-slow;
   transition-property: transform, opacity;
 }
 
+.fv-slider-left-enter {
+  transform: translateX(100%);
+}
+.fv-slider-right-enter {
+  transform: translateX(-100%);
+}
+
+.fv-slider-fade-leave-active,
+.fv-slider-fade-leave-to,
 .fv-slider-right-leave-active,
 .fv-slider-right-leave-to,
 .fv-slider-left-leave-active,
 .fv-slider-left-leave-to {
   opacity: 1;
   position: absolute;
-  z-index: 1;
+}
+
+.fv-slider-fade-leave-active,
+.fv-slider-fade-leave-to {
+  opacity: 0;
 }
 
 .fv-slider-right-leave-active,
