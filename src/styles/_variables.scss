@@ -4,9 +4,9 @@
 // $theme-color: #1f9cdd;
 @import './functions';
 
-$transition-speed: .27s;
-$transition-speed-fast: .13s;
-$transition-speed-slow: .7s;
+$transition-speed: .35s;
+$transition-speed-fast: .17s;
+$transition-speed-slow: .58s;
 
 $block-start: if($direction == rtl, right, left);
 $block-end: if($direction == rtl, left, right);
