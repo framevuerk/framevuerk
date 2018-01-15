@@ -1,4 +1,3 @@
-import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
 
@@ -27,16 +26,16 @@ export default {
       return this.$slots.hasOwnProperty('sub-list')
     },
     isHighlighted () {
-      return this.$parent.highlightedEl().$el === this.$el
+      const bigParent = this.bigParent()
+      const normalHighlighted = bigParent !== false && bigParent.highlighted === this.$el
+      const shouldHighlight = normalHighlighted && (bigParent.isFocused || bigParent.tabindex < 0)
+      return normalHighlighted && shouldHighlight
     }
   },
   methods: {
     expand () {
       this.isExpanded = true
       this.$emit('expand')
-      utility.doIt(() => {
-        this.$refs.subList.children[0].focus()
-      })
     },
     collapse () {
       this.isExpanded = false
@@ -49,9 +48,18 @@ export default {
         this.expand()
       }
     },
-    click (event) {
-      const index = this.$parent.$children.findIndex(c => c.$el === this.$el)
-      this.$parent.highlighted = index
+    bigParent () {
+      let ret = this
+      while (ret) {
+        if (ret.parent) {
+          return ret
+        }
+        ret = ret.$parent
+      }
+      return false
+    },
+    onClick (event) {
+      this.$parent.highlighted = this.$el
       if (!this.disabled) {
         this.$emit('click', event)
       }
