@@ -83,7 +83,8 @@ export default {
       searchText: locale.search(),
       pShow: false,
       searchQuery: '',
-      highlightedOption: null
+      highlightedOption: null,
+      firstFocusOn: !utility.isSmallViewport()
     }
   },
   computed: {
@@ -119,13 +120,16 @@ export default {
     }
   },
   methods: {
+    setValue (value) {
+      this.$emit('input', value)
+    },
     open () {
       if (typeof this.value !== 'undefined') {
         if (!(this.value instanceof Array) && this.multiple) {
-          this.$emit('input', [this.value])
+          this.setValue([this.value])
         }
       } else {
-        this.$emit('input', this.multiple ? [] : undefined)
+        this.setValue(this.multiple ? [] : undefined)
       }
       this.searchQuery = ''
       this.highlightedOption = null
@@ -154,7 +158,7 @@ export default {
         return this.disabledKey ? option[this.disabledKey] : false
       }
     },
-    addOption (value) {
+    addOption (value, select = true) {
       const options = JSON.parse(JSON.stringify(this.options))
       let option = this.valueKey ? {} : ''
       if (this.valueKey) {
@@ -167,6 +171,9 @@ export default {
       }
       options.unshift(option)
       this.$emit('update:options', options)
+      if (select) {
+        this.clickOption(option)
+      }
       this.searchQuery = ''
       this.$refs.input.$el.focus()
     },

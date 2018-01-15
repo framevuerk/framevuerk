@@ -14,20 +14,22 @@ span
     position="center-bottom",
     @close="$emit('close')",
     @open="$emit('open')",
-    :first-focus-on="true",
+    :first-focus-on="firstFocusOn",
     :auto-close="false")
     fv-main(ref="select")
       fv-header.fv-invert(v-if="showInput")
-        fv-input.fv-form-control.fv-search-style.fv-grow(:placeholder="placeholder || searchText",
-          v-model="searchQuery",
-          @input="$emit('search', searchQuery)",
-          @keydown.native="$refs.list.onKeydown($event)",
-          ref="input")
+        .fv-title
+          fv-input.fv-form-control.fv-search-style.fv-grow(:placeholder="placeholder || searchText",
+            v-model="searchQuery",
+            @input="$emit('search', searchQuery)",
+            @keydown.native="$refs.list.onKeydown($event);",
+            ref="input")
       fv-content.fv-no-padding
         .fv-text-center.fv-padding(v-show="loading")
           i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation
         fv-list.fv-no-border(v-show="!loading",
           :tabindex="-1",
+          parent,
           ref="list")
           fv-list-item(v-for="option in options",
             v-if="equalSearch(option)",
@@ -36,13 +38,13 @@ span
             :disabled="optionProp(option, 'disabled')")
             slot(v-if="$scopedSlots.default", :option="option")
             span(v-else) {{optionProp(option, 'text')}}
+          fv-list-item(v-if="allowInsert && searchQuery",
+            @click="addOption(searchQuery)")
+            i.fa.fa-plus
+            |  
+            span {{locale.add(searchQuery)}}
       fv-footer(v-if="multiple || allowInsert")
-        .fv-grow(v-if="!allowInsert || !searchQuery")
-        fv-button.fv-ok(v-if="!allowInsert || !searchQuery",
-          icon="fa fa-check",
+        .fv-grow
+        fv-button.fv-ok(icon="fa fa-check",
           :text="locale.ok()",
           @click="close()")
-        fv-button.fv-ok.fv-grow(v-if="allowInsert && searchQuery",
-          icon="fa fa-plus-circle",
-          :text="locale.add(searchQuery)",
-          @click="addOption(searchQuery)")
