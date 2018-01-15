@@ -1,9 +1,13 @@
-li.fv-list-item(:class="{'disabled': disabled, 'highlighted': isHighlighted && ($parent.isFocused || parseInt($parent.tabindex) < 0), 'selected': selected}")
-  .content(@click="click")
-    span.fv-no-wrap.text
+li.fv-list-item(:class="{'disabled': disabled, 'highlighted': isHighlighted, 'selected': selected}")
+  .content(@click="onClick")
+    .fv-no-wrap.text
       slot(name="default")
-    fv-button.expand(v-if="hasSubList", @click="toggle()", tabindex="-1")
+    fv-button.expand(v-if="hasSubList",
+      @click="toggle()",
+        tabindex="-1")
       i.fa(:class="{'fa-caret-down': !isExpanded,'fa-caret-up': isExpanded}")
   transition(name="sub-list")
-    .sub-list(v-if="hasSubList", v-show="isExpanded", ref="subList")
+    .sub-list(v-if="hasSubList",
+      v-show="isExpanded",
+      ref="subList")
       slot(name="sub-list")
