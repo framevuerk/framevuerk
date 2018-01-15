@@ -55,8 +55,8 @@ export default {
               text: 'Other',
               items: [
                 this.sidebarItem('fvTable'),
-                this.sidebarItem('fvImg'),
-                this.sidebarItem('fvSlider')
+                this.sidebarItem('fvSlider'),
+                this.sidebarItem('fvImg')
               ]
             }
           ]
@@ -82,7 +82,7 @@ export default {
       }
     },
     routeChange () {
-      if (!this.$refs.sidebar.pPin) {
+      if (!this.$refs.sidebar.isPinned) {
         this.$refs.sidebar.close()
       }
       if (this.$route.name === 'notfound') {

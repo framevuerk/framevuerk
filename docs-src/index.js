@@ -19,7 +19,7 @@ import main from './pages/main'
 import fvMain from './pages/component_fvMain'
 import fvHeader from './pages/component_fvHeader'
 import fvSidebar from './pages/component_fvSidebar'
-import fvList from './pages/component_fvList'
+import fvListfvListItem from './pages/component_fvList + fvListItem'
 import fvFooter from './pages/component_fvFooter'
 import fvContent from './pages/component_fvContent'
 import fvDialog from './pages/component_fvDialog'
@@ -34,8 +34,8 @@ import fvCheck from './pages/component_fvCheck'
 import fvFilepicker from './pages/component_fvFilepicker'
 import fvForm from './pages/component_fvForm'
 import fvTable from './pages/component_fvTable'
-import fvImg from './pages/component_fvImg'
 import fvSlider from './pages/component_fvSlider'
+import fvImg from './pages/component_fvImg'
 
 import include from './pages/installation_include'
 import usage from './pages/installation_usage'
@@ -157,7 +157,7 @@ const router = new VueRouter({
     {
       name: 'fvList + fvListItem',
       path: '/components/fvList+fvListItem',
-      component: fvList
+      component: fvListfvListItem
     },
     {
       name: 'notfound',

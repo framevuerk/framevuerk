@@ -1,13 +1,12 @@
 fv-main#app
   fv-header
-    fv-button.fv-icon.fv-hide-on-lg(@click.native="$refs.sidebar.toggle()")
+    fv-button(@click="$refs.sidebar.toggle()")
       i.fa.fa-bars
-    .fv-title
+    .title
       h2.fv-no-wrap(v-if="$route.name !== 'welcome'") {{$route.name}}
       h2.fv-no-wrap(v-else) Framevuerk
-    .fv-icon(v-if="$route.name.indexOf('/components') !== -1")
-      a.fv-link(:href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
-        target="_blank") View Source
+    a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('+') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
+      target="_blank") View Source
   router-view.fv-row
   fv-sidebar.sidebar(:pin="null", ref="sidebar", :width="300")
     fv-header.doc-sidebar-header(:height="250")
@@ -16,7 +15,7 @@ fv-main#app
         h1 Framevuerk
         p.fv-word-wrap Awesome fully responsive Vue.js framevuerk!
     fv-content.fv-no-padding
-      fv-list.fv-no-border
+      fv-list.fv-no-border(parent)
         fv-list-item(v-for="item in sidebarItems",
           :selected="$route.name === item.text",
           @click="clickItem(item)",
