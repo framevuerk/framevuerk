@@ -26,6 +26,7 @@ footer, header, hgroup, menu, nav, section {
 
 * {
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     box-sizing: border-box;
     user-select: none;
