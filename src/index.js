@@ -21,7 +21,6 @@ import fvFilepicker from './components/fvFilepicker'
 import fvSwitch from './components/fvSwitch'
 import fvDialog from './components/fvDialog'
 import fvTable from './components/fvTable'
-import fvTabs from './components/fvTabs'
 import fvCheck from './components/fvCheck'
 import fvTextarea from './components/fvTextarea'
 import fvImg from './components/fvImg'
@@ -47,7 +46,6 @@ const framevuerk = {
   fvSwitch,
   fvDialog,
   fvTable,
-  fvTabs,
   fvCheck,
   fvTextarea,
   fvImg,
@@ -84,7 +82,6 @@ const framevuerk = {
     Vue.component('fvSwitch', fvSwitch)
     Vue.component('fvDialog', fvDialog)
     Vue.component('fvTable', fvTable)
-    Vue.component('fvTabs', fvTabs)
     Vue.component('fvCheck', fvCheck)
     Vue.component('fvTextarea', fvTextarea)
     Vue.component('fvImg', fvImg)
