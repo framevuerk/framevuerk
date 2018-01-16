@@ -93,12 +93,20 @@
     @media #{$media-only-xs} {
       @content;
     }
+  } @else if $media == lower-xs {
+    @media #{$media-lower-xs} {
+      @content;
+    }
   } @else if $media == sm {
     @media #{$media-sm} {
       @content;
     }
   } @else if $media == only-sm {
     @media #{$media-only-sm} {
+      @content;
+    }
+  } @else if $media == lower-sm {
+    @media #{$media-lower-sm} {
       @content;
     }
   } @else if $media == md {
@@ -109,6 +117,10 @@
     @media #{$media-only-md} {
       @content;
     }
+  } @else if $media == lower-md {
+    @media #{$media-lower-md} {
+      @content;
+    }
   } @else if $media == lg {
     @media #{$media-lg} {
       @content;
@@ -117,12 +129,20 @@
     @media #{$media-only-lg} {
       @content;
     }
+  } @else if $media == lower-lg {
+    @media #{$media-lower-lg} {
+      @content;
+    }
   } @else if $media == xl {
     @media #{$media-xl} {
       @content;
     }
   } @else if $media == only-xl {
     @media #{$media-only-xl} {
+      @content;
+    }
+  } @else if $media == lower-xl {
+    @media #{$media-lower-xl} {
       @content;
     }
   }

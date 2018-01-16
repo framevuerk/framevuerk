@@ -89,11 +89,16 @@ $break-lg: 1200px;
 
 $media-xs: '(min-width: 1px)';
 $media-only-xs: '(min-width: 1px) and (max-width: #{$break-xs - 1})';
+$media-lower-xs: '(min-width: 1px) and (max-width: #{$break-xs - 1})';
 $media-sm: '(min-width: #{$break-xs})';
 $media-only-sm: '(min-width: #{$break-xs}) and (max-width: #{$break-sm - 1})';
+$media-lower-sm: '(min-width: 1px) and (max-width: #{$break-sm - 1})';
 $media-md: '(min-width: #{$break-sm})';
 $media-only-md: '(min-width: #{$break-sm}) and (max-width: #{$break-md - 1})';
+$media-lower-md: '(min-width: 0px) and (max-width: #{$break-md - 1})';
 $media-lg: '(min-width: #{$break-md})';
 $media-only-lg: '(min-width: #{$break-md}) and (max-width: #{$break-lg - 1})';
+$media-lower-lg: '(min-width: 0px) and (max-width: #{$break-lg - 1})';
 $media-xl: '(min-width: #{$break-lg})';
 $media-only-xl: '(min-width: #{$break-lg})';
+$media-lower-xl: '(min-width: 0px)';

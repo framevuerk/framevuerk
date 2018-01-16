@@ -3,37 +3,69 @@ $width-1: 8.33333333333333333333333%;
 @import './mixins';
 
 .fv-row {
-  clear: both;
+  display: flex;
+  flex-wrap: wrap;
   padding: #{$padding / 2};
-  &::after {
-    clear: both;
-    content: '';
-    display: block;
-  }
 }
 
 [class*='fv-col'] {
-  display: inline-block;
-  padding: #{$padding / 2};
-  width: 100%;
+  flex-grow: 1;
+  max-width: 100%;
+  min-height: 1px;
+  padding: $padding / 2;
+  position: relative;
 }
 
-@each $media in xs, sm, md, lg, xl {
+@for $j from 1 through 12 {
+  .fv-col-#{$j} {
+    flex: 0 0 #{$width-1 * $j};
+    max-width: #{$width-1 * $j};
+  }
+}
+
+@each $media in 'xs', 'sm', 'md', 'lg', 'xl' {
   @include respond-to($media) {
-    @for $i from 1 to 12 {
+    @for $i from 1 through 12 {
       .fv-col-#{$media}-#{$i} {
-        width: #{$width-1 * $i};
+        flex: 0 0 #{$width-1 * $i};
+        max-width: #{$width-1 * $i};
       }
       .fv-col-offset-#{$media}-#{$i} {
         margin-#{$block-start}: #{$width-1 * $i};
       }
     }
-    .fv-hide-on-#{$media} {
+    $i: 0;
+    .fv-col-#{$media}-#{$i} {
       display: none !important;
     }
   }
   @include respond-to(only-#{$media}) {
-    .fv-hide-on-only-#{$media} {
+    @for $i from 1 through 12 {
+      .fv-col-only-#{$media}-#{$i} {
+        flex: 0 0 #{$width-1 * $i};
+        max-width: #{$width-1 * $i};
+      }
+      .fv-col-offset-only-#{$media}-#{$i} {
+        margin-#{$block-start}: #{$width-1 * $i};
+      }
+    }
+    $i: 0;
+    .fv-col-only-#{$media}-#{$i} {
+      display: none !important;
+    }
+  }
+  @include respond-to(lower-#{$media}) {
+    @for $i from 1 through 12 {
+      .fv-col-lower-#{$media}-#{$i} {
+        flex: 0 0 #{$width-1 * $i};
+        max-width: #{$width-1 * $i};
+      }
+      .fv-col-offset-lower-#{$media}-#{$i} {
+        margin-#{$block-start}: #{$width-1 * $i};
+      }
+    }
+    $i: 0;
+    .fv-col-lower-#{$media}-#{$i} {
       display: none !important;
     }
   }
