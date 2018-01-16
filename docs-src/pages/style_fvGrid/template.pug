@@ -1,0 +1,25 @@
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | To use framevuerk grid system, use .fv-row and .fv-col(x) classes
+    doc-code
+      = "<div class=\"fv-row\">\n"
+      = "\t<div class=\"fv-col\"></div>\n"
+      = "</div>"
+    doc-example
+      .fv-row.grid-example
+        .fv-col fv-col
+        .fv-col fv-col
+        .fv-col fv-col
+        .fv-col fv-col
+        .fv-col fv-col
+        .fv-col-12 fv-col-12
+        .fv-col-6 fv-col-6
+        .fv-col-6 fv-col-6        
+        .fv-col-8 fv-col-8
+        .fv-col-4 fv-col-4
+        .fv-col-md-6.fv-col-sm-12 fv-col-md-6 fv-col-sm-12
+        .fv-col-md-6.fv-col-sm-12 fv-col-md-6 fv-col-sm-12
+        .fv-col-md-7.fv-col-sm-12 fv-col-md-7 fv-col-sm-12
+        .fv-col-md-5.fv-col-lower-sm-0 fv-col-md-5 fv-col-lower-sm-0
+        .fv-col-xs-8.fv-col-offset-xs-4 fv-col-xs-8 fv-col-offset-xs-4
