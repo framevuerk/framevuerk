@@ -4,7 +4,8 @@ fv-dialog.fv-menu(ref="dialog",
   @close="$emit('close')",
   @open="$emit('open')")
   fv-content.fv-no-padding
-    fv-list.fv-no-border(ref="list")
+    fv-list.fv-no-border(ref="list",
+      parent)
       fv-list-item(v-for="item in items",
         @click="clickItem(item)",
         :disabled="itemProp(item, 'disabled')")
