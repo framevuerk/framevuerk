@@ -39,9 +39,6 @@ export default {
       })
     },
     onBlur () {
-      if (this.tabindex > -1) {
-        this.highlighted = null
-      }
       this.isFocused = false
     },
     moveHighlight (next = true) {
