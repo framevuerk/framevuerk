@@ -1,8 +1,8 @@
 span(v-show="$slots.default")
   .fv-row.fv-no-padding
-    h3.fv-pull-left Example(s):
+    h3.fv-no-padding.fv-col.fv-text-left Example(s):
     |  
-    a.fv-link.fv-pull-right(v-if="$slots.default", 
+    a.fv-no-padding.fv-col.fv-text-right.fv-link(v-if="$slots.default", 
       :href="$root.githubRepo + '/tree/master/docs-src/pages/component_' + $route.name",
       target="_blank",
       :title="$route.name + ' source code on GitHub'") View Source

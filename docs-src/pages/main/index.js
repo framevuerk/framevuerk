@@ -60,6 +60,12 @@ export default {
               ]
             }
           ]
+        },
+        {
+          text: 'Styles',
+          items: [
+            this.sidebarItem('fvGrid', '/styles/fvGrid')
+          ]
         }
       ]
     }

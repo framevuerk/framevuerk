@@ -40,6 +40,8 @@ import fvImg from './pages/component_fvImg'
 import include from './pages/installation_include'
 import usage from './pages/installation_usage'
 
+import fvGrid from './pages/style_fvGrid'
+
 framevuerk.use(hammer)
 framevuerk.use(moment)
 Vue.use(VueRouter)
@@ -49,6 +51,11 @@ Vue.use(framevuerk)
 // Routes
 const router = new VueRouter({
   routes: [
+    {
+      name: 'fvGrid',
+      path: '/styles/fvGrid',
+      component: fvGrid
+    },
     {
       name: 'Include',
       path: '/installation/include',
