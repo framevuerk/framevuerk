@@ -81,9 +81,11 @@ html > body {
 }
 
 .fv-hr {
+  background: transparent;
   border-bottom: 0;
-  border-top: dashed 1px $shadow-color;
+  border-top: solid 1px $shadow-color;
   height: 0;
+  width: 100%;
 }
 
 .fv-text-center {
