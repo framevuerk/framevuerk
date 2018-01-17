@@ -91,9 +91,7 @@ export default {
     close () {
       this.pShow = false
       if (this.focusBackElem) {
-        utility.doIt(() => {
-          this.focusBackElem.focus()
-        })
+        this.focusBackElem.focus()
       }
       this.$emit('close', this.param)
     },
