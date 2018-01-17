@@ -7,9 +7,9 @@ span
       ref="dialog",
       @keydown.native="pKeyDown($event); $emit('keydown', $event)",
       @click.native="$emit('click', $event)")
-      fv-header.fv-invert(:height="37",
+      fv-header(height="40px",
         v-if="title.length > 0")
-        .fv-title
+        .title
           label.fv-control-label(v-html="title")
       fv-content(v-if="content",
         v-html="content")
