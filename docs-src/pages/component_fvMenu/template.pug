@@ -5,17 +5,21 @@ fv-content
     doc-code
       = "<fv-menu></fv-menu>"
     doc-example
-      fv-menu(ref="m1", :sheet="false", :items="['Item 1', 'Item 2','Item 3', 'Item 4','Item 5', 'Item 6']", text-key="", disabled-key="", title="Normal")
-      fv-menu(ref="m2", :sheet="true", :items="[{text: 'Google', icon: 'fa fa-google'}, {text: 'Yahoo', icon: 'fa fa-yahoo'}, {text: 'Microsoft', icon: 'fa fa-windows'}]", title="Select your favorite company")
+      fv-menu(ref="m1", :sheet="false", :items="['Item 1', 'Item 2','Item 3', 'Item 4','Item 5', 'Item 6']", text-key="", disabled-key="", title="Normal", @click-item="doIt")
+      fv-menu(ref="m2", :sheet="true", :items="[{text: 'Google', icon: 'fa fa-google'}, {text: 'Yahoo', icon: 'fa fa-yahoo'}, {text: 'Microsoft', icon: 'fa fa-windows'}]", title="Select your favorite company", @click-item="doIt")
         template(scope="scope")
           i(:class="scope.item.icon")
-          |  - {{scope.userArgument}} - 
-          | {{scope.item.text}}
-      fv-menu(ref="m3", :sheet="null", :items="[{text: 'Copy', disabled: false}, {text: 'Cut', disabled: false}, {text: 'Paste', disabled: true}]")
+          |  {{scope.item.text}}
+          | : {{scope.userArgument}}
+      fv-menu(ref="m3", :sheet="null", :items="[{text: 'Copy', disabled: false}, {text: 'Cut', disabled: false}, {text: 'Paste', disabled: true}]", @click-item="doIt")
       fv-content.fv-row
-        fv-button.fv-block.fv-warning(@click.native="$refs.m1.open()") Normal
+        h4 Normal
+        fv-button.fv-block.fv-warning(@click="$refs.m1.open()") Normal
         br
-        fv-button.fv-block.fv-primary(@click.native="$refs.m2.open(Date.now())") Sheet + Custom Template + User Argument
+        h4 Sheet + Custom Template + User Argument
+        .fv-input-group.fv-flex
+          fv-input.fv-grow(placeholder="Enter Argument", v-model="inputs.d1")
+          fv-button.fv-ok(@click="$refs.m2.open(inputs.d1)") Open Menu        
         br
         fv-button.fv-block.fv-default(@click.native="$refs.m3.open(Math.random()*100)") Auto-Sheet With Disabled item
     doc-api(:rows="api")

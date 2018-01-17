@@ -13,6 +13,9 @@ export default {
   },
   data () {
     return {
+      inputs: {
+        d1: 'X Arg'
+      },
       api: {
         prop: [
           {
@@ -87,6 +90,11 @@ export default {
           }
         ]
       }
+    }
+  },
+  methods: {
+    doIt (a, b) {
+      alert(`You clicked on ${typeof a === 'string' ? a : a.text}${b ? ` and user-argument is ${b}` : ''}`)
     }
   },
   render: template.render
