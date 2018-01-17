@@ -1,5 +1,4 @@
 import locale from 'locale'
-import utility from '../../utility'
 import template from './template.pug'
 import style from './style.scss'
 import fvListItem from '../fvListItem'
@@ -34,9 +33,7 @@ export default {
       if (!this.highlighted) {
         this.moveHighlight()
       }
-      utility.doIt(() => {
-        this.isFocused = true
-      })
+      this.isFocused = true
     },
     onBlur () {
       this.isFocused = false
