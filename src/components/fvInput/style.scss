@@ -14,8 +14,9 @@
   justify-content: space-between;
   padding: 0 7.5px;
   vertical-align: middle;
+  &.search-style,
   &.fv-search-style {
-    background: transparent;
+    background: $highlight-color;
     border-left: 0;
     border-radius: 0;
     border-right: 0;
