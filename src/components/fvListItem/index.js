@@ -59,8 +59,8 @@ export default {
       return false
     },
     onClick (event) {
-      this.$parent.highlighted = this.$el
       if (!this.disabled) {
+        this.$parent.highlighted = this.$el
         this.$emit('click', event)
       }
     }
