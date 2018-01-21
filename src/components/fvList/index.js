@@ -41,9 +41,9 @@ export default {
     moveHighlight (next = true) {
       const allItems = [...this.$el.querySelectorAll('.fv-list-item')].filter(el => el.offsetHeight)
       const highlightedIndex = allItems.findIndex(el => this.highlighted === el)
-      let shouldHighlightIndex = highlightedIndex;
-      let tryTime = 0;
-      do{
+      let shouldHighlightIndex = highlightedIndex
+      let tryTime = 0
+      do {
         if (tryTime++ >= allItems.length) {
           this.highlighted = null
           return
@@ -54,7 +54,7 @@ export default {
           shouldHighlightIndex = shouldHighlightIndex - 1 < 0 ? allItems.length - 1 : shouldHighlightIndex - 1
         }
       } while (allItems[shouldHighlightIndex].__vue__.disabled)
-      this.highlighted = allItems[shouldHighlightIndex];
+      this.highlighted = allItems[shouldHighlightIndex]
     },
     onKeydown (event) {
       switch (event.which) {
