@@ -60,6 +60,9 @@
   &.selected {
     @include yiq($theme-color);
   }
+  & > .content:active {
+    background: $shadow-color-light;
+  }
   &.highlighted {
     & > .content {
       background: $shadow-color-light;
