@@ -1,0 +1,28 @@
+@import '../../styles/variables';
+@import '../../styles/functions';
+@import '../../styles/mixins';
+.fv-toast {
+  @include yiq($color);
+  border-radius: $border-radius-large $border-radius-large 0 0;
+  bottom: 0;
+  font-size: 1.2em;
+  left: 50%;
+  max-width: 100%;
+  min-width: 100px;
+  padding: $padding;
+  position: absolute;
+  text-align: center;
+  transform: translate(-50%, 0);
+  width: auto;
+  &.fv-toast-enter-active,
+  &.fv-toast-leave-active {
+    transform: translate(-50%, 0);
+    transition-duration: $transition-speed;
+    transition-property: transform;
+    will-change: transform;
+  }
+  &.fv-toast-enter,
+  &.fv-toast-leave-to {
+    transform: translate(-50%, 100%);
+  }
+}
