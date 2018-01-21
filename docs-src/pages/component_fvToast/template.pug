@@ -1,0 +1,22 @@
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | To creating slider element, use this component. Note that before using this, you can add 
+      a.fv-link(href="http://hammerjs.github.io/", target="_blank") HammerJs
+      |  as dependency of framevuerk to allow touch actions.
+      | This component make every slots in body to slider item.
+    doc-code(title="Javascript (inside your component):", lang="javascript")
+      = "this.$fvToast.show('blah blah')'\n"
+    doc-example
+      .fv-padding
+        h4 Normal
+        .fv-row
+          .fv-col
+            label.fv-control-label Text
+            fv-input.fv-form-control(placeholder="Text", v-model="inputs.d1")
+          .fv-col
+            label.fv-control-label Timouet
+            fv-input.fv-form-control(placeholder="Timeout", type="number", v-model="inputs.d2")
+          .fv-col-12
+            fv-button.fv-block.fv-ok(@click="$fvToast.show(inputs.d1, inputs.d2)", icon="fa fa-eye") Show
+    doc-api(:rows="api")

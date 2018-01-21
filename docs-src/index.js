@@ -36,6 +36,7 @@ import fvForm from './pages/component_fvForm'
 import fvTable from './pages/component_fvTable'
 import fvSlider from './pages/component_fvSlider'
 import fvImg from './pages/component_fvImg'
+import fvToast from './pages/component_fvToast'
 
 import include from './pages/installation_include'
 import usage from './pages/installation_usage'
@@ -165,6 +166,11 @@ const router = new VueRouter({
       name: 'fvList + fvListItem',
       path: '/components/fvList+fvListItem',
       component: fvListfvListItem
+    },
+    {
+      name: 'fvToast',
+      path: '/components/fvToast',
+      component: fvToast
     },
     {
       name: 'notfound',

@@ -1,6 +1,6 @@
 import template from './template.pug'
 import style from './style.scss'
-import '../../assets/logo-white.svg'
+import '../../assets/logo.svg'
 
 export default {
   data () {
@@ -56,7 +56,8 @@ export default {
               items: [
                 this.sidebarItem('fvTable'),
                 this.sidebarItem('fvSlider'),
-                this.sidebarItem('fvImg')
+                this.sidebarItem('fvImg'),
+                this.sidebarItem('fvToast')
               ]
             }
           ]
