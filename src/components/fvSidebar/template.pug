@@ -2,8 +2,8 @@ span
   .fv-overlay(v-if="pShow && !isPinned",
     @click="close()")
   transition(:name="animationName")
-    aside.fv-sidebar(v-if="pShow",
+    aside.fv-main.fv-sidebar(v-if="pShow",
       :style="{width: typeof width === 'number' ? width+'px' : width}",
-      :class="{'fv-left': position=='left', 'fv-right': position=='right'}",
+      :class="classList",
       ref="sidebar")
       slot

@@ -2,7 +2,6 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-sidebar {
-  @include yiq($sidebar-bg-color);
   backface-visibility: hidden;
   height: 100%;
   max-width: 80%;
@@ -10,11 +9,17 @@
   overflow-y: auto;
   position: absolute;
   top: 0;
-  &.fv-right {
+  &.right {
     right: 0;
   }
-  &.fv-left {
+  &.right-border {
+    border-right: solid 1px $shadow-color-light;
+  }
+  &.left {
     left: 0;
+  }
+  &.left-border {
+    border-left: solid 1px $shadow-color-light;
   }
   &.fv-sidebar-left-enter-active,
   &.fv-sidebar-left-leave-active,

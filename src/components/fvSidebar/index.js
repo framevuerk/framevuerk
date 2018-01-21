@@ -40,6 +40,14 @@ export default {
       } else {
         return ''
       }
+    },
+    classList () {
+      return {
+        'left': this.position === 'left',
+        'right-border': this.position === 'left' && this.isPinned,
+        'right': this.position === 'right',
+        'left-border': this.position === 'right' && this.isPinned
+      }
     }
   },
   methods: {
