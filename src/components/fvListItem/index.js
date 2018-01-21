@@ -58,6 +58,11 @@ export default {
       }
       return false
     },
+    onMousedown () {
+      if (!this.disabled) {
+        this.$parent.highlighted = this.$el
+      }
+    },
     onClick (event) {
       if (!this.disabled) {
         this.$parent.highlighted = this.$el

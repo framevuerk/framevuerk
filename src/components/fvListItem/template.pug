@@ -1,5 +1,5 @@
 li.fv-list-item(:class="{'disabled': disabled, 'highlighted': isHighlighted, 'selected': selected}")
-  .content(@click="onClick")
+  .content(@click="onClick", @mousedown="onMousedown")
     .fv-no-wrap.text
       slot(name="default")
     fv-button.expand(v-if="hasSubList",
