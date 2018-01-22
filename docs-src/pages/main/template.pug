@@ -9,11 +9,11 @@ fv-main#app
       target="_blank") View Source
   router-view.fv-row
   fv-sidebar.sidebar(:pin="null", ref="sidebar", :width="300")
-    fv-header.doc-sidebar-header(:height="250")
-      a.fv-link.fv-title.fv-text-center(href="index.html")
-        img.doc-logo(src="./logo.svg")
-        h1 Framevuerk
-        p.fv-word-wrap Awesome fully responsive Vue.js framevuerk!
+    fv-header.doc-sidebar-header
+      a.fv-link.title(href="index.html")
+        h1
+          img.doc-logo(src="./logo.svg")
+          span Framevuerk
     fv-content.fv-no-padding
       fv-list.fv-no-border(parent)
         fv-list-item(v-for="item in sidebarItems",
