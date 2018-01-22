@@ -1,4 +1,4 @@
-module.exports = function(mode){
+module.exports = function (mode) {
   return [
     {
       name: 'fvGrid',
