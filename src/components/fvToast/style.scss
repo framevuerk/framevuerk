@@ -2,27 +2,28 @@
 @import '../../styles/functions';
 @import '../../styles/mixins';
 .fv-toast {
-  @include yiq($color);
-  border-radius: $border-radius-large $border-radius-large 0 0;
+  @include yiq($night-bg-color);
+  backface-visibility: hidden;
+  border-radius: $border-radius $border-radius 0 0;
   bottom: 0;
-  font-size: 1.2em;
+  font-size: 1.1em;
   left: 50%;
   max-width: 100%;
   min-width: 100px;
-  padding: $padding;
+  padding: ($padding / 2) $padding;
   position: absolute;
   text-align: center;
-  transform: translate(-50%, 0);
+  transform: translate3d(-50%, 0, 0);
   width: auto;
   &.fv-toast-enter-active,
   &.fv-toast-leave-active {
-    transform: translate(-50%, 0);
+    transform: translate3d(-50%, 0 0);
     transition-duration: $transition-speed;
     transition-property: transform;
     will-change: transform;
   }
   &.fv-toast-enter,
   &.fv-toast-leave-to {
-    transform: translate(-50%, 100%);
+    transform: translate3d(-50%, 100%, 0);
   }
 }
