@@ -6,13 +6,13 @@ fv-main.fv-slider
       @click.prevent="setValue(slot)")
       slot(v-if="$scopedSlots.button", :value="slot", name="button")
       span(v-else) {{slot}}
-  transition-group(:name="animationName")
-    fv-content.fv-slider-page(
-      v-for="(i, slot) in $slots",
-      :key="slot",
-      ref="slot",
-      v-if="slot === value")
-      slot(:name="value")
+  fv-content.slider-page
+    transition(:name="animationName")
+      fv-content.slider-page(v-for="(i, slot) in $slots",
+        :key="slot",
+        ref="slot",
+        v-if="slot === value")
+        slot(:name="value")
   fv-button.fv-xl.next(v-if="showButtons",
     @click.prevent="moveSlide(true)",
     :icon="'fa fa-chevron-'+dirs.prev")

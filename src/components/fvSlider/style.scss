@@ -4,6 +4,11 @@
 .fv-slider {
   cursor: move;
   overflow: hidden;
+  & .slider-page {
+    padding: 0;
+    overflow-x: hidden;
+    
+  }
   & > .fv-header {
     background: transparent;
     color: inherit;
@@ -26,10 +31,6 @@
         color: $theme-color;
       }
     }
-  }
-  & .fv-slider-page {
-    overflow: hidden;
-    padding: 0;
   }
 
   & .fv-button.next,
