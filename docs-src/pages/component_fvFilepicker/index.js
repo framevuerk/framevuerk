@@ -64,5 +64,10 @@ export default {
       }
     }
   },
+  methods: {
+    getUrl (v) {
+      return URL.createObjectURL(v)
+    }
+  },
   render: template.render
 }

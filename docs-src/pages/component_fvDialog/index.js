@@ -49,7 +49,7 @@ export default {
             name: 'buttons',
             type: 'Array',
             default: '[]',
-            description: 'Buttons of dialog.<br>Each item in array, is object that can have<br>key:String, icon:String, text:String, action:Function, class:String and disabled:Boolean prop. '
+            description: 'Buttons of dialog.<br>Each item in array, directly bind to fvButton component, so it should be an Object with fvButton props and values.'
           },
           {
             name: 'first-focus-on',
@@ -61,17 +61,17 @@ export default {
         event: [
           {
             name: 'open',
-            params: '---',
+            params: '(user-argument)',
             description: 'Fired when dialog opened'
           },
           {
             name: 'close',
-            params: '---',
+            params: '(user-argument)',
             description: 'Fired when dialog closed'
           },
           {
-            name: 'click-button',
-            params: '(button-key, user-argument)',
+            name: 'button-click',
+            params: '(button, user-argument)',
             description: 'Fired when dialog buttons clicked'
           }
         ],

@@ -1,27 +1,32 @@
 body .sidebar {
   & .fv-header {
-    & .doc-logo{
+    & .doc-logo {
       height: 27px;
       display: inline-block;
     }
-    & .title * {
-      vertical-align: middle;
-    }
+
     & * {
       color: #35485d;
       line-height: 1.3em;
     }
+
+    & .title * {
+      vertical-align: middle;
+    }
   }
+
   & .fv-tabs {
     height: auto;
   }
+
   & .fv-list {
     & .fa {
       font-size: 1.3em;
       margin-right: 5px;
     }
+
     & .fv-item.selected {
-      background: rgba(255, 255, 255, .1);
+      background: rgba(255, 255, 255, 0.1);
     }
   }
 }

@@ -17,8 +17,8 @@ export default {
         prop: [
           {
             name: 'height',
-            type: 'Enum [Number, String]',
-            default: '55',
+            type: 'String',
+            default: '\'55px\'',
             description: 'Height of element'
           }
         ]

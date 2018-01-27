@@ -17,8 +17,8 @@ export default {
         prop: [
           {
             name: 'width',
-            type: 'Number',
-            default: 250,
+            type: 'String',
+            default: '\'250px\'',
             description: 'Width of sidebar'
           },
           {

@@ -7,11 +7,11 @@ fv-content
     doc-example
       fv-form.fv-row
         .fv-col
-          label.fv-control-label Checkbox
-          fv-check(v-model="inputs.d1", :options="['A.C. Milan', 'Juventus', 'Inter Milan']", multiple, required)
+          p Check Box
+          fv-check(v-model="inputs.d1", :options="['A.C. Milan', 'Juventus', 'Inter Milan']", value-key="", text-key="", disabled-key="", multiple)
         .fv-col
-          label.fv-control-label Radio
-          fv-check(v-model="inputs.d2", :options="['Reza', 'Hashem', 'Omid']", required)
+          p Radio + Required
+          fv-check(v-model="inputs.d2", :options="['Amir', 'Farzad', 'Jeff']", required, value-key="", text-key="", disabled-key="")
         .fv-col
           label.fv-control-label Switch
           fv-switch(v-model="inputs.d3", required)

@@ -5,9 +5,9 @@ fv-content
     doc-code
       = "<fv-menu></fv-menu>"
     doc-example
-      fv-menu(ref="m1", :sheet="false", :items="['Item 1', 'Item 2','Item 3', 'Item 4','Item 5', 'Item 6']", text-key="", disabled-key="", title="Normal", @click-item="doIt")
-      fv-menu(ref="m2", :sheet="true", :items="[{text: 'Copy', disabled: false}, {text: 'Cut', disabled: false}, {text: 'Paste', disabled: true}]", @click-item="doIt")
-      fv-menu(ref="m3", :sheet="null", :items="[{text: 'Google', icon: 'fa fa-google'}, {text: 'Yahoo', icon: 'fa fa-yahoo'}, {text: 'Microsoft', icon: 'fa fa-windows'}]", title="Select your favorite company", @click-item="doIt")
+      fv-menu(ref="m1", :sheet="false", :items="['Item 1', 'Item 2','Item 3', 'Item 4','Item 5', 'Item 6']", text-key="", disabled-key="", title="Normal", @item-click="doIt")
+      fv-menu(ref="m2", :sheet="true", :items="[{text: 'Copy', disabled: false}, {text: 'Cut', disabled: false}, {text: 'Paste', disabled: true}]", @item-click="doIt")
+      fv-menu(ref="m3", :sheet="null", :items="[{text: 'Google', icon: 'fa fa-google'}, {text: 'Yahoo', icon: 'fa fa-yahoo'}, {text: 'Microsoft', icon: 'fa fa-windows'}]", title="Select your favorite company", @item-click="doIt")
         template(scope="scope")
           i(:class="scope.item.icon")
           |  {{scope.item.text}}

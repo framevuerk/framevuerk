@@ -67,7 +67,7 @@ export default {
             description: 'Fired when dialog closed'
           },
           {
-            name: 'click-item',
+            name: 'item-click',
             params: '(item, user-argument)',
             description: 'Fired when user click on item.'
           }

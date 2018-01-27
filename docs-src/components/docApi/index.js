@@ -41,12 +41,12 @@ export default {
   methods: {
     fields (type) {
       switch (type) {
-      case 'prop':
-        return ['name', 'type', {value: 'default', class: 'fv-hide-on-only-xs'}, {value: 'description', class: 'fv-hide-on-only-xs'}]
-      case 'event':
-        return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
-      case 'method':
-        return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
+        case 'prop':
+          return ['name', 'type', {value: 'default', class: 'fv-hide-on-only-xs'}, {value: 'description', class: 'fv-hide-on-only-xs'}]
+        case 'event':
+          return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
+        case 'method':
+          return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
       }
     }
   },

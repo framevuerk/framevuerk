@@ -24,5 +24,5 @@ fv-content
         .fv-col-sm-4
           p Type Blob + Thumbnail + Advanced Required:
           div(ref="img", v-show="inputs.d5", :style="{width: '100%', height: '120px', backgroundSize: '100% 100%'}")
-          fv-filepicker(v-model="inputs.d5", @input="$refs.img.style.backgroundImage = `url('${URL.createObjectURL($event)}')`", type="blob", button-class="fv-block", default-text="Select a png image...", :required="function(){ return this.value && this.value.type === 'image/png' }")
+          fv-filepicker(v-model="inputs.d5", @input="$refs.img.style.backgroundImage = `url('${getUrl($event)}')`", type="blob", button-class="fv-block", default-text="Select a png image...", :required="function(){ return this.value && this.value.type === 'image/png' }")
     doc-api(:rows="api")
