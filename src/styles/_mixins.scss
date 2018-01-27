@@ -1,16 +1,18 @@
 @import './variables';
 @import './functions';
 
-@mixin outline($color: $theme-color) {
+@mixin outline($color: $primary-color) {
   border-color: $color;
-  box-shadow: 0 0 2px 1px rgba($color, .4);
+  box-shadow: 0 0 0 1px rgba($color, 0.4);
   outline: none;
 }
-@mixin textoutline($color: $theme-color) {
+
+@mixin textoutline($color: $primary-color) {
   outline: none;
   text-shadow: 0 0 10px $color;
 }
-@mixin bottom-outline($color: $theme-color) {
+
+@mixin bottom-outline($color: $primary-color) {
   border-color: $color;
   box-shadow: none;
   outline: none;
@@ -28,7 +30,8 @@
 }
 
 @mixin disabled {
-  opacity: .5;
+  opacity: 0.5;
+
   &,
   & * {
     cursor: not-allowed !important;
@@ -41,41 +44,52 @@
     &.#{$selector}-#{$on} {
       @content;
     }
-  } @else if $on == enter {
+  }
+
+  @else if $on == enter {
     &.#{$selector}-enter-active,
     &.#{$selector}-leave-active {
       @content;
     }
-  } @else if $on == leave {
+  }
+
+  @else if $on == leave {
     &.#{$selector}-enter,
     &.#{$selector}-leave-active {
       @content;
     }
   }
 }
+
 @mixin sizes {
   height: auto;
   max-width: 100%;
+
   &.fv-rounded {
     border-radius: $border-radius-large;
   }
+
   &.fv-xs {
-    font-size: .7em;
+    font-size: 0.7em;
     min-height: 2.7em;
   }
+
   &.fv-sm {
-    font-size: .9em;
+    font-size: 0.9em;
     min-height: 2.85em;
   }
+
   &,
   &.fv-md {
     font-size: 1em;
     min-height: 3em;
   }
+
   &.fv-lg {
     font-size: 1.2em;
     min-height: 3.2em;
   }
+
   &.fv-xl {
     font-size: 1.4em;
     min-height: 3.3em;
@@ -85,63 +99,93 @@
 @mixin respond-to($media) {
   @if $media == all {
     @content;
-  } @else if $media == xs {
+  }
+
+  @else if $media == xs {
     @media #{$media-xs} {
       @content;
     }
-  } @else if $media == only-xs {
+  }
+
+  @else if $media == only-xs {
     @media #{$media-only-xs} {
       @content;
     }
-  } @else if $media == lower-xs {
+  }
+
+  @else if $media == lower-xs {
     @media #{$media-lower-xs} {
       @content;
     }
-  } @else if $media == sm {
+  }
+
+  @else if $media == sm {
     @media #{$media-sm} {
       @content;
     }
-  } @else if $media == only-sm {
+  }
+
+  @else if $media == only-sm {
     @media #{$media-only-sm} {
       @content;
     }
-  } @else if $media == lower-sm {
+  }
+
+  @else if $media == lower-sm {
     @media #{$media-lower-sm} {
       @content;
     }
-  } @else if $media == md {
+  }
+
+  @else if $media == md {
     @media #{$media-md} {
       @content;
     }
-  } @else if $media == only-md {
+  }
+
+  @else if $media == only-md {
     @media #{$media-only-md} {
       @content;
     }
-  } @else if $media == lower-md {
+  }
+
+  @else if $media == lower-md {
     @media #{$media-lower-md} {
       @content;
     }
-  } @else if $media == lg {
+  }
+
+  @else if $media == lg {
     @media #{$media-lg} {
       @content;
     }
-  } @else if $media == only-lg {
+  }
+
+  @else if $media == only-lg {
     @media #{$media-only-lg} {
       @content;
     }
-  } @else if $media == lower-lg {
+  }
+
+  @else if $media == lower-lg {
     @media #{$media-lower-lg} {
       @content;
     }
-  } @else if $media == xl {
+  }
+
+  @else if $media == xl {
     @media #{$media-xl} {
       @content;
     }
-  } @else if $media == only-xl {
+  }
+
+  @else if $media == only-xl {
     @media #{$media-only-xl} {
       @content;
     }
-  } @else if $media == lower-xl {
+  }
+
+  @else if $media == lower-xl {
     @media #{$media-lower-xl} {
       @content;
     }

@@ -1,10 +1,11 @@
 @function luma($color) {
-  @return .299 * red($color) + .587 * green($color) + .114 * blue($color);
+  @return 0.299 * red($color) + 0.587 * green($color) + 0.114 * blue($color);
 }
 
 @function yiq($color, $percetange: 90%) {
   $light: lighten($color, $percetange);
   $dark: darken($color, $percetange);
   $threshold: 180;
+
   @return if(luma($color) < $threshold, $light, $dark);
 }

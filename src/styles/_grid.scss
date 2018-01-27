@@ -1,6 +1,7 @@
-$width-1: 8.33%;
 @import './variables';
 @import './mixins';
+
+$width-1: 8.33%;
 
 .fv-row {
   display: flex;
@@ -31,41 +32,49 @@ $width-1: 8.33%;
         flex: 0 0 #{$width-1 * $i};
         max-width: #{$width-1 * $i};
       }
+
       .fv-col-offset-#{$media}-#{$i} {
         margin-#{$block-start}: #{$width-1 * $i};
       }
     }
     $i: 0;
+
     .fv-col-#{$media}-#{$i} {
       display: none !important;
     }
   }
+
   @include respond-to(only-#{$media}) {
     @for $i from 1 through 12 {
       .fv-col-only-#{$media}-#{$i} {
         flex: 0 0 #{$width-1 * $i};
         max-width: #{$width-1 * $i};
       }
+
       .fv-col-offset-only-#{$media}-#{$i} {
         margin-#{$block-start}: #{$width-1 * $i};
       }
     }
     $i: 0;
+
     .fv-col-only-#{$media}-#{$i} {
       display: none !important;
     }
   }
+
   @include respond-to(lower-#{$media}) {
     @for $i from 1 through 12 {
       .fv-col-lower-#{$media}-#{$i} {
         flex: 0 0 #{$width-1 * $i};
         max-width: #{$width-1 * $i};
       }
+
       .fv-col-offset-lower-#{$media}-#{$i} {
         margin-#{$block-start}: #{$width-1 * $i};
       }
     }
     $i: 0;
+
     .fv-col-lower-#{$media}-#{$i} {
       display: none !important;
     }
