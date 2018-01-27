@@ -8,7 +8,7 @@ fv-main#app
     a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('+') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
       target="_blank") View Source
   router-view.fv-row
-  fv-sidebar.sidebar(:pin="null", ref="sidebar", :width="300")
+  fv-sidebar.sidebar(:pin="null", ref="sidebar", width="300px")
     fv-header.doc-sidebar-header
       a.fv-link.title(href="index.html")
         h1

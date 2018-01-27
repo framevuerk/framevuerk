@@ -34,8 +34,7 @@ var generateConfig = () => {
         {
           test: /\.js$/,
           use: {
-            loader: 'babel-loader',
-            options: require(path.resolve(__dirname, '../build/.babelrc.json'))
+            loader: 'babel-loader'
           },
           exclude: /(node_modules|dist)/
         },
