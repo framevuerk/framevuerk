@@ -2,105 +2,72 @@ var path = require('path')
 var fs = require('fs')
 var pkg = require(path.resolve(__dirname, '../package.json'))
 var webpack = require('webpack')
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+
+const config = require(path.resolve(__dirname, '../config.json'))
+
+const utils = require(path.resolve(__dirname, './utils.js'))
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
-var generateConfig = (LOCALE, THEME_COLOR) => {
-  let DIRECTION
-  switch (LOCALE) {
-  case 'fa':
-    DIRECTION = 'rtl'
-    break
-  default:
-    DIRECTION = 'ltr'
-  }
-
-  const fileName = pkg.name + '-' + LOCALE
+var generateConfig = (cnf, minify = true) => {
+  const fileName = `${pkg.name}-${cnf.locale}${(minify ? '.min' : '')}`
 
   const plugins = [
-    new ExtractTextPlugin(fileName + '.css'),
+    new ExtractTextPlugin({
+      filename: fileName + '.css'
+    }),
     new webpack.DefinePlugin({
       'PKG_NAME': '"' + pkg.name + '"',
       'PKG_VERSION': '"' + pkg.version + '"',
       'process.env': {
         NODE_ENV: '"' + process.env.NODE_ENV + '"',
-        LOCALE: '"' + LOCALE + '"',
-        DIRECTION: '"' + DIRECTION + '"',
-        THEME_COLOR: '"' + THEME_COLOR + '"'
+        config: JSON.stringify(cnf)
       }
     })
   ]
-  if (process.env.NODE_ENV === 'production') {
-    plugins.push(new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      compress: {
-        warnings: false
-      }
-    }))
+
+  if (minify) {
+    plugins.push(new UglifyJsPlugin())
+    plugins.push(new OptimizeCssAssetsPlugin())
   }
+
   return {
-    entry: path.resolve(__dirname, '../src/index.js'),
-    stats: { children: false },
+    entry: utils.resolve('../src/index.js'),
     output: {
-      path: path.resolve(__dirname, '../dist'),
+      path: utils.resolve('../dist'),
       filename: fileName + '.js',
       library: pkg.name,
       libraryTarget: 'umd'
     },
     resolve: {
       alias: {
-        locale: path.resolve(__dirname, `../src/locale/${LOCALE}.js`)
+        locale: utils.resolve(`../locale/${cnf.locale}.js`)
       }
     },
     module: {
       rules: [
         {
-          test: /\.js$/,
-          use: {
-            loader: 'babel-loader',
-            options: require(path.resolve(__dirname, '../build/.babelrc.json'))
-          },
-          exclude: /node_modules/
+          test: /\.vue$/,
+          loader: 'vue-loader',
+          options: {
+            loaders: {
+              js: utils.jsLoader(),
+              scss: ExtractTextPlugin.extract(utils.styleLoader(cnf)),
+              autoprefixer: true
+            }
+          }
         },
         {
-          test: /\.pug$/,
-          loader: ['vue-template-compiler-loader', 'pug-html-loader'],
+          test: /\.js$/,
+          use: utils.jsLoader(),
           exclude: /node_modules/
         },
         {
           test: /\.(scss|css)$/,
-          use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-              {
-                loader: 'css-loader',
-                options: {
-                  minimize: process.env.NODE_ENV === 'production'
-                }
-              },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  plugins: [
-                    require('autoprefixer')({
-                      browsers: 'last 4 versions'
-                    })
-                  ]
-                }
-              },
-              {
-                loader: 'sass-loader',
-                options: {
-                  data: '' +
-                    '$env:' + process.env.NODE_ENV + ';' +
-                    '$direction:' + DIRECTION + ';' +
-                    '$theme-color:' + THEME_COLOR + ';' +
-                    '$locale:' + LOCALE + ';'
-                }
-              }
-            ]
-          })
+          use: ExtractTextPlugin.extract(utils.styleLoader(cnf))
         }
       ]
     },
@@ -108,14 +75,16 @@ var generateConfig = (LOCALE, THEME_COLOR) => {
   }
 }
 
-var locales = []
-fs.readdirSync(path.resolve(__dirname, '../src/locale')).forEach(file => {
-  locales.push(path.basename(file, '.js'))
-})
-
 var ret = []
-locales.forEach(local => {
-  ret.push(generateConfig(local, process.env.THEME_COLOR || '#108dce'))
+fs.readdirSync(utils.resolve('../locale')).forEach(file => {
+  const locale = require(utils.resolve(`../locale/${file}`))
+  const cnf = Object.assign(config, {
+    locale: path.basename(file, '.js'),
+    direction: locale.direction
+  })
+
+  ret.push(generateConfig(cnf, false))
+  ret.push(generateConfig(cnf, true))
 })
 
 module.exports = ret
