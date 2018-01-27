@@ -12,7 +12,7 @@
     "lint:fix": "npm run lint:js:fix && npm run lint:scss:fix",
     "test": "npm run lint",
     "clean:lib": "rimraf ./dist",
-    "build:lib": "npm run clean:lib && cross-env NODE_ENV=production webpack --config ./build/webpack.config.js --display none --progress",
+    "build:lib": "npm run clean:lib && cross-env NODE_ENV=production webpack --config ./build/webpack.config.js --hide-modules --progress",
     "clean:docs": "rimraf ./docs",
     "build:docs": "npm run clean:docs && cross-env NODE_ENV=production webpack --config ./build/webpack.config.docs.js",
     "clean": "npm run clean:lib && npm run clean:docs",
@@ -100,5 +100,6 @@
   "bugs": {
     "url": "https://github.com/framevuerk/framevuerk/issues"
   },
-  "homepage": "https://github.com/framevuerk/framevuerk#readme"
+  "homepage": "https://github.com/framevuerk/framevuerk#readme",
+  "dependencies": {}
 }
