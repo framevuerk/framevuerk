@@ -4,28 +4,28 @@ import utility from './utility'
 /* global PKG_NAME, PKG_VERSION */
 
 // Components
-import fvMain from './components/fvMain'
-import fvContent from './components/fvContent'
-import fvHeader from './components/fvHeader'
-import fvFooter from './components/fvFooter'
-import fvSidebar from './components/fvSidebar'
-import fvForm from './components/fvForm'
-import fvSelect from './components/fvSelect'
-import fvDatepicker from './components/fvDatepicker'
-import fvList from './components/fvList'
-import fvListItem from './components/fvListItem'
-import fvMenu from './components/fvMenu'
-import fvInput from './components/fvInput'
-import fvButton from './components/fvButton'
-import fvFilepicker from './components/fvFilepicker'
-import fvSwitch from './components/fvSwitch'
-import fvDialog from './components/fvDialog'
-import fvTable from './components/fvTable'
-import fvCheck from './components/fvCheck'
-import fvTextarea from './components/fvTextarea'
-import fvImg from './components/fvImg'
-import fvSlider from './components/fvSlider'
-import fvToast from './components/fvToast'
+import fvMain from './components/fvMain.vue'
+import fvContent from './components/fvContent.vue'
+import fvHeader from './components/fvHeader.vue'
+import fvFooter from './components/fvFooter.vue'
+import fvSidebar from './components/fvSidebar.vue'
+import fvForm from './components/fvForm.vue'
+import fvSelect from './components/fvSelect.vue'
+import fvDatepicker from './components/fvDatepicker.vue'
+import fvList from './components/fvList.vue'
+import fvListItem from './components/fvListItem.vue'
+import fvMenu from './components/fvMenu.vue'
+import fvInput from './components/fvInput.vue'
+import fvButton from './components/fvButton.vue'
+import fvFilepicker from './components/fvFilepicker.vue'
+import fvSwitch from './components/fvSwitch.vue'
+import fvDialog from './components/fvDialog.vue'
+import fvTable from './components/fvTable.vue'
+import fvCheck from './components/fvCheck.vue'
+import fvTextarea from './components/fvTextarea.vue'
+import fvImg from './components/fvImg.vue'
+import fvSlider from './components/fvSlider.vue'
+import fvToast from './components/fvToast.vue'
 // Directives
 import fvScroll from './directives/fvScroll'
 
@@ -55,13 +55,13 @@ const framevuerk = {
   use (lib = null) {
     if (lib) {
       switch (lib.name) {
-      case 'jMoment':
-      case 'moment':
-        utility._dependencies.moment = lib
-        break
-      case 'Hammer':
-        utility._dependencies.hammer = lib
-        break
+        case 'jMoment':
+        case 'moment':
+          utility._dependencies.moment = lib
+          break
+        case 'Hammer':
+          utility._dependencies.hammer = lib
+          break
       }
     }
   },
@@ -94,6 +94,7 @@ const framevuerk = {
     Vue.directive('fvScroll', fvScroll)
   },
   name: PKG_NAME,
-  version: PKG_VERSION
+  version: PKG_VERSION,
+  locale: process.env.config.locale
 }
 module.exports = framevuerk
