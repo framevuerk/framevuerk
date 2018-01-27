@@ -1,0 +1,10 @@
+{
+  "primary-color": "#41b883",
+  "danger-color": "#dd4b39",
+  "warning-color": "#ef8f00",
+  "info-color": "#14b0cf",
+  "zbg-color": "#f9f9f9",
+  "bg-color": "#fff",
+  "transition-speed": "0.35s",
+  "border-radius": "4px"
+}
