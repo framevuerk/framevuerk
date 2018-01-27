@@ -1,10 +1,11 @@
 fv-main#app
   fv-header
-    fv-button(@click="$refs.sidebar.toggle()")
-      i.fa.fa-bars
+    fv-button(@click="$refs.sidebar.toggle()", icon="fa fa-bars")
+    .space
     .title
       h2.fv-no-wrap(v-if="$route.name !== 'welcome'") {{$route.name}}
       h2.fv-no-wrap(v-else) Framevuerk
+    .space
     a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('+') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
       target="_blank") View Source
   router-view.fv-row
