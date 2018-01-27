@@ -25,11 +25,13 @@ export default {
   display: flex;
   justify-content: space-between;
   overflow: hidden;
+  border-bottom: solid 1px $shadow-color;
   right: 0;
   top: 0;
   transition-duration: $transition-speed;
   transition-property: height;
   width: 100%;
+  padding: 0 $padding-small;
 
   & > .fv-button,
   & > .fv-title,
@@ -38,18 +40,11 @@ export default {
     @include nowrap;
 
     align-items: center;
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
     display: flex;
     height: auto;
     justify-content: center;
     max-height: 100%;
     max-width: 100%;
-    padding: 0 $padding;
-    vertical-align: middle;
-    width: auto;
   }
 
   & > .fv-title,
@@ -65,21 +60,12 @@ export default {
     }
   }
 
+  & > .space {
+    width: $padding-small;
+  }
+
   & > .fv-button {
-    height: 100%;
-
-    &.fv-button:active {
-      background: $shadow-color-light;
-      box-shadow: none;
-      color: inherit;
-    }
-
-    &.fv-button:focus {
-      @include textoutline($primary-color);
-
-      box-shadow: none;
-      color: inherit;
-    }
+    padding: 0 $padding;
   }
 }
 </style>

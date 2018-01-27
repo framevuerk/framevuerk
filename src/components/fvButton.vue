@@ -80,6 +80,7 @@ export default {
   @include sizes;
 
   border-radius: $border-radius;
+  box-shadow: 0 2px 0 $shadow-color-light;
   cursor: pointer;
   display: inline-block;
   font-family: inherit;
@@ -94,11 +95,11 @@ export default {
 
   &,
   &.fv-default {
-    @include button($default-color);
+    @include button($bg-color);
   }
 
   &.fv-ok {
-    @include button($default-color, $primary-color);
+    @include button($bg-color, $primary-color);
   }
 
   &.fv-primary {

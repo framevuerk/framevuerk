@@ -93,6 +93,7 @@ export default {
   align-items: center;
   border: 1px solid darken($bg-color-light, $shadow-percent);
   border-radius: $border-radius;
+  box-shadow: 0 2px 0 $shadow-color-light;
   display: flex;
   flex-direction: row;
   font-family: inherit;
@@ -102,7 +103,6 @@ export default {
 
   &.search-style,
   &.fv-search-style {
-    // background: $highlight-color-light;
     border-left: 0;
     border-radius: 0;
     border-right: 0;

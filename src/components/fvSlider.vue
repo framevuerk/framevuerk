@@ -155,21 +155,22 @@ export default {
 
   & > .fv-header {
     background: transparent;
-    color: inherit;
 
     & > .fv-button {
-      background: transparent;
+      height: 100%;
+      border-right: 0;
+      border-left: 0;
+      border-radius: 0;
+      box-shadow: none;
       border-bottom: solid 0.4em transparent;
       border-top: solid 0.4em transparent;
-      box-shadow: inset 0 0 0 $primary-color;
-      color: inherit;
-      cursor: pointer;
       font-weight: bold;
-      height: 100%;
-      max-width: 70%;
-      text-align: center;
       transition-duration: $transition-speed-fast;
       transition-property: color, border;
+
+      &:focus {
+        box-shadow: none;
+      }
 
       &.fv-selected {
         border-bottom: solid 0.4em $primary-color;

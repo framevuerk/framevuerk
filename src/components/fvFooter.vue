@@ -23,6 +23,7 @@ export default {
 
   align-items: center;
   bottom: 0;
+  border-top: solid 1px $shadow-color;
   display: flex;
   justify-content: space-between;
   overflow: hidden;

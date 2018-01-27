@@ -19,9 +19,8 @@ span
     :auto-close="false")
     fv-content.fv-no-padding
       .fv-row
-        section.fv-pick-section(v-for="(val, index) in pick",
-          :key="index",
-          :class="{'fv-col-xs-4': sectionSize === 4, 'fv-col-xs-6': sectionSize === 6, 'fv-col-xs-12': sectionSize === 12}")
+        section.fv-col(v-for="(val, index) in pick",
+          :key="index")
           label.fv-control-label.fv-text-center(v-html="locale[val]()")
           fv-input.search-style.fv-block.fv-lg.fv-text-center(ref="input",
             :value="pValue?  pValue.format(locale.momentDisplayFormat(val)): ''",
@@ -50,13 +49,15 @@ import fvMain from './fvMain.vue'
 import fvContent from './fvContent.vue'
 import fvDialog from './fvDialog.vue'
 import fvInput from './fvInput.vue'
+import fvButton from './fvButton.vue'
 
 export default {
   components: {
     fvMain,
     fvContent,
     fvDialog,
-    fvInput
+    fvInput,
+    fvButton
   },
   props: {
     value: {
@@ -124,52 +125,11 @@ export default {
     fvValidate () {
       return this.$refs.inputEl.fvValidate || false
     },
-    dialogButtons () {
-      const ret = []
-      ret.push({
-        icon: 'fa fa-times',
-        text: locale.cancel(),
-        class: 'fv-default',
-        action: () => {
-          this.close()
-        }
-      })
-      if (this.value) {
-        ret.push({
-          icon: 'fa fa-circle-o',
-          text: locale.clear(),
-          class: 'fv-default',
-          action: () => {
-            this.$emit('input', undefined)
-            this.close()
-          }
-        })
-      }
-      ret.push({
-        icon: 'fa fa-check',
-        text: locale.ok(),
-        class: 'fv-ok',
-        action: () => {
-          this.$emit('input', this.pValue.toDate())
-          this.close()
-        }
-      })
-      return ret
-    },
     displayValue () {
       if (this.value) {
         return this.moment.utc(this.value).format(this.displayFormat)
       } else {
         return undefined
-      }
-    },
-    sectionSize () {
-      if (this.pick.length === 1) {
-        return 12
-      } else if (this.pick.length === 2 || this.pick.length === 4) {
-        return 6
-      } else {
-        return 4
       }
     }
   },
@@ -200,7 +160,6 @@ export default {
       } else {
         this.pValue.subtract(0, `${unit}s`)
       }
-      this.inputPick = undefined
       this.$forceUpdate()
     }
   }
