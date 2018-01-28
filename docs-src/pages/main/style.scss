@@ -1,18 +1,11 @@
 body .sidebar {
-  & .fv-header {
-    & .doc-logo {
-      height: 27px;
-      display: inline-block;
-    }
-
-    & * {
-      color: #35485d;
-      line-height: 1.3em;
-    }
-
-    & .title * {
-      vertical-align: middle;
-    }
+  & .logo, & .text{
+    display: inline-block;
+    vertical-align: middle;
+  }
+  & .logo {
+    height: 27px;
+    
   }
 
   & .fv-tabs {

@@ -10,13 +10,13 @@ fv-main#app
       target="_blank") View Source
   router-view.fv-row
   fv-sidebar.sidebar(:pin="null", ref="sidebar", width="300px")
-    fv-header.doc-sidebar-header
-      a.fv-link.title(href="index.html")
-        h1
-          img.doc-logo(src="./logo.svg")
-          span Framevuerk
     fv-content.fv-no-padding
       fv-list.fv-no-border(parent)
+        fv-list-item.framevuerk
+          a.fv-link(href="index.html")
+            img.logo(src="./logo.svg")
+            h3.text
+              b Framevuerk
         fv-list-item(v-for="item in sidebarItems",
           :selected="$route.name === item.text",
           @click="clickItem(item)",
