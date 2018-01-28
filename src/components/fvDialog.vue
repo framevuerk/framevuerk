@@ -111,7 +111,7 @@ export default {
       }
     },
     focus (index = true) {
-      this.focusableItems = this.$el.querySelectorAll('select, input, textarea, button, a, [tabindex]:not([tabindex=""])')
+      this.focusableItems = this.$el.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
       let i
       if (typeof index === 'boolean') {
         i = index ? 0 : this.focusableItems.length - 1

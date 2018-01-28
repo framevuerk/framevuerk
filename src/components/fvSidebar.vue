@@ -70,7 +70,7 @@ export default {
       } else {
         this.focusBackElem = document.querySelector(':focus')
         utility.doIt(() => {
-          const focusableItems = this.$el.querySelectorAll('select, input, textarea, button, a, [tabindex]:not([tabindex=""])')
+          const focusableItems = this.$el.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
           if (focusableItems.length) {
             focusableItems[0].focus()
           }
