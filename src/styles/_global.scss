@@ -84,7 +84,9 @@ html > body {
 
   &:focus,
   &.focus {
-    @include outline;
+    @include respond-to(md) {
+      @include outline;
+    }
   }
 }
 
