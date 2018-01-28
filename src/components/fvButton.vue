@@ -62,7 +62,9 @@ export default {
 
   &:focus,
   &.focus {
-    @include outline;
+    @include respond-to(md) {
+      @include outline;
+    }
 
     &:invalid,
     &.invalid {
