@@ -14,8 +14,8 @@ fv-main#app
       fv-list.fv-no-border(parent)
         fv-list-item.framevuerk
           a.fv-link(href="index.html")
-            img.logo(src="./logo.svg")
-            h3.text
+            img.fvlogo(src="./logo.svg")
+            h3.fvtext
               b Framevuerk
         fv-list-item(v-for="item in sidebarItems",
           :selected="$route.name === item.text",

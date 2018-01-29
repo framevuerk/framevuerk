@@ -1,11 +1,10 @@
 body .sidebar {
-  & .logo, & .text{
+  & .fvlogo, & .fvtext{
     display: inline-block;
     vertical-align: middle;
   }
-  & .logo {
+  & .fvlogo {
     height: 27px;
-    
   }
 
   & .fv-tabs {
