@@ -89,6 +89,7 @@ export default {
   max-width: 100%;
   text-align: center;
   vertical-align: middle;
+  padding: 0 $padding;
 
   &,
   & span {
