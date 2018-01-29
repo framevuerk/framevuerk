@@ -63,9 +63,5 @@ export default {
   & > .space {
     width: $padding-small;
   }
-
-  & > .fv-button {
-    padding: 0 $padding;
-  }
 }
 </style>
