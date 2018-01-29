@@ -31,7 +31,7 @@ export default {
   transition-duration: $transition-speed;
   transition-property: height;
   width: 100%;
-  padding: 0 $padding-small;
+  padding: 0 $padding;
 
   & > .fv-button,
   & > .fv-title,
@@ -61,7 +61,7 @@ export default {
   }
 
   & > .space {
-    width: $padding-small;
+    width: $padding;
   }
 }
 </style>
