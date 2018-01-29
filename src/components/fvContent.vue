@@ -3,11 +3,6 @@
   slot
 </template>
 
-<script>
-export default {
-}
-</script>
-
 <style lang="scss">
 @import '../styles/variables';
 @import '../styles/mixins';
@@ -23,6 +18,19 @@ export default {
     clear: both;
     content: '';
     display: block;
+  }
+
+  &::-webkit-scrollbar {
+    height: 12px;
+    width: 12px;
+  }
+  &::-webkit-scrollbar-track {
+    background: $bg-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $bg-color-dark;
+    border: solid 2px $bg-color;
   }
 }
 </style>
