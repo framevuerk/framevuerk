@@ -164,12 +164,11 @@ export default {
       color: $primary-color;
     }
 
-    &:focus,
-    &.focus {
+    &:focus {
       @include outline;
 
       &:invalid,
-      &.invalid {
+      &[invalid] {
         @include outline($danger-color);
       }
     }

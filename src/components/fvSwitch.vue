@@ -151,18 +151,16 @@ export default {
     }
   }
 
-  &:focus,
-  &.focus {
+  &:focus {
     @include outline;
 
     &:invalid,
-    &.invalid {
+    &[invalid] {
       @include outline($danger-color);
     }
   }
 
-  &[disabled],
-  &.disabled {
+  &[disabled] {
     @include disabled;
   }
 }

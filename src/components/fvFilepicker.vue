@@ -3,8 +3,9 @@ span
   fv-button.fv-file-picker(@click.prevent="choose",
     :text="displayValue",
     :icon="selected ? 'fa fa-file' : 'fa fa-file-o'",
-    :class="[buttonClass, {invalid: !fvValidate}]",
+    :class="[buttonClass, {a: fvValidate}]",
     :disabled="disabled",
+    :invalid="!fvValidate",
     ref="button")
   input.fv-hide(type="file",
     ref="input",

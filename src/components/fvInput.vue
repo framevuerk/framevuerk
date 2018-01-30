@@ -108,29 +108,26 @@ export default {
     border-top: 0;
     box-shadow: none;
 
-    &:focus,
-    &.focus {
+    &:focus {
       @include bottom-outline;
 
       &:invalid,
-      &.invalid {
+      &[invalid] {
         @include bottom-outline($danger-color);
       }
     }
   }
 
-  &:focus,
-  &.focus {
+  &:focus {
     @include outline;
 
     &:invalid,
-    &.invalid {
+    &[invalid] {
       @include outline($danger-color);
     }
   }
 
-  &[disabled],
-  &.disabled {
+  &[disabled] {
     @include disabled;
   }
 

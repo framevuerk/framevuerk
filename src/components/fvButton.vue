@@ -55,25 +55,22 @@ export default {
     color: $color;
   }
 
-  &:active,
-  &.active {
+  &:active {
     background: $bgcolor-dark; //linear-gradient(to bottom, $bgcolor-dark, $bgcolor 25%);
   }
 
-  &:focus,
-  &.focus {
+  &:focus {
     @include respond-to(md) {
       @include outline;
     }
 
     &:invalid,
-    &.invalid {
+    &[invalid] {
       @include outline($danger-color);
     }
   }
 
-  &[disabled],
-  &.disabled {
+  &[disabled] {
     @include disabled;
   }
 }
