@@ -53,9 +53,5 @@ fv-content
             fv-button(@click.native="inputs.d2.value = new Date().getTime(); inputs.d2.displayValue = new Date(inputs.d2.value).getMilliseconds();") Change
         .fv-col-sm-12
           p Advanced Required: 
-          fv-input.fv-block(v-model="inputs.d4", placeholder="Enter mobile number", :required="function(){ return this.value.length === 11 && this.value.indexOf('09') === 0 }")
-        .fv-col-sm-12
-          p Advanced usage:
-          fv-menu(ref="d3", :items="['English', 'Persian']", @click-item="inputs.d3 = $event")
-          fv-input(v-model="inputs.d3", render-type="display", :display-value="inputs.d3", @enter="$refs.d3.open()", caret-icon="fa fa-language", placeholder="Select your locale")
+          fv-input.fv-block(v-model="inputs.d3", placeholder="Enter mobile number", :required="function(){ return this.value.length === 11 && this.value.indexOf('09') === 0 }")
     doc-api(:rows="api")

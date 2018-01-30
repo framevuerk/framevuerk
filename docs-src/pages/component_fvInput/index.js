@@ -19,8 +19,7 @@ export default {
           value: undefined,
           displayValue: null
         },
-        d3: null,
-        d4: ''
+        d3: ''
       },
       api: {
         prop: [
