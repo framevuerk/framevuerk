@@ -7,5 +7,5 @@
   "padding": "15px",
   "transition-speed": "0.35s",
   "border-radius": "4px",
-  "shadow-long": "3px"
+  "shadow-size": "3px"
 }
