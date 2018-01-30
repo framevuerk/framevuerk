@@ -16,11 +16,8 @@ fv-content
           p Normal
           fv-switch(v-model="inputs.d1")
         .fv-col-sm-3
-          p Focus
-          fv-switch.focus(v-model="inputs.d2")
-        .fv-col-sm-3
           p Invalid
-          fv-switch.focus.invalid
+          fv-switch.focus(invalid)
         .fv-col-sm-3
           p Disabled
           fv-switch.fv-block(disabled)
