@@ -88,18 +88,17 @@ export default {
 
 .fv-input {
   @include yiq($bg-color-light);
+  @include shadow(bottom);
   @include sizes;
 
   align-items: center;
   border: 1px solid darken($bg-color-light, $shadow-percent);
   border-radius: $border-radius;
-  box-shadow: 0 2px 0 $shadow-color-light;
   display: flex;
   flex-direction: row;
   font-family: inherit;
   justify-content: space-between;
-  padding: 0 7.5px;
-  vertical-align: middle;
+  padding: 0 $padding-small;
 
   &.search-style,
   &.fv-search-style {

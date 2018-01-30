@@ -252,15 +252,16 @@ export default {
 
 .fv-dialog {
   @include yiq($bg-color);
-
+  @include shadow(bottom);
+  
   backface-visibility: hidden;
-  box-shadow: 0 0 5px 2px $shadow-color;
   height: auto;
   min-width: 300px;
   overflow: auto;
   position: fixed;
   transform: translate3d(0, 0, 0);
   width: auto;
+  z-index: 2;
 
   &.fv-dialog-center {
     @include fv-dialog-center(style);

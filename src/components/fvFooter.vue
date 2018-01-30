@@ -20,6 +20,7 @@ export default {
 
 .fv-footer {
   @include yiq($bg-color-dark);
+  @include shadow(inset-bottom);
 
   align-items: center;
   bottom: 0;

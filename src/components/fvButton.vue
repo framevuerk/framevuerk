@@ -79,16 +79,15 @@ export default {
 }
 
 .fv-button {
+  @include shadow(bottom);
   @include sizes;
 
   border-radius: $border-radius;
-  box-shadow: 0 2px 0 $shadow-color-light;
   cursor: pointer;
   display: inline-block;
   font-family: inherit;
   max-width: 100%;
   text-align: center;
-  vertical-align: middle;
   padding: 0 $padding;
 
   &,

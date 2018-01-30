@@ -127,6 +127,7 @@ export default {
 
 <style lang="scss">
 @import '../styles/variables';
+@import '../styles/mixins';
 
 .fv-sidebar {
   backface-visibility: hidden;
@@ -136,8 +137,11 @@ export default {
   overflow-y: auto;
   position: absolute;
   top: 0;
+  z-index: 2;
 
   &.right {
+    @include shadow(left);
+
     right: 0;
   }
 
@@ -146,6 +150,8 @@ export default {
   }
 
   &.left {
+    @include shadow(right);
+
     left: 0;
   }
 

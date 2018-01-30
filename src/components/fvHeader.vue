@@ -20,6 +20,7 @@ export default {
 
 .fv-header {
   @include yiq($bg-color-dark);
+  @include shadow(bottom);
 
   align-items: center;
   display: flex;
@@ -32,6 +33,7 @@ export default {
   transition-property: height;
   width: 100%;
   padding: 0 $padding;
+  z-index: 2;
 
   & > .fv-button,
   & > .fv-title,
