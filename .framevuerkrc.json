@@ -1,4 +1,7 @@
 {
+  "config-name": "default",
+  "locale": "en",
+  "direction": "ltr",
   "primary-color": "#41b883",
   "danger-color": "#dd4b39",
   "warning-color": "#ef8f00",
