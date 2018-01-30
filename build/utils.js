@@ -20,7 +20,9 @@ lib.styleLoader = function (cnf) {
 
   let sassLoaderData = ''
   Object.keys(cnf).forEach(key => {
-    sassLoaderData += `$${key}: ${cnf[key]}; `
+    if (typeof cnf[key] === 'string' && cnf[key].indexOf('/') === -1) {
+      sassLoaderData += `$${key}: ${cnf[key]}; `
+    }
   })
   ret.push({
     loader: 'sass-loader',
@@ -38,38 +40,41 @@ lib.jsLoader = function () {
   }
 }
 
-lib.generateConfig = (cnf, outputCnf) => {
-  const fileName = `${outputCnf.name}${cnf.locale ? `-${cnf.locale}` : ''}${(outputCnf.minify ? '.min' : '')}`
+lib.generateConfig = (cnf) => {
+  const fileName = `${cnf.name}-${cnf['config-name']}${(cnf.minify ? '.min' : '')}`
 
   let plugins = [
     new ExtractTextPlugin({
       filename: fileName + '.css'
     }),
     new webpack.DefinePlugin({
-      'PKG_NAME': '"' + outputCnf.name + '"',
-      'PKG_VERSION': '"' + outputCnf.version + '"',
+      'PKG_NAME': '"' + cnf.name + '"',
+      'PKG_VERSION': '"' + cnf.version + '"',
       'process.env': {
         NODE_ENV: '"' + process.env.NODE_ENV + '"',
-        config: JSON.stringify(cnf)
+        config: JSON.stringify({
+          locale: cnf.locale,
+          direction: cnf.direction
+        })
       }
     })
   ]
 
-  if (outputCnf.minify) {
+  if (cnf.minify) {
     plugins.push(new UglifyJsPlugin())
     plugins.push(new OptimizeCssAssetsPlugin())
   }
 
-  if (outputCnf.plugins) {
-    plugins = plugins.concat(outputCnf.plugins)
+  if (cnf.plugins) {
+    plugins = plugins.concat(cnf.plugins)
   }
 
   const ret = {
-    entry: outputCnf.entry, // utils.resolve('../src/index.js'),
+    entry: cnf.entry, // utils.resolve('../src/index.js'),
     output: {
-      path: outputCnf.path, // lib.resolve('../dist'),
+      path: cnf.path, // lib.resolve('../dist'),
       filename: fileName + '.js',
-      library: outputCnf.name,
+      library: cnf.name,
       libraryTarget: 'umd'
     },
     module: {
