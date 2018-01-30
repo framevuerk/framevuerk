@@ -253,7 +253,7 @@ export default {
 .fv-dialog {
   @include yiq($bg-color);
   @include shadow(bottom);
-  
+
   backface-visibility: hidden;
   height: auto;
   min-width: 300px;
