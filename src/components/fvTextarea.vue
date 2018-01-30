@@ -41,9 +41,9 @@ export default {
       if (this.autoHeight) {
         let height
         if (this.value) {
-          height = this.value.split('\n').length + 2
+          height = this.value.split('\n').length + 1
         } else {
-          height = 3
+          height = 2
         }
         return `${height * 1.3}em`
       }
@@ -53,9 +53,11 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../styles/variables';
+
 .fv-textarea {
   line-height: 1.3em;
-  padding: 7.5px;
+  padding: $padding-small;
 
   &.auto-height {
     overflow-x: auto;
