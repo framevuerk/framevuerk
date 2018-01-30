@@ -61,6 +61,7 @@ html > body {
   text-align: center;
   top: 0;
   width: 100%;
+  z-index: 2;
 
   &.fv-light {
     background: $shadow-color-light;
