@@ -30,14 +30,14 @@ function build (part) {
   })
 }
 const tasks = []
-if (process.argv.length < 3) {
+if (process.argv.length < 4) {
   tasks.push(build('lib'))
   tasks.push(build('docs'))
 } else {
-  tasks.push(build(process.argv[2]))
+  tasks.push(build(process.argv[3]))
 }
 
-console.log('Building...')
+console.log('Framevuerk is building...')
 Promise.all(tasks).then((stats) => {
   console.log('Done!')
 }).catch((err) => {
