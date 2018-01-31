@@ -17,7 +17,7 @@
     "build:docs": "cross-env NODE_ENV=production node ./build docs",
     "clean": "npm run clean:lib && npm run clean:docs",
     "build": "node ./build",
-    "prepublish": "./prepublish.sh",
+    "prepublishOnly": "./prepublish.sh",
     "dev": "webpack --config ./build/webpack.config.js --display none -w & webpack-dev-server --inline --config ./build/webpack.config.docs.js --host 0 --open --disable-host-check",
     "postinstall": "cross-env NODE_ENV=production node ./build lib",
     "start": "echo \"Use 'npm run dev' instead.\""
