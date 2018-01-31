@@ -13,7 +13,16 @@ export default {
   },
   data () {
     return {
-      api: {}
+      api: {
+        props: [
+          {
+            name: 'parent',
+            type: 'Boolean',
+            default: 'true',
+            description: 'If true, all children dialogs overlays on this.'
+          }
+        ]
+      }
     }
   },
   render: template.render
