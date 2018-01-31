@@ -66,8 +66,8 @@ export default {
       timer: null,
       animationName: 'fv-slider-prev',
       dirs: {
-        next: process.env.config.direction === 'ltr' ? 'left' : 'right',
-        prev: process.env.config.direction === 'ltr' ? 'right' : 'left'
+        next: process.env.direction === 'ltr' ? 'left' : 'right',
+        prev: process.env.direction === 'ltr' ? 'right' : 'left'
       }
     }
   },

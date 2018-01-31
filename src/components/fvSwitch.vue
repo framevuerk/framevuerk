@@ -35,8 +35,8 @@ export default {
       hammer: undefined,
       pValue: this.value,
       dirs: {
-        off: process.env.config.direction === 'ltr' ? 'left' : 'right',
-        on: process.env.config.direction === 'ltr' ? 'right' : 'left'
+        off: process.env.direction === 'ltr' ? 'left' : 'right',
+        on: process.env.direction === 'ltr' ? 'right' : 'left'
       }
     }
   },

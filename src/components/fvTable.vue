@@ -153,14 +153,14 @@ export default {
   },
   computed: {
     nextPageBtnContent () {
-      if (process.env.config.direction === 'rtl') {
+      if (process.env.direction === 'rtl') {
         return `${locale.nextPage()} <i class="fa fa-arrow-left"></i>`
       } else {
         return `${locale.nextPage()} <i class="fa fa-arrow-right"></i>`
       }
     },
     prevPageBtnContent () {
-      if (process.env.config.direction === 'rtl') {
+      if (process.env.direction === 'rtl') {
         return `<i class="fa fa-arrow-right"></i> ${locale.prevPage()}`
       } else {
         return `<i class="fa fa-arrow-left"></i> ${locale.prevPage()}`
