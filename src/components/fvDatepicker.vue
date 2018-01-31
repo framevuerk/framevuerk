@@ -12,7 +12,7 @@ span
     ref="inputEl")
   fv-dialog.fv-datepicker(ref="dialog",
     :class="dialogClass",
-    position="center-bottom",
+    position="center",
     @close="$emit('close')",
     @open="$emit('open')",
     :first-focus-on="true",
@@ -114,7 +114,7 @@ export default {
   created () {
     this.moment = utility._dependencies.moment
     if (this.moment) {
-      if (process.env.config.locale === 'fa') {
+      if (process.env.locale === 'fa') {
         this.moment.loadPersian()
       }
     } else {

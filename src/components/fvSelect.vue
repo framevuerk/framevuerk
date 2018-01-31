@@ -12,7 +12,7 @@ span
     ref="inputEl")
   fv-dialog.fv-select(ref="dialog",
     :class="dialogClass",
-    position="center-bottom",
+    position="center",
     @close="$emit('close')",
     @open="$emit('open')",
     :first-focus-on="firstFocusOn",
