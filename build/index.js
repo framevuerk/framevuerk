@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
+const path = require('path')
 const webpack = require('webpack')
-const config = require('./webpack.config.js')
-const configDocs = require('./webpack.config.docs.js')
+const config = require(path.resolve(__dirname, './webpack.config.js'))
+const configDocs = require(path.resolve(__dirname, './webpack.config.docs.js'))
 
 function build (part) {
   return new Promise((resolve, reject) => {
@@ -36,7 +37,7 @@ if (process.argv.length < 3) {
   tasks.push(build(process.argv[2]))
 }
 
-console.log('Building Framevuerk...')
+console.log('Building...')
 Promise.all(tasks).then((stats) => {
   console.log('Done!')
 }).catch((err) => {

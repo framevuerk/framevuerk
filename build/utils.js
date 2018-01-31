@@ -1,9 +1,9 @@
 const path = require('path')
+const pkg = require(path.resolve(__dirname, '../package.json'))
 const webpack = require('webpack')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-
 const lib = {}
 
 lib.resolve = function (dir) {
@@ -36,7 +36,10 @@ lib.styleLoader = function (cnf) {
 
 lib.jsLoader = function () {
   return {
-    loader: 'babel-loader'
+    loader: 'babel-loader',
+    options: {
+      presets: ['env']
+    }
   }
 }
 
@@ -52,10 +55,10 @@ lib.generateConfig = (cnf) => {
       'PKG_VERSION': '"' + cnf.version + '"',
       'process.env': {
         NODE_ENV: '"' + process.env.NODE_ENV + '"',
-        config: JSON.stringify({
-          locale: cnf.locale,
-          direction: cnf.direction
-        })
+        name: `"${pkg.name}"`,
+        version: `"${pkg.version}"`,
+        locale: `"${cnf.locale}"`,
+        direction: `"${cnf.direction}"`
       }
     })
   ]
@@ -92,8 +95,7 @@ lib.generateConfig = (cnf) => {
         },
         {
           test: /\.js$/,
-          use: lib.jsLoader(),
-          exclude: /node_modules/
+          use: lib.jsLoader()
         },
         {
           test: /\.(scss|css)$/,
@@ -109,8 +111,7 @@ lib.generateConfig = (cnf) => {
         },
         {
           test: /\.pug$/,
-          loader: ['vue-template-compiler-loader', 'pug-html-loader'],
-          exclude: /node_modules/
+          loader: ['vue-template-compiler-loader', 'pug-html-loader']
         }
       ]
     },
