@@ -1,7 +1,5 @@
-// import { name, version } from '../package.json'
 import './style.scss'
 import utility from './utility'
-/* global PKG_NAME, PKG_VERSION */
 
 // Components
 import fvMain from './components/fvMain.vue'
@@ -26,10 +24,8 @@ import fvTextarea from './components/fvTextarea.vue'
 import fvImg from './components/fvImg.vue'
 import fvSlider from './components/fvSlider.vue'
 import fvToast from './components/fvToast.vue'
-// Directives
-import fvScroll from './directives/fvScroll'
 
-const framevuerk = {
+module.exports = {
   fvMain,
   fvContent,
   fvHeader,
@@ -91,10 +87,8 @@ const framevuerk = {
     Vue.prototype.$fvToast = new (Vue.extend(fvToast))()
     Vue.fvToast = Vue.prototype.$fvToast
     // Directives
-    Vue.directive('fvScroll', fvScroll)
   },
-  name: PKG_NAME,
-  version: PKG_VERSION,
-  locale: process.env.config.locale
+  name: process.env.name,
+  version: process.env.version,
+  locale: process.env.locale
 }
-module.exports = framevuerk
