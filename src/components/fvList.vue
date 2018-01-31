@@ -18,13 +18,15 @@ export default {
     parent: {
       type: Boolean,
       default: false
+    },
+    notFoundText: {
+      default: locale.notFound()
     }
   },
   data () {
     return {
       highlighted: null,
-      isFocused: false,
-      notFoundText: locale.notFound()
+      isFocused: false
     }
   },
   computed: {
@@ -70,13 +72,13 @@ export default {
           event.preventDefault()
           this.moveHighlight(true)
           break
-        case process.env.config.direction === 'ltr' ? 37 : 39: // 37: left, 39: right,
+        case process.env.direction === 'ltr' ? 37 : 39: // 37: left, 39: right,
           event.preventDefault()
           if (this.highlighted && this.highlighted.__vue__) {
             this.highlighted.__vue__.collapse()
           }
           break
-        case process.env.config.direction === 'ltr' ? 39 : 37: // 37: left, 39: right,
+        case process.env.direction === 'ltr' ? 39 : 37: // 37: left, 39: right,
           event.preventDefault()
           if (this.highlighted && this.highlighted.__vue__) {
             this.highlighted.__vue__.expand()
