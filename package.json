@@ -12,14 +12,14 @@
     "lint:fix": "npm run lint:js:fix && npm run lint:scss:fix",
     "test": "npm run lint",
     "clean:lib": "rimraf ./dist",
-    "build:lib": "cross-env NODE_ENV=production node ./build lib",
+    "build:lib": "cross-env NODE_ENV=production node ./build/index.js build lib",
     "clean:docs": "rimraf ./docs",
-    "build:docs": "cross-env NODE_ENV=production node ./build docs",
+    "build:docs": "cross-env NODE_ENV=production node ./build/index.js build docs",
     "clean": "npm run clean:lib && npm run clean:docs",
-    "build": "node ./build",
+    "build": "node ./build/index.js build",
     "prepublishOnly": "./prepublish.sh",
     "dev": "webpack --config ./build/webpack.config.js --display none -w & webpack-dev-server --inline --config ./build/webpack.config.docs.js --host 0 --open --disable-host-check",
-    "postinstall": "cross-env NODE_ENV=production node ./build lib",
+    "postinstall": "cross-env NODE_ENV=production node ./build/index.js build lib",
     "start": "echo \"Use 'npm run dev' instead.\""
   },
   "dependencies": {
@@ -78,11 +78,22 @@
   },
   "keywords": [
     "vue",
+    "component",
     "framework",
     "framevuerk",
+    "ui",
+    "ux",
+    "responsive",
+    "full responsive",
     "rtl",
     "ltr"
   ],
+  "engines": {
+    "node": ">= 4.x"
+  },
+  "bin": {
+    "framevuerk": "./build/index.js"
+  },
   "author": "nainemom <nainemom@gmail.com>",
   "license": "ISC",
   "bugs": {
