@@ -20,6 +20,12 @@ export default {
             type: 'Boolean',
             default: 'false',
             description: 'Set it true to calculate highlighted.'
+          },
+          {
+            name: 'not-found-text',
+            type: '',
+            default: 'locale.notFoundText()',
+            description: 'If list items is empty, show this text.'
           }
         ],
         event: [],

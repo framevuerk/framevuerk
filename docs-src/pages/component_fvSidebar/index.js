@@ -23,9 +23,9 @@ export default {
           },
           {
             name: 'position',
-            type: 'Enum ["left", "right"]',
-            default: 'Based on main main direction!',
-            description: 'Position of sidebar'
+            type: 'Enum ["left", "right", null]',
+            default: 'null',
+            description: 'Position of sidebar. if it\'s null, value cacculate based on main direction!'
           },
           {
             name: 'pin',

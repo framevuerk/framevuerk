@@ -29,9 +29,9 @@ export default {
           },
           {
             name: 'position',
-            type: 'Enum ["bottom", "center", "fill", "center-fill", "center-bottom"]',
+            type: 'Enum ["bottom", "top", "center", "fill", "x-y"]',
             default: '"center"',
-            description: 'Position of dialog.<br>Note that "X-Y"s values means that if viewport size is xs, use Y instead of X.'
+            description: 'Position of dialog.<br>Note that "x-y" value means that if parent main size is small, use Y instead of X.'
           },
           {
             name: 'autoClose',
