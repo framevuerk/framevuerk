@@ -5,6 +5,12 @@
 
 <script>
 export default {
+  props: {
+    parent: {
+      type: Boolean,
+      default: true
+    }
+  }
 }
 </script>
 
