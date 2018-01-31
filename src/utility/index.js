@@ -1,18 +1,5 @@
 
 export default {
-  isDescendant (parent, child) {
-    if (child === null || parent === null) {
-      return false
-    }
-    let node = child.parentNode
-    while (node !== null) {
-      if (node === parent) {
-        return true
-      }
-      node = node.parentNode
-    }
-    return false
-  },
   contains (text = '', search = '') {
     return text.toString().toUpperCase().indexOf(search.toString().toUpperCase()) !== -1
   },
@@ -22,9 +9,8 @@ export default {
   capitalizeFirstLetter (str = '') {
     return str.charAt(0).toUpperCase() + str.slice(1)
   },
-  isSmallViewport () {
-    const width = (window.innerWidth > 0) ? window.innerWidth : screen.width
-    return width < 992
+  isSmallViewport (el = document.body) {
+    return el.offsetWidth < 992
   },
   _dependencies: {}
 }
