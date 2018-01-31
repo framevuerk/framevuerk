@@ -50,7 +50,16 @@ export default {
     position: {
       type: String,
       validator: (value) => {
-        return ['bottom', 'top', 'center', 'fill', 'center-fill', 'center-bottom'].indexOf(value) > -1
+        const availableValues = ['bottom', 'top', 'center', 'fill']
+        if (value.indexOf('-') === -1) {
+          return availableValues.indexOf(value) > -1
+        } else {
+          let bVal = value.replace('-', '')
+          availableValues.forEach(aVal => {
+            bVal = bVal.replace(aVal, '')
+          })
+          return bVal.length === 0
+        }
       },
       default: 'center'
     },
@@ -73,15 +82,17 @@ export default {
   },
   data () {
     return {
+      isRendered: false,
       visible: false,
       param: null,
       focusBackElem: null,
-      focusableItems: []
+      focusableItems: [],
+      actualPosition: 'center'
     }
   },
   computed: {
     animationName () {
-      return `fv-dialog-${this.position}`
+      return `fv-dialog-${this.actualPosition}`
     }
   },
   methods: {
@@ -89,7 +100,7 @@ export default {
       this[this.visible ? 'close' : 'open']()
     },
     open (param = null) {
-      document.body.appendChild(this.$el)
+      this.bigParent().$el.appendChild(this.$el)
       this.visible = true
       this.param = param
       this.focusBackElem = document.querySelector(':focus')
@@ -109,6 +120,16 @@ export default {
       if (this.modal === false) {
         this.close()
       }
+    },
+    bigParent () {
+      let ret = this
+      while (ret) {
+        if (ret.parent) {
+          return ret
+        }
+        ret = ret.$parent
+      }
+      return false
     },
     focus (index = true) {
       this.focusableItems = this.$el.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
@@ -142,6 +163,12 @@ export default {
       }
     }
   },
+  mounted () {
+    this.actualPosition = this.position.indexOf('-') === -1 ? this.position : this.position.split('-')[utility.isSmallViewport(this.bigParent().$el) ? 1 : 0]
+    utility.doIt(() => {
+      this.isRendered = true
+    })
+  },
   beforeDestroy () {
     this.$el.remove()
   }
@@ -174,7 +201,7 @@ export default {
 
   @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate3d(-50%, -42%, 0);
+    transform: translate3d(-50%, -40%, 0);
   }
 }
 
@@ -189,15 +216,17 @@ export default {
   }
 
   @else if($part == 'animation-enter') {
+    opacity: 1;
     transform: translate3d(0, 0, 0);
     transition-duration: $transition-speed;
-    transition-property: transform;
+    transition-property: transform, opacity;
     transition-timing-function: ease;
-    will-change: transform;
+    will-change: transform, opacity;
   }
 
   @else if($part == 'animation-leave') {
-    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+    transform: translate3d(0, 10%, 0);
   }
 }
 
@@ -207,20 +236,22 @@ export default {
     left: 0;
     max-height: 90%;
     max-width: 100%;
-    top: 0.1px;
+    top: 0;
     width: 100%;
   }
 
   @else if($part == 'animation-enter') {
+    opacity: 1;
     transform: translate3d(0, 0, 0);
     transition-duration: $transition-speed;
-    transition-property: transform;
+    transition-property: transform, opacity;
     transition-timing-function: ease;
-    will-change: transform;
+    will-change: transform, opacity;
   }
 
   @else if($part == 'animation-leave') {
-    transform: translate3d(0, -100%, 0);
+    opacity: 0;
+    transform: translate3d(0, -10%, 0);
   }
 }
 
@@ -246,7 +277,7 @@ export default {
 
   @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate3d(0, 8%, 0);
+    transform: translate3d(0, 10%, 0);
   }
 }
 
@@ -258,7 +289,7 @@ export default {
   height: auto;
   min-width: 300px;
   overflow: auto;
-  position: fixed;
+  position: absolute;
   transform: translate3d(0, 0, 0);
   width: auto;
   z-index: 2;
@@ -277,26 +308,6 @@ export default {
 
   &.fv-dialog-fill {
     @include fv-dialog-fill(style);
-  }
-
-  &.fv-dialog-center-bottom {
-    @include respond-to(sm) {
-      @include fv-dialog-center(style);
-    }
-
-    @include respond-to(only-xs) {
-      @include fv-dialog-bottom(style);
-    }
-  }
-
-  &.fv-dialog-center-fill {
-    @include respond-to(sm) {
-      @include fv-dialog-center(style);
-    }
-
-    @include respond-to(only-xs) {
-      @include fv-dialog-fill(style);
-    }
   }
 
   @include vue-animation(fv-dialog-center, enter) {
@@ -329,46 +340,6 @@ export default {
 
   @include vue-animation(fv-dialog-fill, leave) {
     @include fv-dialog-fill(animation-leave);
-  }
-
-  @include vue-animation(fv-dialog-center-bottom, enter) {
-    @include respond-to(sm) {
-      @include fv-dialog-center(animation-enter);
-    }
-
-    @include respond-to(only-xs) {
-      @include fv-dialog-bottom(animation-enter);
-    }
-  }
-
-  @include vue-animation(fv-dialog-center-bottom, leave) {
-    @include respond-to(sm) {
-      @include fv-dialog-center(animation-leave);
-    }
-
-    @include respond-to(only-xs) {
-      @include fv-dialog-bottom(animation-leave);
-    }
-  }
-
-  @include vue-animation(fv-dialog-center-fill, enter) {
-    @include respond-to(sm) {
-      @include fv-dialog-center(animation-enter);
-    }
-
-    @include respond-to(only-xs) {
-      @include fv-dialog-fill(animation-enter);
-    }
-  }
-
-  @include vue-animation(fv-dialog-center-fill, leave) {
-    @include respond-to(sm) {
-      @include fv-dialog-center(animation-leave);
-    }
-
-    @include respond-to(only-xs) {
-      @include fv-dialog-fill(animation-leave);
-    }
   }
 }
 </style>

@@ -5,7 +5,7 @@ span
       @click="close()")
   transition(:name="animationName")
     aside.fv-main.fv-sidebar(v-if="visible",
-      :style="{ width: width}",
+      :style="{ width: width }",
       :class="classList",
       ref="sidebar")
       slot
@@ -21,11 +21,11 @@ export default {
       default: '250px'
     },
     position: {
-      type: String,
+      type: [String, Object],
       validator: (value) => {
-        return ['right', 'left'].indexOf(value) > -1
+        return ['right', 'left', null].indexOf(value) > -1
       },
-      default: process.env.config.direction === 'ltr' ? 'left' : 'right'
+      default: null
     },
     pin: {
       type: [Object, Boolean],
@@ -40,33 +40,35 @@ export default {
       isRendered: false,
       visible: false,
       isPinned: false,
-      parentMain: null,
       focusBackElem: null
     }
   },
   computed: {
     animationName () {
       if (this.isRendered === true) {
-        return `fv-sidebar-${this.position}`
+        return `fv-sidebar-${this.actualPosition}`
       } else {
         return ''
       }
     },
+    actualPosition () {
+      return this.position !== null ? this.position : process.env.direction === 'ltr' ? 'left' : 'right'
+    },
     classList () {
       return {
-        'left': this.position === 'left',
-        'right-border': this.position === 'left' && this.isPinned,
-        'right': this.position === 'right',
-        'left-border': this.position === 'right' && this.isPinned
+        'left': this.actualPosition === 'left',
+        'right-border': this.actualPosition === 'left' && this.isPinned,
+        'right': this.actualPosition === 'right',
+        'left-border': this.actualPosition === 'right' && this.isPinned
       }
     }
   },
   methods: {
     open () {
-      this.parentMain.appendChild(this.$el)
+      this.bigParent().$el.appendChild(this.$el)
       this.visible = true
       if (this.isPinned) {
-        this.parentMain.style[`padding${utility.capitalizeFirstLetter(this.position)}`] = this.width
+        this.bigParent().$el.style[`padding${utility.capitalizeFirstLetter(this.actualPosition)}`] = this.width
       } else {
         this.focusBackElem = document.querySelector(':focus')
         utility.doIt(() => {
@@ -80,7 +82,7 @@ export default {
     },
     close () {
       this.visible = false
-      this.parentMain.style[`padding${utility.capitalizeFirstLetter(this.position)}`] = '0px'
+      this.bigParent().$el.style[`padding${utility.capitalizeFirstLetter(this.actualPosition)}`] = '0px'
       if (!this.isPinned && this.focusBackElem) {
         this.focusBackElem.focus()
       }
@@ -88,26 +90,22 @@ export default {
     },
     toggle () {
       this[this.visible ? 'close' : 'open']()
+    },
+    bigParent () {
+      let ret = this
+      while (ret) {
+        if (ret.parent) {
+          return ret
+        }
+        ret = ret.$parent
+      }
+      return false
     }
   },
-  created () {
-    this.isRendered = false
-  },
   mounted () {
-    // find parentMain
-    let el = this.$parent.$el
-    do {
-      if (el.classList.contains('fv-main')) {
-        break
-      } else {
-        el = el.parentElement
-      }
-    } while (el !== null)
-    this.parentMain = el
-
     // set width
     if (this.pin === null) {
-      this.isPinned = !utility.isSmallViewport()
+      this.isPinned = !utility.isSmallViewport(this.bigParent().$el)
     } else {
       this.isPinned = this.pin
     }
