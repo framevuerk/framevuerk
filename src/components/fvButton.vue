@@ -62,6 +62,7 @@ export default {
   &:focus {
     @include respond-to(md) {
       @include outline;
+      @include textoutline;
     }
 
     &:invalid,

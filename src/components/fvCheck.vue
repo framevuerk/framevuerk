@@ -5,7 +5,8 @@
     ref="option",
     @click="selectOption(option)",
     @keydown.enter.space.prevent="selectOption(option)",
-    :class="{'checked': isChecked(option), 'disabled': optionProp(option, 'disabled') || disabled || false, 'invalid': !fvValidate}")
+    :class="{'checked': isChecked(option), 'disabled': optionProp(option, 'disabled') || disabled || false}",
+    :invalid="!fvValidate")
     i.fv-check-icon.fa(v-if="multiple",
       :class="{'fa-square-o': !isChecked(option), 'fa-check-square': isChecked(option)}")
     i.fv-check-icon.fa(v-else,

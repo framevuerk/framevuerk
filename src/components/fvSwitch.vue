@@ -1,6 +1,7 @@
 <template lang="pug">
-span.fv-switch(:class="{ on: onValue === pValue, invalid: !fvValidate, disabled: disabled }",
-  ref="switch",
+span.fv-switch(:class="{ on: onValue === pValue }",
+  :disabled="disabled",
+  :invalid="!fvValidate",
   @click="toggle",
   :tabindex="disabled? '': 0",
   @keydown="onKeydown")

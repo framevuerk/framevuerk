@@ -1,7 +1,7 @@
 <template lang="pug">
 .fv-input.fv-input-select(v-if="renderType === 'display'",
   ref="inputEl",
-  :class="{invalid: !fvValidate}",
+  :invalid="!fvValidate",
   :tabindex="disabled? '': 0",
   :disabled="disabled",
   @keydown.enter="onEnter",
@@ -19,7 +19,7 @@
 input.fv-input(v-else,
   ref="inputEl",
   :disabled="disabled",
-  :class="{invalid: !fvValidate}",
+  :invalid="!fvValidate",
   :value="value",
   :placeholder="placeholder",
   @input="$emit('input', $event.target.value)")
