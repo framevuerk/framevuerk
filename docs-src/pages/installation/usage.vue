@@ -1,0 +1,79 @@
+<template lang="pug">
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      h2 Globals:
+      | Just follow the example and use it!
+    doc-code(v-pre, title="HTML:", lang="html")
+      = "<html>\n"
+      = "\t<head>\n"
+      = "\t\t<script src=\"https://cdn.jsdelivr.net/npm/vue@2.4.4/dist/vue.min.js\"></script>\n"
+      = "\t\t<script src=\"https://cdn.jsdelivr.net/npm/framevuerk@latest/dist/framevuerk-en.min.js\"></script>\n"
+      = "\t\t<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/framevuerk@latest/dist/framevuerk-en.min.css\"/>\n"
+      = "\t\t<script>\n"
+      = "\t\t\tVue.use(framevuerk);\n"
+      = "\t\t\tnew Vue({\n"
+      = "\t\t\t\tel: \"#app\"\n"
+      = "\t\t\t});\n"
+      = "\t\t</script>\n"
+      = "\t</head>\n"
+      = "\t<body>\n"
+      = "\t\t<fv-main id=\"app\">\n"
+      = "\t\t\t<!-- Your Content -->\n"
+      = "\t\t</fv-main>\n"
+      = "\t</body>\n"
+      = "</html>\n"
+    doc-description
+      h2 CommonJS:
+    doc-code(v-pre, title="JS:", lang="javascript")
+      = "var Vue = require('vue');\n"
+      = "var framevuerk = require('framevuerk/dist/framevuerk-en.js');\n"
+      = "\n"
+      = "Vue.use(framevuerk);"
+      = "\n"
+      = "new Vue({\n"
+      = "\tel: \"#app\"\n"
+      = "});"
+    doc-code(v-pre, title="Template:", lang="html")
+      = "<html>\n"
+      = "\t<head>\n"
+      = "\t\t<script src=\"path/to/your/app.js\"></script>\n"
+      = "\t\t<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/framevuerk@latest/dist/framevuerk-en.css\"/>\n"
+      = "\t</head>\n"
+      = "\t<body>\n"
+      = "\t\t<fv-main id=\"app\">\n"
+      = "\t\t\t<!-- Your Content -->\n"
+      = "\t\t</fv-main>\n"
+      = "\t</body>\n"
+      = "</html>\n"
+    doc-description
+      h2 ES6 (with webpack):
+    doc-code(v-pre, title="JS:", lang="javascript")
+      = "import Vue from 'vue'\n"
+      = "import framevuerk from 'framevuerk/dist/framevuerk-en.js'\n"
+      = "import 'framevuerk/dist/framevuerk-en.css'\n"
+      = "\n"
+      = "Vue.use(framevuerk);"
+      = "\n"
+      = "new Vue({\n"
+      = "\tel: \"#app\"\n"
+      = "});"
+    doc-code(v-pre, title="Template via pug (after including app.js):", lang="pug")
+      = "fv-main#app\n"
+      = "\t // Your Content"
+    doc-description
+      a.fv-link(href="https://jsfiddle.net/nainemom/vhLkyg5u/", target="_blank") Simple Example
+    | You are now config your app to use <b>Framevuerk</b>! Let's go to use our components.
+</template>
+
+<script>
+import docDescription from '../../components/docDescription.vue'
+import docCode from '../../components/docCode.vue'
+
+export default {
+  components: {
+    docDescription,
+    docCode
+  }
+}
+</script>

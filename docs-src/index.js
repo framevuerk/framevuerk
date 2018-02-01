@@ -13,7 +13,7 @@ import 'font-awesome/css/font-awesome.css'
 import './index.html.none'
 import './favicon.ico'
 import './CNAME.none'
-import main from './pages/main'
+import main from './pages/main.vue'
 
 framevuerk.use(hammer)
 framevuerk.use(moment)

@@ -89,6 +89,7 @@ lib.generateConfig = (cnf) => {
             loaders: {
               js: lib.jsLoader(),
               scss: ExtractTextPlugin.extract(lib.styleLoader(cnf)),
+              svg: 'file-loader?name=./[name].[ext]',
               autoprefixer: true
             }
           }

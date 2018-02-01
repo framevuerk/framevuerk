@@ -1,13 +1,51 @@
-import template from './template.pug'
-import style from './style.scss'
-import '../../assets/logo.svg'
+<template lang="pug">
+fv-main#app
+  fv-header
+    fv-button(@click="$refs.sidebar.toggle()", icon="fa fa-bars")
+    .space
+    .title
+      h2.fv-no-wrap(v-if="$route.name !== 'welcome'") {{$route.name}}
+      h2.fv-no-wrap(v-else) Framevuerk
+    .space
+    a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('+') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
+      target="_blank") View Source
+  router-view.fv-row
+  fv-sidebar.sidebar(:pin="null", ref="sidebar", width="300px")
+    fv-content.fv-no-padding
+      fv-list.fv-no-border(parent)
+        fv-list-item.framevuerk
+          a.fv-link(href="index.html")
+            img.fvlogo(src="../assets/logo.svg")
+            h3.fvtext
+              b Framevuerk
+        fv-list-item(v-for="item in sidebarItems",
+          :key="item.text",
+          :selected="$route.name === item.text",
+          @click="clickItem(item)",
+          expanded)
+          | {{item.text}}
+          fv-list(v-if="item.items",
+            slot="sub-list")
+            fv-list-item(v-for="subItem in item.items",
+              :key="subItem.text",
+              :selected="$route.name === subItem.text",
+              @click="clickItem(subItem)",
+              expanded)
+              | {{subItem.text}}
+              fv-list(v-if="subItem.items",
+                slot="sub-list",
+                expanded)
+                fv-list-item(v-for="subItemItem in subItem.items",
+                  :key="subItemItem.text",
+                  :selected="$route.name === subItemItem.text",
+                  @click="clickItem(subItemItem)")
+                  | {{subItemItem.text}}
+</template>
+
+<script>
+// import '../assets/logo.svg'
 
 export default {
-  data () {
-    return {
-
-    }
-  },
   computed: {
     sidebarItems () {
       return [
@@ -99,7 +137,35 @@ export default {
   },
   mounted () {
     this.routeChange()
-  },
-  style,
-  render: template.render
+  }
 }
+</script>
+
+<style lang="scss">
+body .sidebar {
+  & .fvlogo,
+  & .fvtext {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  & .fvlogo {
+    height: 27px;
+  }
+
+  & .fv-tabs {
+    height: auto;
+  }
+
+  & .fv-list {
+    & .fa {
+      font-size: 1.3em;
+      margin-right: 5px;
+    }
+
+    & .fv-item.selected {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+</style>

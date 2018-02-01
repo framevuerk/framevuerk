@@ -1,0 +1,28 @@
+<template lang="pug">
+fv-content
+  div(:class="$root.mainClass")
+    doc-description
+      | First at all, you should install <b>Framevuerk</b> (and of course <b>Vue</b>).
+    doc-code(v-pre, title="Terminal:", lang="terminal")
+      = "# npm\n"
+      = "npm install vue --save\n"
+      = "npm install framevuerk --save\n"
+      = "# or yarn\n"
+      = "yarn add vue\n"
+      = "yarn add framevuerk\n"
+    | Or if you are not familier to package managers and this stuff, skip this step and read <b>Globals</b> section in next page.
+    hr.fv-hr
+    fv-button.fv-sm.fv-block(icon="fa fa-long-arrow-right", @click="$router.push('/installation/usage')") Usage
+</template>
+
+<script>
+import docDescription from '../../components/docDescription.vue'
+import docCode from '../../components/docCode.vue'
+
+export default {
+  components: {
+    docDescription,
+    docCode
+  }
+}
+</script>
