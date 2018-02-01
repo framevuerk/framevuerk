@@ -1,5 +1,5 @@
 
-export default {
+module.exports = {
   contains (text = '', search = '') {
     return text.toString().toUpperCase().indexOf(search.toString().toUpperCase()) !== -1
   },
