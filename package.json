@@ -91,9 +91,6 @@
   "engines": {
     "node": ">= 4.x"
   },
-  "bin": {
-    "framevuerk": "./build/index.js"
-  },
   "author": "nainemom <nainemom@gmail.com>",
   "license": "ISC",
   "bugs": {
