@@ -73,9 +73,9 @@ lib.generateConfig = (cnf) => {
   }
 
   const ret = {
-    entry: cnf.entry, // utils.resolve('../src/index.js'),
+    entry: cnf.entry,
     output: {
-      path: cnf.path, // lib.resolve('../dist'),
+      path: cnf.path,
       filename: fileName + '.js',
       library: cnf.name,
       libraryTarget: 'umd'
@@ -89,14 +89,14 @@ lib.generateConfig = (cnf) => {
             loaders: {
               js: lib.jsLoader(),
               scss: ExtractTextPlugin.extract(lib.styleLoader(cnf)),
-              svg: 'file-loader?name=./[name].[ext]',
               autoprefixer: true
             }
           }
         },
         {
           test: /\.js$/,
-          use: lib.jsLoader()
+          use: lib.jsLoader(),
+          exclude: cnf.name.indexOf('docs') > -1 ? /node_modules/ : /galina_blanka_xx/
         },
         {
           test: /\.(scss|css)$/,
@@ -109,10 +109,6 @@ lib.generateConfig = (cnf) => {
         {
           test: /\.none$/,
           loader: 'file-loader?name=./[name]'
-        },
-        {
-          test: /\.pug$/,
-          loader: ['vue-template-compiler-loader', 'pug-html-loader']
         }
       ]
     },
