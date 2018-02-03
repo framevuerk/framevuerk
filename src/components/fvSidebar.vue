@@ -39,7 +39,6 @@ export default {
     return {
       isRendered: false,
       visible: false,
-      isPinned: false,
       focusBackElem: null
     }
   },
@@ -60,6 +59,13 @@ export default {
         'right-border': this.actualPosition === 'left' && this.isPinned,
         'right': this.actualPosition === 'right',
         'left-border': this.actualPosition === 'right' && this.isPinned
+      }
+    },
+    isPinned () {
+      if (this.pin === null) {
+        return !utility.isSmallViewport(this.bigParent().$el)
+      } else {
+        return this.pin
       }
     }
   },
@@ -103,13 +109,6 @@ export default {
     }
   },
   mounted () {
-    // set width
-    if (this.pin === null) {
-      this.isPinned = !utility.isSmallViewport(this.bigParent().$el)
-    } else {
-      this.isPinned = this.pin
-    }
-
     if (this.isPinned) {
       this.open()
     } else {
