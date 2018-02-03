@@ -3,7 +3,8 @@
 npm install
 
 npm run clean
-npm run build
+npm run build:lib
+npm run build:docs
 
 git clone https://github.com/framevuerk/public.git
 
