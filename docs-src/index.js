@@ -2,23 +2,23 @@ import './google-analytics.js.none'
 import 'babel-polyfill'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import framevuerk from '../dist/framevuerk.js'
+import Framevuerk from '../dist/framevuerk.js'
 import '../dist/framevuerk.css'
-import moment from 'moment-jalaali'
-import hammer from 'hammerjs'
+import Moment from 'moment-jalaali'
+import Hammer from 'hammerjs'
 import VueHighlightJS from 'vue-highlightjs'
-import 'highlight.js/styles/agate.css'
+import 'highlight.js/styles/dark.css'
 import 'font-awesome/css/font-awesome.css'
 
 import './favicon.ico'
 import './CNAME.none'
 import main from './main.vue'
 
-framevuerk.use('hammer', hammer)
-framevuerk.use('moment', moment)
+Framevuerk.use('hammer', Hammer)
+Framevuerk.use('moment', Moment)
 Vue.use(VueRouter)
 Vue.use(VueHighlightJS)
-Vue.use(framevuerk)
+Vue.use(Framevuerk)
 
 // Routes
 const routes = require('./routes.js')('app')

@@ -13,7 +13,7 @@ fv-main#app
     fv-content.fv-no-padding
       fv-list.fv-no-border(parent)
         fv-list-item.framevuerk
-          router-link.fv-block.fv-text-center(to="/")
+          router-link.fv-block(to="/")
             img.fvlogo(src="./assets/logo.svg")
             h3.fvtext
               b Framevuerk
@@ -51,8 +51,8 @@ export default {
         {
           text: 'Installation',
           items: [
-            this.sidebarItem('Include', '/Installation=include'),
-            this.sidebarItem('Usage', '/Installation=usage')
+            this.sidebarItem('Setup', '/Installation=setup'),
+            this.sidebarItem('.framevuerkrc', '/Installation=.framevuerkrc')
           ]
         },
         {

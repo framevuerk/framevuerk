@@ -6,14 +6,14 @@ module.exports = function (mode) {
       component: mode === 'app' ? require('./pages/home.vue').default : null
     },
     {
-      name: 'Include',
-      path: '/installation=include',
-      component: mode === 'app' ? require('./pages/installation/include.vue').default : null
+      name: 'Setup',
+      path: '/installation=setup',
+      component: mode === 'app' ? require('./pages/installation/setup.vue').default : null
     },
     {
-      name: 'Usage',
-      path: '/installation=usage',
-      component: mode === 'app' ? require('./pages/installation/usage.vue').default : null
+      name: '.framevuerkrc',
+      path: '/installation=.framevuerkrc',
+      component: mode === 'app' ? require('./pages/installation/.framevuerkrc.vue').default : null
     },
     {
       name: 'fvMain',

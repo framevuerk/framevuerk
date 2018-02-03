@@ -37,7 +37,7 @@ body .doc-code {
 
   &,
   & * {
-    user-select: auto;
+    user-select: text;
   }
 }
 </style>
