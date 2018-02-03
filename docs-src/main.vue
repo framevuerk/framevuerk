@@ -9,7 +9,7 @@ fv-main#app
     a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('-') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
       target="_blank") View Source
   router-view.fv-row
-  fv-sidebar.sidebar(:pin="null", ref="sidebar", width="300px")
+  fv-sidebar.sidebar(:pin="isSidebarPinned", ref="sidebar", width="300px")
     fv-content.fv-no-padding
       fv-list.fv-no-border(parent)
         fv-list-item.framevuerk
@@ -40,6 +40,11 @@ fv-main#app
 
 <script>
 export default {
+  data () {
+    return {
+      isSidebarPinned: this.$route.name === 'Home' ? false : null
+    }
+  },
   computed: {
     sidebarItems () {
       return [
@@ -121,9 +126,17 @@ export default {
       }
     },
     routeChange () {
-      if (!this.$refs.sidebar.isPinned) {
+      this.isSidebarPinned = this.$route.name === 'Home' ? false : null
+      if (this.$route.name === 'Home') {
         this.$refs.sidebar.close()
       }
+      setTimeout(() => {
+        if (this.$refs.sidebar.isPinned === true) {
+          this.$refs.sidebar.open()
+        } else {
+          this.$refs.sidebar.close()
+        }
+      })
     }
   },
   mounted () {

@@ -17,7 +17,9 @@ export default {
     }
   },
   mounted () {
-    this.ready = true
+    setTimeout(() => {
+      this.ready = true
+    }, 250)
   }
 }
 </script>
@@ -29,12 +31,12 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  opacity: 0;
 }
 
 .logo {
   width: 11em;
   transform: translateY(-15%) rotate(-50deg);
+  opacity: 0;
 }
 
 .sp {
