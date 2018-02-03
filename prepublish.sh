@@ -12,7 +12,7 @@ git clone https://github.com/framevuerk/public.git
 
 cd ./public
 git rm -r *
-cp ../docs/* ./
+cp -r ../docs/* ./
 git add --all
 git commit -m 'updated'
 git push -f origin master
