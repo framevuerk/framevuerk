@@ -44,7 +44,7 @@ lib.jsLoader = function () {
 }
 
 lib.generateConfig = (cnf) => {
-  const fileName = `${cnf.name}-${cnf['config-name']}${(cnf.minify ? '.min' : '')}`
+  const fileName = `${cnf.name}${cnf['config-name'] ? `-${cnf['config-name']}` : ''}${(cnf.minify ? '.min' : '')}`
 
   let plugins = [
     new ExtractTextPlugin({
