@@ -5,7 +5,7 @@
     .logo-text
       h1 Framevuerk
       p Awesome fully responsive Vue.js framevuerk!
-      router-link.get-started(to="/installation=include") GET STARTED
+      router-link.get-started(to="/installation=setup") GET STARTED
       a.github(:href="$root.githubRepo", target="_blank") GITHUB
 </template>
 
