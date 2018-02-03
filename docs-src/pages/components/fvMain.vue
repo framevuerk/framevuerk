@@ -3,14 +3,15 @@ fv-content
   div(:class="$root.mainClass")
     doc-description
       | This is the main part of framevuerk.
-      a.fv-link(@click="$router.push(`/components/fvHeader`)") fvHeader
-      =" , "
-      a.fv-link(@click="$router.push(`/components/fvFooter`)") fvFooter
-      =" , "
-      a.fv-link(@click="$router.push(`/components/fvContent`)") fvContent
-      =" and "
-      a.fv-link(@click="$router.push(`/components/fvSidebar`)") fvSidebar
-      |  components make use of this container for best styles matching. It's very simple as follows:
+      =" "
+      router-link.fv-link(to="/components=fvHeader") fvHeader
+      =", "
+      router-link.fv-link(to="/components=fvContent") fvContent
+      =", "
+      router-link.fv-link(to="/components=fvSidebar") fvSidebar
+      =", "
+      router-link.fv-link(to="/components=fvFooter") fvFooter
+      |  and also all dialog-style components make use of this container for best styles matching. It's very simple as follows:
     doc-code(v-pre)
       = "<fv-main>\n"
       = "\t<!-- contents -->\n"

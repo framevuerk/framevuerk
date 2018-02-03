@@ -4,47 +4,41 @@ fv-main#app
     fv-button(@click="$refs.sidebar.toggle()", icon="fa fa-bars")
     .space
     .title
-      h2.fv-no-wrap(v-if="$route.name !== 'welcome'") {{$route.name}}
-      h2.fv-no-wrap(v-else) Framevuerk
+      h2.fv-no-wrap {{$route.name}}
     .space
-    a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('+') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
+    a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('-') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
       target="_blank") View Source
   router-view.fv-row
   fv-sidebar.sidebar(:pin="null", ref="sidebar", width="300px")
     fv-content.fv-no-padding
       fv-list.fv-no-border(parent)
         fv-list-item.framevuerk
-          a.fv-link(href="index.html")
-            img.fvlogo(src="../assets/logo.svg")
+          router-link.fv-block.fv-text-center(to="/")
+            img.fvlogo(src="./assets/logo.svg")
             h3.fvtext
               b Framevuerk
         fv-list-item(v-for="item in sidebarItems",
           :key="item.text",
           :selected="$route.name === item.text",
-          @click="clickItem(item)",
           expanded)
-          | {{item.text}}
+          router-link.fv-padding.fv-block(:to="item.route || ''") {{item.text}}
           fv-list(v-if="item.items",
             slot="sub-list")
             fv-list-item(v-for="subItem in item.items",
               :key="subItem.text",
               :selected="$route.name === subItem.text",
-              @click="clickItem(subItem)",
               expanded)
-              | {{subItem.text}}
+              router-link.fv-padding.fv-block(:to="subItem.route || ''") {{subItem.text}}
               fv-list(v-if="subItem.items",
                 slot="sub-list",
                 expanded)
                 fv-list-item(v-for="subItemItem in subItem.items",
                   :key="subItemItem.text",
-                  :selected="$route.name === subItemItem.text",
-                  @click="clickItem(subItemItem)")
-                  | {{subItemItem.text}}
+                  :selected="$route.name === subItemItem.text")
+                  router-link.fv-padding.fv-block(:to="subItemItem.route || ''") {{subItemItem.text}}
 </template>
 
 <script>
-// import '../assets/logo.svg'
-
 export default {
   computed: {
     sidebarItems () {
@@ -52,8 +46,8 @@ export default {
         {
           text: 'Installation',
           items: [
-            this.sidebarItem('Include', '/Installation/include'),
-            this.sidebarItem('Usage', '/Installation/usage')
+            this.sidebarItem('Include', '/Installation=include'),
+            this.sidebarItem('Usage', '/Installation=usage')
           ]
         },
         {
@@ -67,7 +61,7 @@ export default {
                 this.sidebarItem('fvContent'),
                 this.sidebarItem('fvFooter'),
                 this.sidebarItem('fvSidebar'),
-                this.sidebarItem('fvList + fvListItem', '/components/fvList + fvListItem')
+                this.sidebarItem('fvList-fvListItem', '/components=fvList-fvListItem')
               ]
             },
             {
@@ -103,7 +97,7 @@ export default {
         {
           text: 'Styles',
           items: [
-            this.sidebarItem('fvRow + fvCol', '/styles/fvRow + fvCol')
+            this.sidebarItem('fvRow-fvCol', '/styles=fvRow-fvCol')
           ]
         }
       ]
@@ -123,15 +117,12 @@ export default {
     sidebarItem (name, route) {
       return {
         text: name,
-        route: route || `/components/${name}`
+        route: route || `/components=${name}`
       }
     },
     routeChange () {
       if (!this.$refs.sidebar.isPinned) {
         this.$refs.sidebar.close()
-      }
-      if (this.$route.name === 'notfound') {
-        this.$router.push('/Installation/include')
       }
     }
   },
@@ -158,13 +149,10 @@ body .sidebar {
   }
 
   & .fv-list {
-    & .fa {
-      font-size: 1.3em;
-      margin-right: 5px;
-    }
-
-    & .fv-item.selected {
-      background: rgba(255, 255, 255, 0.1);
+    & .fv-list-item a,
+    & .fv-list-item a:visited,
+    & .fv-list-item a:hover {
+      color: inherit;
     }
   }
 }

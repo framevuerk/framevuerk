@@ -3,7 +3,8 @@ fv-content
   div(:class="$root.mainClass")
     doc-description
       | To creating content section inside
-      a.fv-link(@click="$router.push(`/components/fvMain`)") fvMain
+      =" "
+      router-link.fv-link(to="/components=fvMain") fvMain
       | , use this component.
     doc-code(v-pre)
       = "<fv-content>\n"

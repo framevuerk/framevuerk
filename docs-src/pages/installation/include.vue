@@ -12,7 +12,7 @@ fv-content
       = "yarn add framevuerk\n"
     | Or if you are not familier to package managers and this stuff, skip this step and read <b>Globals</b> section in next page.
     hr.fv-hr
-    fv-button.fv-sm.fv-block(icon="fa fa-long-arrow-right", @click="$router.push('/installation/usage')") Usage
+    fv-button.fv-sm.fv-block(icon="fa fa-long-arrow-right", @click="$router.push('/installation=usage')") Usage
 </template>
 
 <script>

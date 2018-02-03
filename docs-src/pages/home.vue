@@ -1,0 +1,89 @@
+<template lang="pug">
+  .logo-container(:class="{ready: ready}")
+    img.logo(src="../assets/logo.svg")
+    .sp
+    .logo-text
+      h1 Framevuerk
+      p Awesome fully responsive Vue.js framevuerk!
+      router-link.get-started(to="/installation=include") GET STARTED
+      a.github(:href="$root.githubRepo", target="_blank") GITHUB
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      ready: false
+    }
+  },
+  mounted () {
+    this.ready = true
+  }
+}
+</script>
+
+<style lang="scss">
+.logo-container {
+  margin-top: 5.5em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+}
+
+.logo {
+  width: 11em;
+  transform: translateY(-15%) rotate(-50deg);
+}
+
+.sp {
+  height: 1px;
+  display: inline-block;
+  width: 14em;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 2em 0;
+  opacity: 0;
+}
+
+.logo-text {
+  line-height: 2.35em;
+  transform: translateY(-60%);
+  opacity: 0;
+}
+
+.logo-text h1 {
+  margin: 0;
+  font-size: 2.3em;
+}
+
+.logo-text p {
+  margin: 0;
+  font-size: 1em;
+}
+
+.get-started {
+  font-size: 1.1em;
+  cursor: pointer;
+  color: #41b883;
+  font-weight: bold;
+  margin-right: 1em;
+}
+
+.github {
+  font-size: 1.1em;
+  cursor: pointer;
+  color: #35495e;
+  font-weight: bold;
+}
+
+.logo-container * {
+  transition: all 1s;
+}
+
+.logo-container,
+.logo-container.ready * {
+  transform: translate(0) rotate(0deg) !important;
+  opacity: 1 !important;
+}
+</style>

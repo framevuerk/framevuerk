@@ -10,13 +10,12 @@ import VueHighlightJS from 'vue-highlightjs'
 import 'highlight.js/styles/agate.css'
 import 'font-awesome/css/font-awesome.css'
 
-import './index.html.none'
 import './favicon.ico'
 import './CNAME.none'
-import main from './pages/main.vue'
+import main from './main.vue'
 
-framevuerk.use(hammer)
-framevuerk.use(moment)
+framevuerk.use('hammer', hammer)
+framevuerk.use('moment', moment)
 Vue.use(VueRouter)
 Vue.use(VueHighlightJS)
 Vue.use(framevuerk)
@@ -24,7 +23,7 @@ Vue.use(framevuerk)
 // Routes
 const routes = require('./routes.js')('app')
 const router = new VueRouter({
-  // mode: 'history',
+  mode: process.env.NODE_ENV === 'production' ? 'history' : '',
   routes
 })
 

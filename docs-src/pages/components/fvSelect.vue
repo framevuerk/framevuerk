@@ -2,13 +2,7 @@
 fv-content
   div(:class="$root.mainClass")
     doc-description
-      | To create full featured select (dropdown) in your application, use this! Note that this use
-      a.fv-link(@click="$router.push(`/components/fvInput`)") fvInput
-      =" , "
-      a.fv-link(@click="$router.push(`/components/fvDialog`)") fvDialog
-      =" and "
-      a.fv-link(@click="$router.push(`/components/fvList`)") fvList
-      | .
+      | To create full featured select (dropdown) in your application, use this!
     doc-code
       = "<fv-select></fv-select>"
     doc-example

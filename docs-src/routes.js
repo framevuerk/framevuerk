@@ -1,128 +1,129 @@
 module.exports = function (mode) {
   return [
     {
-      name: 'fvRow + fvCol',
-      path: '/styles/fvRow + fvCol',
-      component: mode === 'app' ? require('./pages/styles/fvRow + fvCol.vue').default : null
+      name: 'Home',
+      path: '/',
+      component: mode === 'app' ? require('./pages/home.vue').default : null
     },
     {
       name: 'Include',
-      path: '/installation/include',
+      path: '/installation=include',
       component: mode === 'app' ? require('./pages/installation/include.vue').default : null
     },
     {
       name: 'Usage',
-      path: '/installation/usage',
+      path: '/installation=usage',
       component: mode === 'app' ? require('./pages/installation/usage.vue').default : null
     },
     {
       name: 'fvMain',
-      path: '/components/fvMain',
+      path: '/components=fvMain',
       component: mode === 'app' ? require('./pages/components/fvMain.vue').default : null
     },
     {
       name: 'fvHeader',
-      path: '/components/fvHeader',
+      path: '/components=fvHeader',
       component: mode === 'app' ? require('./pages/components/fvHeader.vue').default : null
     },
     {
       name: 'fvSidebar',
-      path: '/components/fvSidebar',
+      path: '/components=fvSidebar',
       component: mode === 'app' ? require('./pages/components/fvSidebar.vue').default : null
     },
     {
       name: 'fvContent',
-      path: '/components/fvContent',
+      path: '/components=fvContent',
       component: mode === 'app' ? require('./pages/components/fvContent.vue').default : null
     },
     {
       name: 'fvFooter',
-      path: '/components/fvFooter',
+      path: '/components=fvFooter',
       component: mode === 'app' ? require('./pages/components/fvFooter.vue').default : null
     },
     {
       name: 'fvDialog',
-      path: '/components/fvDialog',
+      path: '/components=fvDialog',
       component: mode === 'app' ? require('./pages/components/fvDialog.vue').default : null
     },
     {
       name: 'fvMenu',
-      path: '/components/fvMenu',
+      path: '/components=fvMenu',
       component: mode === 'app' ? require('./pages/components/fvMenu.vue').default : null
     },
     {
       name: 'fvButton',
-      path: '/components/fvButton',
+      path: '/components=fvButton',
       component: mode === 'app' ? require('./pages/components/fvButton.vue').default : null
     },
     {
       name: 'fvInput',
-      path: '/components/fvInput',
+      path: '/components=fvInput',
       component: mode === 'app' ? require('./pages/components/fvInput.vue').default : null
     },
     {
       name: 'fvTextarea',
-      path: '/components/fvTextarea',
+      path: '/components=fvTextarea',
       component: mode === 'app' ? require('./pages/components/fvTextarea.vue').default : null
     },
     {
       name: 'fvSelect',
-      path: '/components/fvSelect',
+      path: '/components=fvSelect',
       component: mode === 'app' ? require('./pages/components/fvSelect.vue').default : null
     },
     {
       name: 'fvDatepicker',
-      path: '/components/fvDatepicker',
+      path: '/components=fvDatepicker',
       component: mode === 'app' ? require('./pages/components/fvDatepicker.vue').default : null
     },
     {
       name: 'fvSwitch',
-      path: '/components/fvSwitch',
+      path: '/components=fvSwitch',
       component: mode === 'app' ? require('./pages/components/fvSwitch.vue').default : null
     },
     {
       name: 'fvCheck',
-      path: '/components/fvCheck',
+      path: '/components=fvCheck',
       component: mode === 'app' ? require('./pages/components/fvCheck.vue').default : null
     },
     {
       name: 'fvFilepicker',
-      path: '/components/fvFilepicker',
+      path: '/components=fvFilepicker',
       component: mode === 'app' ? require('./pages/components/fvFilepicker.vue').default : null
     },
     {
       name: 'fvForm',
-      path: '/components/fvForm',
+      path: '/components=fvForm',
       component: mode === 'app' ? require('./pages/components/fvForm.vue').default : null
     },
     {
       name: 'fvTable',
-      path: '/components/fvTable',
+      path: '/components=fvTable',
       component: mode === 'app' ? require('./pages/components/fvTable.vue').default : null
     },
     {
       name: 'fvImg',
-      path: '/components/fvImg',
+      path: '/components=fvImg',
       component: mode === 'app' ? require('./pages/components/fvImg.vue').default : null
     },
     {
       name: 'fvSlider',
-      path: '/components/fvSlider',
+      path: '/components=fvSlider',
       component: mode === 'app' ? require('./pages/components/fvSlider.vue').default : null
     },
     {
-      name: 'fvList + fvListItem',
-      path: '/components/fvList + fvListItem',
-      component: mode === 'app' ? require('./pages/components/fvList + fvListItem.vue').default : null
+      name: 'fvList-fvListItem',
+      path: '/components=fvList-fvListItem',
+      component: mode === 'app' ? require('./pages/components/fvList-fvListItem.vue').default : null
     },
     {
       name: 'fvToast',
-      path: '/components/fvToast',
+      path: '/components=fvToast',
       component: mode === 'app' ? require('./pages/components/fvToast.vue').default : null
     },
     {
-      name: 'notfound',
-      path: '/*'
+      name: 'fvRow-fvCol',
+      path: '/styles=fvRow-fvCol',
+      component: mode === 'app' ? require('./pages/styles/fvRow-fvCol.vue').default : null
     }
   ]
 }

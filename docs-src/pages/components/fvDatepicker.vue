@@ -3,18 +3,20 @@ fv-content
   div(:class="$root.mainClass")
     doc-description
       | To create full featured date-time picker based on your locale in your application, use this! Note that this is use
-      a.fv-link(@click="$router.push(`/components/fvInput`)") fvInput
+      =" "
+      router-link.fv-link(to="/components=fvInput") fvInput
       =" and "
-      a.fv-link(@click="$router.push(`/components/fvDialog`)") fvDialog
+      router-link.fv-link(to="/components=fvDialog") fvDialog
       | .
       br
       | Note that before using this, you should add
+      =" "
       a.fv-link(href="https://momentjs.com/", target="_blank") Moment
       |  as dependency of framevuerk.
     doc-code(title="Javascript:", lang="javascript")
       = "import framevuerk from 'framevuerk'\n"
       = "import moment from 'moment'  // or 'moment-jalaali'\n"
-      = "framevuerk.use(moment)\n"
+      = "framevuerk.use('moment', moment)\n"
     doc-code
       = "<fv-datepicker></fv-datepicker>"
     doc-example
