@@ -1,4 +1,5 @@
 const path = require('path')
+const utility = require(path.resolve(__dirname, '../src/utility'))
 const pkg = require(path.resolve(__dirname, '../package.json'))
 const webpack = require('webpack')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
@@ -77,7 +78,7 @@ lib.generateConfig = (cnf) => {
     output: {
       path: cnf.path,
       filename: fileName + '.js',
-      library: cnf.name,
+      library: utility.capitalizeFirstLetter(pkg.name),
       libraryTarget: 'umd'
     },
     module: {
