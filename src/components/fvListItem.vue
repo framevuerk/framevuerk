@@ -109,7 +109,6 @@ export default {
 
     & > .text {
       flex-grow: 1;
-      line-height: 1.3;
       padding: 0 $padding;
     }
 

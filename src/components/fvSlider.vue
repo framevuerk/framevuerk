@@ -26,7 +26,6 @@ fv-main.fv-slider
 </template>
 
 <script>
-import utility from '../utility'
 import fvMain from './fvMain.vue'
 import fvHeader from './fvHeader.vue'
 import fvContent from './fvContent.vue'
@@ -128,7 +127,7 @@ export default {
     }
   },
   created () {
-    this.hammer = utility._dependencies.hammer
+    this.hammer = require('../').dependencies.hammer
   },
   mounted () {
     this.initerval()

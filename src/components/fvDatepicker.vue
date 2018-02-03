@@ -43,7 +43,6 @@ span
 </template>
 
 <script>
-import utility from '../utility'
 import locale from 'locale'
 import fvMain from './fvMain.vue'
 import fvContent from './fvContent.vue'
@@ -112,13 +111,11 @@ export default {
     }
   },
   created () {
-    this.moment = utility._dependencies.moment
+    this.moment = require('../').dependencies.moment
     if (this.moment) {
       if (process.env.locale === 'fa') {
         this.moment.loadPersian()
       }
-    } else {
-      throw new Error('Moment not found!')
     }
   },
   computed: {
@@ -126,7 +123,7 @@ export default {
       return this.$refs.inputEl.fvValidate || false
     },
     displayValue () {
-      if (this.value) {
+      if (this.value && this.moment) {
         return this.moment.utc(this.value).format(this.displayFormat)
       } else {
         return undefined

@@ -9,8 +9,6 @@ span.fv-switch(:class="{ on: onValue === pValue }",
 </template>
 
 <script>
-import utility from '../utility'
-
 export default {
   props: {
     value: {
@@ -59,7 +57,7 @@ export default {
   },
   created () {
     this.setStructure()
-    this.hammer = utility._dependencies.hammer
+    this.hammer = require('../').dependencies.hammer
   },
   mounted () {
     this.initHammer()

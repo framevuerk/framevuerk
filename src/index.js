@@ -1,5 +1,4 @@
 import './style.scss'
-import utility from './utility'
 
 // Components
 import fvMain from './components/fvMain.vue'
@@ -48,19 +47,13 @@ module.exports = {
   fvImg,
   fvSlider,
   fvToast,
-  use (lib = null) {
-    if (lib) {
-      switch (lib.name) {
-        case 'jMoment':
-        case 'moment':
-          utility._dependencies.moment = lib
-          break
-        case 'Hammer':
-          utility._dependencies.hammer = lib
-          break
-      }
+  use (libName, lib) {
+    if (['hammer', 'moment'].indexOf(libName) === -1) {
+      return console.warn(`Unknown '${libName}' library!`)
     }
+    this.dependencies[libName] = lib
   },
+  dependencies: {},
   install (Vue) {
     // Components
     Vue.component('fvMain', fvMain)
