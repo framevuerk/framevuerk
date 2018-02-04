@@ -192,22 +192,20 @@ export default {
 
   @else if ($part == 'animation-enter') {
     opacity: 1;
-    transform: translate3d(-50%, -50%, 0);
     transition-duration: $transition-speed;
-    transition-property: transform, opacity;
+    transition-property: opacity;
     transition-timing-function: ease;
-    will-change: transform, opacity;
+    will-change: opacity;
   }
 
   @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate3d(-50%, -40%, 0);
   }
 }
 
 @mixin fv-dialog-bottom($part) {
   @if ($part == 'style') {
-    bottom: 0.1px;
+    bottom: 0;
     left: 0;
     max-height: 90%;
     max-width: 100%;
@@ -217,16 +215,14 @@ export default {
 
   @else if($part == 'animation-enter') {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
     transition-duration: $transition-speed;
-    transition-property: transform, opacity;
+    transition-property: opacity;
     transition-timing-function: ease;
-    will-change: transform, opacity;
+    will-change: opacity;
   }
 
   @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate3d(0, 10%, 0);
   }
 }
 
@@ -242,16 +238,14 @@ export default {
 
   @else if($part == 'animation-enter') {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
     transition-duration: $transition-speed;
-    transition-property: transform, opacity;
+    transition-property: opacity;
     transition-timing-function: ease;
-    will-change: transform, opacity;
+    will-change: opacity;
   }
 
   @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate3d(0, -10%, 0);
   }
 }
 
@@ -268,16 +262,14 @@ export default {
 
   @else if($part == 'animation-enter') {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
     transition-duration: $transition-speed;
-    transition-property: transform, opacity;
+    transition-property: opacity;
     transition-timing-function: ease;
-    will-change: transform, opacity;
+    will-change: opacity;
   }
 
   @else if($part == 'animation-leave') {
     opacity: 0;
-    transform: translate3d(0, 10%, 0);
   }
 }
 
