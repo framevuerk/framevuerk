@@ -42,6 +42,7 @@ export default {
 @import '../styles/mixins';
 
 @mixin button($bgcolor, $color: false) {
+  $bgcolor-light: lighten($bgcolor, $highlight-percent-light);
   $bgcolor-dark: darken($bgcolor, $shadow-percent);
 
   background: $bgcolor;
@@ -55,8 +56,12 @@ export default {
     color: $color;
   }
 
+  &:hover {
+    background: $bgcolor-light;
+  }
+
   &:active {
-    background: $bgcolor-dark; //linear-gradient(to bottom, $bgcolor-dark, $bgcolor 25%);
+    background: $bgcolor-dark;
   }
 
   &:focus {

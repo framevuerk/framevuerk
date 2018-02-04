@@ -163,6 +163,10 @@ export default {
     @include yiq($primary-color);
   }
 
+  & > .content:hover {
+    background: $highlight-color;
+  }
+
   & > .content:active {
     background: $shadow-color-light;
   }
