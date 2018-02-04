@@ -54,7 +54,7 @@ fv-content
     doc-description
       a.fv-link(href="https://jsfiddle.net/nainemom/vhLkyg5u/", target="_blank") Simple Example
 
-    fv-button.fv-sm.fv-block(icon="fa fa-long-arrow-right", @click="$router.push('/installation=.framevuerkrc')") Next
+    fv-button.fv-sm.fv-block(icon="fa fa-long-arrow-right", @click="$router.push('/installation=customize')") Next
 </template>
 
 <script>
