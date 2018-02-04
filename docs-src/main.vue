@@ -51,8 +51,8 @@ export default {
         {
           text: 'Installation',
           items: [
-            this.sidebarItem('Setup', '/Installation=setup'),
-            this.sidebarItem('Framevuerkrc', '/Installation=framevuerkrc')
+            this.sidebarItem('Setup', '/installation=setup'),
+            this.sidebarItem('Customize', '/installation=customize')
           ]
         },
         {
