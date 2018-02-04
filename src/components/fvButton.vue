@@ -44,7 +44,7 @@ export default {
 @mixin button($bgcolor, $color: false) {
   $bgcolor-dark: darken($bgcolor, $shadow-percent);
 
-  background: $bgcolor; //linear-gradient(to top, $bgcolor-dark, $bgcolor 10%);
+  background: $bgcolor;
   border: 1px solid $bgcolor-dark;
 
   @if $color == false {
@@ -65,11 +65,13 @@ export default {
         @include outline;
       }
     }
+
     &.text-focus {
       @include respond-to(md) {
         @include textoutline;
       }
     }
+
     &:invalid,
     &[invalid] {
       @include outline($danger-color);
