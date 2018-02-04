@@ -2,7 +2,7 @@
 fv-main.fv-slider
   fv-header(v-if="showTabs",
     height="3.5em")
-    fv-button.fv-sm.fv-grow(v-for="(i, slot) in $slots",
+    fv-button.fv-sm.fv-grow.text-focus(v-for="(i, slot) in $slots",
       :key="slot",
       :class="{'fv-selected': value === slot}",
       @click.prevent="setValue(slot)")
@@ -15,10 +15,10 @@ fv-main.fv-slider
         ref="slot",
         v-if="slot === value")
         slot(:name="value")
-  fv-button.fv-xl.next(v-if="showButtons",
+  fv-button.fv-xl.text-focus.next(v-if="showButtons",
     @click.prevent="moveSlide(true)",
     :icon="'fa fa-chevron-'+dirs.prev")
-  fv-button.fv-xl.prev(v-if="showButtons",
+  fv-button.fv-xl.text-focus.prev(v-if="showButtons",
     @click.prevent="moveSlide(false)",
     :icon="'fa fa-chevron-'+dirs.next")
   ul.nav(v-if="showNavs")
@@ -154,6 +154,7 @@ export default {
 
   & > .fv-header {
     background: transparent;
+    padding: 0;
 
     & > .fv-button {
       height: 100%;
@@ -166,10 +167,6 @@ export default {
       font-weight: bold;
       transition-duration: $transition-speed-fast;
       transition-property: color, border;
-
-      &:focus {
-        box-shadow: none;
-      }
 
       &.fv-selected {
         border-bottom: solid 0.4em $primary-color;
@@ -194,11 +191,6 @@ export default {
 
     &.prev {
       #{$block-start}: 0;
-    }
-
-    &:focus,
-    &.focus {
-      @include textoutline($primary-color);
     }
   }
 

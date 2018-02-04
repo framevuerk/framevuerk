@@ -60,11 +60,16 @@ export default {
   }
 
   &:focus {
-    @include respond-to(md) {
-      @include outline;
-      @include textoutline;
+    &:not(.text-focus) {
+      @include respond-to(md) {
+        @include outline;
+      }
     }
-
+    &.text-focus {
+      @include respond-to(md) {
+        @include textoutline;
+      }
+    }
     &:invalid,
     &[invalid] {
       @include outline($danger-color);
