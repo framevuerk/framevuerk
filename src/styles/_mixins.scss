@@ -2,8 +2,8 @@
 @import './functions';
 
 @mixin outline($color: $primary-color) {
-  border-color: $color;
-  box-shadow: 0 0 0 1px rgba($color, 0.4);
+  z-index: 2;
+  box-shadow: 0 0 0 2px rgba($color, 0.5);
   outline: none;
 }
 
@@ -14,7 +14,8 @@
 
 @mixin bottom-outline($color: $primary-color) {
   border-color: $color;
-  box-shadow: none;
+  z-index: 2;
+  box-shadow: 1px 0 0 2px rgba($color, 0.4);
   outline: none;
 }
 
