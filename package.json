@@ -1,6 +1,6 @@
 {
   "name": "framevuerk",
-  "version": "0.107.0",
+  "version": "0.108.0",
   "description": "Awesome fully responsive Vue.js framevuerk!",
   "main": "dist/framevuerk-default.js",
   "scripts": {
@@ -21,6 +21,9 @@
     "dev": "webpack --config ./build/webpack.config.js --display none -w & webpack-dev-server --inline --config ./build/webpack.config.docs.js --host 0 --open --disable-host-check",
     "postinstall": "cross-env NODE_ENV=production node ./build/index.js build lib",
     "start": "echo \"Use 'npm run dev' instead.\""
+  },
+  "bin": {
+    "framevuerk": "./build/index.js"
   },
   "dependencies": {
     "autoprefixer": "7.2.5",
