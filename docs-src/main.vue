@@ -52,7 +52,7 @@ export default {
           text: 'Installation',
           items: [
             this.sidebarItem('Setup', '/Installation=setup'),
-            this.sidebarItem('.framevuerkrc', '/Installation=.framevuerkrc')
+            this.sidebarItem('Framevuerkrc', '/Installation=framevuerkrc')
           ]
         },
         {

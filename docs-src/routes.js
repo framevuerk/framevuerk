@@ -11,9 +11,9 @@ module.exports = function (mode) {
       component: mode === 'app' ? require('./pages/installation/setup.vue').default : null
     },
     {
-      name: '.framevuerkrc',
-      path: '/installation=.framevuerkrc',
-      component: mode === 'app' ? require('./pages/installation/.framevuerkrc.vue').default : null
+      name: 'Framevuerkrc',
+      path: '/installation=framevuerkrc',
+      component: mode === 'app' ? require('./pages/installation/framevuerkrc.vue').default : null
     },
     {
       name: 'fvMain',
