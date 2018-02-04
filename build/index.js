@@ -2,13 +2,12 @@
 
 const path = require('path')
 const webpack = require('webpack')
-const config = require(path.resolve(__dirname, './webpack.config.js'))
-const configDocs = require(path.resolve(__dirname, './webpack.config.docs.js'))
 
 function build (part) {
   return new Promise((resolve, reject) => {
     switch (part) {
       case 'docs':
+        const configDocs = require(path.resolve(__dirname, './webpack.config.docs.js'))
         webpack(configDocs, (err, stats) => {
           if (err) {
             reject(err)
@@ -19,6 +18,7 @@ function build (part) {
         break
       case 'lib':
       default:
+        const config = require(path.resolve(__dirname, './webpack.config.js'))
         webpack(config, (err, stats) => {
           if (err) {
             reject(err)
