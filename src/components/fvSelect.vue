@@ -18,13 +18,12 @@ span
     :first-focus-on="firstFocusOn",
     :auto-close="false")
     fv-main(ref="select")
-      fv-header.fv-invert(v-if="showInput")
-        .fv-grow
-          fv-input.fv-form-control.fv-search-style.fv-grow(:placeholder="placeholder || locale.search()",
-            v-model="searchQuery",
-            @input="$emit('search', searchQuery)",
-            @keydown.native="$refs.list.onKeydown($event);",
-            ref="input")
+      fv-header(v-if="showInput")
+        fv-input.fv-grow(:placeholder="placeholder || locale.search()",
+          v-model="searchQuery",
+          @input="$emit('search', searchQuery)",
+          @keydown.native="$refs.list.onKeydown($event);",
+          ref="input")
       fv-content.fv-no-padding
         .fv-text-center.fv-padding(v-show="loading")
           i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation
