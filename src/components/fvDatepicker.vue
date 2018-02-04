@@ -19,10 +19,11 @@ span
     :auto-close="false")
     fv-content.fv-no-padding
       .fv-row
-        section.fv-col(v-for="(val, index) in pick",
+        section4(v-for="(val, index) in pick",
+          :class="{'fv-col-4': pick.length % 3 === 0, 'fv-col-6': pick.length % 3 !== 0 && pick.length % 2 === 0, 'fv-col-xs-12': pick.length === 1}",
           :key="index")
           label.fv-control-label.fv-text-center(v-html="locale[val]()")
-          fv-input.search-style.fv-block.fv-lg.fv-text-center(ref="input",
+          fv-input.fv-block.fv-lg.fv-text-center(ref="input",
             :value="pValue?  pValue.format(locale.momentDisplayFormat(val)): ''",
             @blur.native="$event.target.value = pValue.format(locale.momentDisplayFormat(val))",
             @input="pSet(val, $event)",
