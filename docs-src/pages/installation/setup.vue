@@ -13,8 +13,7 @@ fv-content
       = "npm install hammerjs --save\n"
       = "npm install font-awesome --save"
     doc-description
-      | And just follow the example and use it! Do not copy, just write it yourself!
-      | Note that you can also use `commonjs` syntax and `require` packages.
+      | And just follow the example and use it! (`commonjs` syntax and `require` also available)
     doc-code(v-pre, title=" ", lang="javascript")
       = "// Vue package\n"
       = "import Vue from 'vue'\n\n"
@@ -33,7 +32,7 @@ fv-content
       = "import 'font-awesome/css/font-awesome.css' //if you handled with webpack, else you can include this via <link rel=\"stylesheet\">\n\n"
       = "// Active Framevuerk...\n"
       = "Vue.use(Framevuerk)\n\n"
-      = "// And finally, Initializing app\n"
+      = "// Initializing app\n"
       = "const app = new Vue({\n"
       = "  el: \"#app\"\n"
       = "});"
@@ -42,13 +41,13 @@ fv-content
     doc-code(v-pre, title="Template:", lang="html")
       = "<html>\n"
       = "\t<head>\n"
-      = "\t\t<script src=\"path/to/your/app.js\"></script>\n"
       = "\t\t<link rel=\"stylesheet\" href=\"path/to/your/app.css\"/>\n"
       = "\t</head>\n"
       = "\t<body>\n"
       = "\t\t<fv-main id=\"app\">\n"
       = "\t\t\t<!-- Your Content -->\n"
       = "\t\t</fv-main>\n"
+      = "\t\t<script src=\"path/to/your/app.js\"></script>\n"
       = "\t</body>\n"
       = "</html>\n"
     doc-description
