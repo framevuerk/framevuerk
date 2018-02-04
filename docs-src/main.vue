@@ -131,9 +131,9 @@ export default {
         this.$refs.sidebar.close()
       }
       setTimeout(() => {
-        if (this.$refs.sidebar.isPinned === true) {
+        if (this.$refs.sidebar.isPinned === true && this.$refs.sidebar.visible === false) {
           this.$refs.sidebar.open()
-        } else {
+        } else if (!this.$refs.sidebar.isPinned) {
           this.$refs.sidebar.close()
         }
       })
