@@ -19,8 +19,7 @@ fv-content
         br
         h4 Custom elements:
         fv-header
-          .fv-grow
-            fv-input.fv-form-control(placeholder="Type anything to search!")
+          fv-input.fv-grow(placeholder="Type anything to search!")
           .space
           fv-button(icon="fa fa-search")
         br
