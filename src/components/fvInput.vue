@@ -100,24 +100,6 @@ export default {
   justify-content: space-between;
   padding: 0 $padding-small;
 
-  &.search-style,
-  &.fv-search-style {
-    border-left: 0;
-    border-radius: 0;
-    border-right: 0;
-    border-top: 0;
-    box-shadow: none;
-
-    &:focus {
-      @include bottom-outline;
-
-      &:invalid,
-      &[invalid] {
-        @include bottom-outline($danger-color);
-      }
-    }
-  }
-
   &:focus {
     @include outline;
 
