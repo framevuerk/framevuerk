@@ -1,5 +1,5 @@
 <template lang="pug">
-  .logo-container(:class="{ready: ready}")
+  .logo-container(:class="{ready: ready}", style="opacity: 0")
     img.logo(src="../assets/logo.svg")
     .sp
     .logo-text

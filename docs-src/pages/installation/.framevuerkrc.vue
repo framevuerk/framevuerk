@@ -3,8 +3,6 @@ fv-content
   div(:class="$root.mainClass")
     doc-description
       | Framevuerk can have different language, direction, and colors based on the user's taste. To setup your custom version, create a file called <b>.framevuerkrc.js</b> in root of your project and put these on:
-      | </br> You can also use <b>.framevuerkrc.json</b>, <b>.framevuerkrc</b> or <b>framevuerk</b> key inside your package.json to pass this vars to Framevuerk!
-      | <br> Framevuerk apply these config on before every install.
     doc-code(v-pre, title=".framevuerkrc:", lang="javascript")
       ="module.export = {\n"
       ="\t// config name\n"
@@ -34,6 +32,13 @@ fv-content
       ="framevuerk-foobar.min.js\n"
       ="framevuerk-foobar.css\n"
       ="framevuerk-foobar.min.css\n"
+    doc-description
+      | You can also use <b>.framevuerkrc.json</b>, <b>.framevuerkrc</b> or <b>framevuerk</b> key inside your package.json to pass this vars to Framevuerk!
+      | <br> Framevuerk apply these config on before every install or by this cli command:
+    doc-code(v-pre, title=" ", lang="terminal")
+      ="framevuerk build lib\n"
+      ="# or\n"
+      ="./node_modules/.bin/framevuerk build lib\n"
     doc-description
     | You are now config your app to use <b>Framevuerk</b>! Let's go to use our components.
 </template>

@@ -7,9 +7,9 @@ fv-content
       a.fv-link(href="http://hammerjs.github.io/", target="_blank") HammerJs
       |  as dependency of framevuerk to allow touch actions.
     doc-code(title="Javascript:", lang="javascript")
-      = "import framevuerk from 'framevuerk'\n"
+      = "import Framevuerk from 'framevuerk'\n"
       = "import Hammer from 'hammerjs'\n"
-      = "framevuerk.use('hammer', Hammer)\n"
+      = "Framevuerk.use('hammer', Hammer)\n"
     doc-code
       = "<fv-switch></fv-switch>"
     doc-example

@@ -14,9 +14,9 @@ fv-content
       a.fv-link(href="https://momentjs.com/", target="_blank") Moment
       |  as dependency of framevuerk.
     doc-code(title="Javascript:", lang="javascript")
-      = "import framevuerk from 'framevuerk'\n"
-      = "import moment from 'moment'  // or 'moment-jalaali'\n"
-      = "framevuerk.use('moment', moment)\n"
+      = "import Framevuerk from 'framevuerk'\n"
+      = "import Moment from 'moment'  // or 'moment-jalaali'\n"
+      = "Framevuerk.use('moment', Moment)\n"
     doc-code
       = "<fv-datepicker></fv-datepicker>"
     doc-example
