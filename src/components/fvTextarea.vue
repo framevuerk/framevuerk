@@ -1,5 +1,6 @@
 <template lang="pug">
-textarea.fv-textarea.fv-input(:class="{'auto-height': autoHeight, invalid: !fvValidate}",
+textarea.fv-textarea.fv-input(:class="{'auto-height': autoHeight}",
+  :invalid="!fvValidate",
   :value="value",
   :style="{ height: height }"
   @input="$emit('input', $event.target.value)")
