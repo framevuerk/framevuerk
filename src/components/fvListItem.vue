@@ -1,5 +1,5 @@
 <template lang="pug">
-li.fv-list-item(:class="{'disabled': disabled, 'highlighted': isHighlighted, 'selected': selected}")
+li.fv-list-item(:class="{highlighted: isHighlighted, selected: selected}")
   .content(@click="onClick", @mousedown="onMousedown")
     .fv-no-wrap.text
       slot(name="default")
@@ -128,6 +128,32 @@ export default {
     }
   }
 
+  &[disabled] {
+    @include disabled;
+  }
+
+  & > .content:hover,
+  &.highlighted > .content {
+    background: yiq($bg-color, 2%);
+  }
+
+  & > .content:active {
+    background: yiq($bg-color, 5%);
+  }
+
+  &.selected {
+    @include yiq($primary-color);
+
+    & > .content:hover,
+    &.highlighted > .content {
+      background: yiq($primary-color, 2%);
+    }
+
+    & > .content:active {
+      background: yiq($primary-color, 5%);
+    }
+  }
+
   & .sub-list {
     & > .fv-list {
       border-#{$block-end}: 0;
@@ -152,28 +178,6 @@ export default {
     &.sub-list-leave-to {
       opacity: 0;
       transform: translateX(if($direction == 'ltr', -1em, 1em));
-    }
-  }
-
-  &.disabled {
-    @include disabled;
-  }
-
-  &.selected {
-    @include yiq($primary-color);
-  }
-
-  & > .content:hover {
-    background: $highlight-color;
-  }
-
-  & > .content:active {
-    background: $shadow-color-light;
-  }
-
-  &.highlighted {
-    & > .content {
-      background: $shadow-color-light;
     }
   }
 }

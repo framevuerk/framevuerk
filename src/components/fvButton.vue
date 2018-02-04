@@ -57,17 +57,23 @@ export default {
   }
 
   &:hover {
-    background: $bgcolor-light;
+    background: yiq($bgcolor, 2%);
   }
 
   &:active {
-    background: $bgcolor-dark;
+    background: yiq($bgcolor, 5%);
   }
 
   &:focus {
     &:not(.text-focus) {
       @include respond-to(md) {
-        @include outline;
+        @if $bg-color == $bgcolor {
+          @include outline;
+        }
+
+        @else {
+          @include outline($bgcolor);
+        }
       }
     }
 
