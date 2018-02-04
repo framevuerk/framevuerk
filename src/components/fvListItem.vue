@@ -1,5 +1,6 @@
 <template lang="pug">
-li.fv-list-item(:class="{highlighted: isHighlighted, selected: selected}")
+li.fv-list-item(:class="{highlighted: isHighlighted, selected: selected}",
+  :disabled="disabled")
   .content(@click="onClick", @mousedown="onMousedown")
     .fv-no-wrap.text
       slot(name="default")
