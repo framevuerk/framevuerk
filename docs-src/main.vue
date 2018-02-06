@@ -10,8 +10,8 @@ fv-main#app
       target="_blank") View Source
     .space
     fv-button(@click="$refs.menu.open($event)", icon="fa fa-ellipsis-v")
-  fv-menu(ref="menu", :sheet="true", :items="[{text: 'Copy', disabled: false}, {text: 'Cut', disabled: false}, {text: 'Paste', disabled: true}]")
   fv-content
+    fv-menu(ref="menu", :sheet="true", :items="[{text: 'Copy', disabled: false}, {text: 'Cut', disabled: false}, {text: 'Paste', disabled: true}]")
     router-view.fv-row
   fv-sidebar.sidebar(:pin="isSidebarPinned", ref="sidebar", width="300px")
     fv-content.fv-no-padding
