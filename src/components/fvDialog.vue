@@ -3,8 +3,9 @@ span
   transition(name="fv-fade")
     .fv-overlay(v-if="visible",
       @click="closeIf()")
-  transition(:name="animationName")
-    fv-main.fv-dialog(:class="animationName",
+  transition(name="fv-dialog")
+    fv-main.fv-dialog(:class="left === null || top === null ? 'center' : ''",
+      :style="{left: left === null ? false : left, top: top === null ? false : top, width: width, height: height}",
       v-if="visible",
       ref="dialog",
       @keydown.native="onKeydown($event); $emit('keydown', $event)",
@@ -47,21 +48,17 @@ export default {
     content: {
       default: ''
     },
-    position: {
-      type: String,
-      validator: (value) => {
-        const availableValues = ['bottom', 'top', 'center', 'fill']
-        if (value.indexOf('-') === -1) {
-          return availableValues.indexOf(value) > -1
-        } else {
-          let bVal = value.replace('-', '')
-          availableValues.forEach(aVal => {
-            bVal = bVal.replace(aVal, '')
-          })
-          return bVal.length === 0
-        }
-      },
-      default: 'center'
+    left: {
+      default: null
+    },
+    top: {
+      default: null
+    },
+    width: {
+      default: 'auto'
+    },
+    height: {
+      default: 'height'
     },
     modal: {
       type: Boolean,
@@ -90,22 +87,29 @@ export default {
       actualPosition: 'center'
     }
   },
-  computed: {
-    animationName () {
-      return `fv-dialog-${this.actualPosition}`
-    }
-  },
   methods: {
     toggle () {
       this[this.visible ? 'close' : 'open']()
     },
     open (param = null) {
-      this.bigParent().$el.appendChild(this.$el)
+      const main = utility.fvParent(this, 'fv-main')
+      main.$el.appendChild(this.$el)
       this.visible = true
       this.param = param
       this.focusBackElem = document.querySelector(':focus')
       this.$emit('open', this.param)
       utility.doIt(() => {
+        const padding = parseInt(process.env.padding)
+        const bottom = this.$refs.dialog.$el.offsetHeight + this.$refs.dialog.$el.offsetTop
+        const right = this.$refs.dialog.$el.offsetLeft + this.$refs.dialog.$el.offsetWidth
+        if (bottom > main.$el.offsetHeight - padding) {
+          const newTop = this.$refs.dialog.$el.offsetTop - (bottom - main.$el.offsetHeight)
+          this.$emit('update:top', `${newTop - padding}px`)
+        }
+        if (right > main.$el.offsetWidth - padding) {
+          const newLeft = this.$refs.dialog.$el.offsetLeft - (right - main.$el.offsetWidth)
+          this.$emit('update:left', `${newLeft - padding}px`)
+        }
         this.focus(this.firstFocusOn)
       })
     },
@@ -120,16 +124,6 @@ export default {
       if (this.modal === false) {
         this.close()
       }
-    },
-    bigParent () {
-      let ret = this
-      while (ret) {
-        if (ret.parent) {
-          return ret
-        }
-        ret = ret.$parent
-      }
-      return false
     },
     focus (index = true) {
       this.focusableItems = this.$el.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
@@ -164,7 +158,7 @@ export default {
     }
   },
   mounted () {
-    this.actualPosition = this.position.indexOf('-') === -1 ? this.position : this.position.split('-')[utility.isSmallViewport(this.bigParent().$el) ? 1 : 0]
+    this.actualPosition = this.position.indexOf('-') === -1 ? this.position : this.position.split('-')[utility.isSmallViewport(utility.fvParent(this, 'fv-main').$el) ? 1 : 0]
     utility.doIt(() => {
       this.isRendered = true
     })
@@ -180,158 +174,44 @@ export default {
 @import '../styles/variables';
 @import '../styles/mixins';
 
-@mixin fv-dialog-center($part) {
-  @if ($part == 'style') {
-    border-radius: $border-radius;
-    left: 50%;
-    max-height: 90%;
-    max-width: 90%;
-    top: 50%;
-    transform: translate3d(-50%, -50%, 0);
-  }
-
-  @else if ($part == 'animation-enter') {
-    opacity: 1;
-    transition-duration: $transition-speed;
-    transition-property: opacity;
-    transition-timing-function: ease;
-    will-change: opacity;
-  }
-
-  @else if($part == 'animation-leave') {
-    opacity: 0;
-  }
-}
-
-@mixin fv-dialog-bottom($part) {
-  @if ($part == 'style') {
-    bottom: 0;
-    left: 0;
-    max-height: 90%;
-    max-width: 100%;
-    top: auto;
-    width: 100%;
-  }
-
-  @else if($part == 'animation-enter') {
-    opacity: 1;
-    transition-duration: $transition-speed;
-    transition-property: opacity;
-    transition-timing-function: ease;
-    will-change: opacity;
-  }
-
-  @else if($part == 'animation-leave') {
-    opacity: 0;
-  }
-}
-
-@mixin fv-dialog-top($part) {
-  @if ($part == 'style') {
-    bottom: auto;
-    left: 0;
-    max-height: 90%;
-    max-width: 100%;
-    top: 0;
-    width: 100%;
-  }
-
-  @else if($part == 'animation-enter') {
-    opacity: 1;
-    transition-duration: $transition-speed;
-    transition-property: opacity;
-    transition-timing-function: ease;
-    will-change: opacity;
-  }
-
-  @else if($part == 'animation-leave') {
-    opacity: 0;
-  }
-}
-
-@mixin fv-dialog-fill($part) {
-  @if ($part == 'style') {
-    border-radius: 0;
-    height: 100%;
-    left: 0;
-    max-height: 100%;
-    max-width: 100%;
-    top: 0;
-    width: 100%;
-  }
-
-  @else if($part == 'animation-enter') {
-    opacity: 1;
-    transition-duration: $transition-speed;
-    transition-property: opacity;
-    transition-timing-function: ease;
-    will-change: opacity;
-  }
-
-  @else if($part == 'animation-leave') {
-    opacity: 0;
-  }
-}
-
 .fv-dialog {
   @include yiq($bg-color);
   @include shadow(bottom);
 
   backface-visibility: hidden;
   height: auto;
-  min-width: 300px;
+  min-width: 280px;
   overflow: auto;
   position: absolute;
-  transform: translate3d(0, 0, 0);
-  width: auto;
+  border-radius: $border-radius;
+  max-height: 90%;
+  max-width: 90%;
   z-index: 2;
 
-  &.fv-dialog-center {
-    @include fv-dialog-center(style);
+  &.center {
+    transform: translate3d(-50%, -50%, 0);
+    left: 50%;
+    top: 50%;
   }
 
-  &.fv-dialog-bottom {
-    @include fv-dialog-bottom(style);
+  @include vue-animation(fv-dialog, enter) {
+    opacity: 1;
+    transition-duration: $transition-speed;
+    transition-property: transform, opacity;
+    transition-timing-function: ease;
+    will-change: transform, opacity;
   }
 
-  &.fv-dialog-top {
-    @include fv-dialog-top(style);
-  }
+  @include vue-animation(fv-dialog, leave) {
+    opacity: 0;
 
-  &.fv-dialog-fill {
-    @include fv-dialog-fill(style);
-  }
+    &:not(.center) {
+      transform: translate3d(0, -10%, 0);
+    }
 
-  @include vue-animation(fv-dialog-center, enter) {
-    @include fv-dialog-center(animation-enter);
-  }
-
-  @include vue-animation(fv-dialog-center, leave) {
-    @include fv-dialog-center(animation-leave);
-  }
-
-  @include vue-animation(fv-dialog-bottom, enter) {
-    @include fv-dialog-bottom(animation-enter);
-  }
-
-  @include vue-animation(fv-dialog-bottom, leave) {
-    @include fv-dialog-bottom(animation-leave);
-  }
-
-  @include vue-animation(fv-dialog-top, enter) {
-    @include fv-dialog-top(animation-enter);
-  }
-
-  @include vue-animation(fv-dialog-top, leave) {
-    @include fv-dialog-top(animation-leave);
-  }
-
-  @include vue-animation(fv-dialog-fill, enter) {
-    @include fv-dialog-fill(animation-enter);
-  }
-
-  @include vue-animation(fv-dialog-fill, leave) {
-    @include fv-dialog-fill(animation-leave);
+    &.center {
+      transform: translate3d(-50%, -60%, 0);
+    }
   }
 }
 </style>

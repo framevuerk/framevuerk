@@ -1,6 +1,7 @@
 <template lang="pug">
 fv-dialog.fv-menu(ref="dialog",
-  :position="sheet === true? 'bottom': (sheet === false? 'center': 'center-bottom')",
+  :left.sync="dialogPosition.left",
+  :top.sync="dialogPosition.top",
   :title="title",
   @close="$emit('close')",
   @open="$emit('open')")
@@ -16,6 +17,7 @@ fv-dialog.fv-menu(ref="dialog",
 </template>
 
 <script>
+import utility from '../utility'
 import fvDialog from './fvDialog.vue'
 import fvContent from './fvContent.vue'
 import fvList from './fvList.vue'
@@ -39,13 +41,6 @@ export default {
       type: String,
       default: 'text'
     },
-    sheet: {
-      type: [Object, Boolean],
-      validator: (value) => {
-        return [true, false, null].indexOf(value) > -1
-      },
-      default: null /* or true or false */
-    },
     title: {
       type: String,
       default: ''
@@ -57,12 +52,21 @@ export default {
   },
   data () {
     return {
-      userArgument: null
+      userArgument: null,
+      dialogPosition: {}
     }
   },
   methods: {
-    open (userArgument = null) {
+    open (clickEvent = null, userArgument = null) {
       this.userArgument = userArgument
+      const main = utility.fvParent(this, 'fv-main')
+      const content = utility.fvChild(main, 'fv-content')
+      const offset = utility.offsetTo(event.target, main.$el)
+      offset.top -= content ? content.$el.scrollTop : 0
+      this.dialogPosition = {
+        left: `${offset.left}px`,
+        top: `${offset.top}px`
+      }
       this.$refs.dialog.open()
     },
     close () {

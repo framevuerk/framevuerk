@@ -12,43 +12,44 @@ span
     ref="inputEl")
   fv-dialog.fv-select(ref="dialog",
     :class="dialogClass",
-    position="center",
+    :left.sync="dialogPosition.left",
+    :top.sync="dialogPosition.top",
+    :width.sync="dialogPosition.width",
     @close="$emit('close')",
     @open="$emit('open')",
     :first-focus-on="firstFocusOn",
     :auto-close="false")
-    fv-main(ref="select")
-      fv-header(v-if="showInput")
-        fv-input.fv-grow(:placeholder="placeholder || locale.search()",
-          v-model="searchQuery",
-          @input="$emit('search', searchQuery)",
-          @keydown.native="$refs.list.onKeydown($event);",
-          ref="input")
-      fv-content.fv-no-padding
-        .fv-text-center.fv-padding(v-show="loading")
-          i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation
-        fv-list.fv-no-border(v-show="!loading",
-          :tabindex="-1",
-          parent,
-          ref="list")
-          fv-list-item(v-for="option in options",
-            :key="optionProp(option, 'value')",
-            v-if="equalSearch(option)",
-            @click="clickOption(option)",
-            :selected="isSelected(option)",
-            :disabled="optionProp(option, 'disabled')")
-            slot(v-if="$scopedSlots.default", :option="option")
-            span(v-else) {{optionProp(option, 'text')}}
-          fv-list-item(v-if="allowInsert && searchQuery",
-            @click="addOption(searchQuery)")
-            i.fa.fa-plus
-            =" "
-            span {{locale.add(searchQuery)}}
-      fv-footer(v-if="multiple || allowInsert")
-        .fv-grow
-        fv-button.fv-ok(icon="fa fa-check",
-          :text="locale.ok()",
-          @click="close()")
+    fv-header(v-if="showInput")
+      fv-input.fv-grow(:placeholder="placeholder || locale.search()",
+        v-model="searchQuery",
+        @input="$emit('search', searchQuery)",
+        @keydown.native="$refs.list.onKeydown($event);",
+        ref="input")
+    fv-content.fv-no-padding
+      .fv-text-center.fv-padding(v-show="loading")
+        i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation
+      fv-list.fv-no-border(v-show="!loading",
+        :tabindex="-1",
+        parent,
+        ref="list")
+        fv-list-item(v-for="option in options",
+          :key="optionProp(option, 'value')",
+          v-if="equalSearch(option)",
+          @click="clickOption(option)",
+          :selected="isSelected(option)",
+          :disabled="optionProp(option, 'disabled')")
+          slot(v-if="$scopedSlots.default", :option="option")
+          span(v-else) {{optionProp(option, 'text')}}
+        fv-list-item(v-if="allowInsert && searchQuery",
+          @click="addOption(searchQuery)")
+          i.fa.fa-plus
+          =" "
+          span {{locale.add(searchQuery)}}
+    fv-footer(v-if="multiple || allowInsert")
+      .fv-grow
+      fv-button.fv-ok(icon="fa fa-check",
+        :text="locale.ok()",
+        @click="close()")
 </template>
 
 <script>
@@ -134,7 +135,8 @@ export default {
     return {
       locale: locale,
       searchQuery: '',
-      firstFocusOn: !utility.isSmallViewport()
+      firstFocusOn: !utility.isSmallViewport(),
+      dialogPosition: {}
     }
   },
   computed: {
@@ -180,6 +182,15 @@ export default {
         }
       } else {
         this.setValue(this.multiple ? [] : undefined)
+      }
+      const main = utility.fvParent(this, 'fv-main')
+      const content = utility.fvChild(main, 'fv-content')
+      const offset = utility.offsetTo(this.$refs.inputEl.$el, main.$el)
+      offset.top -= content ? content.$el.scrollTop : 0
+      this.dialogPosition = {
+        left: `${offset.left}px`,
+        top: `${offset.top}px`,
+        width: `${this.$refs.inputEl.$el.offsetWidth}px`
       }
       this.searchQuery = ''
       this.$refs.dialog.open()
