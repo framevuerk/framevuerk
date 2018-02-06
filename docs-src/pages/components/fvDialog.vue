@@ -12,7 +12,7 @@ fv-content
       fv-dialog(ref="d2", content-class="fv-text-center", :auto-close="false", :modal="true")
         fv-content.fv-text-center
           fv-button.fv-ok.fv-xl(:style="{borderRadius: '100px', width: '100px', height: '100px'}", @click.native="$refs.d2.close()") OK
-      fv-dialog(ref="d3", position="bottom")
+      fv-dialog(ref="d3")
         fv-content
           .fv-pull-left Hi My name is beem beem beem
           .fv-pull-right
