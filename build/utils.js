@@ -59,7 +59,9 @@ lib.generateConfig = (cnf) => {
         name: `"${pkg.name}"`,
         version: `"${pkg.version}"`,
         locale: `"${cnf.locale}"`,
-        direction: `"${cnf.direction}"`
+        direction: `"${cnf.direction}"`,
+        primaryColor: `"${cnf['primary-color']}"`,
+        padding: `"${cnf.padding}"`
       }
     })
   ]
