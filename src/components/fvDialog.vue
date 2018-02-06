@@ -83,8 +83,7 @@ export default {
       visible: false,
       param: null,
       focusBackElem: null,
-      focusableItems: [],
-      actualPosition: 'center'
+      focusableItems: []
     }
   },
   methods: {
@@ -158,7 +157,6 @@ export default {
     }
   },
   mounted () {
-    this.actualPosition = this.position.indexOf('-') === -1 ? this.position : this.position.split('-')[utility.isSmallViewport(utility.fvParent(this, 'fv-main').$el) ? 1 : 0]
     utility.doIt(() => {
       this.isRendered = true
     })
