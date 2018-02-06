@@ -12,5 +12,34 @@ module.exports = {
   isSmallViewport (el = document.body) {
     return el.offsetWidth < 992
   },
+  fvParent (vueComponent, vueElName = 'fv-main') {
+    let ret = vueComponent
+    while (ret) {
+      if (ret.parent && ret.$vnode.componentOptions.tag === vueElName) {
+        return ret
+      }
+      ret = ret.$parent
+    }
+  },
+  fvChild (vueComponent, vueElName = 'fv-content') {
+    for (let i = 0; i < vueComponent.$children.length; i++) {
+      if (vueComponent.$children[i].$vnode.componentOptions.tag === vueElName) {
+        return vueComponent.$children[i]
+      }
+    }
+  },
+  offsetTo (el, parent) {
+    let eli = el
+    const ret = {
+      left: 0,
+      top: 0
+    }
+    while (eli && eli !== parent) {
+      ret.left += eli.offsetLeft
+      ret.top += eli.offsetTop
+      eli = eli.offsetParent
+    }
+    return ret
+  },
   _dependencies: {}
 }
