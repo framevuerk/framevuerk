@@ -38,7 +38,12 @@ fv-content
         .fv-col-sm-6
           p Loading...:
           fv-select(placeholder="Select me!", :options=['Pato', 'Robinho', 'Ronaldinho', 'Ronaldo', 'Roberto Carlos'], loading)
-
+        .fv-col-12
+          br
+        .fv-col-12
+          br
+        .fv-col-12
+          br
     doc-api(:rows="api")
 </template>
 

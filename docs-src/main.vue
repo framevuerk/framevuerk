@@ -8,7 +8,11 @@ fv-main#app
     .space
     a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('-') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
       target="_blank") View Source
-  router-view.fv-row
+    .space
+    fv-button(@click="$refs.menu.open($event)", icon="fa fa-ellipsis-v")
+  fv-menu(ref="menu", :sheet="true", :items="[{text: 'Copy', disabled: false}, {text: 'Cut', disabled: false}, {text: 'Paste', disabled: true}]")
+  fv-content
+    router-view.fv-row
   fv-sidebar.sidebar(:pin="isSidebarPinned", ref="sidebar", width="300px")
     fv-content.fv-no-padding
       fv-list.fv-no-border(parent)

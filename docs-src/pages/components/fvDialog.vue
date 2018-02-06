@@ -8,31 +8,21 @@ fv-content
       = "\t<!-- contents -->\n"
       = "</fv-dialog>\n"
     doc-example
-      fv-dialog(ref="d1", position="center", :buttons="[{class: 'fv-ok',icon: 'fa fa-check',text: 'OK'}]", content="This is simple dialog. not?", title="Simple")
-      fv-dialog(ref="d2", content-class="fv-text-center", position="center", :auto-close="false", :modal="true")
+      fv-dialog(ref="d1", :buttons="[{class: 'fv-ok',icon: 'fa fa-check',text: 'OK'}]", content="This is simple dialog. not?", title="Simple")
+      fv-dialog(ref="d2", content-class="fv-text-center", :auto-close="false", :modal="true")
         fv-content.fv-text-center
           fv-button.fv-ok.fv-xl(:style="{borderRadius: '100px', width: '100px', height: '100px'}", @click.native="$refs.d2.close()") OK
       fv-dialog(ref="d3", position="bottom")
         fv-content
-          .fv-pull-left I can also show like a sheet.
+          .fv-pull-left Hi My name is beem beem beem
           .fv-pull-right
             fv-button.fv-xs(@click="$refs.d3.close()", icon="fa fa-check") OK
-      fv-dialog(ref="d5", position="top")
-        fv-content
-          .fv-pull-left I can also show like a sheet at top.
-          .fv-pull-right
-            fv-button.fv-xs(@click="$refs.d5.close()", icon="fa fa-check") OK
-      fv-dialog(ref="d4", position="fill", :buttons="[{class: 'fv-ok',icon: 'fa fa-check',text: 'OK'}]", content="This is fill dialog.", title="Fill")
       fv-content.fv-row
         fv-button.fv-block.fv-ok(@click.native="$refs.d1.open()") Simple
         br
         fv-button.fv-block.fv-primary(@click.native="$refs.d2.open()") Modal, Without built-in Buttons
         br
-        fv-button.fv-block.fv-danger(@click.native="$refs.d3.open()") Modified Style at Bottom
-        br
-        fv-button.fv-block.fv-info(@click.native="$refs.d5.open()") or Top ;)
-        br
-        fv-button.fv-block(@click.native="$refs.d4.open()") Fill
+        fv-button.fv-block.fv-danger(@click.native="$refs.d3.open()") Custom Template
     doc-api(:rows="api")
 </template>
 
@@ -66,10 +56,28 @@ export default {
             description: 'Content of dialog (if it\'s empty, content container not rendered'
           },
           {
-            name: 'position',
-            type: 'Enum ["bottom", "top", "center", "fill", "x-y"]',
-            default: '"center"',
-            description: 'Position of dialog.<br>Note that "x-y" value means that if parent main size is small, use Y instead of X.'
+            name: 'left',
+            type: '',
+            default: 'null',
+            description: 'Left position of dialog.<br>Note that for better result on non `null` value, you better pass this by variable and add .sync modifier.'
+          },
+          {
+            name: 'top',
+            type: '',
+            default: 'null',
+            description: 'Top position of dialog.<br>Note that for better result on non `null` value, you better pass this by variable and add .sync modifier.'
+          },
+          {
+            name: 'width',
+            type: '',
+            default: '"auto"',
+            description: 'Width of dialog.'
+          },
+          {
+            name: 'height',
+            type: '',
+            default: '"auto"',
+            description: 'Height of dialog.'
           },
           {
             name: 'autoClose',
