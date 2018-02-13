@@ -14,7 +14,7 @@ span
     :class="dialogClass",
     :left.sync="dialogPosition.left",
     :top.sync="dialogPosition.top",
-    :width.sync="dialogPosition.width",
+    :width="dialogPosition.width",
     @close="$emit('close')",
     @open="$emit('open')",
     :first-focus-on="firstFocusOn",
@@ -184,9 +184,12 @@ export default {
         this.setValue(this.multiple ? [] : undefined)
       }
       const main = utility.fvParent(this, 'fv-main')
-      const content = utility.fvChild(main, 'fv-content')
       const offset = utility.offsetTo(this.$refs.inputEl.$el, main.$el)
-      offset.top -= content ? content.$el.scrollTop : 0
+      let content = utility.fvParent(this, 'fv-content')
+      while (content) {
+        offset.top -= content.$el.scrollTop
+        content = utility.fvParent(content, 'fv-content')
+      }
       this.dialogPosition = {
         left: `${offset.left}px`,
         top: `${offset.top}px`,

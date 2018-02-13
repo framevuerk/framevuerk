@@ -197,6 +197,7 @@ export default {
     transition-duration: $transition-speed;
     transition-property: transform, opacity;
     transition-timing-function: ease;
+    transition-delay: 0.1s;
     will-change: transform, opacity;
   }
 

@@ -60,9 +60,12 @@ export default {
     open (clickEvent = null, userArgument = null) {
       this.userArgument = userArgument
       const main = utility.fvParent(this, 'fv-main')
-      const content = utility.fvChild(main, 'fv-content')
       const offset = utility.offsetTo(event.target, main.$el)
-      offset.top -= content ? content.$el.scrollTop : 0
+      let content = utility.fvParent(this, 'fv-content')
+      while (content) {
+        offset.top -= content.$el.scrollTop
+        content = utility.fvParent(content, 'fv-content')
+      }
       this.dialogPosition = {
         left: `${offset.left}px`,
         top: `${offset.top}px`
