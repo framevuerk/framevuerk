@@ -8,10 +8,7 @@ fv-main#app
     .space
     a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('-') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
       target="_blank") View Source
-    .space
-    fv-button(@click="$refs.menu.open($event)", icon="fa fa-ellipsis-v")
   fv-content
-    fv-menu(ref="menu", :sheet="true", :items="[{text: 'Copy', disabled: false}, {text: 'Cut', disabled: false}, {text: 'Paste', disabled: true}]")
     router-view.fv-row
   fv-sidebar.sidebar(:pin="isSidebarPinned", ref="sidebar", width="300px")
     fv-content.fv-no-padding
@@ -43,6 +40,7 @@ fv-main#app
 </template>
 
 <script>
+global.PersianDate = require('persian-date')
 export default {
   data () {
     return {

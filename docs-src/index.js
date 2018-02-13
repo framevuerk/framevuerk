@@ -4,7 +4,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Framevuerk from '../dist/framevuerk.js'
 import '../dist/framevuerk.css'
-import Moment from 'moment-jalaali'
 import Hammer from 'hammerjs'
 import VueHighlightJS from 'vue-highlightjs'
 import 'highlight.js/styles/dark.css'
@@ -15,7 +14,7 @@ import './CNAME.none'
 import main from './main.vue'
 
 Framevuerk.use('hammer', Hammer)
-Framevuerk.use('moment', Moment)
+Framevuerk.use('persian-date', require('persian-date'))
 Vue.use(VueRouter)
 Vue.use(VueHighlightJS)
 Vue.use(Framevuerk)

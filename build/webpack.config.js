@@ -48,9 +48,11 @@ function push (conf) {
   ret.push(utils.generateConfig(Object.assign(cnf, {
     minify: false
   })))
-  ret.push(utils.generateConfig(Object.assign(cnf, {
-    minify: true
-  })))
+  if (process.env.NODE_ENV === 'production') {
+    ret.push(utils.generateConfig(Object.assign(cnf, {
+      minify: true
+    })))
+  }
 }
 
 module.exports = ret
