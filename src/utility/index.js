@@ -13,9 +13,9 @@ module.exports = {
     return el.offsetWidth < 992
   },
   fvParent (vueComponent, vueElName = 'fv-main') {
-    let ret = vueComponent
+    let ret = vueComponent.$parent
     while (ret) {
-      if (ret.parent && ret.$vnode.componentOptions.tag === vueElName) {
+      if ((typeof ret.parent !== 'undefined' ? ret.parent : true) && ret.$vnode && ret.$vnode.componentOptions.tag === vueElName) {
         return ret
       }
       ret = ret.$parent
