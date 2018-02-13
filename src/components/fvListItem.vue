@@ -135,7 +135,7 @@ export default {
 
   & > .content:hover,
   &.highlighted > .content {
-    background: yiq($bg-color, 2%);
+    background: yiq($bg-color, 3%);
   }
 
   & > .content:active {
@@ -147,7 +147,7 @@ export default {
 
     & > .content:hover,
     &.highlighted > .content {
-      background: yiq($primary-color, 2%);
+      background: yiq($primary-color, 3%);
     }
 
     & > .content:active {

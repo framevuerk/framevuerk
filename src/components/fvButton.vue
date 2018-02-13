@@ -57,7 +57,7 @@ export default {
   }
 
   &:hover {
-    background: yiq($bgcolor, 2%);
+    background: yiq($bgcolor, 3%);
   }
 
   &:active {
