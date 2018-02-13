@@ -48,9 +48,6 @@ module.exports = {
   fvSlider,
   fvToast,
   use (libName, lib) {
-    if (['hammer', 'moment'].indexOf(libName) === -1) {
-      return console.warn(`Unknown '${libName}' library!`)
-    }
     this.dependencies[libName] = lib
   },
   dependencies: {},

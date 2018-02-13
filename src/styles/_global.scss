@@ -227,7 +227,7 @@ html > body {
     border-radius: 0;
   }
 
-  & > *:not(:last-child):not(:focus):not(.focus) {
+  & > *:not(:last-child) {
     border-#{$block-end}: 0;
   }
 }
