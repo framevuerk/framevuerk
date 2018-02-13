@@ -8,12 +8,16 @@ span(v-show="$slots.default")
       target="_blank",
       :title="$route.name + ' source code on GitHub'") View Source
   .doc-example(v-if="$slots.default")
-    fv-main
+    fv-main(:parent="false")
       slot
   div(v-else)
     p.fv-text-center Not Available
   br
 </template>
+
+<script>
+export default {}
+</script>
 
 <style lang="scss">
 body .doc-example {

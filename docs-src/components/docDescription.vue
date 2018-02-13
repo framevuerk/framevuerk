@@ -4,3 +4,7 @@ span
     slot
   br
 </template>
+
+<script>
+export default {}
+</script>

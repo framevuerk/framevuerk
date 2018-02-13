@@ -20,26 +20,8 @@ module.exports = {
   search () {
     return 'Search...'
   },
-  momentDisplayFormat (part = false) {
-    if (!part) {
-      return 'D MMMM YYYY, HH:mm'
-    }
-    switch (part) {
-      case 'year':
-        return 'YYYY'
-      case 'month':
-        return 'M'
-      case 'day':
-        return 'D'
-      case 'hour':
-        return 'H'
-      case 'minute':
-        return 'm'
-      case 'second':
-        return 's'
-      default:
-        return ''
-    }
+  dateDisplayFormat () {
+    return 'D MMMM YYYY, HH:mm'
   },
   second () {
     return 'Second'

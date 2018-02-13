@@ -31,9 +31,9 @@ import Framevuerk from 'framevuerk/dist/framevuerk.js'
 // If you handle styles with webpack, import this. Else you can include this via <link rel="stylesheet">
 import 'framevuerk/dist/framevuerk.css'
 
-// Moment package, just if you want use fvDatepicker
-import Moment from 'moment'
-Framevuerk.use('moment', Moment)
+// PersianDate package, just if you want active more features for fvDatepicker
+import PersianDate from 'persian-date'
+Framevuerk.use('persian-date', PersianDate)
 
 // Hammer package, just if you want active touch actions support
 import Hammer from 'hammerjs'

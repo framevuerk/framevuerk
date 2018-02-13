@@ -20,26 +20,8 @@ module.exports = {
   search () {
     return 'جست‌وجو کنید...'
   },
-  momentDisplayFormat (part = false) {
-    if (!part) {
-      return 'jD jMMMM jYYYY ساعت HH:mm'
-    }
-    switch (part) {
-      case 'year':
-        return 'jYYYY'
-      case 'month':
-        return 'jM'
-      case 'day':
-        return 'jD'
-      case 'hour':
-        return 'H'
-      case 'minute':
-        return 'm'
-      case 'second':
-        return 's'
-      default:
-        return ''
-    }
+  dateDisplayFormat () {
+    return 'D MMMM YYYY ساعت HH:mm'
   },
   second () {
     return 'ثانیه'

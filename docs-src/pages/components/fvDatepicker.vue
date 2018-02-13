@@ -9,14 +9,14 @@ fv-content
       router-link.fv-link(to="/components=fvDialog") fvDialog
       | .
       br
-      | Note that before using this, you should add
+      | Note that before using this, you can add
       =" "
-      a.fv-link(href="https://momentjs.com/", target="_blank") Moment
-      |  as dependency of framevuerk.
+      a.fv-link(href="https://github.com/babakhani/PersianDate", target="_blank") PersianDate
+      |  as dependency of framevuerk to active more features.
     doc-code(title="Javascript:", lang="javascript")
       = "import Framevuerk from 'framevuerk'\n"
-      = "import Moment from 'moment'  // or 'moment-jalaali'\n"
-      = "Framevuerk.use('moment', Moment)\n"
+      = "import PersianDate from 'persian-date'\n"
+      = "Framevuerk.use('persian-date', PersianDate)\n"
     doc-code
       = "<fv-datepicker></fv-datepicker>"
     doc-example
@@ -24,17 +24,11 @@ fv-content
         .fv-col-xs-12
           h4 Usage:
         .fv-col-sm-6
-          p Default:
-          fv-datepicker(v-model="inputs.d1", placeholder="Pick your favorite time!")
+          p en-gregorian:
+          fv-datepicker(v-model="inputs.d1", locale="en", calendar="gregorian", placeholder="Pick your favorite date!")
         .fv-col-sm-6
-          p Only Date Picker:
-          fv-datepicker(v-model="inputs.d2", placeholder="Pick your birthday", :pick="['year','month','day']", display-format="YYYY/MM/D")
-        .fv-col-sm-6
-          p Only Time Picker + Required:
-          fv-datepicker(v-model="inputs.d3", required, placeholder="Pick alarm time", :pick="['hour','minute']", display-format="HH:mm")
-        .fv-col-sm-6
-          p Custom:
-          fv-datepicker(v-model="inputs.d4", required, :pick="['month']", display-format="MMMM (MM)", placeholder="Select your favorite month")
+          p fa-persian:
+          fv-datepicker(v-model="inputs.d2", locale="fa", calendar="persian", placeholder="Pick your birthday", :pick="['year','month','day']", display-format="YYYY/MM/D")
         .fv-col-sm-6
           p Disabled:
           fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
@@ -102,10 +96,16 @@ export default {
             description: 'Just like normal select placeholder attribute'
           },
           {
-            name: 'pick',
-            type: 'Array of Enum["year", "month", "day", "hour", "minute", "second"]',
-            default: '["year", "month", "day", "hour", "minute", "second"]',
-            description: 'Pick sections of datepicker.'
+            name: 'locale',
+            type: 'String',
+            default: '"en" (based on framevuerk version locale)',
+            description: 'Pick sections of datepicker. (It\'s not works without PersianDate)'
+          },
+          {
+            name: 'calendar',
+            type: 'String',
+            default: '"gregorian" (based on framevuerk version locale. you can set it to "persian" too.)',
+            description: 'Calendar version of datepicker. (It\'s not works without PersianDate)'
           },
           {
             name: 'display-format',
@@ -142,5 +142,4 @@ export default {
     }
   }
 }
-
 </script>
