@@ -223,12 +223,12 @@ html > body {
     border-top-#{$block-start}-radius: 0;
   }
 
-  & > *:not(:last-child):not(:first-child) {
-    border-radius: 0;
-  }
-
   & > *:not(:last-child) {
     border-#{$block-end}: 0;
+  }
+
+  & > *:not(:last-child):not(:first-child) {
+    border-radius: 0;
   }
 }
 

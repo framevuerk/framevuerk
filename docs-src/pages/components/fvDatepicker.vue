@@ -23,13 +23,13 @@ fv-content
       .fv-row
         .fv-col-xs-12
           h4 Usage:
-        .fv-col-sm-6
+        .fv-col-sm-6.fv-col-xs-12
           p en-gregorian:
           fv-datepicker(v-model="inputs.d1", locale="en", calendar="gregorian", placeholder="Pick your favorite date!")
-        .fv-col-sm-6
+        .fv-col-sm-6.fv-col-xs-12
           p fa-persian:
           fv-datepicker(v-model="inputs.d2", locale="fa", calendar="persian", placeholder="Pick your birthday", :pick="['year','month','day']", display-format="YYYY/MM/D")
-        .fv-col-sm-6
+        .fv-col-sm-6.fv-col-xs-12
           p Disabled:
           fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
     doc-api(:rows="api")

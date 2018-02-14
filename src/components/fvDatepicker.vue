@@ -122,7 +122,7 @@ export default {
         nextMonth: `fa fa-angle-${process.env.direction === 'ltr' ? 'right' : 'left'}`,
         prevMonth: `fa fa-angle-${process.env.direction === 'rtl' ? 'right' : 'left'}`,
         nextYear: `fa fa-angle-double-${process.env.direction === 'ltr' ? 'right' : 'left'}`,
-        prevYear: `fa fa-angle-double-${process.env.direction === 'rtl' ? 'right' : 'left'}`,
+        prevYear: `fa fa-angle-double-${process.env.direction === 'rtl' ? 'right' : 'left'}`
       }
     }
   },
@@ -131,14 +131,14 @@ export default {
       if (this.PersianDate) {
         this.editingValue = this.value ? new this.PersianDate(this.value).toCalendar(this.calendar).toLocale(this.locale) : new this.PersianDate().toCalendar(this.calendar).toLocale(this.locale)
       } else {
-        this.editingValue = this.value ? new Date(this.value.getTime()) : new Date
+        this.editingValue = this.value ? new Date(this.value.getTime()) : new Date()
       }
     },
     calcVisualProps () {
       this.visualProps = {
-        year: this.PersianDate ? this.editingValue.year(): this.editingValue.getFullYear(),
-        month: this.PersianDate ? this.editingValue.month(): this.editingValue.getMonth() + 1,
-        date: this.PersianDate ? this.editingValue.date(): this.editingValue.getDate(),
+        year: this.PersianDate ? this.editingValue.year() : this.editingValue.getFullYear(),
+        month: this.PersianDate ? this.editingValue.month() : this.editingValue.getMonth() + 1,
+        date: this.PersianDate ? this.editingValue.date() : this.editingValue.getDate(),
         monthFirstDay: this.PersianDate ? new this.PersianDate(this.editingValue).toCalendar(this.calendar).toLocale(this.locale).startOf('month').day() % 7 : new Date(this.editingValue.getFullYear(), this.editingValue.getMonth(), 1).getDay(),
         daysInMonth: this.PersianDate ? this.editingValue.daysInMonth() : new Date(this.editingValue.getFullYear(), this.editingValue.getMonth() + 1, 0).getDate()
       }
@@ -148,7 +148,6 @@ export default {
     open () {
       this.setEditingValue()
       this.calcVisualProps()
-      
       const main = utility.fvParent(this, 'fv-main')
       const offset = utility.offsetTo(this.$refs.inputEl.$el, main.$el)
       let content = utility.fvParent(this, 'fv-content')
@@ -169,7 +168,7 @@ export default {
     focus () {
       this.$refs.inputEl.$el.focus()
     },
-    isSelected(date) {
+    isSelected (date) {
       if (!this.value) {
         return false
       }
@@ -179,9 +178,8 @@ export default {
       } else {
         return this.value.getDate() === date && this.value.getMonth() === this.editingValue.getMonth() && this.value.getFullYear() === this.editingValue.getFullYear()
       }
-      return false
     },
-    isHighlighted(date) {
+    isHighlighted (date) {
       if (!this.editingValue) {
         return false
       }
@@ -190,9 +188,8 @@ export default {
       } else {
         return this.editingValue.getDate() === date
       }
-      return false
     },
-    moveValue (unit, value, emit = false){
+    moveValue (unit, value, emit = false) {
       let ret
       if (this.PersianDate) {
         switch (unit) {
@@ -222,7 +219,7 @@ export default {
         ret = new Date(this.editingValue)
       }
       if (emit) {
-        this.$emit('input', this.value && ret.toString() === this.value.toString() ? undefined : ret )
+        this.$emit('input', this.value && ret.toString() === this.value.toString() ? undefined : ret)
         this.close()
       }
       this.calcVisualProps()
@@ -257,7 +254,7 @@ export default {
         ret = new Date(this.editingValue)
       }
       if (emit) {
-        this.$emit('input', this.value && ret.toString() === this.value.toString() ? undefined : ret )
+        this.$emit('input', this.value && ret.toString() === this.value.toString() ? undefined : ret)
         this.close()
       }
       this.calcVisualProps()
@@ -321,47 +318,32 @@ export default {
       color: $primary-color;
     }
   }
+
   & .content {
     padding: $padding-small;
-    &:focus {
-      & .days-table td{
-        &.highlighted {
-          background: yiq($bg-color, 3%);
-          &.selected {
-            background: yiq($primary-color, 3%);
-          }
-        }
-      }
-    }
-  }
-
-  & .header-buttons{
-    overflow: visible;
-  }
-
-  & .days-table {
     width: 100%;
     text-align: center;
+
+    & td,
+    & th {
+      width: 14.2%;
+      height: 40px;
+      vertical-align: middle;
+      border-radius: $border-radius;
+    }
+
     & td {
       cursor: pointer;
-      
-      &,
-      th {
-        width: 14.2%;
-        height: 40px;
-        vertical-align: middle;
-        border-radius: $border-radius;
-      }
 
       &[disabled] {
         @include disabled;
       }
-      
+
       &:not([disabled]) {
         &:hover {
           background: yiq($bg-color, 3%);
         }
-        
+
         &:active {
           background: yiq($bg-color, 5%);
         }
@@ -376,9 +358,29 @@ export default {
           &:active {
             background: yiq($primary-color, 5%);
           }
-        } 
+        }
       }
     }
+
+    &:focus {
+      & th {
+        color: $primary-color;
+      }
+
+      & td {
+        &.highlighted {
+          background: yiq($bg-color, 3%);
+
+          &.selected {
+            background: yiq($primary-color, 3%);
+          }
+        }
+      }
+    }
+  }
+
+  & .header-buttons {
+    overflow: visible;
   }
 }
 </style>
