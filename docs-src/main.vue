@@ -40,7 +40,6 @@ fv-main#app
 </template>
 
 <script>
-global.PersianDate = require('persian-date')
 export default {
   data () {
     return {

@@ -14,7 +14,6 @@ import './CNAME.none'
 import main from './main.vue'
 
 Framevuerk.use('hammer', Hammer)
-Framevuerk.use('persian-date', require('persian-date'))
 Vue.use(VueRouter)
 Vue.use(VueHighlightJS)
 Vue.use(Framevuerk)
