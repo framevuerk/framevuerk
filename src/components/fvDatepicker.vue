@@ -30,9 +30,6 @@ span
         fv-button.fv-sm.text-focus(@click="moveValue('year', 1)", :icon="icons.nextYear", tabindex="-1")
     fv-content.content(tabindex="0", @keydown.native="onContentKeydown")
       table.days-table
-        thead(v-if="PersianDate")
-          tr
-            th(v-for="wd in editingValue.rangeName().weekdaysMin", v-html="wd")
         tbody
           tr(v-for="dp in [0, 7, 14, 21, 28]")
             td(v-for="d in 7",
@@ -78,22 +75,11 @@ export default {
     placeholder: {
       type: String,
       default: ''
-    },
-    displayFormat: {
-      default: locale.dateDisplayFormat()
-    },
-    calendar: {
-      type: String,
-      default: process.env.locale === 'fa' ? 'persian' : 'gregorian'
-    },
-    locale: {
-      type: String,
-      default: process.env.locale
     }
   },
   data () {
     return {
-      PersianDate: null, // will set on created
+      Date: require('../').dependencies['date'] || Date,
       editingValue: undefined,
       visualProps: {},
       dialogPosition: {},
@@ -101,7 +87,6 @@ export default {
     }
   },
   created () {
-    this.PersianDate = require('../').dependencies['persian-date']
     this.setEditingValue()
   },
   computed: {
@@ -109,11 +94,8 @@ export default {
       return this.$refs.inputEl.fvValidate || false
     },
     displayValue () {
-      if (this.value && this.PersianDate) {
-        const value = new this.PersianDate(this.value).toCalendar(this.calendar).toLocale(this.locale)
-        return value.format(this.displayFormat)
-      } else if (this.value) {
-        return this.value.toDateString()
+      if (this.value) {
+        return this.value.toString()
       }
       return undefined
     },
@@ -128,19 +110,15 @@ export default {
   },
   methods: {
     setEditingValue () {
-      if (this.PersianDate) {
-        this.editingValue = this.value ? new this.PersianDate(this.value).toCalendar(this.calendar).toLocale(this.locale) : new this.PersianDate().toCalendar(this.calendar).toLocale(this.locale)
-      } else {
-        this.editingValue = this.value ? new Date(this.value.getTime()) : new Date()
-      }
+      this.editingValue = new this.Date(this.value || Date.now())
     },
     calcVisualProps () {
       this.visualProps = {
-        year: this.PersianDate ? this.editingValue.year() : this.editingValue.getFullYear(),
-        month: this.PersianDate ? this.editingValue.month() : this.editingValue.getMonth() + 1,
-        date: this.PersianDate ? this.editingValue.date() : this.editingValue.getDate(),
-        monthFirstDay: this.PersianDate ? new this.PersianDate(this.editingValue).toCalendar(this.calendar).toLocale(this.locale).startOf('month').day() % 7 : new Date(this.editingValue.getFullYear(), this.editingValue.getMonth(), 1).getDay(),
-        daysInMonth: this.PersianDate ? this.editingValue.daysInMonth() : new Date(this.editingValue.getFullYear(), this.editingValue.getMonth() + 1, 0).getDate()
+        year: this.editingValue.getFullYear(),
+        month: this.editingValue.getMonth() + 1,
+        date: this.editingValue.getDate(),
+        monthFirstDay: new this.Date(this.editingValue.getFullYear(), this.editingValue.getMonth(), 1).getDay(),
+        daysInMonth: new this.Date(this.editingValue.getFullYear(), this.editingValue.getMonth() + 1, 0).getDate()
       }
       this.$forceUpdate()
       return this.visualProps
@@ -172,52 +150,27 @@ export default {
       if (!this.value) {
         return false
       }
-      if (this.PersianDate) {
-        const value = new this.PersianDate(this.value).toCalendar(this.calendar).toLocale(this.locale)
-        return value.date() === date && value.month() === this.editingValue.month() && value.year() === this.editingValue.year()
-      } else {
-        return this.value.getDate() === date && this.value.getMonth() === this.editingValue.getMonth() && this.value.getFullYear() === this.editingValue.getFullYear()
-      }
+      return this.value.getDate() === date && this.value.getMonth() === this.editingValue.getMonth() && this.value.getFullYear() === this.editingValue.getFullYear()
     },
     isHighlighted (date) {
       if (!this.editingValue) {
         return false
       }
-      if (this.PersianDate) {
-        return this.editingValue.date() === date
-      } else {
-        return this.editingValue.getDate() === date
-      }
+      return this.editingValue.getDate() === date
     },
     moveValue (unit, value, emit = false) {
-      let ret
-      if (this.PersianDate) {
-        switch (unit) {
-          case 'year':
-            this.editingValue.year(this.editingValue.year() + value)
-            break
-          case 'month':
-            this.editingValue.month(this.editingValue.month() + value)
-            break
-          case 'date':
-            this.editingValue.date(this.editingValue.date() + value)
-            break
-        }
-        ret = this.editingValue.toDate()
-      } else {
-        switch (unit) {
-          case 'year':
-            this.editingValue.setFullYear(this.editingValue.getFullYear() + value)
-            break
-          case 'month':
-            this.editingValue.setMonth(this.editingValue.getMonth() + value)
-            break
-          case 'date':
-            this.editingValue.setDate(this.editingValue.getDate() + value)
-            break
-        }
-        ret = new Date(this.editingValue)
+      switch (unit) {
+        case 'year':
+          this.editingValue.setFullYear(this.editingValue.getFullYear() + value)
+          break
+        case 'month':
+          this.editingValue.setMonth(this.editingValue.getMonth() + value)
+          break
+        case 'date':
+          this.editingValue.setDate(this.editingValue.getDate() + value)
+          break
       }
+      const ret = new this.Date(this.editingValue)
       if (emit) {
         this.$emit('input', this.value && ret.toString() === this.value.toString() ? undefined : ret)
         this.close()
@@ -225,34 +178,18 @@ export default {
       this.calcVisualProps()
     },
     setValue (unit, value, emit = false) {
-      let ret
-      if (this.PersianDate) {
-        switch (unit) {
-          case 'year':
-            this.editingValue.year(value)
-            break
-          case 'month':
-            this.editingValue.month(value)
-            break
-          case 'date':
-            this.editingValue.date(value)
-            break
-        }
-        ret = this.editingValue.toDate()
-      } else {
-        switch (unit) {
-          case 'year':
-            this.editingValue.setFullYear(value)
-            break
-          case 'month':
-            this.editingValue.setMonth(value)
-            break
-          case 'date':
-            this.editingValue.setDate(value)
-            break
-        }
-        ret = new Date(this.editingValue)
+      switch (unit) {
+        case 'year':
+          this.editingValue.setFullYear(value)
+          break
+        case 'month':
+          this.editingValue.setMonth(value)
+          break
+        case 'date':
+          this.editingValue.setDate(value)
+          break
       }
+      const ret = new this.Date(this.editingValue)
       if (emit) {
         this.$emit('input', this.value && ret.toString() === this.value.toString() ? undefined : ret)
         this.close()
@@ -323,6 +260,10 @@ export default {
     padding: $padding-small;
     width: 100%;
     text-align: center;
+
+    & table {
+      width: 100%;
+    }
 
     & td,
     & th {
