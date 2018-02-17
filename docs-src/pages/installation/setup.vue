@@ -9,7 +9,7 @@ fv-content
     doc-description
       | You can also install these, just if you want active touch actions support, fvDatepicker component and icons.
     doc-code(v-pre, title=" ", lang="terminal")
-      = "npm install persian-date --save\n"
+      = "npm install idate --save\n"
       = "npm install hammerjs --save\n"
       = "npm install font-awesome --save"
     doc-description
@@ -21,9 +21,9 @@ fv-content
       = "import Framevuerk from 'framevuerk/dist/framevuerk.js'\n\n"
       = "// If you handle styles with webpack, import this. Else you can include this via <link rel=\"stylesheet\">\n"
       = "import 'framevuerk/dist/framevuerk.css'\n\n"
-      = "// PersianDate package, just if you want active more features for fvDatepicker\n"
-      = "import PersianDate from 'persian-date'\n"
-      = "Framevuerk.use('persian-date', PersianDate)\n\n"
+      = "// IDate package, just if you want support jalaali dates for fvDatepicker\n"
+      = "import IDate from 'idate'\n"
+      = "Framevuerk.use('date', IDate)\n\n"
       = "// Hammer package, just if you want active touch actions support\n"
       = "import Hammer from 'hammerjs'\n"
       = "Framevuerk.use('hammer', Hammer)\n\n"

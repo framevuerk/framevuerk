@@ -11,12 +11,12 @@ fv-content
       br
       | Note that before using this, you can add
       =" "
-      a.fv-link(href="https://github.com/babakhani/PersianDate", target="_blank") PersianDate
-      |  as dependency of framevuerk to active more features.
+      a.fv-link(href="https://github.com/nainemom/idate", target="_blank") IDate
+      |  as dependency of framevuerk to support jalaali dates.
     doc-code(title="Javascript:", lang="javascript")
       = "import Framevuerk from 'framevuerk'\n"
-      = "import PersianDate from 'persian-date'\n"
-      = "Framevuerk.use('persian-date', PersianDate)\n"
+      = "import IDate from 'idate'\n"
+      = "Framevuerk.use('date', IDate)\n"
     doc-code
       = "<fv-datepicker></fv-datepicker>"
     doc-example
@@ -24,11 +24,8 @@ fv-content
         .fv-col-xs-12
           h4 Usage:
         .fv-col-sm-6.fv-col-xs-12
-          p en-gregorian:
-          fv-datepicker(v-model="inputs.d1", locale="en", calendar="gregorian", placeholder="Pick your favorite date!")
-        .fv-col-sm-6.fv-col-xs-12
-          p fa-persian:
-          fv-datepicker(v-model="inputs.d2", locale="fa", calendar="persian", placeholder="Pick your birthday", :pick="['year','month','day']", display-format="YYYY/MM/D")
+          p Defaut
+          fv-datepicker(v-model="inputs.d1", placeholder="Pick your favorite date!")
         .fv-col-sm-6.fv-col-xs-12
           p Disabled:
           fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
@@ -94,24 +91,6 @@ export default {
             type: 'String',
             default: '""',
             description: 'Just like normal select placeholder attribute'
-          },
-          {
-            name: 'locale',
-            type: 'String',
-            default: '"en" (based on framevuerk version locale)',
-            description: 'Pick sections of datepicker. (It\'s not works without PersianDate)'
-          },
-          {
-            name: 'calendar',
-            type: 'String',
-            default: '"gregorian" (based on framevuerk version locale. you can set it to "persian" too.)',
-            description: 'Calendar version of datepicker. (It\'s not works without PersianDate)'
-          },
-          {
-            name: 'display-format',
-            type: 'String',
-            default: '"D MMMM YYYY, HH:mm"',
-            description: 'Display format of value'
           }
         ],
         event: [

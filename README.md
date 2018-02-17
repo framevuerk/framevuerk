@@ -14,7 +14,7 @@ npm install framevuerk --save
 
 You can also install these, just if you want active touch actions support, `fvDatepicker` component and icons.
 ```terminal
-npm install moment --save
+npm install idate --save
 npm install hammerjs --save
 npm install font-awesome --save
 ```
@@ -31,9 +31,9 @@ import Framevuerk from 'framevuerk/dist/framevuerk.js'
 // If you handle styles with webpack, import this. Else you can include this via <link rel="stylesheet">
 import 'framevuerk/dist/framevuerk.css'
 
-// PersianDate package, just if you want active more features for fvDatepicker
-import PersianDate from 'persian-date'
-Framevuerk.use('persian-date', PersianDate)
+// IDate package, just if you want support jalaali dates for fvDatepicker
+import IDate from 'idate'
+Framevuerk.use('idate', IDate)
 
 // Hammer package, just if you want active touch actions support
 import Hammer from 'hammerjs'
