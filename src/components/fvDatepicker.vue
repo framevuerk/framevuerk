@@ -98,7 +98,10 @@ export default {
       return this.$refs.inputEl.fvValidate || false
     },
     displayValue () {
-      return this.displayFormat(this.value ? this.value : '')
+      if (this.value) {
+        return this.displayFormat(this.value)
+      }
+      return undefined
     },
     icons () {
       return {
