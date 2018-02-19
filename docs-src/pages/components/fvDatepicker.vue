@@ -27,6 +27,9 @@ fv-content
           p Defaut
           fv-datepicker(v-model="inputs.d1", placeholder="Pick your favorite date!")
         .fv-col-sm-6.fv-col-xs-12
+          p Custom Formatted
+          fv-datepicker(v-model="inputs.d2", placeholder="Pick your favorite date!", :display-format="v => v.getFullYear()")
+        .fv-col-sm-6.fv-col-xs-12
           p Disabled:
           fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
     doc-api(:rows="api")
@@ -91,6 +94,12 @@ export default {
             type: 'String',
             default: '""',
             description: 'Just like normal select placeholder attribute'
+          },
+          {
+            name: 'display-format',
+            type: 'Function',
+            default: 'v => v.toString()',
+            description: 'A function to return custom formated value in input.'
           }
         ],
         event: [
