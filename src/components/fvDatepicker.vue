@@ -75,7 +75,11 @@ export default {
     placeholder: {
       type: String,
       default: ''
-    }
+    },
+    displayFormat: {
+      type: Function,
+      default: v => v.toString()
+    },
   },
   data () {
     return {
@@ -94,10 +98,7 @@ export default {
       return this.$refs.inputEl.fvValidate || false
     },
     displayValue () {
-      if (this.value) {
-        return this.value.toString()
-      }
-      return undefined
+      return this.displayFormat(this.value ? this.value : '')
     },
     icons () {
       return {
