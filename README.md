@@ -1,8 +1,10 @@
-# Framevuerk
-
-> Awesome fully responsive Vue.js framevuerk!
-
-Framevuerk is designed to be a lightweight and both rtl and ltr support and multi-language [Vue.js](http://vuejs.org) UI framework with a simple API.
+<div align="center">
+  <a href="http://framevuerk.com" target="_blank"> <img src="http://framevuerk.com/logo.svg" height="200"/> </a>
+  <h1><b> Framevuerk </b></h1>
+  <p><b>Responsive</b>, <b>Multi Language</b>, <b>Both Direction Support</b> and <b>Configurable</b> UI Framework based on <a href="http://vuejs.org" target="_blank">Vue.js</a>.</p>
+  <img src="https://img.shields.io/github/stars/framevuerk/framevuerk.svg?style=for-the-badge" /> <img src="https://img.shields.io/github/issues/framevuerk/framevuerk.svg?style=for-the-badge" /> <img src="https://img.shields.io/github/forks/framevuerk/framevuerk.svg?style=for-the-badge" /> <img src="https://img.shields.io/npm/dm/framevuerk.svg?style=for-the-badge"> <img src="https://img.shields.io/npm/v/framevuerk.svg?style=for-the-badge">
+  <br>
+</div>
 
 ## Setup
 First at all, you should install `Framevuerk` and of course `Vue` from terminal.
@@ -12,7 +14,7 @@ npm install vue --save
 npm install framevuerk --save
 ```
 
-You can also install these, just if you want active touch actions support, `fvDatepicker` component and icons.
+You can also install these, just if you want active touch actions support, `fvDatepicker` jalaali dates supoort and icons.
 ```terminal
 npm install idate --save
 npm install hammerjs --save
@@ -33,7 +35,7 @@ import 'framevuerk/dist/framevuerk.css'
 
 // IDate package, just if you want support jalaali dates for fvDatepicker
 import IDate from 'idate'
-Framevuerk.use('idate', IDate)
+Framevuerk.use('date', IDate)
 
 // Hammer package, just if you want active touch actions support
 import Hammer from 'hammerjs'
@@ -41,7 +43,7 @@ Framevuerk.use('hammer', Hammer)
 
 // Font-Awesome icons, just if you want active icons
 // If you handle styles with webpack, import this. Else you can include this via <link rel="stylesheet">
-import 'font-awesome/css/font-awesome.css' //if you handled with webpack, else you can include this via <link rel="stylesheet">
+import 'font-awesome/css/font-awesome.css'
 
 // Active Framevuerk...
 Vue.use(Framevuerk)
@@ -120,6 +122,3 @@ framevuerk build lib
     
 You are now config your app to use `Framevuerk`! Let's go to use our components:
 [Full Documention and Demo](http://framevuerk.com)
-
-
-`Please do not use this before 1.x.x version for production! It is still under development!`
