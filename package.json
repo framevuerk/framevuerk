@@ -1,7 +1,7 @@
 {
   "name": "framevuerk",
   "version": "1.0.0",
-  "description": "Awesome fully responsive Vue.js framevuerk!",
+  "description": "Responsive, Multi Language, Both Direction Support and Configurable UI Framework based on Vue.js.",
   "main": "dist/framevuerk-default.js",
   "scripts": {
     "lint:js": "eslint ./ --ext .js,.vue",
