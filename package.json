@@ -94,7 +94,7 @@
     "node": ">= 4.x"
   },
   "author": "nainemom <nainemom@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/framevuerk/framevuerk/issues"
   },
