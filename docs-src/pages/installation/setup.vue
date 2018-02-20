@@ -7,7 +7,7 @@ fv-content
       = "npm install vue --save\n"
       = "npm install framevuerk --save"
     doc-description
-      | You can also install these, just if you want active touch actions support, fvDatepicker component and icons.
+      | You can also install these, just if you want active touch actions support, `fvDatepicker` jalaali dates supoort and icons.
     doc-code(v-pre, title=" ", lang="terminal")
       = "npm install idate --save\n"
       = "npm install hammerjs --save\n"
@@ -29,7 +29,7 @@ fv-content
       = "Framevuerk.use('hammer', Hammer)\n\n"
       = "// Font-Awesome icons, just if you want active icons\n"
       = "// If you handle styles with webpack, import this. Else you can include this via <link rel=\"stylesheet\">\n"
-      = "import 'font-awesome/css/font-awesome.css' //if you handled with webpack, else you can include this via <link rel=\"stylesheet\">\n\n"
+      = "import 'font-awesome/css/font-awesome.css'\n\n"
       = "// Active Framevuerk...\n"
       = "Vue.use(Framevuerk)\n\n"
       = "// Initializing app\n"
