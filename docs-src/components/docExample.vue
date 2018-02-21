@@ -4,7 +4,7 @@ span(v-show="$slots.default")
     h3.fv-no-padding.fv-col.fv-text-left Example(s):
     =" "
     a.fv-no-padding.fv-col.fv-text-right.fv-link(v-if="$slots.default",
-      :href="$root.githubRepo + '/tree/master/docs-src/pages/component_' + $route.name",
+      :href="$root.githubRepo + '/tree/master/docs-src/pages/components/' + $route.name + '.vue'",
       target="_blank",
       :title="$route.name + ' source code on GitHub'") View Source
   .doc-example(v-if="$slots.default")

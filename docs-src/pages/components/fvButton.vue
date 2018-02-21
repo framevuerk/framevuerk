@@ -22,7 +22,6 @@ fv-content
         .fv-col-sm-4
           fv-button.fv-info.fv-block(icon="fa fa-check") Info
       .fv-row
-        hr
         .fv-col-xs-12
           h4 Sizes:
         .fv-col-sm-4
@@ -47,8 +46,6 @@ fv-content
         .fv-col-sm-6
           p Loading
           fv-button.fv-block(loading, icon="fa fa-check")
-        .fv-row
-          hr
     doc-api(:rows="api")
 </template>
 
