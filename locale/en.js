@@ -20,30 +20,6 @@ module.exports = {
   search () {
     return 'Search...'
   },
-  dateDisplayFormat () {
-    return 'D MMMM YYYY, HH:mm'
-  },
-  second () {
-    return 'Second'
-  },
-  minute () {
-    return 'Minute'
-  },
-  hour () {
-    return 'Hour'
-  },
-  day () {
-    return 'Day'
-  },
-  week () {
-    return 'Week'
-  },
-  month () {
-    return 'Month'
-  },
-  year () {
-    return 'Year'
-  },
   browse () {
     return 'Browse...'
   },

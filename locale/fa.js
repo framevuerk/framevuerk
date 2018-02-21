@@ -20,30 +20,6 @@ module.exports = {
   search () {
     return 'جست‌وجو کنید...'
   },
-  dateDisplayFormat () {
-    return 'D MMMM YYYY ساعت HH:mm'
-  },
-  second () {
-    return 'ثانیه'
-  },
-  minute () {
-    return 'دقیقه'
-  },
-  hour () {
-    return 'ساعت'
-  },
-  day () {
-    return 'روز'
-  },
-  week () {
-    return 'هفته'
-  },
-  month () {
-    return 'ماه'
-  },
-  year () {
-    return 'سال'
-  },
   browse () {
     return 'انتخاب کنید...'
   },
