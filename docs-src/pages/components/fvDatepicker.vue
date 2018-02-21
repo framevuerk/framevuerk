@@ -28,7 +28,7 @@ fv-content
           fv-datepicker(v-model="inputs.d1", placeholder="Pick your favorite date!")
         .fv-col-sm-6.fv-col-xs-12
           p Custom Formatted
-          fv-datepicker(v-model="inputs.d2", placeholder="Pick your favorite date!", :display-format="v => v.getFullYear()")
+          fv-datepicker(v-model="inputs.d2", placeholder="Pick your favorite date!", :display-format="v => v.getDate() + ' - ' + v.getMonth()")
         .fv-col-sm-6.fv-col-xs-12
           p Disabled:
           fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
