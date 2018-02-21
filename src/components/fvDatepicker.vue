@@ -40,7 +40,6 @@ span
 
 <script>
 import utility from '../utility'
-import locale from 'locale'
 import fvMain from './fvMain.vue'
 import fvContent from './fvContent.vue'
 import fvDialog from './fvDialog.vue'
@@ -79,7 +78,7 @@ export default {
     displayFormat: {
       type: Function,
       default: v => v.toString()
-    },
+    }
   },
   data () {
     return {
@@ -258,6 +257,10 @@ export default {
     &:focus {
       color: $primary-color;
     }
+
+    & .header-buttons {
+      overflow: visible;
+    }
   }
 
   & .content {
@@ -267,30 +270,16 @@ export default {
 
     & table {
       width: 100%;
-    }
 
-    & td,
-    & th {
-      width: 14.2%;
-      height: 40px;
-      vertical-align: middle;
-      border-radius: $border-radius;
-    }
+      & td {
+        width: 14.2%;
+        height: 40px;
+        vertical-align: middle;
+        border-radius: $border-radius;
+        cursor: pointer;
 
-    & td {
-      cursor: pointer;
-
-      &[disabled] {
-        @include disabled;
-      }
-
-      &:not([disabled]) {
-        &:hover {
-          background: yiq($bg-color, 3%);
-        }
-
-        &:active {
-          background: yiq($bg-color, 5%);
+        &[disabled] {
+          @include disabled;
         }
 
         &.selected {
@@ -304,28 +293,34 @@ export default {
             background: yiq($primary-color, 5%);
           }
         }
+
+        &:hover {
+          background: yiq($bg-color, 3%);
+        }
+
+        &:active {
+          background: yiq($bg-color, 5%);
+        }
       }
     }
 
     &:focus {
-      & th {
-        color: $primary-color;
-      }
+      & table {
+        & th {
+          color: $primary-color;
+        }
 
-      & td {
-        &.highlighted {
-          background: yiq($bg-color, 3%);
+        & td {
+          &.highlighted {
+            background: yiq($bg-color, 3%);
 
-          &.selected {
-            background: yiq($primary-color, 3%);
+            &.selected {
+              background: yiq($primary-color, 3%);
+            }
           }
         }
       }
     }
-  }
-
-  & .header-buttons {
-    overflow: visible;
   }
 }
 </style>
