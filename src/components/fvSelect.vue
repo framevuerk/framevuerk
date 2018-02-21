@@ -223,17 +223,24 @@ export default {
     },
     addOption (value, select = true) {
       const options = JSON.parse(JSON.stringify(this.options))
-      let option = this.valueKey ? {} : ''
-      if (this.valueKey) {
-        option[this.valueKey] = value
+      const founded = options.findIndex(option => this.valueKey ? option[this.valueKey] === value : option === value)
+      let option
+      if (founded === -1) {
+        option = this.valueKey ? {} : ''
+        if (this.valueKey) {
+          option[this.valueKey] = value
+        } else {
+          option = value
+        }
+        if (this.textKey) {
+          option[this.textKey] = value
+        }
+        options.unshift(option)
+        this.$emit('update:options', options)
       } else {
-        option = value
+        option = options[founded]
       }
-      if (this.textKey) {
-        option[this.textKey] = value
-      }
-      options.unshift(option)
-      this.$emit('update:options', options)
+
       if (select) {
         this.clickOption(option)
       }
