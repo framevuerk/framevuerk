@@ -61,6 +61,9 @@ export default {
         }
       } while (allItems[shouldHighlightIndex].__vue__.disabled)
       this.highlighted = allItems[shouldHighlightIndex]
+      if (typeof this.highlighted.scrollIntoViewIfNeeded === 'function') {
+        this.highlighted.scrollIntoViewIfNeeded()
+      }
     },
     onKeydown (event) {
       switch (event.which) {
@@ -108,6 +111,12 @@ export default {
 
   & .fv-list-item:not(:last-child) {
     border-bottom: solid 1px $shadow-color-light;
+  }
+
+  &:hover {
+    & .fv-list-item.highlighted > .content:not(:hover) {
+      background: inherit;
+    }
   }
 }
 </style>
