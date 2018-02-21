@@ -223,7 +223,7 @@ export default {
     },
     addOption (value, select = true) {
       const options = JSON.parse(JSON.stringify(this.options))
-      const founded = options.findIndex(option => this.valueKey ? option[this.valueKey] === value : option === value)
+      const founded = options.findIndex(option => this.optionProp(option, 'value') === value)
       let option
       if (founded === -1) {
         option = this.valueKey ? {} : ''
