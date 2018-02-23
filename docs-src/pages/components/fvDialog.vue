@@ -14,7 +14,7 @@ fv-content
           fv-button.fv-ok.fv-xl(:style="{borderRadius: '100px', width: '100px', height: '100px'}", @click.native="$refs.d2.close()") OK
       fv-dialog(ref="d3")
         fv-content
-          .fv-pull-left Hi My name is beem beem beem
+          .fv-pull-left Hi, My name is Beem
           .fv-pull-right
             fv-button.fv-xs(@click="$refs.d3.close()", icon="fa fa-check") OK
       fv-content.fv-row

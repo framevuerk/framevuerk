@@ -8,7 +8,7 @@ span(v-show="$slots.default")
       target="_blank",
       :title="$route.name + ' source code on GitHub'") View Source
   .doc-example(v-if="$slots.default")
-    fv-main(:parent="false")
+    fv-main(:parent="true")
       slot
   div(v-else)
     p.fv-text-center Not Available
