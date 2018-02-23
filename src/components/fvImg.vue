@@ -39,10 +39,7 @@ export default {
   },
   computed: {
     images () {
-      if (typeof this.src === 'string') {
-        return [this.src]
-      }
-      return this.src
+      return typeof this.src === 'string' ? [this.src] : this.src
     }
   }
 }
