@@ -135,7 +135,7 @@ export default {
     return {
       locale: locale,
       searchQuery: '',
-      firstFocusOn: !utility.isSmallViewport(),
+      firstFocusOn: false,
       dialogPosition: {}
     }
   },
@@ -281,6 +281,9 @@ export default {
         return false
       }
     }
+  },
+  mounted () {
+    this.firstFocusOn = !utility.isSmallViewport()
   }
 }
 </script>
