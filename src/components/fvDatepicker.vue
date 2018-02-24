@@ -304,7 +304,7 @@ export default {
       }
     }
 
-    &:focus {
+    &:focus:not(:hover) {
       & table {
         & th {
           color: $primary-color;
