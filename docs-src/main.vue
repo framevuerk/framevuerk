@@ -29,14 +29,18 @@ fv-main#app
               :key="subItem.text",
               :selected="$route.name === subItem.text",
               expanded)
-              router-link.fv-padding.fv-block(:to="subItem.route || ''") {{subItem.text}}
+              router-link.fv-padding.fv-block(:to="subItem.route || ''")
+                i(:class="subItem.icon")
+                |  {{subItem.text}}
               fv-list(v-if="subItem.items",
                 slot="sub-list",
                 expanded)
                 fv-list-item(v-for="subItemItem in subItem.items",
                   :key="subItemItem.text",
                   :selected="$route.name === subItemItem.text")
-                  router-link.fv-padding.fv-block(:to="subItemItem.route || ''") {{subItemItem.text}}
+                  router-link.fv-padding.fv-block(:to="subItemItem.route || ''")
+                    i(:class="subItemItem.icon")
+                    |  {{subItemItem.text}}
 </template>
 
 <script>
@@ -52,8 +56,8 @@ export default {
         {
           text: 'Installation',
           items: [
-            this.sidebarItem('Setup', '/installation=setup'),
-            this.sidebarItem('Customize', '/installation=customize')
+            this.sidebarItem('Setup', '/installation=setup', 'fa fa-cog'),
+            this.sidebarItem('Customize', '/installation=customize', 'fa fa-cog')
           ]
         },
         {
@@ -67,35 +71,35 @@ export default {
                 this.sidebarItem('fvContent'),
                 this.sidebarItem('fvFooter'),
                 this.sidebarItem('fvSidebar'),
-                this.sidebarItem('fvList-fvListItem', '/components=fvList-fvListItem')
+                this.sidebarItem('fvList-fvListItem', '/components=fvList-fvListItem', 'fa fa-list-ol')
               ]
             },
             {
               text: 'Dialog',
               items: [
-                this.sidebarItem('fvDialog'),
-                this.sidebarItem('fvMenu')
+                this.sidebarItem('fvDialog', null, 'fa fa-window-maximize'),
+                this.sidebarItem('fvMenu', null, 'fa fa-ellipsis-h')
               ]
             }, {
               text: 'Form',
               items: [
                 this.sidebarItem('fvButton'),
-                this.sidebarItem('fvInput'),
-                this.sidebarItem('fvTextarea'),
-                this.sidebarItem('fvSelect'),
-                this.sidebarItem('fvDatepicker'),
-                this.sidebarItem('fvSwitch'),
-                this.sidebarItem('fvCheck'),
-                this.sidebarItem('fvFilepicker'),
-                this.sidebarItem('fvForm')
+                this.sidebarItem('fvInput', null, 'fa fa-keyboard-o'),
+                this.sidebarItem('fvTextarea', null, 'fa fa-keyboard-o'),
+                this.sidebarItem('fvSelect', null, 'fa fa-bars'),
+                this.sidebarItem('fvDatepicker', null, 'fa fa-calendar-o'),
+                this.sidebarItem('fvSwitch', null, 'fa fa-toggle-on'),
+                this.sidebarItem('fvCheck', null, 'fa fa-check-circle'),
+                this.sidebarItem('fvFilepicker', null, 'fa fa-file'),
+                this.sidebarItem('fvForm', null, 'fa fa-wpforms')
               ]
             }, {
               text: 'Other',
               items: [
-                this.sidebarItem('fvTable'),
+                this.sidebarItem('fvTable', null, 'fa fa-th-large'),
                 this.sidebarItem('fvSlider'),
-                this.sidebarItem('fvImg'),
-                this.sidebarItem('fvToast')
+                this.sidebarItem('fvImg', null, 'fa fa-image'),
+                this.sidebarItem('fvToast', null, 'fa fa-info')
               ]
             }
           ]
@@ -120,10 +124,11 @@ export default {
         this.$router.push(item.route)
       }
     },
-    sidebarItem (name, route) {
+    sidebarItem (name, route, icon) {
       return {
         text: name,
-        route: route || `/components=${name}`
+        route: route || `/components=${name}`,
+        icon: icon || 'fa fa-cube'
       }
     },
     routeChange () {
