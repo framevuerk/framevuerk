@@ -32,6 +32,14 @@ fv-content
         .fv-col-sm-6.fv-col-xs-12
           p Disabled:
           fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
+        .fv-col-12
+          br
+        .fv-col-12
+          br
+        .fv-col-12
+          br
+        .fv-col-12
+          br
     doc-api(:rows="api")
 </template>
 
