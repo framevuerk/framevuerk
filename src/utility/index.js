@@ -39,6 +39,12 @@ module.exports = {
       ret.top += eli.offsetTop
       eli = eli.offsetParent
     }
+    eli = el
+    while (eli && eli !== parent) {
+      ret.left -= eli.scrollLeft
+      ret.top -= eli.scrollTop
+      eli = eli.parentElement
+    }
     return ret
   },
   _dependencies: {}

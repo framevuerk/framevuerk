@@ -183,13 +183,7 @@ export default {
       } else {
         this.setValue(this.multiple ? [] : undefined)
       }
-      const main = utility.fvParent(this, 'fv-main')
-      const offset = utility.offsetTo(this.$refs.inputEl.$el, main.$el)
-      let content = utility.fvParent(this, 'fv-content')
-      while (content) {
-        offset.top -= content.$el.scrollTop
-        content = utility.fvParent(content, 'fv-content')
-      }
+      const offset = utility.offsetTo(this.$el, utility.fvParent(this, 'fv-main').$el)
       this.dialogPosition = {
         left: `${offset.left}px`,
         top: `${offset.top}px`,
