@@ -283,7 +283,7 @@ export default {
           }
 
           &:active {
-            background: yiq($primary-color, 5%);
+            background: yiq($primary-color, 10%);
           }
         }
 
@@ -292,7 +292,7 @@ export default {
         }
 
         &:active {
-          background: yiq($bg-color, 5%);
+          background: yiq($bg-color, 10%);
         }
       }
     }

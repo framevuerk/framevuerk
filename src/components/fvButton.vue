@@ -61,7 +61,7 @@ export default {
   }
 
   &:active {
-    background: yiq($bgcolor, 5%);
+    background: yiq($bgcolor, 10%);
   }
 
   &:focus {

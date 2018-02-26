@@ -139,7 +139,7 @@ export default {
   }
 
   & > .content:active {
-    background: yiq($bg-color, 5%);
+    background: yiq($bg-color, 10%);
   }
 
   &.selected {
@@ -151,7 +151,7 @@ export default {
     }
 
     & > .content:active {
-      background: yiq($primary-color, 5%);
+      background: yiq($primary-color, 10%);
     }
   }
 
