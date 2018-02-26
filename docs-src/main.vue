@@ -1,12 +1,12 @@
 <template lang="pug">
 fv-main#app
   fv-header
-    fv-button(@click="$refs.sidebar.toggle()", icon="fa fa-bars")
-    .space
+    fv-button(@click="$refs.sidebar.toggle()", icon="fa fa-bars", v-show="isSidebarPinned !== false")
+    .space(v-show="isSidebarPinned !== false")
     .title
       h2.fv-no-wrap {{$route.name}}
     .space
-    a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('-') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name",
+    a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('-') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name + '.vue'",
       target="_blank") View Source
   fv-content
     router-view.fv-row
@@ -30,7 +30,7 @@ fv-main#app
               :selected="$route.name === subItem.text",
               expanded)
               router-link.fv-padding.fv-block(:to="subItem.route || ''")
-                i(:class="subItem.icon")
+                i.p-icon(:class="subItem.icon")
                 |  {{subItem.text}}
               fv-list(v-if="subItem.items",
                 slot="sub-list",
@@ -39,7 +39,7 @@ fv-main#app
                   :key="subItemItem.text",
                   :selected="$route.name === subItemItem.text")
                   router-link.fv-padding.fv-block(:to="subItemItem.route || ''")
-                    i(:class="subItemItem.icon")
+                    i.p-icon(:class="subItemItem.icon")
                     |  {{subItemItem.text}}
 </template>
 
@@ -56,8 +56,8 @@ export default {
         {
           text: 'Installation',
           items: [
-            this.sidebarItem('Setup', '/installation=setup', 'fa fa-cog'),
-            this.sidebarItem('Customize', '/installation=customize', 'fa fa-cog')
+            this.sidebarItem('Setup', '/installation=setup', 'fa fa-cogs'),
+            this.sidebarItem('Customize', '/installation=customize', 'fa fa-cogs')
           ]
         },
         {
@@ -172,6 +172,20 @@ body .sidebar {
     & .fv-list-item a:visited,
     & .fv-list-item a:hover {
       color: inherit;
+    }
+  }
+
+  & .fv-list-item {
+    & .p-icon {
+      color: rgba(0, 0, 0, 0.7);
+      font-size: 1.4em;
+      min-width: 1.4em;
+    }
+
+    &.selected {
+      & .p-icon {
+        color: white;
+      }
     }
   }
 }
