@@ -103,6 +103,7 @@ export default {
   & .text,
   & .icon {
     @include nowrap;
+
     vertical-align: middle;
   }
 
