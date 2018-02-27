@@ -19,7 +19,6 @@ export default {
 @import '../styles/mixins';
 
 .fv-header {
-  @include yiq($bg-color-dark);
   @include shadow(bottom);
 
   align-items: center;
