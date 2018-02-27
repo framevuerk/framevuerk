@@ -10,7 +10,7 @@ span
       ref="dialog",
       @keydown.native="onKeydown($event); $emit('keydown', $event)",
       @click.native="$emit('click', $event)")
-      fv-header(height="40px",
+      fv-header(height="3em",
         v-if="title.length > 0")
         .title
           label.fv-control-label(v-html="title")
