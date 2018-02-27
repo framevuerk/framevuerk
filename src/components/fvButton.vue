@@ -1,11 +1,12 @@
 <template lang="pug">
 button.fv-button(:class="{'loading': loading}", @click="onClick", :disabled="disabled || loading")
-  i(:class="icon", v-if="icon && !loading")
+  i.icon(:class="icon", v-if="icon && !loading")
   =" "
-  slot(v-if="typeof text === 'undefined' && !loading")
-  span(v-else-if="!loading",
+  span.text(v-if="typeof text === 'undefined' && !loading")
+    slot
+  span.text(v-else-if="!loading",
     v-html="text")
-  i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation(v-else)
+  i.icon.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation(v-else)
 </template>
 
 <script>
@@ -41,52 +42,42 @@ export default {
 @import '../styles/functions';
 @import '../styles/mixins';
 
-@mixin button($bgcolor, $color: false) {
-  $bgcolor-light: lighten($bgcolor, $highlight-percent-light);
-  $bgcolor-dark: darken($bgcolor, $shadow-percent);
+@mixin button($color, $outline: false, $active-color: false) {
+  $outline-color: if($outline, $outline, $color);
+  $active-color: if($active-color, $active-color, $outline-color);
 
-  background: $bgcolor;
-  border: 1px solid $bgcolor-dark;
-
-  @if $color == false {
-    color: yiq($bgcolor);
-  }
-
-  @else {
-    color: $color;
-  }
-
-  &:hover {
-    background: yiq($bgcolor, 3%);
-  }
-
-  &:active {
-    background: yiq($bgcolor, 10%);
-  }
+  background-color: $bg-color;
+  color: $color;
+  border: 1px solid darken($bg-color-light, $shadow-percent);
 
   &:focus {
     &:not(.text-focus) {
-      @include respond-to(md) {
-        @if $bg-color == $bgcolor {
-          @include outline;
-        }
+      @if $bg-color == $color {
+        @include outline;
+      }
 
-        @else {
-          @include outline($bgcolor);
-        }
+      @else {
+        @include outline($outline-color);
       }
     }
 
     &.text-focus {
-      @include respond-to(md) {
-        @include textoutline;
-      }
+      @include textoutline;
     }
 
     &:invalid,
     &[invalid] {
       @include outline($danger-color);
     }
+  }
+
+  &:hover:not(:invalid):not([invalid]):not([disabled]) {
+    background-color: yiq($bg-color, 2%);
+  }
+
+  &:active:not(:invalid):not([invalid]):not([disabled]) {
+    background-color: $active-color;
+    color: yiq($active-color);
   }
 
   &[disabled] {
@@ -105,22 +96,23 @@ export default {
   max-width: 100%;
   text-align: center;
   padding: 0 $padding;
+  transition-duration: $transition-speed-fast;
+  transition-property: background-color, color;
 
   &,
-  & span {
+  & .text,
+  & .icon {
     @include nowrap;
+    vertical-align: middle;
   }
 
   &,
   &.fv-default {
-    @include button($bg-color);
+    @include button(yiq($bg-color), $primary-color, yiq($bg-color, 10%));
   }
 
+  &.fv-primary,
   &.fv-ok {
-    @include button($bg-color, $primary-color);
-  }
-
-  &.fv-primary {
     @include button($primary-color);
   }
 
