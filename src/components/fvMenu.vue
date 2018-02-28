@@ -57,9 +57,9 @@ export default {
     }
   },
   methods: {
-    open (clickEvent = null, userArgument = null) {
+    open (event = null, userArgument = null) {
       this.userArgument = userArgument
-      const offset = utility.offsetTo(clickEvent.target, utility.fvParent(this, 'fv-main').$el)
+      const offset = utility.offsetTo(event.target, utility.fvParent(this, 'fv-main').$el)
       this.dialogPosition = {
         left: `${offset.left}px`,
         top: `${offset.top}px`
