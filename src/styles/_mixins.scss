@@ -196,34 +196,34 @@
 
 @mixin shadow($to: bottom) {
   @if $to == bottom {
-    box-shadow: 0 #{$shadow-size} 2px $shadow-color-light;
+    box-shadow: 0 #{$shadow-size} $shadow-size $shadow-color-light;
   }
 
   @else if $to == inset-bottom {
-    box-shadow: inset 0 #{$shadow-size} 2px $shadow-color-light;
+    box-shadow: inset 0 #{$shadow-size} $shadow-size $shadow-color-light;
   }
 
   @else if $to == top {
-    box-shadow: 0 #{-1 * $shadow-size} 2px $shadow-color-light;
+    box-shadow: 0 #{-1 * $shadow-size} $shadow-size $shadow-color-light;
   }
 
   @else if $to == inset-top {
-    box-shadow: inset 0 #{-1 * $shadow-size} 2px $shadow-color-light;
+    box-shadow: inset 0 #{-1 * $shadow-size} $shadow-size $shadow-color-light;
   }
 
   @else if $to == right {
-    box-shadow: #{$shadow-size} 0 2px $shadow-color-light;
+    box-shadow: #{$shadow-size} 0 $shadow-size $shadow-color-light;
   }
 
   @else if $to == inset-right {
-    box-shadow: inset #{$shadow-size} 0 2px $shadow-color-light;
+    box-shadow: inset #{$shadow-size} 0 $shadow-size $shadow-color-light;
   }
 
   @else if $to == left {
-    box-shadow: #{-1 * $shadow-size} 0 2px $shadow-color-light;
+    box-shadow: #{-1 * $shadow-size} 0 $shadow-size $shadow-color-light;
   }
 
   @else if $to == inset-left {
-    box-shadow: inset #{-1 * $shadow-size} 0 2px $shadow-color-light;
+    box-shadow: inset #{-1 * $shadow-size} 0 $shadow-size $shadow-color-light;
   }
 }
