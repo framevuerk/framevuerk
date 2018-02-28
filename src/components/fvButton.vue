@@ -2,10 +2,9 @@
 button.fv-button(:class="{'loading': loading}", @click="onClick", :disabled="disabled || loading")
   i.icon(:class="icon", v-if="icon && !loading")
   =" "
-  span.text(v-if="typeof text === 'undefined' && !loading")
+  span.text(v-if="!loading")
+    | {{text}}
     slot
-  span.text(v-else-if="!loading",
-    v-html="text")
   i.icon.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation(v-else)
 </template>
 
@@ -28,9 +27,9 @@ export default {
     }
   },
   methods: {
-    onClick (e) {
+    onClick (event) {
       if (!this.loading && !this.disabled) {
-        this.$emit('click', e)
+        this.$emit('click', event)
       }
     }
   }
@@ -49,6 +48,10 @@ export default {
   background-color: $bg-color;
   color: $color;
   border: 1px solid darken($bg-color-light, $shadow-percent);
+
+  &:hover {
+    background-color: yiq($bg-color, 2%);
+  }
 
   &:focus {
     &:not(.text-focus) {
@@ -71,11 +74,7 @@ export default {
     }
   }
 
-  &:hover:not(:invalid):not([invalid]):not([disabled]) {
-    background-color: yiq($bg-color, 2%);
-  }
-
-  &:active:not(:invalid):not([invalid]):not([disabled]) {
+  &:active:not([disabled]) {
     background-color: $active-color;
     color: yiq($active-color);
   }
@@ -95,6 +94,7 @@ export default {
   font-family: inherit;
   max-width: 100%;
   text-align: center;
+  font-weight: bold;
   padding: 0 $padding;
   transition-duration: $transition-speed-fast;
   transition-property: background-color, color;
