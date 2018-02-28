@@ -28,8 +28,10 @@ fv-content
         .fv-col-sm-12
           label.fv-control-label Textarea
           fv-textarea.fv-form-control(v-model="inputs.d6", auto-height, placeholder="Enter your message...", required)
+        .fv-col-xs-12
+          hr.fv-hr
         .fv-col-sm-12
-          fv-button.fv-block(type="submit") Submit!
+          fv-button.fv-pull-end.fv-primary(type="submit") Submit!
     doc-api(:rows="api")
 </template>
 
