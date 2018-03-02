@@ -71,23 +71,12 @@ html > body {
 .fv-link {
   &,
   &:hover,
-  &.hover,
   &:active,
-  &.active,
   &:focus,
-  &.focus,
-  &:visited,
-  &.visited {
+  &:visited {
     color: $primary-color-light;
     cursor: pointer;
     text-decoration: none;
-  }
-
-  &:focus,
-  &.focus {
-    @include respond-to(md) {
-      @include outline;
-    }
   }
 }
 
