@@ -3,7 +3,7 @@
 
 @mixin outline($color: $primary-color) {
   z-index: 2;
-  box-shadow: 0 0 0 1px $color;
+  box-shadow: 0 #{$shadow-size} $shadow-size $shadow-color-light, 0 0 #{$shadow-size / 2} 1px $color;
   border-color: transparent;
   outline: none;
 }
