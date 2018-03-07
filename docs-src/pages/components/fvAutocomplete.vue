@@ -14,10 +14,10 @@ fv-content
           p Single (Autocomplete)
           fv-autocomplete(v-model="inputs.d2", placeholder="Single your city", :suggestions="['tehran', 'rasht', 'qazvin']", :multiple="false")
         .fv-col-12
-          p Custom usage
+          p Custom usage (use API to fetch suggestions)
           fv-autocomplete(v-model="inputs.d3", placeholder="Select you favorite team", :suggestions="d3sugs", :allow-insert="false", :loading="d3loading", :search="null", @search="d3search")
         .fv-col-12
-          p Disabled (use API to fetch suggestions)
+          p Disabled
           fv-autocomplete(v-model="inputs.d4", disabled, placeholder="Tags", :suggestions="['amir', 'hasan', 'javascript']", multiple, :search="null", @search="d3search")
       br
       br
