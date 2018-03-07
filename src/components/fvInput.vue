@@ -60,7 +60,7 @@ export default {
   computed: {
     fvValidate () {
       if (this.required === true) {
-        if (!this.value || (this.value.constructor === Array && this.value.length === 0)) {
+        if (!this.value || (this.value instanceof Array && this.value.length === 0)) {
           return false
         } else {
           return true
@@ -100,7 +100,8 @@ export default {
   justify-content: space-between;
   padding: 0 $padding-small;
 
-  &:focus {
+  &:focus,
+  &[focus] {
     @include outline;
 
     &:invalid,
@@ -128,15 +129,17 @@ export default {
     cursor: pointer;
 
     & > .fv-input-select-item {
-      @include nowrap;
-
       & > span {
-        &:not(:last-child)::after {
-          color: $gray-color-dark;
-          content: ',';
-          display: inline-block;
-          padding-#{$block-end}: 0.3em;
-          padding-#{$block-start}: 0.1em;
+        float: left;
+        margin: $padding / 2;
+        margin-#{$block-start}: 0;
+        background: $bg-color-dark;
+        padding: 0 #{$padding / 2};
+        border-radius: $border-radius;
+
+        &.transparent {
+          background: transparent;
+          padding: 0;
         }
       }
     }
