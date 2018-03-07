@@ -23,12 +23,12 @@ span
       fv-input.fv-grow(:placeholder="placeholder || locale.search()",
         v-model="searchQuery",
         @input="$emit('search', searchQuery)",
-        @keydown.native="$refs.list.onKeydown($event);",
+        @keydown.native="$refs.list.onKeydown($event)",
         ref="input")
     fv-content.fv-no-padding
-      .fv-text-center.fv-padding(v-show="loading")
+      .fv-text-center.fv-padding(v-if="loading")
         i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation
-      fv-list.fv-no-border(v-show="!loading",
+      fv-list.fv-no-border(v-else,
         :tabindex="-1",
         parent,
         ref="list")
@@ -44,7 +44,7 @@ span
           @click="addOption(searchQuery)")
           i.fa.fa-plus
           =" "
-          span {{locale.add(searchQuery)}}
+          | {{locale.add(searchQuery)}}
     fv-footer(v-if="multiple || allowInsert")
       .fv-grow
       fv-button.fv-ok(icon="fa fa-check",
@@ -133,7 +133,7 @@ export default {
   },
   data () {
     return {
-      locale: locale,
+      locale,
       searchQuery: '',
       firstFocusOn: false,
       dialogPosition: {}
@@ -231,6 +231,7 @@ export default {
         }
         options.unshift(option)
         this.$emit('update:options', options)
+        this.$emit('insertOption', option)
       } else {
         option = options[founded]
       }
@@ -244,7 +245,6 @@ export default {
     clickOption (option) {
       let newValue = this.value
       if (this.multiple) {
-        newValue = this.value
         if (this.isSelected(option)) {
           newValue.splice(newValue.indexOf(this.optionProp(option, 'value')), 1)
         } else {
@@ -263,6 +263,8 @@ export default {
       this.searchQuery = ''
       if (!this.multiple && !this.allowInsert) {
         this.close()
+      } else if (this.showInput) {
+        this.$refs.input.$el.focus()
       }
     },
     equalSearch (option) {
@@ -271,9 +273,8 @@ export default {
         utility.contains(this.optionProp(option, 'value'), this.searchQuery) ||
         utility.contains(this.optionProp(option, 'text'), this.searchQuery)) {
         return true
-      } else {
-        return false
       }
+      return false
     }
   },
   mounted () {
