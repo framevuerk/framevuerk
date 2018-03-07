@@ -163,7 +163,7 @@ export default {
       border-top: 0;
 
       & > .fv-list-item:first-child {
-        border-top: solid 1px $shadow-color-light;
+        border-top: solid 1px darken($bg-color-light, $shadow-percent);
       }
     }
 

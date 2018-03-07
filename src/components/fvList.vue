@@ -37,14 +37,14 @@ export default {
   methods: {
     onFocus () {
       if (!this.highlighted) {
-        this.moveHighlight()
+        this.moveHighlight(null)
       }
       this.isFocused = true
     },
     onBlur () {
       this.isFocused = false
     },
-    moveHighlight (next = true) {
+    moveHighlight (next = null) {
       const allItems = [...this.$el.querySelectorAll('.fv-list-item')].filter(el => el.offsetHeight)
       const highlightedIndex = allItems.findIndex(el => this.highlighted === el)
       let shouldHighlightIndex = highlightedIndex
@@ -54,12 +54,14 @@ export default {
           this.highlighted = null
           return
         }
-        if (next) {
+        if (next === true) {
           shouldHighlightIndex = (shouldHighlightIndex + 1) % allItems.length
-        } else {
+        } else if (next === false) {
           shouldHighlightIndex = shouldHighlightIndex - 1 < 0 ? allItems.length - 1 : shouldHighlightIndex - 1
+        } else {
+          shouldHighlightIndex = 0
         }
-      } while (allItems[shouldHighlightIndex].__vue__.disabled)
+      } while (allItems[shouldHighlightIndex].__vue__ && allItems[shouldHighlightIndex].__vue__.disabled)
       this.highlighted = allItems[shouldHighlightIndex]
       if (typeof this.highlighted.scrollIntoViewIfNeeded === 'function') {
         this.highlighted.scrollIntoViewIfNeeded()
@@ -76,13 +78,11 @@ export default {
           this.moveHighlight(true)
           break
         case process.env.direction === 'ltr' ? 37 : 39: // 37: left, 39: right,
-          event.preventDefault()
           if (this.highlighted && this.highlighted.__vue__) {
             this.highlighted.__vue__.collapse()
           }
           break
         case process.env.direction === 'ltr' ? 39 : 37: // 37: left, 39: right,
-          event.preventDefault()
           if (this.highlighted && this.highlighted.__vue__) {
             this.highlighted.__vue__.expand()
           }
@@ -94,10 +94,15 @@ export default {
           }
           break
       }
+      if ((event.which < 38 || event.which > 40) && event.which !== 13) {
+        setTimeout(() => {
+          this.moveHighlight(null)
+        })
+      }
     }
   },
   mounted () {
-    this.moveHighlight()
+    this.moveHighlight(null)
   }
 }
 </script>
@@ -106,11 +111,11 @@ export default {
 @import '../styles/variables';
 
 .fv-list {
-  border: solid 1px $shadow-color;
+  border: solid 1px darken($bg-color-light, $shadow-percent);
   clear: both;
 
   & .fv-list-item:not(:last-child) {
-    border-bottom: solid 1px $shadow-color-light;
+    border-bottom: solid 1px darken($bg-color-light, $shadow-percent);
   }
 
   &:hover {
