@@ -121,6 +121,11 @@ module.exports = function (mode) {
       component: mode === 'app' ? require('./pages/components/fvToast.vue').default : null
     },
     {
+      name: 'fvAutocomplete',
+      path: '/components=fvAutocomplete',
+      component: mode === 'app' ? require('./pages/components/fvAutocomplete.vue').default : null
+    },
+    {
       name: 'fvRow-fvCol',
       path: '/styles=fvRow-fvCol',
       component: mode === 'app' ? require('./pages/styles/fvRow-fvCol.vue').default : null

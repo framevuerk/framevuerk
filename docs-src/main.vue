@@ -91,6 +91,7 @@ export default {
                 this.sidebarItem('fvSwitch', null, 'fa fa-toggle-on'),
                 this.sidebarItem('fvCheck', null, 'fa fa-check-circle'),
                 this.sidebarItem('fvFilepicker', null, 'fa fa-file'),
+                this.sidebarItem('fvAutocomplete', null, 'fa fa-tags'),
                 this.sidebarItem('fvForm', null, 'fa fa-wpforms')
               ]
             }, {

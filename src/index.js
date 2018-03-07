@@ -23,6 +23,7 @@ import fvTextarea from './components/fvTextarea.vue'
 import fvImg from './components/fvImg.vue'
 import fvSlider from './components/fvSlider.vue'
 import fvToast from './components/fvToast.vue'
+import fvAutocomplete from './components/fvAutocomplete.vue'
 
 module.exports = {
   fvMain,
@@ -47,6 +48,7 @@ module.exports = {
   fvImg,
   fvSlider,
   fvToast,
+  fvAutocomplete,
   use (libName, lib) {
     this.dependencies[libName] = lib
   },
@@ -74,6 +76,7 @@ module.exports = {
     Vue.component('fvTextarea', fvTextarea)
     Vue.component('fvImg', fvImg)
     Vue.component('fvSlider', fvSlider)
+    Vue.component('fvAutocomplete', fvAutocomplete)
     Vue.prototype.$fvToast = new (Vue.extend(fvToast))()
     Vue.fvToast = Vue.prototype.$fvToast
     // Directives
