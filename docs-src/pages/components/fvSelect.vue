@@ -172,6 +172,11 @@ export default {
           {
             name: 'update:options',
             params: '---',
+            description: 'Fired when options are updated.'
+          },
+          {
+            name: 'insertOption (added from 1.1.0)',
+            params: '(new-option)',
             description: 'Fired when user insrted new option.'
           },
           {
