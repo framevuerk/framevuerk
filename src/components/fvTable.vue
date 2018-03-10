@@ -324,7 +324,7 @@ export default {
             this.fetch(1)
           } else {
             this.loading = false
-            this.$emit('fetch', this.pPage)
+            this.$emit('fetch', this.pPage, response)
           }
         }).catch(response => {
           this.$emit('fetch-error', this.pPage, response)
