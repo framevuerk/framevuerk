@@ -4,7 +4,7 @@
     .sp
     .logo-text
       h1 Framevuerk
-      p <b>Responsive</b>, <b>Multi Language</b>, <b>Both Direction Support</b> and <b>Configurable</b> UI Framework based on <a class="fv-link" href="http://vuejs.org" target="_blank">Vue.js</a>.
+      p <b>Fast</b>, <b>Responsive</b>, <b>Multi Language</b>, <b>Both Direction Support</b> and <b>Configurable</b> UI Framework based on <a class="fv-link" href="http://vuejs.org" target="_blank">Vue.js</a>.
       router-link.get-started(to="/installation=setup") GET STARTED
       a.github(:href="$root.githubRepo", target="_blank") GITHUB
 </template>
