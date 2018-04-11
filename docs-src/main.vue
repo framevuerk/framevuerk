@@ -100,7 +100,8 @@ export default {
                 this.sidebarItem('fvTable', null, 'fa fa-th-large'),
                 this.sidebarItem('fvSlider'),
                 this.sidebarItem('fvImg', null, 'fa fa-image'),
-                this.sidebarItem('fvToast', null, 'fa fa-info')
+                this.sidebarItem('fvToast', null, 'fa fa-info'),
+                this.sidebarItem('fvAvatar', null, 'fa fa-user')
               ]
             }
           ]
