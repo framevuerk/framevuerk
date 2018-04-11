@@ -22,10 +22,10 @@ $color-dark: darken($color, 5%) !default;
 $night-bg-color: #383f47 !default;
 
 $shadow-percent: 10%;
-$shadow-percent-light: 3%;
+$shadow-percent-light: 1%;
 $shadow-percent-dark: 35%;
 $shadow-color: rgba(0, 0, 0, 0.1) !default;
-$shadow-color-light: rgba(0, 0, 0, 0.03) !default;
+$shadow-color-light: rgba(0, 0, 0, 0.01) !default;
 $shadow-color-dark: rgba(0, 0, 0, 0.35) !default;
 
 $highlight-percent: 19%;
