@@ -54,18 +54,12 @@ export default {
   }
 
   &:focus {
-    &:not(.text-focus) {
-      @if $bg-color == $color {
-        @include outline;
-      }
-
-      @else {
-        @include outline($outline-color);
-      }
+    @if $bg-color == $color {
+      background-color: yiq($bg-color, 2%);
     }
 
-    &.text-focus {
-      @include textoutline;
+    @else {
+      background-color: yiq($bg-color, 2%);
     }
 
     &:invalid,
