@@ -13,6 +13,7 @@ import fvList from './components/fvList.vue'
 import fvListItem from './components/fvListItem.vue'
 import fvMenu from './components/fvMenu.vue'
 import fvInput from './components/fvInput.vue'
+import fvInputbox from './components/fvInputbox.vue'
 import fvButton from './components/fvButton.vue'
 import fvFilepicker from './components/fvFilepicker.vue'
 import fvSwitch from './components/fvSwitch.vue'
@@ -24,6 +25,7 @@ import fvImg from './components/fvImg.vue'
 import fvSlider from './components/fvSlider.vue'
 import fvToast from './components/fvToast.vue'
 import fvAutocomplete from './components/fvAutocomplete.vue'
+import fvAvatar from './components/fvAvatar.vue'
 
 module.exports = {
   fvMain,
@@ -38,6 +40,7 @@ module.exports = {
   fvListItem,
   fvMenu,
   fvInput,
+  fvInputbox,
   fvButton,
   fvFilepicker,
   fvSwitch,
@@ -49,6 +52,7 @@ module.exports = {
   fvSlider,
   fvToast,
   fvAutocomplete,
+  fvAvatar,
   use (libName, lib) {
     this.dependencies[libName] = lib
   },
@@ -67,6 +71,7 @@ module.exports = {
     Vue.component('fvListItem', fvListItem)
     Vue.component('fvMenu', fvMenu)
     Vue.component('fvInput', fvInput)
+    Vue.component('fvInputbox', fvInputbox)
     Vue.component('fvButton', fvButton)
     Vue.component('fvFilepicker', fvFilepicker)
     Vue.component('fvSwitch', fvSwitch)
@@ -77,6 +82,7 @@ module.exports = {
     Vue.component('fvImg', fvImg)
     Vue.component('fvSlider', fvSlider)
     Vue.component('fvAutocomplete', fvAutocomplete)
+    Vue.component('fvAvatar', fvAvatar)
     Vue.prototype.$fvToast = new (Vue.extend(fvToast))()
     Vue.fvToast = Vue.prototype.$fvToast
     // Directives
