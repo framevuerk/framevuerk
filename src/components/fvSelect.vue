@@ -1,16 +1,18 @@
 <template lang="pug">
-span
-  fv-input(:class="inputClass",
-    :display-value="displayValue",
-    :placeholder="placeholder",
-    :required="required",
-    :disabled="disabled",
-    :value="value",
-    render-type="display",
-    caret-icon="fa fa-caret-down",
-    @enter="open()",
-    ref="inputEl")
-  fv-dialog.fv-select(ref="dialog",
+fv-inputbox(:value="multiple ? value : (typeof value !== 'undefined' ? [value] : [])",
+  :placeholder="typeof value === 'undefined' || value.length === 0 ? placeholder : ''",
+  :disabled="disabled",
+  caret-icon="fa fa-caret-down",
+  @enter="open()",
+  delete-button,
+  @value-delete="clickOption",
+  ref="inputEl")
+  template(slot="value",
+    slot-scope="scope")
+    slot(v-if="$scopedSlots.value", name="value", :value="scope.value", :option="singleValueOption(scope.value)")
+    span(v-else) {{valueProp(scope.value, 'text')}}
+  fv-dialog.fv-select(slot="out",
+    ref="dialog",
     :class="dialogClass",
     :left.sync="dialogPosition.left",
     :top.sync="dialogPosition.top",
@@ -38,7 +40,7 @@ span
           @click="clickOption(option)",
           :selected="isSelected(option)",
           :disabled="optionProp(option, 'disabled')")
-          slot(v-if="$scopedSlots.default", :option="option")
+          slot(v-if="$scopedSlots.option", name="option", :option="option", :selected="isSelected(option)")
           span(v-else) {{optionProp(option, 'text')}}
         fv-list-item(v-if="allowInsert && searchQuery",
           @click="addOption(searchQuery)")
@@ -90,9 +92,6 @@ export default {
       type: String,
       default: 'text'
     },
-    inputClass: {
-      default: ''
-    },
     dialogClass: {
       default: ''
     },
@@ -141,34 +140,18 @@ export default {
   },
   computed: {
     fvValidate () {
-      return this.$refs.inputEl.fvValidate || false
+      if (this.required === true) {
+        if (typeof this.value === 'undefined' || (this.value instanceof Array && this.value.length === 0)) {
+          return false
+        }
+        return true
+      } else if (typeof this.required === 'function') {
+        return this.required(this.value)
+      }
+      return true
     },
     showInput () {
       return this.search !== false || this.allowInsert
-    },
-    displayValue () {
-      if (this.multiple) {
-        const ret = []
-        if (this.value !== 'undefined' && this.value instanceof Array) {
-          this.value.forEach(vl => {
-            const result = this.options.filter(opt => opt[this.valueKey] && opt[this.valueKey] === vl)
-            if (result.length) {
-              ret.push(result[0][this.textKey])
-            } else {
-              ret.push(vl)
-            }
-          })
-          return ret
-        }
-      } else if (typeof this.value !== 'undefined') {
-        const result = this.options.findIndex(opt => (typeof opt.value !== 'undefined' && opt.value === this.value) || opt === this.value)
-        if (result !== -1) {
-          return this.options[result].text || this.options[result].value || this.options[result]
-        } else {
-          return this.value
-        }
-      }
-      return []
     }
   },
   methods: {
@@ -215,6 +198,27 @@ export default {
           return this.disabledKey ? option[this.disabledKey] : false
       }
     },
+    singleValueOption (value) {
+      const founded = this.options.findIndex(option => this.optionProp(option, 'value') === value)
+      if (founded !== -1) {
+        return this.options[founded]
+      }
+      const option = this.valueKey ? {} : value
+      if (this.valueKey) {
+        option[this.valueKey] = value
+      }
+      if (this.textKey) {
+        option[this.textKey] = value
+      }
+      return option
+    },
+    valueProp (value, prop = 'value') {
+      const founded = this.options.findIndex(option => this.optionProp(option, 'value') === value)
+      if (founded !== -1) {
+        return this.optionProp(this.options[founded], prop)
+      }
+      return value
+    },
     addOption (value, select = true) {
       const options = JSON.parse(JSON.stringify(this.options))
       const founded = options.findIndex(option => this.optionProp(option, 'value') === value)
@@ -231,7 +235,7 @@ export default {
         }
         options.unshift(option)
         this.$emit('update:options', options)
-        this.$emit('insertOption', option)
+        this.$emit('insert-option', option)
       } else {
         option = options[founded]
       }

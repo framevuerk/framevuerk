@@ -1,48 +1,39 @@
 <template lang="pug">
-.fv-autocomplete.fv-input.fv-input-select(:focus="isFocused",
-  @click="$refs.inputEl.focus()",
+fv-inputbox.fv-autocomplete(:focus="isFocused",
+  @enter="onFocus(true)",
   :invalid="!fvValidate",
-  :disabled="disabled")
-  span.placeholder(v-if="(typeof value === 'undefined' || (value instanceof Array && value.length === 0)) && !isFocused",
-    v-html="placeholder")
-  .fv-input-select-item
-    span(v-if="multiple",
-      v-for="val in value",
-      :key="val")
-        | {{val}}
-        =" "
-        i.delete-icon.fa.fa-times(@click="deleteValue(val)")
-    span(v-if="!multiple && typeof value !== 'undefined'")
-      | {{value}}
-      =" "
-      i.delete-icon.fa.fa-times(@click="deleteValue()")
-    span.transparent
-      input.input(v-model="searchQuery",
-        @focus="onFocus",
-        @blur="onBlur",
-        :disabled="disabled"
-        @keydown="onKeydown",
-        @input="$emit('search', searchQuery)",
-        :size="searchQuery.length || 1",
-        ref="inputEl")
-  span.fv-caret-icon.fa.fa-tags
-  .list(v-show="isFocused")
+  :placeholder="searchQuery || !isEmpty ? '' : placeholder",
+  :disabled="disabled",
+  :value="multiple ? value : (typeof value !== 'undefined' ? [value] : [])",
+  @value-delete="deleteValue",
+  delete-button,
+  tabindex="")
+  template(slot="value",
+    slot-scope="scope")
+    | {{valueProp(scope.value, 'text')}}
+  template(slot="in")
+    input.input(v-model="searchQuery",
+      @focus="onFocus(false)",
+      @blur="onBlur",
+      :disabled="disabled"
+      @keydown="onKeydown",
+      @input="$emit('search', searchQuery)",
+      :size="searchQuery.length || 1",
+      ref="inputEl")
+  .list(slot="out", v-show="isFocused")
     .fv-padding.fv-text-center(v-if="loading")
       i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation
     fv-list.fv-no-border(v-else,
       :tabindex="-1",
       parent,
       ref="list")
-      fv-list-item(v-for="suggestion in suggestions",
+      fv-list-item(v-for="(suggestion, i) in suggestions",
         v-if="equalSearch(suggestion) && !loading"
-        :key="suggestion",
-        @click="clickSuggestion(suggestion)") {{suggestion}}
-      fv-list-item(v-if="allowInsert && searchQuery && multiple",
-        @click="addSuggestion(searchQuery)")
-        i.fa.fa-plus
-        =" "
-        | {{locale.add(searchQuery)}}
-      fv-list-item(v-if="allowInsert && searchQuery && !multiple",
+        :key="i",
+        @click="clickSuggestion(suggestion)")
+          slot(v-if="$scopedSlots.default", :suggestion="suggestion")
+          span(v-else) {{suggestionProp(suggestion, 'text')}}
+      fv-list-item(v-if="allowInsert && searchQuery",
         @click="addSuggestion(searchQuery)")
         | {{searchQuery}}
 </template>
@@ -50,11 +41,31 @@
 <script>
 import locale from 'locale'
 import utility from '../utility'
+import fvInputbox from './fvInputbox.vue'
 
 export default {
+  components: {
+    fvInputbox
+  },
   props: {
     value: {
       default: undefined
+    },
+    suggestions: {
+      type: Array,
+      default: () => []
+    },
+    disabledKey: {
+      type: String,
+      default: ''
+    },
+    valueKey: {
+      type: String,
+      default: ''
+    },
+    textKey: {
+      type: String,
+      default: ''
     },
     required: {
       type: [Boolean, Function],
@@ -83,10 +94,6 @@ export default {
       type: Boolean,
       default: true
     },
-    suggestions: {
-      type: Array,
-      default: () => []
-    },
     loading: {
       type: Boolean,
       default: false
@@ -103,6 +110,9 @@ export default {
     }
   },
   computed: {
+    isEmpty () {
+      return !this.value || (this.value instanceof Array && this.value.length === 0)
+    },
     fvValidate () {
       if (this.required === true) {
         if (!this.value || (this.value instanceof Array && this.value.length === 0)) {
@@ -110,7 +120,7 @@ export default {
         }
         return true
       } else if (typeof this.required === 'function') {
-        return this.required()
+        return this.required(this.value)
       }
       return true
     }
@@ -121,14 +131,37 @@ export default {
         this.$emit('input', [])
       }
     },
-    onFocus () {
-      clearTimeout(this.blurTimeout)
-      this.isFocused = true
+    onFocus (inputFocus) {
+      if (!this.disabled) {
+        clearTimeout(this.blurTimeout)
+        this.isFocused = true
+        if (inputFocus) {
+          this.$refs.inputEl.focus()
+        }
+      }
     },
     onBlur () {
       this.blurTimeout = utility.doIt(() => {
         this.isFocused = false
+        this.searchQuery = ''
       })
+    },
+    suggestionProp (suggestion, prop = 'value') {
+      switch (prop) {
+        case 'value':
+          return this.valueKey ? suggestion[this.valueKey] : suggestion
+        case 'text':
+          return this.textKey ? suggestion[this.textKey] : suggestion
+        case 'disabled':
+          return this.disabledKey ? suggestion[this.disabledKey] : false
+      }
+    },
+    valueProp (value, prop = 'value') {
+      const founded = this.suggestions.findIndex(suggestion => this.suggestionProp(suggestion, 'value') === value)
+      if (founded !== -1) {
+        return this.suggestionProp(this.suggestions[founded], prop)
+      }
+      return value
     },
     deleteValue (item) {
       if (this.multiple) {
@@ -152,10 +185,18 @@ export default {
     },
     addSuggestion (value) {
       const suggestions = JSON.parse(JSON.stringify(this.suggestions))
-      const founded = suggestions.findIndex(suggestion => suggestion === value)
+      const founded = suggestions.findIndex(suggestion => this.suggestionProp(suggestion, 'value') === value)
       let suggestion
       if (founded === -1) {
-        suggestion = value
+        suggestion = this.valueKey ? {} : ''
+        if (this.valueKey) {
+          suggestion[this.valueKey] = value
+        } else {
+          suggestion = value
+        }
+        if (this.textKey) {
+          suggestion[this.textKey] = value
+        }
         this.$emit('insertSuggestion', suggestion)
       } else {
         suggestion = suggestions[founded]
@@ -163,13 +204,14 @@ export default {
       this.clickSuggestion(suggestion)
     },
     clickSuggestion (suggestion) {
+      const newSuggestion = this.suggestionProp(suggestion, 'value')
       let newValue = this.value
       if (this.multiple) {
-        if (newValue.indexOf(suggestion) === -1) {
-          newValue.push(suggestion)
+        if (newValue.findIndex(val => val === newSuggestion) === -1) {
+          newValue.push(newSuggestion)
         }
       } else {
-        newValue = suggestion
+        newValue = newSuggestion
       }
       this.$emit('input', newValue)
       this.searchQuery = ''
@@ -188,9 +230,6 @@ export default {
       if (this.$refs.list) {
         this.$refs.list.onKeydown(event)
       }
-    },
-    focus () {
-      this.$refs.input.focus()
     }
   },
   created () {
@@ -205,20 +244,6 @@ export default {
 @import '../styles/mixins';
 
 .fv-autocomplete {
-  position: relative;
-
-  & .fv-input-select-item .delete-icon {
-    color: yiq($bg-color-dark, 50%);
-
-    &:hover {
-      color: yiq($bg-color-dark, 52%);
-    }
-
-    &:active {
-      color: yiq($bg-color-dark, 60%);
-    }
-  }
-
   & .input {
     border: none;
     background: transparent;
@@ -229,10 +254,6 @@ export default {
     @include yiq($bg-color);
     @include shadow(bottom);
 
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
     border: solid 1px darken($bg-color-light, $shadow-percent);
     margin-top: #{$padding / 2};
     border-radius: $border-radius;

@@ -1,16 +1,17 @@
 <template lang="pug">
-span
-  fv-input(:class="inputClass",
-    :display-value="displayValue",
-    :placeholder="placeholder",
-    :required="required",
-    :disabled="disabled",
-    :value="value",
-    render-type="display",
-    caret-icon="fa fa-calendar-o",
-    @enter="open()",
-    ref="inputEl")
-  fv-dialog.fv-datepicker(ref="dialog",
+fv-inputbox.fv-datepicker(:placeholder="typeof value !== 'undefined' ? '' : placeholder",
+  :required="required",
+  :disabled="disabled",
+  :value="typeof value !== 'undefined' ? [value] : []",
+  :delete-button="false",
+  caret-icon="fa fa-calendar-o",
+  @enter="open()",
+  ref="inputEl")
+  template(slot="value", slot-scope="scope")
+    slot(v-if="$scopedSlots.value", name="value", :value="scope.value")
+    span(v-else) {{scope.value}}
+  fv-dialog.fv-datepicker-dialog(slot="out",
+    ref="dialog",
     :class="dialogClass",
     :left.sync="dialogPosition.left",
     :top.sync="dialogPosition.top",
@@ -21,13 +22,13 @@ span
     :auto-close="false")
     fv-header.header(height="4em", tabindex="0", @keydown.native="onHeaderKeydown")
       .fv-input-group.header-buttons
-        fv-button.fv-sm.text-focus(@click="moveValue('year', -1)", :icon="icons.prevYear", tabindex="-1")
-        fv-button.fv-sm.text-focus(@click="moveValue('month', -1, false)", :icon="icons.prevMonth", tabindex="-1")
+        fv-button.fv-sm(@click="moveValue('year', -1)", :icon="icons.prevYear", tabindex="-1")
+        fv-button.fv-sm(@click="moveValue('month', -1, false)", :icon="icons.prevMonth", tabindex="-1")
       .title.fv-text-center
         h4 {{visualProps.month}}/{{visualProps.year}}
       .fv-input-group.header-buttons
-        fv-button.fv-sm.text-focus(@click="moveValue('month', 1, false)", :icon="icons.nextMonth", tabindex="-1")
-        fv-button.fv-sm.text-focus(@click="moveValue('year', 1)", :icon="icons.nextYear", tabindex="-1")
+        fv-button.fv-sm(@click="moveValue('month', 1, false)", :icon="icons.nextMonth", tabindex="-1")
+        fv-button.fv-sm(@click="moveValue('year', 1)", :icon="icons.nextYear", tabindex="-1")
     fv-content.content(tabindex="0", @keydown.native="onContentKeydown")
       table.days-table
         tbody
@@ -44,21 +45,20 @@ import fvMain from './fvMain.vue'
 import fvContent from './fvContent.vue'
 import fvDialog from './fvDialog.vue'
 import fvInput from './fvInput.vue'
+import fvInputbox from './fvInputbox.vue'
 
 export default {
   components: {
     fvMain,
     fvContent,
     fvDialog,
-    fvInput
+    fvInput,
+    fvInputbox
   },
   props: {
     value: {
       type: Date,
       default: undefined
-    },
-    inputClass: {
-      default: ''
     },
     dialogClass: {
       default: ''
@@ -74,10 +74,6 @@ export default {
     placeholder: {
       type: String,
       default: ''
-    },
-    displayFormat: {
-      type: Function,
-      default: v => v.toString()
     }
   },
   data () {
@@ -94,13 +90,15 @@ export default {
   },
   computed: {
     fvValidate () {
-      return this.$refs.inputEl.fvValidate || false
-    },
-    displayValue () {
-      if (this.value) {
-        return this.displayFormat(this.value)
+      if (this.required === true) {
+        if (!this.value) {
+          return false
+        }
+        return true
+      } else if (typeof this.required === 'function') {
+        return this.required(this.value)
       }
-      return undefined
+      return true
     },
     icons () {
       return {
@@ -245,7 +243,7 @@ export default {
 @import '../styles/variables';
 @import '../styles/mixins';
 
-.fv-datepicker {
+.fv-datepicker-dialog {
   & .header {
     &:focus {
       color: $primary-color;
