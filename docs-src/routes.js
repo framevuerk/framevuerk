@@ -61,6 +61,11 @@ module.exports = function (mode) {
       component: mode === 'app' ? require('./pages/components/fvInput.vue').default : null
     },
     {
+      name: 'fvAvatar',
+      path: '/components=fvAvatar',
+      component: mode === 'app' ? require('./pages/components/fvAvatar.vue').default : null
+    },
+    {
       name: 'fvTextarea',
       path: '/components=fvTextarea',
       component: mode === 'app' ? require('./pages/components/fvTextarea.vue').default : null
