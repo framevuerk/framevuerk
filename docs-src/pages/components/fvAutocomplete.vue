@@ -14,8 +14,11 @@ fv-content
           p Single (Autocomplete)
           fv-autocomplete(v-model="inputs.d2", placeholder="Single your city", :suggestions="['tehran', 'rasht', 'qazvin']", :multiple="false")
         .fv-col-12
-          p Custom usage (use API to fetch suggestions)
-          fv-autocomplete(v-model="inputs.d3", placeholder="Select you favorite team", :suggestions="d3sugs", :allow-insert="false", :loading="d3loading", :search="null", @search="d3search")
+          p Custom usage (use API to fetch suggestions) {{inputs.d3}}
+          fv-autocomplete(v-model="inputs.d3", placeholder="Select you favorite team", :suggestions="d3sugs", value-key="txt", text-key="txt", :allow-insert="false", :loading="d3loading", :search="null", @search="d3search")
+            template(slot-scope="scope")
+              h2 {{scope.suggestion.txt}}
+              p {{scope.suggestion.description}}
         .fv-col-12
           p Disabled
           fv-autocomplete(v-model="inputs.d4", disabled, placeholder="Tags", :suggestions="['amir', 'hasan', 'javascript']", multiple, :search="null", @search="d3search")
@@ -124,9 +127,18 @@ export default {
       this.d3loading = true
       this.d3timeout = setTimeout(() => {
         this.d3sugs = [
-          `${txt}blah`,
-          `${txt}foo`,
-          `bar${txt}`
+          {
+            txt: `${txt}blah`,
+            description: 'blah blah'
+          },
+          {
+            txt: `${txt}foo`,
+            description: 'a foooo'
+          },
+          {
+            txt: `bar${txt}`,
+            description: 'bar di baaaraa'
+          }
         ]
         this.d3loading = false
       }, 1000)

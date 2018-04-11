@@ -14,15 +14,16 @@ fv-content
           fv-select(v-model="inputs.d1", :search="false", placeholder="Select your country", :options="[{text: 'Iran', value: 'ir'}, {text: 'Germany', value: 'ger'}]")
         .fv-col-sm-6
           p Custom Template:
-          fv-select(v-model="inputs.d6", :search="false", placeholder="Select your name!", :options="[{text: 'Maryam', value: 'mar', icon: 'fa fa-git'}, {text: 'Amir', value: 'amir', icon: 'fa fa-linux'}, {text: 'Javad', value: 'javad', icon: 'fa fa-google-plus'}, {text: 'Daryoush', value: 'darush', icon: 'fa fa-spinner fa-spin'}]")
-            template(slot-scope="scope")
-              br
-              h4
-                i(:class="scope.option.icon")
-                =" "
-                span(v-html="scope.option.text")
-              p Value is: {{scope.option.value}}
-              br
+          fv-select(v-model="inputs.d6", :search="false", placeholder="Select your name!", :options="d6opts")
+            template(slot="option", slot-scope="scope")
+              fv-avatar.avatar(:src="scope.option.avatar", size="46px")
+              .name
+                h4 {{scope.option.text}}
+                small The `value` is {{scope.option.value}}
+            template(slot="value", slot-scope="scope")
+              // scope.value and scope.option
+              fv-avatar.avatar.mini(:src="scope.option.avatar", size="20px")
+              span.name(v-html="scope.option.text")
         .fv-col-sm-6
           p Multiple:
           fv-select(v-model="inputs.d2", multiple, placeholder="Select your favorite Club", :options="[{text: 'A.C. Milan', value: 'milan'}, {text: 'Real Madrid', value: 'real'}, {text: 'Esteghlal', value: 'esteghlal'}]")
@@ -40,9 +41,10 @@ fv-content
           fv-select(placeholder="Select me!", :options=['Pato', 'Robinho', 'Ronaldinho', 'Ronaldo', 'Roberto Carlos'], loading)
         .fv-col-12
           br
-        .fv-col-12
           br
-        .fv-col-12
+          br
+          br
+          br
           br
     doc-api(:rows="api")
 </template>
@@ -52,6 +54,12 @@ import docApi from '../../components/docApi.vue'
 import docDescription from '../../components/docDescription.vue'
 import docExample from '../../components/docExample.vue'
 import docCode from '../../components/docCode.vue'
+import '../../assets/images/face-01.jpg'
+import '../../assets/images/face-02.jpg'
+import '../../assets/images/face-03.jpg'
+import '../../assets/images/face-04.jpg'
+import '../../assets/images/face-05.jpg'
+import '../../assets/images/face-06.jpg'
 
 export default {
   components: {
@@ -71,6 +79,14 @@ export default {
         d6: undefined
       },
       d3opts: ['USA', 'USB', 'USC'],
+      d6opts: [
+        {text: 'Omar Maldini', value: 'omar', icon: 'fa fa-git', avatar: 'face-01.jpg'},
+        {text: 'Amir Sheva', value: 'amir', icon: 'fa fa-linux', avatar: 'face-02.jpg'},
+        {text: 'Nazanin Adas', value: 'nazi', icon: 'fa fa-google-plus', avatar: 'face-03.jpg'},
+        {text: 'Lady Gaga', value: 'ladygaga', icon: 'fa fa-spinner fa-spin', avatar: 'face-04.jpg'},
+        {text: 'Maryam Ambro', value: 'maryam', icon: 'fa fa-google-plus', avatar: 'face-05.jpg'},
+        {text: 'Daryoush', value: 'darush', icon: 'fa fa-spinner fa-spin', avatar: 'face-06.jpg'}
+      ],
       api: {
         prop: [
           {
@@ -78,12 +94,6 @@ export default {
             type: '---',
             default: 'undefined',
             description: 'Value of select'
-          },
-          {
-            name: 'input-class',
-            type: '---',
-            default: '""',
-            description: 'Class attr of fv-input'
           },
           {
             name: 'dialog-class',
@@ -175,7 +185,7 @@ export default {
             description: 'Fired when options are updated.'
           },
           {
-            name: 'insertOption (added from 1.1.0)',
+            name: 'insert-option (added from 1.1.0)',
             params: '(new-option)',
             description: 'Fired when user insrted new option.'
           },
@@ -196,9 +206,38 @@ export default {
             params: '---',
             description: 'Close dialog'
           }
+        ],
+        scopedSlot: [
+          {
+            name: 'value',
+            params: '(value, option)',
+            description: 'value item in input box'
+          },
+          {
+            name: 'option',
+            params: '(option, selected)',
+            description: 'option in list'
+          }
         ]
       }
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.avatar {
+  margin: 8px 15px 8px 0;
+  vertical-align: middle;
+
+  &.mini {
+    margin: 2px 4px 2px 0;
+  }
+}
+
+.name {
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 1.2;
+}
+</style>

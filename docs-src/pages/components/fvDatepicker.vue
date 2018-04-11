@@ -13,8 +13,7 @@ fv-content
       =" "
       a.fv-link(href="https://github.com/nainemom/idate", target="_blank") IDate
       |  as dependency of framevuerk to support jalaali dates.
-    doc-code(title="Javascript:", lang="javascript")
-      = "import Framevuerk from 'framevuerk'\n"
+    doc-code(title="Javascript (just if you want support jalaali dates for fvDatepicker)", lang="javascript")
       = "import IDate from 'idate'\n"
       = "Framevuerk.use('date', IDate)\n"
     doc-code
@@ -28,7 +27,16 @@ fv-content
           fv-datepicker(v-model="inputs.d1", placeholder="Pick your favorite date!")
         .fv-col-sm-6.fv-col-xs-12
           p Custom Formatted
-          fv-datepicker(v-model="inputs.d2", placeholder="Pick your favorite date!", :display-format="v => v.getDate() + ' - ' + v.getMonth()")
+          fv-datepicker(v-model="inputs.d2", placeholder="Pick your favorite date!")
+            template(slot="value", slot-scope="scope")
+              i.fa.fa-calendar
+              =" "
+              i date:
+              b  {{scope.value.getDate()}}
+              i , month:
+              b  {{scope.value.getMonth() + 1}}
+              i , year:
+              b  {{scope.value.getFullYear()}}
         .fv-col-sm-6.fv-col-xs-12
           p Disabled:
           fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
@@ -72,12 +80,6 @@ export default {
             type: 'Date',
             default: 'undefined',
             description: 'Value of datepicker'
-          },
-          {
-            name: 'input-class',
-            type: '---',
-            default: '""',
-            description: 'Class attr of fv-input'
           },
           {
             name: 'dialog-class',
@@ -132,6 +134,13 @@ export default {
             name: 'close',
             params: '---',
             description: 'Close dialog'
+          }
+        ],
+        scopedSlot: [
+          {
+            name: 'value',
+            params: '(value)',
+            description: 'value in input box'
           }
         ]
       }

@@ -44,11 +44,8 @@ fv-content
           p Default:
           fv-input.fv-block(v-model="inputs.d1", placeholder="Enter your age")
         .fv-col-sm-12
-          p Display value + required: {{inputs.d2.value}}
-          .fv-input-group.fv-flex
-            fv-input.fv-grow(v-model="inputs.d2.value", :display-value="inputs.d2.displayValue", render-type="display", placeholder="I'm required!", required)
-            fv-button(@click.native="inputs.d2.value = undefined; inputs.d2.displayValue = null;") Clear
-            fv-button(@click.native="inputs.d2.value = new Date().getTime(); inputs.d2.displayValue = new Date(inputs.d2.value).getMilliseconds();") Change
+          p Required:
+          fv-input.fv-block(v-model="inputs.d2", placeholder="Enter your father name", required)
         .fv-col-sm-12
           p Advanced Required:
           fv-input.fv-block(v-model="inputs.d3", placeholder="Enter mobile number", :required="function(){ return this.value.length === 11 && this.value.indexOf('09') === 0 }")
@@ -72,10 +69,7 @@ export default {
     return {
       inputs: {
         d1: '',
-        d2: {
-          value: undefined,
-          displayValue: null
-        },
+        d2: '',
         d3: ''
       },
       api: {
@@ -85,18 +79,6 @@ export default {
             type: '',
             default: 'undefined',
             description: 'Value of input'
-          },
-          {
-            name: 'render-type',
-            type: 'Enum ["normal", "display"]',
-            default: '"normal"',
-            description: 'Render type of input'
-          },
-          {
-            name: 'display-value',
-            type: '',
-            default: 'undefined',
-            description: 'Display value of input.<br>Only used when render-type = "display"<br>Normally used for models like Id or something like that to show meaningful data, so normal usability of input by using this will be lost.'
           },
           {
             name: 'required',
@@ -115,27 +97,8 @@ export default {
             type: 'String',
             default: '""',
             description: 'Just like normal input placeholder attribute'
-          },
-          {
-            name: 'caretIcon',
-            type: '---',
-            default: '""',
-            description: 'Icon of input<br>Only used when render-type = "display"'
           }
-        ],
-        event: [
-          {
-            name: 'click',
-            params: '---',
-            description: 'Fired when input clicked'
-          },
-          {
-            name: 'enter',
-            params: '---',
-            description: 'Fired When used click or press enter key on focused state.<br>Only used when render-type = "display"'
-          }
-        ],
-        method: []
+        ]
       }
     }
   }

@@ -24,7 +24,7 @@ fv-content
             fv-button(@click.native.prevent="inputs.d4.value = new Date().getTime(); inputs.d4.displayValue = new Date(inputs.d4.value).getMilliseconds();") Change
         .fv-col-sm-12
           label.fv-control-label Select
-          fv-select(v-model="inputs.d5", input-class="fv-form-control", placeholder="Select your city", :options="[{text: 'Tehran', value: 'teh'}, {text: 'LA', value: 'la'}]", required)
+          fv-select.fv-form-control(v-model="inputs.d5", placeholder="Select your city", :options="[{text: 'Tehran', value: 'teh'}, {text: 'LA', value: 'la'}]", required)
         .fv-col-sm-12
           label.fv-control-label Textarea
           fv-textarea.fv-form-control(v-model="inputs.d6", auto-height, placeholder="Enter your message...", required)
@@ -58,7 +58,7 @@ export default {
           value: '',
           displayValud: ''
         },
-        d5: '',
+        d5: undefined,
         d6: 'salam\nkhubi?',
         d7: '',
         d8: '',
@@ -67,7 +67,6 @@ export default {
         d11: ''
       },
       api: {
-        prop: [],
         event: [
           {
             name: 'submit',
@@ -77,7 +76,7 @@ export default {
           {
             name: 'reject',
             params: '(first-invalid-child)',
-            description: 'Fired when form submitted, but rejected!'
+            description: 'Fired when form rejected on submit'
           }
         ],
         method: [
