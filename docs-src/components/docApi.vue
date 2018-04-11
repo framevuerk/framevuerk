@@ -30,28 +30,46 @@ export default {
   },
   data () {
     return {
-      tabs: [
-        {
-          title: 'Props',
-          slot: 'prop'
-        },
-        {
-          title: 'Events',
-          slot: 'event'
-        },
-        {
-          title: 'Methods',
-          slot: 'method'}
-      ],
-      value: this.rows.prop ? 'prop' : (this.rows.event ? 'event' : 'method')
+      value: this.rows.prop ? 'prop' : (this.rows.event ? 'event' : (this.rows.method ? 'method' : (this.rows.slot ? 'slot' : 'scopedSlot')))
     }
   },
   computed: {
-    show () {
-      if (this.rows.prop || this.rows.event || this.rows.method) {
-        return true
+    tabs () {
+      const tabs = []
+      if (this.rows.prop) {
+        tabs.push({
+          title: 'Props',
+          slot: 'prop'
+        })
       }
-      return false
+      if (this.rows.event) {
+        tabs.push({
+          title: 'Events',
+          slot: 'event'
+        })
+      }
+      if (this.rows.method) {
+        tabs.push({
+          title: 'Methods',
+          slot: 'method'
+        })
+      }
+      if (this.rows.slot) {
+        tabs.push({
+          title: 'Slots',
+          slot: 'slot'
+        })
+      }
+      if (this.rows.scopedSlot) {
+        tabs.push({
+          title: 'Scoped Slots',
+          slot: 'scopedSlot'
+        })
+      }
+      return tabs
+    },
+    show () {
+      return this.rows.prop || this.rows.event || this.rows.method || this.rows.slot || this.rows.scopedSlot
     }
   },
   methods: {
@@ -62,6 +80,10 @@ export default {
         case 'event':
           return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
         case 'method':
+          return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
+        case 'slot':
+          return ['name', {value: 'description', class: 'fv-hide-on-only-xs'}]
+        case 'scopedSlot':
           return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
       }
     }
