@@ -64,7 +64,7 @@ export default {
           return !!this.value
         }
       } else if (typeof this.required === 'function') {
-        return this.required()
+        return this.required(this.value)
       }
       return true
     }

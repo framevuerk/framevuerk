@@ -44,7 +44,7 @@ export default {
       if (this.required === true) {
         return this.value === this.onValue
       } else if (typeof this.required === 'function') {
-        return this.required()
+        return this.required(this.value)
       }
       return true
     }

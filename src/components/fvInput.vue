@@ -1,23 +1,5 @@
 <template lang="pug">
-.fv-input.fv-input-select(v-if="renderType === 'display'",
-  ref="inputEl",
-  :invalid="!fvValidate",
-  :tabindex="disabled? '': 0",
-  :disabled="disabled",
-  @keydown.enter="onEnter",
-  @click="onEnter")
-  span.placeholder(v-if="typeof displayValue == 'undefined' || displayValue === null || displayValue.length === 0",
-    v-html="placeholder")
-  .fv-input-select-item(v-else-if="displayValue.constructor == Array")
-    span(v-for="val in displayValue",
-    v-html="val")
-  .fv-input-select-item(v-else)
-    span(v-html="displayValue")
-  span.fv-caret-icon
-    i(v-if="caretIcon",
-      :class="caretIcon")
-input.fv-input(v-else,
-  ref="inputEl",
+input.fv-input(ref="inputEl",
   :disabled="disabled",
   :invalid="!fvValidate",
   :value="value",
@@ -31,9 +13,6 @@ export default {
     value: {
       default: undefined
     },
-    displayValue: {
-      default: undefined
-    },
     required: {
       type: [Boolean, Function],
       default: false
@@ -45,37 +24,16 @@ export default {
     placeholder: {
       type: String,
       default: ''
-    },
-    renderType: {
-      type: String,
-      validator: (v) => {
-        return ['normal', 'display']
-      },
-      default: 'normal'
-    },
-    caretIcon: {
-      default: ''
     }
   },
   computed: {
     fvValidate () {
       if (this.required === true) {
-        if (!this.value || (this.value instanceof Array && this.value.length === 0)) {
-          return false
-        } else {
-          return true
-        }
+        return !!this.value
       } else if (typeof this.required === 'function') {
-        return this.required()
+        return this.required(this.value)
       }
       return true
-    }
-  },
-  methods: {
-    onEnter (event) {
-      if (!this.disabled) {
-        this.$emit('enter', event)
-      }
     }
   }
 }
@@ -98,6 +56,7 @@ export default {
   flex-direction: row;
   font-family: inherit;
   justify-content: space-between;
+  position: relative;
   padding: 0 $padding-small;
 
   &:focus,
@@ -117,42 +76,12 @@ export default {
   &::placeholder,
   & > .placeholder {
     color: $gray-color-dark;
+    position: absolute;
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 75%;
-  }
-
-  &.fv-input-select,
-  &.fv-input-datepicker {
-    cursor: pointer;
-
-    & > .fv-input-select-item {
-      & > span {
-        float: left;
-        margin: $padding / 2;
-        margin-#{$block-start}: 0;
-        background: $bg-color-dark;
-        padding: 0 #{$padding / 2};
-        border-radius: $border-radius;
-
-        &.transparent {
-          background: transparent;
-          padding: 0;
-        }
-      }
-    }
-
-    & > .fv-input-select-item-single {
-      padding: 0 0.5em;
-    }
-
-    & > .fv-caret-icon {
-      float: $block-end;
-      margin-left: 0.4em;
-      margin-right: 0.4em;
-    }
   }
 }
 </style>
