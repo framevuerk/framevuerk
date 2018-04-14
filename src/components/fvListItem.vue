@@ -133,24 +133,24 @@ export default {
     @include disabled;
   }
 
-  & > .content:hover,
+  &:not(.unclickable) > .content:hover,
   &.highlighted > .content {
     background: yiq($bg-color, 2%);
   }
 
-  & > .content:active {
+  &:not(.unclickable) > .content:active {
     background: yiq($bg-color, 10%);
   }
 
   &.selected {
     @include yiq($primary-color);
 
-    & > .content:hover,
+    &:not(.unclickable) > .content:hover,
     &.highlighted > .content {
       background: yiq($primary-color, 2%);
     }
 
-    & > .content:active {
+    &:not(.unclickable) > .content:active {
       background: yiq($primary-color, 10%);
     }
   }
