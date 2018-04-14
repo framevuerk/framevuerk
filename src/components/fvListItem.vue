@@ -102,11 +102,14 @@ export default {
 
   & .content {
     align-items: center;
-    cursor: pointer;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     min-height: 3.5em;
+
+    &:not(.unclickable) {
+      cursor: pointer;
+    }
 
     & > .text {
       flex-grow: 1;
@@ -133,8 +136,8 @@ export default {
     @include disabled;
   }
 
-  &:not(.unclickable) > .content:hover,
-  &.highlighted > .content {
+  &.highlighted > .content,
+  &:not(.unclickable) > .content:hover {
     background: yiq($bg-color, 2%);
   }
 
@@ -145,8 +148,8 @@ export default {
   &.selected {
     @include yiq($primary-color);
 
-    &:not(.unclickable) > .content:hover,
-    &.highlighted > .content {
+    &.highlighted > .content,
+    &:not(.unclickable) > .content:hover {
       background: yiq($primary-color, 2%);
     }
 
