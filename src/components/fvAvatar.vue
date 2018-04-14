@@ -63,7 +63,7 @@ export default {
   & > .image {
     background-repeat: no-repeat;
     background-position: center;
-    background-size: contain;
+    background-size: cover;
     position: absolute;
     left: 0;
     top: 0;
