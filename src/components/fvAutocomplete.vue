@@ -28,7 +28,7 @@ fv-inputbox.fv-autocomplete(:focus="isFocused",
       parent,
       ref="list")
       fv-list-item(v-for="(suggestion, i) in suggestions",
-        v-if="equalSearch(suggestion) && !loading"
+        v-if="equalSearch(suggestionProp(suggestion, 'text')) && !loading"
         :key="i",
         @click="clickSuggestion(suggestion)")
           slot(v-if="$scopedSlots.default", :suggestion="suggestion")
