@@ -117,6 +117,11 @@ export default {
             description: 'Fired when new suggestion inserted'
           }
         ],
+        scopedSlots: [{
+          name: 'default',
+          params: '(suggestion)',
+          description: 'suggestion in list'
+        }],
         method: []
       }
     }
