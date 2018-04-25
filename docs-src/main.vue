@@ -92,7 +92,8 @@ export default {
                 this.sidebarItem('fvCheck', null, 'fa fa-check-circle'),
                 this.sidebarItem('fvFilepicker', null, 'fa fa-file'),
                 this.sidebarItem('fvAutocomplete', null, 'fa fa-tags'),
-                this.sidebarItem('fvForm', null, 'fa fa-wpforms')
+                this.sidebarItem('fvForm', null, 'fa fa-wpforms'),
+                this.sidebarItem('fvSteps', null, 'fa fa-list-ol')
               ]
             }, {
               text: 'Other',
