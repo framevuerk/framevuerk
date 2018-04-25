@@ -80,7 +80,7 @@ $line-height: 10px;
 
     & > .text {
       color: darken($bg-color-light, $shadow-percent);
-      padding-top: $padding;
+      padding: $padding-small 0;
       line-height: 1;
     }
 
