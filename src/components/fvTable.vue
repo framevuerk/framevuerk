@@ -293,6 +293,7 @@ export default {
     }
   },
   created () {
+    console.warn("Component 'fv-table' will replaced by 'fv-table2' in version 2.x.y.")
     if (this.initialState) {
       this.pPage = this.initialState.page || this.page || 1
       this.apiResponse = this.initialState.apiResponse || null
