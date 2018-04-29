@@ -2,7 +2,7 @@
 fv-content
   div(:class="$root.mainClass")
     doc-description
-      | To creating fulll-featured table inside your application, use this component.
+      | To creating fulll-featured table inside your application, use this component. (will remove in 2.x.y)
     doc-code
       = "<fv-table></fv-table>"
     doc-example
