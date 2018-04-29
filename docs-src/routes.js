@@ -111,6 +111,11 @@ module.exports = function (mode) {
       component: mode === 'app' ? require('./pages/components/fvTable.vue').default : null
     },
     {
+      name: 'fvTable2',
+      path: '/components=fvTable2',
+      component: mode === 'app' ? require('./pages/components/fvTable2.vue').default : null
+    },
+    {
       name: 'fvImg',
       path: '/components=fvImg',
       component: mode === 'app' ? require('./pages/components/fvImg.vue').default : null

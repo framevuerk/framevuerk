@@ -21,18 +21,18 @@ fv-content
         .fv-col-xs-12
           h4 With Sub-List
         .fv-col-xs-12
-          fv-list(parent)
-            fv-list-item Salam
-            fv-list-item Chetori?
-            fv-list-item(expanded)
+          fv-list
+            fv-list-item.unclickable Salam
+            fv-list-item.unclickable Chetori?
+            fv-list-item.unclickable(expanded)
               | Khubi?
               fv-list(slot="sub-list")
-                fv-list-item Che Khabar?
-                fv-list-item
+                fv-list-item.unclickable Che Khabar?
+                fv-list-item.unclickable
                   | Amme ina khuban?
                   fv-list(slot="sub-list")
-                    fv-list-item(debug) Pesar Amuha?
-                    fv-list-item Dige che khabar?
+                    fv-list-item.unclickable Pesar Amuha?
+                    fv-list-item.unclickable Dige che khabar?
     doc-api(:rows="listApi", title="List API")
     doc-api(:rows="listItemApi", title="ListItem API")
 </template>

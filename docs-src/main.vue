@@ -99,6 +99,7 @@ export default {
               text: 'Other',
               items: [
                 this.sidebarItem('fvTable', null, 'fa fa-th-large'),
+                this.sidebarItem('fvTable2', null, 'fa fa-th-large'),
                 this.sidebarItem('fvSlider'),
                 this.sidebarItem('fvImg', null, 'fa fa-image'),
                 this.sidebarItem('fvToast', null, 'fa fa-info'),
