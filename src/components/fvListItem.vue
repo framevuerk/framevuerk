@@ -107,10 +107,6 @@ export default {
     justify-content: space-between;
     min-height: 3.5em;
 
-    &:not(.unclickable) {
-      cursor: pointer;
-    }
-
     & > .text {
       flex-grow: 1;
       padding: 0 $padding;

@@ -59,6 +59,7 @@ export default {
   border-radius: 100%;
   position: relative;
   overflow: hidden;
+  vertical-align: middle;
 
   & > .image {
     background-repeat: no-repeat;
