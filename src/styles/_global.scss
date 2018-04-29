@@ -126,6 +126,20 @@ html > body {
   padding-right: $padding !important;
 }
 
+.f-padding-small {
+  padding: $padding-small !important;
+}
+
+.fv-vertical-padding-small {
+  padding-bottom: $padding-small !important;
+  padding-top: $padding-small !important;
+}
+
+.fv-horizontal-padding-small {
+  padding-left: $padding-small !important;
+  padding-right: $padding-small !important;
+}
+
 .fv-no-padding {
   padding: 0 !important;
 }
@@ -176,6 +190,30 @@ html > body {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
+}
+
+.fv-text-primary {
+  color: $primary-color !important;
+}
+
+.fv-text-info {
+  color: $info-color !important;
+}
+
+.fv-text-danger {
+  color: $danger-color !important;
+}
+
+.fv-text-warning {
+  color: $warning-color !important;
+}
+
+.fv-text-light {
+  color: $color-light !important;
+}
+
+.fv-text-dark {
+  color: $color-dark !important;
 }
 
 .fv-control-label {
