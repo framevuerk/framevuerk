@@ -1,6 +1,6 @@
 {
   "name": "framevuerk",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Fast, Responsive, Multi Language, Both Direction Support and Configurable UI Framework based on Vue.js.",
   "main": "dist/framevuerk-default.js",
   "scripts": {
@@ -48,7 +48,8 @@
     "vue-loader": "13.7.0",
     "vue-template-compiler": "2.5.13",
     "vue-template-compiler-loader": "1.0.4",
-    "webpack": "^3.11.0"
+    "webpack": "^3.11.0",
+    "idate": "^0.1.2"
   },
   "devDependencies": {
     "axios": "^0.16.2",
