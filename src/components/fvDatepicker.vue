@@ -74,11 +74,14 @@ export default {
     placeholder: {
       type: String,
       default: ''
+    },
+    dateLibrary: {
+      type: [Object, Function]
     }
   },
   data () {
     return {
-      Date: require('../').dependencies['date'] || Date,
+      Date: this.dateLibrary || require('../').dependencies['date'] || Date,
       editingValue: undefined,
       visualProps: {},
       dialogPosition: {},
@@ -144,7 +147,8 @@ export default {
       if (!this.value) {
         return false
       }
-      return this.value.getDate() === date && this.value.getMonth() === this.editingValue.getMonth() && this.value.getFullYear() === this.editingValue.getFullYear()
+      const value = new this.Date(this.value)
+      return value.getDate() === date && value.getMonth() === this.editingValue.getMonth() && value.getFullYear() === this.editingValue.getFullYear()
     },
     isHighlighted (date) {
       if (!this.editingValue) {
