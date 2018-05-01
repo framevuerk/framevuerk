@@ -10,7 +10,8 @@ fv-inputbox.fv-autocomplete(:focus="isFocused",
   tabindex="")
   template(slot="value",
     slot-scope="scope")
-    | {{valueProp(scope.value, 'text')}}
+    slot(v-if="$scopedSlots.value", name="value", :value="scope.value", :suggestion="singleValueSuggestion(scope.value)")
+    span(v-else) {{valueProp(scope.value, 'text')}}
   template(slot="in")
     input.input(v-model="searchQuery",
       @focus="onFocus(false)",
@@ -31,7 +32,7 @@ fv-inputbox.fv-autocomplete(:focus="isFocused",
         v-if="equalSearch(suggestionProp(suggestion, 'text')) && !loading"
         :key="i",
         @click="clickSuggestion(suggestion)")
-          slot(v-if="$scopedSlots.default", :suggestion="suggestion")
+          slot(v-if="$scopedSlots.suggestion", name="suggestion", :suggestion="suggestion")
           span(v-else) {{suggestionProp(suggestion, 'text')}}
       fv-list-item(v-if="allowInsert && searchQuery",
         @click="addSuggestion(searchQuery)")
@@ -155,6 +156,20 @@ export default {
         case 'disabled':
           return this.disabledKey ? suggestion[this.disabledKey] : false
       }
+    },
+    singleValueSuggestion (value) {
+      const founded = this.suggestions.findIndex(suggestion => this.suggestionProp(suggestion, 'value') === value)
+      if (founded !== -1) {
+        return this.suggestions[founded]
+      }
+      const suggestion = this.valueKey ? {} : value
+      if (this.valueKey) {
+        suggestion[this.valueKey] = value
+      }
+      if (this.textKey) {
+        suggestion[this.textKey] = value
+      }
+      return suggestion
     },
     valueProp (value, prop = 'value') {
       const founded = this.suggestions.findIndex(suggestion => this.suggestionProp(suggestion, 'value') === value)

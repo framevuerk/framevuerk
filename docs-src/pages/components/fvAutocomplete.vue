@@ -14,11 +14,15 @@ fv-content
           p Single (Autocomplete)
           fv-autocomplete(v-model="inputs.d2", placeholder="Single your city", :suggestions="['tehran', 'rasht', 'qazvin']", :multiple="false")
         .fv-col-12
-          p Custom usage (use API to fetch suggestions) {{inputs.d3}}
+          p Custom usage (use API to fetch suggestions)
           fv-autocomplete(v-model="inputs.d3", placeholder="Select you favorite team", :suggestions="d3sugs", value-key="txt", text-key="txt", :allow-insert="false", :loading="d3loading", :search="null", @search="d3search")
-            template(slot-scope="scope")
+            template(slot="suggestion", slot-scope="scope")
               h2 {{scope.suggestion.txt}}
               p {{scope.suggestion.description}}
+            template(slot="value", slot-scope="scope")
+              i.fa.fa-check
+              =" "
+              p.fv-inline {{scope.suggestion.txt}}
         .fv-col-12
           p Disabled
           fv-autocomplete(v-model="inputs.d4", disabled, placeholder="Tags", :suggestions="['amir', 'hasan', 'javascript']", multiple, :search="null", @search="d3search")
@@ -122,7 +126,18 @@ export default {
           params: '(suggestion)',
           description: 'suggestion in list'
         }],
-        method: []
+        scopedSlot: [
+          {
+            name: 'value',
+            params: '(value, suggestion)',
+            description: 'value item in input box'
+          },
+          {
+            name: 'suggestion',
+            params: '(suggestion)',
+            description: 'suggestion in list'
+          }
+        ]
       }
     }
   },

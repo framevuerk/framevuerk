@@ -33,7 +33,7 @@ import Framevuerk from 'framevuerk/dist/framevuerk.js'
 // If you handle styles with webpack, import this. Else you can include this via <link rel="stylesheet">
 import 'framevuerk/dist/framevuerk.css'
 
-// IDate package, just if you want support jalaali dates for fvDatepicker
+// IDate package, just if you want globally support jalaali dates for fvDatepicker
 import IDate from 'idate'
 Framevuerk.use('date', IDate)
 

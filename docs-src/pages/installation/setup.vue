@@ -21,7 +21,7 @@ fv-content
       = "import Framevuerk from 'framevuerk/dist/framevuerk.js'\n\n"
       = "// If you handle styles with webpack, import this. Else you can include this via <link rel=\"stylesheet\">\n"
       = "import 'framevuerk/dist/framevuerk.css'\n\n"
-      = "// IDate package, just if you want support jalaali dates for fvDatepicker\n"
+      = "// IDate package, just if you want globally support jalaali dates for fvDatepicker\n"
       = "import IDate from 'idate'\n"
       = "Framevuerk.use('date', IDate)\n\n"
       = "// Hammer package, just if you want active touch actions support\n"

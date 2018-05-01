@@ -13,7 +13,7 @@ fv-content
       =" "
       a.fv-link(href="https://github.com/nainemom/idate", target="_blank") IDate
       |  as dependency of framevuerk to support jalaali dates.
-    doc-code(title="Javascript (just if you want support jalaali dates for fvDatepicker)", lang="javascript")
+    doc-code(title="Javascript (just if you want globally support jalaali dates for fvDatepicker)", lang="javascript")
       = "import IDate from 'idate'\n"
       = "Framevuerk.use('date', IDate)\n"
     doc-code
@@ -38,6 +38,9 @@ fv-content
               i , year:
               b  {{scope.value.getFullYear()}}
         .fv-col-sm-6.fv-col-xs-12
+          p Jalaali Date Object (Use IDate)
+          fv-datepicker(v-model="inputs.d6", placeholder="Pick your favorite jalaali date!", :date-library="IDate")
+        .fv-col-sm-6.fv-col-xs-12
           p Disabled:
           fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
         .fv-col-12
@@ -56,6 +59,7 @@ import docApi from '../../components/docApi.vue'
 import docDescription from '../../components/docDescription.vue'
 import docExample from '../../components/docExample.vue'
 import docCode from '../../components/docCode.vue'
+import IDate from 'idate'
 
 export default {
   components: {
@@ -66,12 +70,14 @@ export default {
   },
   data () {
     return {
+      IDate,
       inputs: {
         d1: undefined,
         d2: undefined,
         d3: undefined,
         d4: new Date(),
-        d5: undefined
+        d5: undefined,
+        d6: undefined
       },
       api: {
         prop: [
@@ -106,10 +112,10 @@ export default {
             description: 'Just like normal select placeholder attribute'
           },
           {
-            name: 'display-format',
-            type: 'Function',
-            default: 'v => v.toString()',
-            description: 'A function to return custom formated value in input.'
+            name: 'date-library',
+            type: '[Object, Function]',
+            default: '',
+            description: 'For custom dates managment, you can use custom date libs instead of native Date class.'
           }
         ],
         event: [
