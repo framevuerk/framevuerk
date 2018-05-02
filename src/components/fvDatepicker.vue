@@ -1,9 +1,11 @@
 <template lang="pug">
 fv-inputbox.fv-datepicker(:placeholder="typeof value !== 'undefined' ? '' : placeholder",
+  :invalid="!fvValidate",
   :required="required",
   :disabled="disabled",
   :value="typeof value !== 'undefined' ? [value] : []",
-  :delete-button="false",
+  :delete-button="true",
+  @value-delete="$emit('input', undefined)",
   caret-icon="fa fa-calendar-o",
   @enter="open()",
   ref="inputEl")
@@ -34,8 +36,8 @@ fv-inputbox.fv-datepicker(:placeholder="typeof value !== 'undefined' ? '' : plac
         tbody
           tr(v-for="dp in [0, 7, 14, 21, 28]")
             td(v-for="d in 7",
-              @click="setValue('date', (d + dp) - visualProps.monthFirstDay, true)",
-              :disabled="(d + dp) <= visualProps.monthFirstDay || (d + dp) - visualProps.monthFirstDay > visualProps.daysInMonth",
+              @click="setDate((d + dp) - visualProps.monthFirstDay, true)",
+              :disabled="isDateDisabled((d + dp) - visualProps.monthFirstDay, editingValue.getMonth(), editingValue.getFullYear())",
               :class="{highlighted: isHighlighted((d + dp) - visualProps.monthFirstDay), selected: isSelected((d + dp) - visualProps.monthFirstDay)}") {{ (d + dp) > visualProps.monthFirstDay && (d + dp) - visualProps.monthFirstDay <= visualProps.daysInMonth ? (d + dp) - visualProps.monthFirstDay : ''}}
 </template>
 
@@ -57,7 +59,6 @@ export default {
   },
   props: {
     value: {
-      type: Date,
       default: undefined
     },
     dialogClass: {
@@ -116,13 +117,19 @@ export default {
     setEditingValue () {
       this.editingValue = new this.Date(this.value || Date.now())
     },
+    monthFirstDay (month, year) {
+      return new this.Date(year, month, 1).getDay()
+    },
+    daysInMonth (month, year) {
+      return new this.Date(year, month + 1, 0).getDate()
+    },
     calcVisualProps () {
       this.visualProps = {
         year: this.editingValue.getFullYear(),
         month: this.editingValue.getMonth() + 1,
         date: this.editingValue.getDate(),
-        monthFirstDay: new this.Date(this.editingValue.getFullYear(), this.editingValue.getMonth(), 1).getDay(),
-        daysInMonth: new this.Date(this.editingValue.getFullYear(), this.editingValue.getMonth() + 1, 0).getDate()
+        monthFirstDay: this.monthFirstDay(this.editingValue.getMonth(), this.editingValue.getFullYear()),
+        daysInMonth: this.daysInMonth(this.editingValue.getMonth(), this.editingValue.getFullYear())
       }
       this.$forceUpdate()
       return this.visualProps
@@ -175,21 +182,14 @@ export default {
       }
       this.calcVisualProps()
     },
-    setValue (unit, value, emit = false) {
-      switch (unit) {
-        case 'year':
-          this.editingValue.setFullYear(value)
-          break
-        case 'month':
-          this.editingValue.setMonth(value)
-          break
-        case 'date':
-          this.editingValue.setDate(value)
-          break
+    setDate (value, emit = false) {
+      if (this.isDateDisabled(value, this.editingValue.getMonth(), this.editingValue.getFullYear())) {
+        return
       }
+      this.editingValue.setDate(value)
       const ret = new this.Date(this.editingValue)
       if (emit) {
-        this.$emit('input', this.value && ret.toString() === this.value.toString() ? undefined : ret)
+        this.$emit('input', ret)
         this.close()
       }
       this.calcVisualProps()
@@ -238,6 +238,22 @@ export default {
           this.moveValue('month', 1)
           break
       }
+    },
+    checkFvValidity (day, month, year) {
+      if (!day || !month | !year) {
+        return true
+      }
+      if (typeof this.required === 'function') {
+        const dt = new this.Date()
+        dt.setDate(day)
+        dt.setMonth(month)
+        dt.setFullYear(year)
+        return this.required(dt)
+      }
+      return true
+    },
+    isDateDisabled (day, month, year) {
+      return day <= 0 || day > this.daysInMonth(month, year) || !this.checkFvValidity(day, month, year)
     }
   }
 }
@@ -280,20 +296,20 @@ export default {
         &.selected {
           @include yiq($primary-color);
 
-          &:hover {
+          &:not([disabled]):hover {
             background: yiq($primary-color, 3%);
           }
 
-          &:active {
+          &:not([disabled]):active {
             background: yiq($primary-color, 10%);
           }
         }
 
-        &:hover {
+        &:not([disabled]):hover {
           background: yiq($bg-color, 3%);
         }
 
-        &:active {
+        &:not([disabled]):active {
           background: yiq($bg-color, 10%);
         }
       }
