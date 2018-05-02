@@ -1,5 +1,6 @@
 <template lang="pug">
 fv-inputbox(:value="multiple ? value : (typeof value !== 'undefined' ? [value] : [])",
+  :invalid="!fvValidate",
   :placeholder="typeof value === 'undefined' || value.length === 0 ? placeholder : ''",
   :disabled="disabled",
   caret-icon="fa fa-caret-down",
