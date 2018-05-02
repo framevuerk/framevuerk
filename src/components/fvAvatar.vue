@@ -61,6 +61,10 @@ export default {
   overflow: hidden;
   vertical-align: middle;
 
+  &.square {
+    border-radius: $border-radius;
+  }
+
   & > .image {
     background-repeat: no-repeat;
     background-position: center;
