@@ -7,22 +7,31 @@ fv-content
       = "<fv-avatar></fv-avatar>"
     doc-example
       .fv-row
-        .fv-col-xs-12
-          h4 Usage:
-        .fv-col-sm-6
-          p If src image is available:
-          fv-avatar(name="Amir Momenian", src="face-06.jpg", size="64px")
-          =" "
-          fv-avatar(name="Maryam Amini", src="face-03.jpg", size="48px")
-          =" "
-          fv-avatar(name="Mitra Bahreman", src="face-05.jpg", size="32px")
-        .fv-col-sm-6
-          p Same elements, without src:
-          fv-avatar(name="Amir Momenian", size="64px")
-          =" "
-          fv-avatar(name="Maryam Amini", size="48px")
-          =" "
-          fv-avatar(name="Mitra Bahreman", size="32px")
+        .fv-col
+          .fv-form-control-group.fv-text-center
+            .fv-block
+              fv-avatar(name="Amir Momenian", src="face-06.jpg", size="72px")
+        .fv-col
+          .fv-form-control-group.fv-text-center
+            .fv-block
+              fv-avatar.square(name="Maryam Amini", src="face-03.jpg", size="72px")
+        .fv-col-12
+          .fv-form-control-group.fv-text-center
+            .fv-block
+              fv-avatar(name="Amir Dadashi", size="72px")
+            small This ones has unavailable src and the name of user is Amir Dadashi!
+        .fv-col
+          .fv-form-control-group.fv-text-center
+            fv-avatar(name="Abbas Ghaderi", src="face-01.jpg", size="42px")
+            b.fv-horizontal-padding-small Abbas Ghaderi
+        .fv-col
+          .fv-form-control-group.fv-text-center
+            fv-avatar(name="Hasan Shamaeezade", src="face-02.jpg", size="42px")
+            b.fv-horizontal-padding-small Hasan Shamaeezade
+        .fv-col
+          .fv-form-control-group.fv-text-center
+            fv-avatar(name="Without Src", size="42px")
+            b.fv-horizontal-padding-small Without Src
     doc-api(:rows="api")
 </template>
 
