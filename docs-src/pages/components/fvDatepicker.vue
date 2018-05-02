@@ -13,6 +13,8 @@ fv-content
       =" "
       a.fv-link(href="https://github.com/nainemom/idate", target="_blank") IDate
       |  as dependency of framevuerk to support jalaali dates.
+      br
+      | From version 1.5.0 fv-datepicker will unselectable unvalidated dates that <i>required</i> function didn't accept them! So with this implementation, fv-datepicker will support range date limitation (from, to, etc) technically!
     doc-code(title="Javascript (just if you want globally support jalaali dates for fvDatepicker)", lang="javascript")
       = "import IDate from 'idate'\n"
       = "Framevuerk.use('date', IDate)\n"
@@ -22,12 +24,23 @@ fv-content
       .fv-row
         .fv-col-xs-12
           h4 Usage:
-        .fv-col-sm-6.fv-col-xs-12
+        .fv-col-lg-6.fv-col-xs-12
           p Defaut
           fv-datepicker(v-model="inputs.d1", placeholder="Pick your favorite date!")
-        .fv-col-sm-6.fv-col-xs-12
+        .fv-col-lg-6.fv-col-xs-12
           p Custom Formatted
           fv-datepicker(v-model="inputs.d2", placeholder="Pick your favorite date!")
+            template(slot="value", slot-scope="scope")
+              span {{scope.value.getDate()}} - {{scope.value.getMonth() + 1}} - {{scope.value.getFullYear()}}
+        .fv-col-lg-6.fv-col-xs-12
+          p Jalaali Date Object (Use IDate)
+          fv-datepicker(v-model="inputs.d6", placeholder="Pick your favorite jalaali date!", :date-library="IDate")
+        .fv-col-lg-6.fv-col-xs-12
+          p Disabled:
+          fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
+        .fv-col-lg-6.fv-col-xs-12
+          p Custom Required
+          fv-datepicker(v-model="inputs.d4", placeholder="Pick your favorite date just in this month!", :required="dateChecker")
             template(slot="value", slot-scope="scope")
               i.fa.fa-calendar
               =" "
@@ -35,14 +48,6 @@ fv-content
               b  {{scope.value.getDate()}}
               i , month:
               b  {{scope.value.getMonth() + 1}}
-              i , year:
-              b  {{scope.value.getFullYear()}}
-        .fv-col-sm-6.fv-col-xs-12
-          p Jalaali Date Object (Use IDate)
-          fv-datepicker(v-model="inputs.d6", placeholder="Pick your favorite jalaali date!", :date-library="IDate")
-        .fv-col-sm-6.fv-col-xs-12
-          p Disabled:
-          fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
         .fv-col-12
           br
         .fv-col-12
@@ -75,7 +80,7 @@ export default {
         d1: undefined,
         d2: undefined,
         d3: undefined,
-        d4: new Date(),
+        d4: undefined,
         d5: undefined,
         d6: undefined
       },
@@ -150,6 +155,11 @@ export default {
           }
         ]
       }
+    }
+  },
+  methods: {
+    dateChecker (date) {
+      return !!date && new Date(date.getTime()).getDate() >= 5 && new Date(date.getTime()).getDate() <= 20
     }
   }
 }
