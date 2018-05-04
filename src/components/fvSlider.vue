@@ -144,7 +144,6 @@ export default {
 @import '../styles/mixins';
 
 .fv-slider {
-  cursor: move;
   overflow: hidden;
 
   & .slider-page {
