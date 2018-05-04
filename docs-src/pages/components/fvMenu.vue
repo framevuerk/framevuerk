@@ -89,12 +89,12 @@ export default {
         event: [
           {
             name: 'open',
-            params: '---',
+            params: '',
             description: 'Fired when dialog opened'
           },
           {
             name: 'close',
-            params: '---',
+            params: '',
             description: 'Fired when dialog closed'
           },
           {
@@ -111,12 +111,12 @@ export default {
           },
           {
             name: 'close',
-            params: '---',
+            params: '',
             description: 'Close dialog'
           },
           {
             name: 'toggle',
-            params: '---',
+            params: '',
             description: 'Toggle dialog'
           }
         ]

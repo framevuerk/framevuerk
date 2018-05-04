@@ -49,20 +49,20 @@ export default {
       api: {
         prop: [
           {
-            name: 'value || v-model',
+            name: 'value',
             type: '',
-            default: 'undefined',
+            default: '',
             description: 'Value of input'
           },
           {
             name: 'offValue',
-            type: '---',
+            type: '',
             default: 'false',
             description: 'Value of switch, when it is unchecked'
           },
           {
             name: 'onValue',
-            type: '---',
+            type: '',
             default: 'true',
             description: 'Value of switch, when it is checked'
           },
@@ -83,7 +83,7 @@ export default {
         method: [
           {
             name: 'toggle',
-            params: '---',
+            params: '',
             description: 'Toggle value of switch'
           }
         ]

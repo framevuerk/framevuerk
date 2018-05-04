@@ -70,7 +70,7 @@ export default {
         event: [
           {
             name: 'submit',
-            params: '---',
+            params: '',
             description: 'Fired when form submitted'
           },
           {
@@ -82,7 +82,7 @@ export default {
         method: [
           {
             name: 'submit',
-            params: '---',
+            params: '',
             description: 'Submit form.'
           }
         ]

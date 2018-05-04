@@ -87,15 +87,15 @@ export default {
       api: {
         prop: [
           {
-            name: 'value || v-model (required)',
+            name: 'value (required)',
             type: 'Date',
-            default: 'undefined',
+            default: '',
             description: 'Value of datepicker'
           },
           {
             name: 'dialog-class',
-            type: '---',
-            default: '""',
+            type: '',
+            default: '',
             description: 'Class attr of fv-dialog'
           },
           {
@@ -126,24 +126,24 @@ export default {
         event: [
           {
             name: 'open',
-            params: '---',
+            params: '',
             description: 'Fired when dialog opened'
           },
           {
             name: 'close',
-            params: '---',
+            params: '',
             description: 'Fired when dialog closed'
           }
         ],
         method: [
           {
             name: 'open',
-            params: '---',
+            params: '',
             description: 'Open dialog'
           },
           {
             name: 'close',
-            params: '---',
+            params: '',
             description: 'Close dialog'
           }
         ],

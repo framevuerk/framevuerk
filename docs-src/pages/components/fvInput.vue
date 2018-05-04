@@ -75,7 +75,7 @@ export default {
       api: {
         prop: [
           {
-            name: 'value || v-model (required)',
+            name: 'value (required)',
             type: '',
             default: 'undefined',
             description: 'Value of input'
@@ -95,7 +95,7 @@ export default {
           {
             name: 'placeholder',
             type: 'String',
-            default: '""',
+            default: '',
             description: 'Just like normal input placeholder attribute'
           }
         ]

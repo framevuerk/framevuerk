@@ -19,6 +19,16 @@ fv-content
           fv-button.fv-warning.fv-block(icon="fa fa-warning") Warning
         .fv-col-sm-4
           fv-button.fv-info.fv-block(icon="fa fa-info") Info
+        .fv-col-xs-12
+          h4 Themes (.invert):
+        .fv-col-sm-4
+          fv-button.fv-primary.fv-block.invert(icon="fa fa-check") Primary
+        .fv-col-sm-4
+          fv-button.fv-danger.fv-block.invert(icon="fa fa-trash") Danger
+        .fv-col-sm-4
+          fv-button.fv-warning.fv-block.invert(icon="fa fa-warning") Warning
+        .fv-col-sm-4
+          fv-button.fv-info.fv-block.invert(icon="fa fa-info") Info
       .fv-row
         .fv-col-xs-12
           h4 Sizes:
@@ -95,8 +105,7 @@ export default {
             params: 'event',
             description: 'Fired when user clicked on button and both disabled and loading props are false.'
           }
-        ],
-        method: []
+        ]
       }
     }
   }

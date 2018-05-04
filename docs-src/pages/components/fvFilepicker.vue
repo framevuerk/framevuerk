@@ -54,20 +54,20 @@ export default {
       api: {
         prop: [
           {
-            name: 'value || v-model (required)',
-            type: '---',
-            default: 'undefined',
+            name: 'value (required)',
+            type: '',
+            default: '',
             description: 'Value of filepicker'
           },
           {
             name: 'button-class',
-            type: '---',
-            default: '""',
+            type: '',
+            default: '',
             description: 'Class attr of fv-button'
           },
           {
             name: 'default-text',
-            type: '---',
+            type: 'String',
             default: '"Browse..." (based on your locale)',
             description: 'Default text appear to button'
           },

@@ -129,12 +129,12 @@ export default {
           },
           {
             name: 'close',
-            params: '---',
+            params: '',
             description: 'Close dialog'
           },
           {
             name: 'toggle',
-            params: '---',
+            params: '',
             description: 'Toggle dialog'
           }
         ]

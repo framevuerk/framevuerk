@@ -64,7 +64,7 @@ export default {
           },
           {
             name: 'ajax',
-            type: '---',
+            type: '',
             default: 'null',
             description: 'Ajax provider object, if it\'s not local.'
           },
@@ -162,12 +162,12 @@ export default {
         event: [
           {
             name: 'fetch',
-            params: '---',
+            params: '',
             description: 'Fired when api return response.'
           },
           {
             name: 'fetch-error',
-            params: '---',
+            params: '',
             description: 'Fired when api return error.'
           },
           {
@@ -184,12 +184,12 @@ export default {
         method: [
           {
             name: 'fetch',
-            params: '---',
+            params: '',
             description: 'Re-fetch current state of fv-table.'
           },
           {
             name: 'getState',
-            params: '---',
+            params: '',
             description: 'Get current state of table.'
           }
         ]

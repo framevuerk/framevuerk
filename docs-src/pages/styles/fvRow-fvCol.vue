@@ -42,34 +42,6 @@ export default {
   data () {
     return {
       api: {
-        prop: [
-          {
-            name: 'value || v-model (required)',
-            type: '',
-            default: 'undefined',
-            description: 'Value of textarea'
-          },
-          {
-            name: 'required',
-            type: '[Boolean, Function]',
-            default: 'false',
-            description: 'Just like normal input required attribute. Also you can pass a function to check validity of value as you want.'
-          },
-          {
-            name: 'disabled',
-            type: 'Boolean',
-            default: 'false',
-            description: 'Just like normal textarea disabled attribute'
-          },
-          {
-            name: 'auto-height',
-            type: 'Boolean',
-            default: 'false',
-            description: 'Set height automatic by content'
-          }
-        ],
-        event: [],
-        method: []
       }
     }
   }

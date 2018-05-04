@@ -94,34 +94,34 @@ export default {
         event: [
           {
             name: 'click',
-            params: '---',
+            params: '',
             description: 'Fired when user click on item.'
           },
           {
             name: 'collapse',
-            params: '---',
+            params: '',
             description: 'Fired when \'sub-list\' slot collapsed.'
           },
           {
             name: 'expand',
-            params: '---',
+            params: '',
             description: 'Fired when api \'sub-list\' slot expanded.'
           }
         ],
         method: [
           {
             name: 'collapse',
-            params: '---',
+            params: '',
             description: 'Collapse \'sub-list\' slot.'
           },
           {
             name: 'expand',
-            params: '---',
+            params: '',
             description: 'Expand \'sub-list\' slot.'
           },
           {
             name: 'toggle',
-            params: '---',
+            params: '',
             description: 'Collapse/Expand \'sub-list\' slot'
           }
         ]

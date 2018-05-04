@@ -48,7 +48,7 @@ export default {
           },
           {
             name: 'hide',
-            params: '---',
+            params: '',
             description: 'Manually hide toast'
           }
         ]

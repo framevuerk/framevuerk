@@ -6,12 +6,19 @@ span(v-show="show")
       | {{ tabs.filter(function(tab){ return tab.slot===scope.value; })[0].title }}
     div(v-for="tab in tabs", :slot="tab.slot")
       br
-      fv-table.doc-api-table(v-if="rows[tab.slot] && rows[tab.slot].length > 0",
-        local,
+      fv-table2.doc-api-table(v-if="rows[tab.slot] && rows[tab.slot].length > 0",
         :fields="fields(tab.slot)",
-        :footer="false",
-        :rows="rows[tab.slot]",
-        :clickable-rows="false")
+        :rows="rows[tab.slot]")
+        template(slot="field-Name", slot-scope="scope")
+          .fmin.fv-text-primary {{scope.row.name}}
+        template(slot="field-Type", slot-scope="scope")
+          .fmin {{scope.row.type === '' ? 'Any': scope.row.type}}
+        template(slot="field-Default", slot-scope="scope")
+          .fmin.fv-control-label {{scope.row.default === '' ? 'undefined': scope.row.default}}
+        template(slot="field-Params", slot-scope="scope")
+          .fmin {{scope.row.params === '' ? '---': scope.row.params}}
+        template(slot="field-Description", slot-scope="scope")
+          p.fv-text-justify.fv-inline-block {{scope.row.description}}
       p.fv-text-center(v-else) No {{tab.title}} are available!
   br
 </template>
@@ -76,15 +83,15 @@ export default {
     fields (type) {
       switch (type) {
         case 'prop':
-          return ['name', 'type', {value: 'default', class: 'fv-hide-on-only-xs'}, {value: 'description', class: 'fv-hide-on-only-xs'}]
+          return ['Name', 'Type', 'Default', 'Description']
         case 'event':
-          return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
+          return ['Name', 'Params', 'Description']
         case 'method':
-          return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
+          return ['Name', 'Params', 'Description']
         case 'slot':
-          return ['name', {value: 'description', class: 'fv-hide-on-only-xs'}]
+          return ['Name', 'Description']
         case 'scopedSlot':
-          return ['name', 'params', {value: 'description', class: 'fv-hide-on-only-xs'}]
+          return ['Name', 'Params', 'Description']
       }
     }
   }
@@ -93,8 +100,8 @@ export default {
 
 <style lang="scss">
 body .doc-api-table {
-  & table {
-    font-size: 0.85em;
+  & .fmin {
+    min-width: 80px;
   }
 }
 </style>

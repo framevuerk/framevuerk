@@ -90,15 +90,15 @@ export default {
       api: {
         prop: [
           {
-            name: 'value || v-model (required)',
-            type: '---',
-            default: 'undefined',
+            name: 'value (required)',
+            type: '',
+            default: '',
             description: 'Value of select'
           },
           {
             name: 'dialog-class',
-            type: '---',
-            default: '""',
+            type: '',
+            default: '',
             description: 'Class attr of fv-dialog'
           },
           {
@@ -171,17 +171,17 @@ export default {
         event: [
           {
             name: 'open',
-            params: '---',
+            params: '',
             description: 'Fired when dialog opened'
           },
           {
             name: 'close',
-            params: '---',
+            params: '',
             description: 'Fired when dialog closed'
           },
           {
             name: 'update:options',
-            params: '---',
+            params: '',
             description: 'Fired when options are updated.'
           },
           {
@@ -198,12 +198,12 @@ export default {
         method: [
           {
             name: 'open',
-            params: '---',
+            params: '',
             description: 'Open dialog'
           },
           {
             name: 'close',
-            params: '---',
+            params: '',
             description: 'Close dialog'
           }
         ],

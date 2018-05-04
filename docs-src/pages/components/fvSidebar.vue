@@ -71,29 +71,29 @@ export default {
         event: [
           {
             name: 'open',
-            params: '---',
+            params: '',
             description: 'Fired when sidebar opened'
           },
           {
             name: 'close',
-            params: '---',
+            params: '',
             description: 'Fired when sidebar closed'
           }
         ],
         method: [
           {
             name: 'open',
-            params: '---',
+            params: '',
             description: 'Open sidebar'
           },
           {
             name: 'close',
-            params: '---',
+            params: '',
             description: 'Close sidebar'
           },
           {
             name: 'toggle',
-            params: '---',
+            params: '',
             description: 'Toggle sidebar'
           }
         ]
