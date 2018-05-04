@@ -37,8 +37,8 @@ fv-content
       | <br> Framevuerk apply these config on before every install or by this cli command:
     doc-code(v-pre, title=" ", lang="terminal")
       ="framevuerk build lib\n"
-      ="# or\n"
-      ="./node_modules/.bin/framevuerk build lib\n"
+      ="# or just\n"
+      ="npm rebuild framevuerk\n"
     doc-description
     | You are now config your app to use <b>Framevuerk</b>! Let's go to use our components.
 </template>
