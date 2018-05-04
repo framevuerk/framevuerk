@@ -4,7 +4,7 @@ module.exports = {
     return text.toString().toUpperCase().indexOf(search.toString().toUpperCase()) !== -1
   },
   doIt (action) {
-    return setTimeout(action, 100)
+    return setTimeout(action, 350)
   },
   capitalizeFirstLetter (str = '') {
     return str.charAt(0).toUpperCase() + str.slice(1)
