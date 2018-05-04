@@ -16,7 +16,7 @@
     "clean:docs": "rimraf ./docs",
     "build:docs": "cross-env NODE_ENV=production node ./build/index.js build docs",
     "clean": "npm run clean:lib && npm run clean:docs",
-    "build": "cross-env NODE_ENV=production node ./build/index.js build",
+    "build": "npm run build:lib",
     "prepublishOnly": "./prepublish.sh",
     "dev": "webpack --config ./build/webpack.config.js -w & webpack-dev-server --config ./build/webpack.config.docs.js",
     "postinstall": "cross-env NODE_ENV=production node ./build/index.js build lib",
