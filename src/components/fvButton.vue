@@ -41,26 +41,22 @@ export default {
 @import '../styles/functions';
 @import '../styles/mixins';
 
-@mixin button($color, $outline: false, $active-color: false) {
-  $outline-color: if($outline, $outline, $color);
-  $active-color: if($active-color, $active-color, $outline-color);
+@mixin button($clr, $outline: false, $active-color: false, $invert: false) {
+  $outline-color: if($outline, $outline, $clr);
+  $background: if($invert, $clr, $bg-color);
+  $active-color: if($invert, yiq($background, 10%), if($active-color, $active-color, $outline-color));
+  $color: if($invert, yiq($clr), $clr);
 
-  background-color: $bg-color;
+  background-color: $background;
   color: $color;
   border: 1px solid darken($bg-color-light, $shadow-percent);
 
   &:hover {
-    background-color: yiq($bg-color, 2%);
+    background-color: yiq($background, 2%);
   }
 
   &:focus {
-    @if $bg-color == $color {
-      background-color: yiq($bg-color, 2%);
-    }
-
-    @else {
-      background-color: yiq($bg-color, 2%);
-    }
+    background-color: yiq($background, 2%);
 
     &:invalid,
     &[invalid] {
@@ -109,18 +105,34 @@ export default {
   &.fv-primary,
   &.fv-ok {
     @include button($primary-color);
+
+    &.invert {
+      @include button($primary-color, false, false, true);
+    }
   }
 
   &.fv-info {
     @include button($info-color);
+
+    &.invert {
+      @include button($info-color, false, false, true);
+    }
   }
 
   &.fv-danger {
     @include button($danger-color);
+
+    &.invert {
+      @include button($danger-color, false, false, true);
+    }
   }
 
   &.fv-warning {
     @include button($warning-color);
+
+    &.invert {
+      @include button($warning-color, false, false, true);
+    }
   }
 }
 </style>
