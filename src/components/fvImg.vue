@@ -49,9 +49,7 @@ export default {
 @import '../styles/variables';
 
 .fv-img {
-  background: $color;
-
-  & .fv-slider-page {
+  & .slider-page {
     margin-bottom: -6px;
   }
 
