@@ -42,6 +42,7 @@ export default {
       default: ''
     },
     defaultText: {
+      type: String,
       default: locale.browse()
     },
     type: {
