@@ -10,12 +10,13 @@
       tr(v-for="(row, index) in rows",
         :key="index")
         td(v-for="(field, index2) in fields",
-          :key="field",
-          :data-label="field")
-          slot(:name="'field-' + field",
-            :row="row",
-            :field="field",
-            :index="index")
+          :key="field")
+          .field-name(v-if="isBreaked") {{field}}
+          .field-value
+            slot(:name="'field-' + field",
+              :row="row",
+              :field="field",
+              :index="index")
     tfoot(v-if="$slots.footer")
       slot(name="footer")
 </template>
@@ -76,8 +77,12 @@ export default {
     width: 100%;
 
     & tr {
+      &:not(:last-child) {
+        border-bottom: 1px solid darken($bg-color-light, $shadow-percent);
+      }
+
       &:nth-child(even) {
-        background: darken($bg-color, $shadow-percent-light);
+        background: yiq($bg-color, 2%);
       }
     }
 
@@ -108,13 +113,17 @@ export default {
       }
 
       & td {
-        display: block;
+        display: flex;
         text-align: $block-end;
 
-        &::before {
-          content: attr(data-label);
+        & .field-name {
           float: $block-start;
           font-weight: bold;
+          padding-#{$block-end}: $padding-small;
+        }
+
+        & .field-value {
+          flex-grow: 1;
         }
       }
     }
