@@ -183,10 +183,12 @@ export default {
       this.calcVisualProps()
     },
     setDate (value, emit = false) {
-      if (this.isDateDisabled(value, this.editingValue.getMonth(), this.editingValue.getFullYear())) {
+      if (value !== null) {
+        this.editingValue.setDate(value)
+      }
+      if (this.isDateDisabled(this.editingValue.getDate(), this.editingValue.getMonth(), this.editingValue.getFullYear())) {
         return
       }
-      this.editingValue.setDate(value)
       const ret = new this.Date(this.editingValue)
       if (emit) {
         this.$emit('input', ret)
@@ -214,7 +216,7 @@ export default {
           break
         case 13: // enter
           event.preventDefault()
-          this.moveValue('date', 0, true)
+          this.setDate(null, true)
           break
       }
       this.calcVisualProps()
@@ -240,9 +242,6 @@ export default {
       }
     },
     checkFvValidity (day, month, year) {
-      if (!day || !month | !year) {
-        return true
-      }
       if (typeof this.required === 'function') {
         const dt = new this.Date()
         dt.setDate(day)
