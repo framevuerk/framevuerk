@@ -21,8 +21,8 @@ lib.styleLoader = function (cnf) {
 
   let sassLoaderData = ''
   Object.keys(cnf).forEach(key => {
-    if (typeof cnf[key] === 'string' && cnf[key].indexOf('/') === -1) {
-      sassLoaderData += `$${key}: ${cnf[key]}; `
+    if (typeof cnf[key] === 'string' && cnf[key].indexOf('/') === -1 && cnf[key].indexOf('\\') === -1) {
+      sassLoaderData += `$${key}: ${cnf[key]};`
     }
   })
   ret.push({
