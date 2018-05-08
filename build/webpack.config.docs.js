@@ -1,6 +1,5 @@
 const path = require('path')
 const pkg = require(path.resolve(__dirname, '../package.json'))
-const config = require(path.resolve(__dirname, '../.framevuerkrc.json'))
 const utils = require(path.resolve(__dirname, './utils.js'))
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const PrerenderSpaPlugin = require('prerender-spa-plugin')
@@ -17,7 +16,7 @@ if (process.env.NODE_ENV === 'production') {
     routes.map(route => route.path)
   ))
 }
-module.exports = utils.generateConfig(Object.assign(config, {
+module.exports = utils.generateConfig(Object.assign({
   name: `${pkg.name}-docs`,
   version: pkg.version,
   entry: utils.resolve('../docs-src/index.js'),
