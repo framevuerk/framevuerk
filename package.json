@@ -30,6 +30,7 @@
     "babel-loader": "7.1.2",
     "babel-preset-env": "1.1.10",
     "babel-preset-minify": "0.2.0",
+    "cosmiconfig": "^5.0.2",
     "cross-env": "5.0.1",
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "3.0.0",
@@ -48,7 +49,6 @@
     "webpack": "^3.11.0"
   },
   "devDependencies": {
-    "idate": "^0.1.5",
     "axios": "^0.16.2",
     "eslint": "^4.16.0",
     "eslint-config-standard": "^11.0.0-beta.0",
@@ -61,6 +61,7 @@
     "eslint-plugin-vue": "^4.2.0",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
+    "idate": "^0.1.5",
     "prerender-spa-plugin": "^2.1.0",
     "stylelint": "^8.4.0",
     "stylelint-config-recommended-scss": "^3.0.0",
