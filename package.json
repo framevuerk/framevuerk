@@ -19,7 +19,7 @@
     "build": "npm run build:lib",
     "prepublishOnly": "./prepublish.sh",
     "dev": "webpack --config ./build/webpack.config.js --hide-modules -w & webpack-dev-server --config ./build/webpack.config.docs.js",
-    "postinstall": "cross-env NODE_ENV=production node ./build/index.js build lib",
+    "postinstall": "npm run build:lib",
     "start": "echo \"Use 'npm run dev' instead.\""
   },
   "bin": {
