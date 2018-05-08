@@ -97,7 +97,7 @@ export default {
       this.param = param
       this.focusBackElem = document.querySelector(':focus')
       this.$emit('open', this.param)
-      utility.doIt(() => {
+      setTimeout(() => {
         const padding = parseInt(process.env.padding)
         const bottom = this.$refs.dialog.$el.offsetHeight + this.$refs.dialog.$el.offsetTop
         const right = this.$refs.dialog.$el.offsetLeft + this.$refs.dialog.$el.offsetWidth
@@ -110,7 +110,7 @@ export default {
           this.$emit('update:left', `${newLeft - padding}px`)
         }
         this.focus(this.firstFocusOn)
-      })
+      }, 100)
     },
     close () {
       this.visible = false
