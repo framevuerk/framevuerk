@@ -116,8 +116,6 @@ You can also use `.framevuerkrc.json`, `.framevuerkrc` or `framevuerk` key insid
 
 Framevuerk apply these config on before every install or by this cli command:
 ```terminal
-framevuerk build lib
-# or just
 npm rebuild framevuerk
 ```
     
