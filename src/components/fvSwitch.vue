@@ -126,6 +126,7 @@ export default {
   padding: 0.1em;
   vertical-align: middle;
   width: 3.8em;
+  text-align: $block-start;
 
   & > .fv-handler {
     background: $bg-color-light;
