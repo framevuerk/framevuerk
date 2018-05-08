@@ -111,6 +111,14 @@ export default {
     }
   }
 
+  &.fv-secondary {
+    @include button($secondary-color);
+
+    &.invert {
+      @include button($secondary-color, false, false, true);
+    }
+  }
+
   &.fv-info {
     @include button($info-color);
 

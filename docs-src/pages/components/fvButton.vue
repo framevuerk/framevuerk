@@ -14,6 +14,8 @@ fv-content
         .fv-col-sm-4
           fv-button.fv-primary.fv-block(icon="fa fa-check") Primary
         .fv-col-sm-4
+          fv-button.fv-secondary.fv-block(icon="fa fa-check") Secondary
+        .fv-col-sm-4
           fv-button.fv-danger.fv-block(icon="fa fa-trash") Danger
         .fv-col-sm-4
           fv-button.fv-warning.fv-block(icon="fa fa-warning") Warning
@@ -23,6 +25,8 @@ fv-content
           h4 Themes (.invert):
         .fv-col-sm-4
           fv-button.fv-primary.fv-block.invert(icon="fa fa-check") Primary
+        .fv-col-sm-4
+          fv-button.fv-secondary.fv-block.invert(icon="fa fa-check") Secondary
         .fv-col-sm-4
           fv-button.fv-danger.fv-block.invert(icon="fa fa-trash") Danger
         .fv-col-sm-4

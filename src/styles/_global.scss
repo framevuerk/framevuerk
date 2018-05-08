@@ -96,8 +96,16 @@ html > body {
   text-align: right !important;
 }
 
+.fv-text-end {
+  text-align: $block-end !important;
+}
+
 .fv-text-left {
   text-align: left !important;
+}
+
+.fv-text-start {
+  text-align: $block-start !important;
 }
 
 .fv-text-justify {
@@ -202,6 +210,10 @@ html > body {
 
 .fv-text-primary {
   color: $primary-color !important;
+}
+
+.fv-text-secondary {
+  color: $secondary-color !important;
 }
 
 .fv-text-info {
