@@ -12,6 +12,7 @@ fv-content
       ="\tdirection: 'ltr', // or 'rtl'\n\n"
       ="\t// theme colors:\n"
       ="\t'primary-color': '#41b883',\n"
+      ="\t'secondary-color': '#35485d',\n"
       ="\t'danger-color': '#dd4b39',\n"
       ="\t'warning-color': '#ef8f00',\n"
       ="\t'info-color': '#14b0cf',\n"

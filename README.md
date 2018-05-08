@@ -85,6 +85,7 @@ module.export = {
 
   // theme colors:
   'primary-color': '#41b883',
+  'secondary-color': '#35485d',
   'danger-color': '#dd4b39',
   'warning-color': '#ef8f00',
   'info-color': '#14b0cf',
