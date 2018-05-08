@@ -22,9 +22,6 @@
     "postinstall": "npm run build:lib",
     "start": "echo \"Use 'npm run dev' instead.\""
   },
-  "bin": {
-    "framevuerk": "./build/index.js"
-  },
   "dependencies": {
     "autoprefixer": "7.2.5",
     "babel-cli": "6.23.0",
