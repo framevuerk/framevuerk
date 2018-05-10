@@ -11,10 +11,10 @@ const plugins = [new HtmlWebpackPlugin({
   template: utils.resolve('../docs-src/index.html')
 })]
 if (process.env.NODE_ENV === 'production') {
-  plugins.push(new PrerenderSpaPlugin(
-    utils.resolve('../docs'),
-    routes.map(route => route.path)
-  ))
+  plugins.push(new PrerenderSpaPlugin({
+    routes: routes.map(route => route.path),
+    staticDir: utils.resolve('../docs')
+  }))
 }
 module.exports = utils.generateConfig(Object.assign({
   name: `${pkg.name}-docs`,
