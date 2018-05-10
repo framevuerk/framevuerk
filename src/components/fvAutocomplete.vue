@@ -27,6 +27,7 @@ fv-inputbox.fv-autocomplete(:focus="isFocused",
     fv-list.fv-no-border(v-else,
       :tabindex="-1",
       parent,
+      data-cancel-blur="true",
       ref="list")
       fv-list-item(v-for="(suggestion, i) in suggestions",
         v-if="equalSearch(suggestionProp(suggestion, 'text')) && !loading"
@@ -142,9 +143,12 @@ export default {
       }
     },
     onBlur () {
-      this.blurTimeout = utility.doIt(() => {
-        this.isFocused = false
-        this.searchQuery = ''
+      setTimeout(() => {
+        const elem = document.querySelector(':focus')
+        if (!elem || !elem.getAttribute('data-cancel-blur')) {
+          this.isFocused = false
+          this.searchQuery = ''
+        }
       })
     },
     suggestionProp (suggestion, prop = 'value') {
