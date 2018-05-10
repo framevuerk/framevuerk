@@ -1,7 +1,7 @@
 #!/bin/bash
 
 npm install
-
+npm rebuild node-sass
 npm run clean
 npm run build:lib
 npm run build:docs
