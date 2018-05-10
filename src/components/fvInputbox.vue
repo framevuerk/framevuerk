@@ -72,7 +72,7 @@ export default {
       @include shadow(bottom);
 
       float: $block-start;
-      margin: $padding-small;
+      margin: $padding / 3;
       margin-#{$block-start}: 0;
       border: 1px solid darken($bg-color-light, $shadow-percent);
       padding: 0 $padding-small;
