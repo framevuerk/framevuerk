@@ -94,6 +94,12 @@ export default {
             type: 'Enum [null, true, false]',
             default: 'null',
             description: 'Add mobile style to table. `null` value means \'auto\''
+          },
+          {
+            name: 'title (added from 1.8)',
+            type: 'Boolean',
+            default: 'true',
+            description: 'Show fields title'
           }
         ],
         scopedSlot: [
