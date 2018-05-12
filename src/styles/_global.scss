@@ -260,6 +260,10 @@ html > body {
 .fv-input-group {
   display: inline-block;
 
+  & > * {
+    margin: 0;
+  }
+
   & > *:first-child {
     border-bottom-#{$block-end}-radius: 0;
     border-top-#{$block-end}-radius: 0;
