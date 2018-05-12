@@ -66,6 +66,10 @@ export default {
 
 .fv-inputbox {
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 
   & > .value-container {
     & > .item {
@@ -111,6 +115,16 @@ export default {
     top: 100%;
     left: 0;
     width: 100%;
+  }
+
+  & > .placeholder {
+    color: $gray-color-dark;
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 75%;
   }
 }
 </style>

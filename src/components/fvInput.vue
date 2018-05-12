@@ -49,13 +49,9 @@ export default {
   @include shadow(bottom);
   @include sizes;
 
-  align-items: center;
   border: 1px solid darken($bg-color-light, $shadow-percent);
   border-radius: $border-radius;
-  display: flex;
-  flex-direction: row;
   font-family: inherit;
-  justify-content: space-between;
   position: relative;
   padding: 0 $padding-small;
 
@@ -73,15 +69,8 @@ export default {
     @include disabled;
   }
 
-  &::placeholder,
-  & > .placeholder {
+  &::placeholder {
     color: $gray-color-dark;
-    position: absolute;
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 75%;
   }
 }
 </style>
