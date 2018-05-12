@@ -6,7 +6,7 @@ fv-inputbox(:value="multiple ? value : (typeof value !== 'undefined' ? [value] :
   caret-icon="fa fa-caret-down",
   @enter="open()",
   delete-button,
-  @value-delete="clickOption",
+  @value-delete="deleteValue",
   ref="inputEl")
   template(slot="value",
     slot-scope="scope")
@@ -248,7 +248,7 @@ export default {
       this.$refs.input.$el.focus()
     },
     clickOption (option) {
-      let newValue = this.value
+      let newValue = typeof this.value === 'undefined' ? undefined : JSON.parse(JSON.stringify(this.value))
       if (this.multiple) {
         if (this.isSelected(option)) {
           newValue.splice(newValue.indexOf(this.optionProp(option, 'value')), 1)
@@ -256,11 +256,7 @@ export default {
           newValue.push(this.optionProp(option, 'value'))
         }
       } else {
-        if (this.isSelected(option)) {
-          if (!this.required) {
-            newValue = undefined
-          }
-        } else {
+        if (!this.isSelected(option)) {
           newValue = this.optionProp(option, 'value')
         }
       }
@@ -268,9 +264,17 @@ export default {
       this.searchQuery = ''
       if (!this.multiple && !this.allowInsert) {
         this.close()
-      } else if (this.showInput) {
+      } else if (this.showInput && this.$refs.input) {
         this.$refs.input.$el.focus()
       }
+    },
+    deleteValue (val) {
+      let newValue
+      if (this.multiple) {
+        newValue = JSON.parse(JSON.stringify(this.value))
+        newValue.splice(newValue.indexOf(val), 1)
+      }
+      this.$emit('input', newValue)
     },
     equalSearch (option) {
       if (this.search !== true ||
