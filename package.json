@@ -12,13 +12,13 @@
     "lint:fix": "npm run lint:js:fix && npm run lint:scss:fix",
     "test": "npm run lint",
     "clean:lib": "rimraf ./dist",
-    "build:lib": "cross-env NODE_ENV=production webpack --config ./build/webpack.config.js --hide-modules --progress",
+    "build:lib": "cross-env NODE_ENV=production webpack --config ./build/webpack.config.js --display none",
     "clean:docs": "rimraf ./docs",
-    "build:docs": "cross-env NODE_ENV=production webpack --config ./build/webpack.config.docs.js --hide-modules --progress",
+    "build:docs": "cross-env NODE_ENV=production webpack --config ./build/webpack.config.docs.js --display none",
     "clean": "npm run clean:lib && npm run clean:docs",
     "build": "npm run build:lib",
     "prepublishOnly": "./prepublish.sh",
-    "dev": "webpack --config ./build/webpack.config.js --hide-modules -w & webpack-dev-server --config ./build/webpack.config.docs.js",
+    "dev": "webpack --config ./build/webpack.config.js -w --display none & webpack-dev-server --config ./build/webpack.config.docs.js --host 0.0.0.0 --hot",
     "postinstall": "npm run build:lib",
     "start": "echo \"Use 'npm run dev' instead.\""
   },
@@ -46,7 +46,8 @@
     "vue-loader": "13.7.0",
     "vue-template-compiler": "2.5.13",
     "vue-template-compiler-loader": "1.0.4",
-    "webpack": "^3.11.0"
+    "webpack": "^3.11.0",
+    "webpackbar": "^2.6.1"
   },
   "devDependencies": {
     "axios": "^0.16.2",
