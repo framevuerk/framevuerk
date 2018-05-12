@@ -1,7 +1,7 @@
 <template lang="pug">
-.fv-table2(:class="{breaked: isBreaked}")
+.fv-table2(:class="{breaked: isBreaked, title: title}")
   table
-    thead
+    thead(v-if="title")
       tr
         th(v-for="field in fields",
           :key="field")
@@ -11,7 +11,7 @@
         :key="index")
         td(v-for="(field, index2) in fields",
           :key="field")
-          .field-name(v-if="isBreaked") {{field}}
+          .field-name(v-if="isBreaked && title") {{field}}
           .field-value
             slot(:name="'field-' + field",
               :row="row",
@@ -33,6 +33,10 @@ export default {
     rows: {
       type: Array,
       default: () => []
+    },
+    title: {
+      type: Boolean,
+      default: true
     },
     breaked: {
       type: [Object, Boolean],
@@ -126,6 +130,10 @@ export default {
           flex-grow: 1;
         }
       }
+    }
+
+    &:not(.title) > table td {
+      text-align: $block-start;
     }
   }
 }
