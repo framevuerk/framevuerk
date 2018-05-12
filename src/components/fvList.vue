@@ -116,6 +116,10 @@ export default {
 
   & .fv-list-item:not(:last-child) {
     border-bottom: solid 1px darken($bg-color-light, $shadow-percent);
+
+    &.selected {
+      border-bottom: solid 1px transparent;
+    }
   }
 
   &:hover {

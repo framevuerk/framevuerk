@@ -2,6 +2,7 @@ const path = require('path')
 const utility = require(path.resolve(__dirname, '../src/utility'))
 const pkg = require(path.resolve(__dirname, '../package.json'))
 const webpack = require('webpack')
+const WebpackBar = require('webpackbar')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
@@ -46,7 +47,6 @@ lib.jsLoader = function () {
 
 lib.generateConfig = (cnf) => {
   const fileName = `${cnf.name}${cnf['config-name'] ? `-${cnf['config-name']}` : ''}${(cnf.minify ? '.min' : '')}`
-
   let plugins = [
     new ExtractTextPlugin({
       filename: fileName + '.css'
@@ -65,7 +65,12 @@ lib.generateConfig = (cnf) => {
       }
     })
   ]
-
+  if (process.env.NODE_ENV === 'production') {
+    plugins.push(new WebpackBar({
+      name: fileName,
+      color: cnf['primary-color'] || 'yellow'
+    }))
+  }
   if (cnf.minify) {
     plugins.push(new UglifyJsPlugin())
     plugins.push(new OptimizeCssAssetsPlugin())
