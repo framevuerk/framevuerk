@@ -138,7 +138,7 @@ html > body {
   padding-right: $padding !important;
 }
 
-.f-padding-small {
+.fv-padding-small {
   padding: $padding-small !important;
 }
 
@@ -168,6 +168,10 @@ html > body {
 
 .fv-no-border {
   border: 0 !important;
+}
+
+.fv-vertical-middle {
+  vertical-align: middle !important;
 }
 
 .fv-pull-left {
