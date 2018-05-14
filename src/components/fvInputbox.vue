@@ -20,12 +20,22 @@
       slot(name="in")
   i.caret-icon(v-if="caretIcon",
     :class="caretIcon")
-  .out-container(v-if="$slots.out")
-    slot(name="out")
+  transition(name="fv-input-box")
+    fv-main.out-container(v-if="$slots.out && showOut", :class="{top: !outOnBottom, bottom: outOnBottom}", :style="{maxHeight: outMaxHeight}")
+      fv-content.fv-no-padding
+        slot(name="out")
 </template>
 
 <script>
+import utility from '../utility'
+import fvMain from './fvMain.vue'
+import fvContent from './fvContent.vue'
+
 export default {
+  components: {
+    fvMain,
+    fvContent
+  },
   props: {
     value: {
       type: Array
@@ -44,11 +54,31 @@ export default {
     },
     caretIcon: {
       default: ''
+    },
+    showOut: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    return {
+      outOnBottom: true,
+      outMaxHeight: 'auto'
     }
   },
   methods: {
+    calcOutPosition () {
+      const parentHeight = utility.fvParent(this, 'fv-main').$el.offsetHeight
+      const elHeight = this.$el.offsetHeight
+      const top = utility.offsetTo(this.$el, utility.fvParent(this, 'fv-main').$el).top
+      this.outOnBottom = !(top > (parentHeight / 2))
+      const bottom = parentHeight - top - elHeight
+      const padding = parseInt(process.env.padding)
+      this.outMaxHeight = `${(parentHeight - (this.outOnBottom ? top : bottom) - elHeight) - (padding * 2)}px`
+    },
     onEnter (event) {
       if (!this.disabled && !event.target.getAttribute('data-cancel-enter')) {
+        this.calcOutPosition()
         this.$emit('enter', event)
       }
     },
@@ -111,10 +141,48 @@ export default {
   }
 
   & > .out-container {
+    @include yiq($bg-color);
+
     position: absolute;
-    top: 100%;
-    left: 0;
+    #{$block-start}: 0;
+    overflow: auto;
     width: 100%;
+    border: solid 1px $shadow-color;
+    margin: $padding 0;
+    border-radius: $border-radius;
+    z-index: 2;
+
+    &.bottom {
+      @include shadow(bottom);
+
+      top: 100%;
+    }
+
+    &.top {
+      @include shadow(top);
+
+      bottom: 100%;
+    }
+
+    @include vue-animation(fv-input-box, enter) {
+      opacity: 1;
+      transition-duration: $transition-speed;
+      transition-property: transform, opacity;
+      transition-timing-function: ease;
+      will-change: transform, opacity;
+    }
+
+    @include vue-animation(fv-input-box, leave) {
+      opacity: 0;
+
+      &:not(.center) {
+        transform: translate3d(0, -10%, 0);
+      }
+
+      &.center {
+        transform: translate3d(-50%, -60%, 0);
+      }
+    }
   }
 
   & > .placeholder {
