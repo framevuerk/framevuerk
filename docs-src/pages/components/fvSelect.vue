@@ -29,7 +29,7 @@ fv-content
           fv-select(v-model="inputs.d2", multiple, placeholder="Select your favorite Club", :options="[{text: 'A.C. Milan', value: 'milan'}, {text: 'Real Madrid', value: 'real'}, {text: 'Esteghlal', value: 'esteghlal'}]")
         .fv-col-sm-6
           p Allow insert:
-          fv-select(v-model="inputs.d3", search, multiple, allow-insert, placeholder="Select your favorite countries", value-key="", text-key="", disabled-key="", :options.sync="d3opts")
+          fv-select(v-model="inputs.d3", search, multiple, allow-insert, placeholder="Select your favorite countries", value-key="", text-key="", disabled-key="", :options="d3opts", @insert="inputs.d3.push($event)")
         .fv-col-sm-6
           p Disabled:
           fv-select(v-model="inputs.d4", disabled, placeholder="You can't select me!")
@@ -176,22 +176,7 @@ export default {
         ],
         event: [
           {
-            name: 'open',
-            params: '',
-            description: 'Fired when dialog opened'
-          },
-          {
-            name: 'close',
-            params: '',
-            description: 'Fired when dialog closed'
-          },
-          {
-            name: 'update:options',
-            params: '',
-            description: 'Fired when options are updated.'
-          },
-          {
-            name: 'insert-option (added from 1.1.0)',
+            name: 'insert (added from 1.9.0)',
             params: '(new-option)',
             description: 'Fired when user insrted new option.'
           },

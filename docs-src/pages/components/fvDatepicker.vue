@@ -129,18 +129,6 @@ export default {
             description: 'For custom dates managment, you can use custom date libs instead of native Date class.'
           }
         ],
-        event: [
-          {
-            name: 'open',
-            params: '',
-            description: 'Fired when dialog opened'
-          },
-          {
-            name: 'close',
-            params: '',
-            description: 'Fired when dialog closed'
-          }
-        ],
         method: [
           {
             name: 'open',
