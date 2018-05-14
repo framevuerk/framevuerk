@@ -28,6 +28,16 @@ module.exports = {
       }
     }
   },
+  isChildOf (el, parent) {
+    let eli = el
+    while (eli && eli !== parent) {
+      if (eli.parentElement === parent) {
+        return true
+      }
+      eli = eli.parentElement
+    }
+    return false
+  },
   offsetTo (el, parent) {
     let eli = el
     const ret = {

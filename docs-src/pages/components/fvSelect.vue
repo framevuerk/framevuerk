@@ -2,7 +2,7 @@
 fv-content
   div(:class="$root.mainClass")
     doc-description
-      | To create full featured select (dropdown) in your application, use this!
+      | To create full featured select (dropdown) in your application, use this! (will remove in 2.x.y. use fv-select2 instead)
     doc-code
       = "<fv-select></fv-select>"
     doc-example
@@ -14,7 +14,7 @@ fv-content
           fv-select(v-model="inputs.d1", :search="false", placeholder="Select your country", :options="[{text: 'Iran', value: 'ir'}, {text: 'Germany', value: 'ger'}]")
         .fv-col-sm-6
           p Custom Template:
-          fv-select(v-model="inputs.d6", :search="false", placeholder="Select your name!", :options="d6opts")
+          fv-select(v-model="inputs.d6", :search="false", placeholder="Select your name!", :options="d6opts", :delete-button="false")
             template(slot="option", slot-scope="scope")
               fv-avatar.avatar(:src="scope.option.avatar", size="46px")
               .name
@@ -29,13 +29,13 @@ fv-content
           fv-select(v-model="inputs.d2", multiple, placeholder="Select your favorite Club", :options="[{text: 'A.C. Milan', value: 'milan'}, {text: 'Real Madrid', value: 'real'}, {text: 'Esteghlal', value: 'esteghlal'}]")
         .fv-col-sm-6
           p Allow insert:
-          fv-select(v-model="inputs.d3", search, multiple, allow-insert, placeholder="Select your favorite countries", value-key="", text-key="", disabled-key="", :options.sync="d3opts")
+          fv-select(v-model="inputs.d3", search, multiple, allow-insert, placeholder="Select your favorite countries", value-key="", text-key="", disabled-key="", :options="d3opts", @insert="inputs.d3.push($event)")
         .fv-col-sm-6
           p Disabled:
           fv-select(v-model="inputs.d4", disabled, placeholder="You can't select me!")
         .fv-col-sm-6
           p Advanced Required:
-          fv-select(v-model="inputs.d5", :search="false", multiple, placeholder="Select 3 items!", :required="function(){ return this.value.length === 3 }", :options="[{text: 'Silva', value: 'silva'}, {text: 'Ronaldinho', value: 'ronaldinho'}, {text: 'Ronaldo', value: 'ronaldo'}, {text: 'Pato', value: 'pato'}, {text: 'Hulk', value: 'hulk', disabled: true}]")
+          fv-select(v-model="inputs.d5", :search="true", multiple, placeholder="Select 3 items!", :required="function(){ return this.value.length === 3 }", :options="[{text: 'Silva', value: 'silva'}, {text: 'Ronaldinho', value: 'ronaldinho'}, {text: 'Ronaldo', value: 'ronaldo'}, {text: 'Pato', value: 'pato'}, {text: 'Hulk', value: 'hulk', disabled: true}]")
         .fv-col-sm-6
           p Loading...:
           fv-select(placeholder="Select me!", :options=['Pato', 'Robinho', 'Ronaldinho', 'Ronaldo', 'Roberto Carlos'], loading)
@@ -166,26 +166,17 @@ export default {
             type: 'String',
             default: '"disabled"',
             description: 'Disabled key in each object in options.'
+          },
+          {
+            name: 'delete-button',
+            type: 'Boolean',
+            default: 'true',
+            description: 'Allow user to delete selected value.'
           }
         ],
         event: [
           {
-            name: 'open',
-            params: '',
-            description: 'Fired when dialog opened'
-          },
-          {
-            name: 'close',
-            params: '',
-            description: 'Fired when dialog closed'
-          },
-          {
-            name: 'update:options',
-            params: '',
-            description: 'Fired when options are updated.'
-          },
-          {
-            name: 'insert-option (added from 1.1.0)',
+            name: 'insert (added from 1.9.0)',
             params: '(new-option)',
             description: 'Fired when user insrted new option.'
           },

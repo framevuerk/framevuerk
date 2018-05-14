@@ -2,7 +2,7 @@
 fv-content
   div(:class="$root.mainClass")
     doc-description
-      | To creating responsive table inside your application, use this component. (added from 1.4.0)
+      | To creating responsive table inside your application, use this component. (added from 1.4.0) (will be replaced to fv-table in 2.x.y)
     doc-code
       = "<fv-table2></fv-table2>"
     doc-example

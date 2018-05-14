@@ -1,37 +1,37 @@
 <template lang="pug">
-fv-inputbox.fv-datepicker(:placeholder="typeof value !== 'undefined' ? '' : placeholder",
+fv-inputbox.fv-datepicker(:focus="isFocused",
+  @enter="onFocus(true)",
   :invalid="!fvValidate",
-  :required="required",
+  :placeholder="typeof value !== 'undefined' ? '' : placeholder",
   :disabled="disabled",
   :value="typeof value !== 'undefined' ? [value] : []",
-  :delete-button="true",
-  @value-delete="$emit('input', undefined)",
+  @value-delete="deleteValue",
+  :delete-button="deleteButton",
+  :show-out="isFocused",
+  tabindex="",
   caret-icon="fa fa-calendar-o",
-  @enter="open()",
-  ref="inputEl")
+  ref="inputBox")
   template(slot="value", slot-scope="scope")
     slot(v-if="$scopedSlots.value", name="value", :value="scope.value")
     span(v-else) {{scope.value}}
-  fv-dialog.fv-datepicker-dialog(slot="out",
-    ref="dialog",
-    :class="dialogClass",
-    :left.sync="dialogPosition.left",
-    :top.sync="dialogPosition.top",
-    width="300px",
-    @close="$emit('close')",
-    @open="$emit('open')",
-    :first-focus-on="false",
-    :auto-close="false")
-    fv-header.header(height="4em", tabindex="0", @keydown.native="onHeaderKeydown")
+  template(slot="in")
+    span(tabindex="0",
+      @focus="onFocus(false)",
+      @blur="onBlur",
+      @keydown="onKeydown",
+      ref="input")
+  .box(slot="out",
+    @close="$emit('close')")
+    fv-header.header(height="4em", tabindex="-1")
       .fv-input-group.header-buttons
         fv-button.fv-sm(@click="moveValue('year', -1)", :icon="icons.prevYear", tabindex="-1")
-        fv-button.fv-sm(@click="moveValue('month', -1, false)", :icon="icons.prevMonth", tabindex="-1")
+        fv-button.fv-sm(@click="moveValue('month', -1)", :icon="icons.prevMonth", tabindex="-1")
       .title.fv-text-center
         h4 {{visualProps.month}}/{{visualProps.year}}
       .fv-input-group.header-buttons
-        fv-button.fv-sm(@click="moveValue('month', 1, false)", :icon="icons.nextMonth", tabindex="-1")
+        fv-button.fv-sm(@click="moveValue('month', 1)", :icon="icons.nextMonth", tabindex="-1")
         fv-button.fv-sm(@click="moveValue('year', 1)", :icon="icons.nextYear", tabindex="-1")
-    fv-content.content(tabindex="0", @keydown.native="onContentKeydown")
+    fv-content.content(tabindex="-1", @zkeydown.native="onKeydown", @zblur.native="onBlur")
       table.days-table
         tbody
           tr(v-for="dp in [0, 7, 14, 21, 28]")
@@ -43,26 +43,21 @@ fv-inputbox.fv-datepicker(:placeholder="typeof value !== 'undefined' ? '' : plac
 
 <script>
 import utility from '../utility'
-import fvMain from './fvMain.vue'
+import fvButton from './fvButton.vue'
+import fvHeader from './fvHeader.vue'
 import fvContent from './fvContent.vue'
-import fvDialog from './fvDialog.vue'
-import fvInput from './fvInput.vue'
 import fvInputbox from './fvInputbox.vue'
 
 export default {
   components: {
-    fvMain,
+    fvButton,
     fvContent,
-    fvDialog,
-    fvInput,
+    fvHeader,
     fvInputbox
   },
   props: {
     value: {
       default: undefined
-    },
-    dialogClass: {
-      default: ''
     },
     required: {
       type: [Boolean, Function],
@@ -76,6 +71,10 @@ export default {
       type: String,
       default: ''
     },
+    deleteButton: {
+      type: Boolean,
+      default: true
+    },
     dateLibrary: {
       type: [Object, Function]
     }
@@ -85,8 +84,8 @@ export default {
       Date: this.dateLibrary || require('../').dependencies['date'] || Date,
       editingValue: undefined,
       visualProps: {},
-      dialogPosition: {},
-      highlightedDate: null
+      highlightedDate: null,
+      isFocused: false
     }
   },
   created () {
@@ -114,8 +113,34 @@ export default {
     }
   },
   methods: {
+    onFocus (inputFocus) {
+      if (!this.disabled) {
+        this.setEditingValue()
+        this.calcVisualProps()
+        this.isFocused = true
+        if (inputFocus && this.$refs.input) {
+          this.$refs.input.focus()
+        }
+        if (this.$refs.inputBox) {
+          this.$refs.inputBox.calcOutPosition()
+        }
+      }
+    },
+    onBlur () {
+      setTimeout(() => {
+        const elem = document.querySelector(':focus')
+        if (!elem || !utility.isChildOf(elem, this.$el)) {
+          this.isFocused = false
+        }
+      }, 50)
+    },
+    deleteValue () {
+      this.$emit('input', undefined)
+    },
     setEditingValue () {
-      this.editingValue = new this.Date(this.value || Date.now())
+      if (!this.editingValue) {
+        this.editingValue = new this.Date(this.value || Date.now())
+      }
     },
     monthFirstDay (month, year) {
       return new this.Date(year, month, 1).getDay()
@@ -134,19 +159,6 @@ export default {
       this.$forceUpdate()
       return this.visualProps
     },
-    open () {
-      this.setEditingValue()
-      this.calcVisualProps()
-      const offset = utility.offsetTo(this.$el, utility.fvParent(this, 'fv-main').$el)
-      this.dialogPosition = {
-        left: `${offset.left}px`,
-        top: `${offset.top}px`
-      }
-      this.$refs.dialog.open()
-    },
-    close () {
-      this.$refs.dialog.close()
-    },
     focus () {
       this.$refs.inputEl.$el.focus()
     },
@@ -163,7 +175,7 @@ export default {
       }
       return this.editingValue.getDate() === date
     },
-    moveValue (unit, value, emit = false) {
+    moveValue (unit, value) {
       switch (unit) {
         case 'year':
           this.editingValue.setFullYear(this.editingValue.getFullYear() + value)
@@ -175,12 +187,7 @@ export default {
           this.editingValue.setDate(this.editingValue.getDate() + value)
           break
       }
-      const ret = new this.Date(this.editingValue)
-      if (emit) {
-        this.$emit('input', this.value && ret.toString() === this.value.toString() ? undefined : ret)
-        this.close()
-      }
-      this.calcVisualProps()
+      this.onFocus()
     },
     setDate (value, emit = false) {
       if (value !== null) {
@@ -192,11 +199,10 @@ export default {
       const ret = new this.Date(this.editingValue)
       if (emit) {
         this.$emit('input', ret)
-        this.close()
       }
-      this.calcVisualProps()
+      this.onFocus()
     },
-    onContentKeydown (event) {
+    onKeydown (event) {
       switch (event.which) {
         case 38: // up
           event.preventDefault()
@@ -218,28 +224,13 @@ export default {
           event.preventDefault()
           this.setDate(null, true)
           break
+        case 8: // backspace
+        case 46: // delete
+          if (this.deleteButton) {
+            this.deleteValue()
+          }
       }
       this.calcVisualProps()
-    },
-    onHeaderKeydown (event) {
-      switch (event.which) {
-        case 38: // up
-          event.preventDefault()
-          this.moveValue('year', -1)
-          break
-        case 40: // down
-          event.preventDefault()
-          this.moveValue('year', 1)
-          break
-        case process.env.direction === 'ltr' ? 37 : 39: // 37: left, 39: right,
-          event.preventDefault()
-          this.moveValue('month', -1)
-          break
-        case process.env.direction === 'ltr' ? 39 : 37: // 37: left, 39: right,
-          event.preventDefault()
-          this.moveValue('month', 1)
-          break
-      }
     },
     checkFvValidity (day, month, year) {
       if (typeof this.required === 'function') {
@@ -262,71 +253,64 @@ export default {
 @import '../styles/variables';
 @import '../styles/mixins';
 
-.fv-datepicker-dialog {
-  & .header {
-    &:focus {
-      color: $primary-color;
-    }
-
-    & .header-buttons {
-      overflow: visible;
-    }
+.fv-datepicker {
+  & .out-container {
+    max-width: 300px;
+    min-width: 250px;
   }
 
-  & .content {
-    padding: $padding-small;
-    width: 100%;
-    text-align: center;
+  & .box {
+    & .header {
+      &:focus {
+        color: $primary-color;
+      }
 
-    & table {
-      width: 100%;
-
-      & td {
-        width: 14.2%;
-        height: 40px;
-        vertical-align: middle;
-        border-radius: $border-radius;
-        cursor: pointer;
-
-        &[disabled] {
-          @include disabled;
-        }
-
-        &.selected {
-          @include yiq($primary-color);
-
-          &:not([disabled]):hover {
-            background: yiq($primary-color, 3%);
-          }
-
-          &:not([disabled]):active {
-            background: yiq($primary-color, 10%);
-          }
-        }
-
-        &:not([disabled]):hover {
-          background: yiq($bg-color, 3%);
-        }
-
-        &:not([disabled]):active {
-          background: yiq($bg-color, 10%);
-        }
+      & .header-buttons {
+        overflow: visible;
       }
     }
 
-    &:focus:not(:hover) {
+    & .content {
+      padding: $padding-small;
+      width: 100%;
+      text-align: center;
+
       & table {
-        & th {
-          color: $primary-color;
-        }
+        width: 100%;
 
         & td {
+          width: 14.2%;
+          height: 40px;
+          vertical-align: middle;
+          border-radius: $border-radius;
+          cursor: pointer;
+
+          &[disabled] {
+            @include disabled;
+          }
+
           &.highlighted {
             background: yiq($bg-color, 3%);
+          }
 
-            &.selected {
+          &.selected {
+            @include yiq($primary-color);
+
+            &:not([disabled]):hover {
               background: yiq($primary-color, 3%);
             }
+
+            &:not([disabled]):active {
+              background: yiq($primary-color, 10%);
+            }
+          }
+
+          &:not([disabled]):hover {
+            background: yiq($bg-color, 3%);
+          }
+
+          &:not([disabled]):active {
+            background: yiq($bg-color, 10%);
           }
         }
       }

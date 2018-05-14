@@ -1,82 +1,72 @@
 <template lang="pug">
-fv-inputbox(:value="multiple ? value : (typeof value !== 'undefined' ? [value] : [])",
+fv-inputbox.fv-select(:focus="isFocused",
+  @enter="onFocus(true)",
   :invalid="!fvValidate",
-  :placeholder="typeof value === 'undefined' || value.length === 0 ? placeholder : ''",
+  :placeholder="searchQuery || !isEmpty ? '' : placeholder",
   :disabled="disabled",
-  caret-icon="fa fa-caret-down",
-  @enter="open()",
-  delete-button,
+  :value="multiple ? value : (typeof value !== 'undefined' ? [value] : [])",
   @value-delete="deleteValue",
-  ref="inputEl")
+  :delete-button="deleteButton",
+  :show-out="showList",
+  tabindex="",
+  caret-icon="fa fa-chevron-down",
+  ref="inputBox")
   template(slot="value",
     slot-scope="scope")
-    slot(v-if="$scopedSlots.value", name="value", :value="scope.value", :option="singleValueOption(scope.value)")
+    slot(v-if="$scopedSlots.value", name="value", :value="scope.value", :option="valueProp(scope.value)")
     span(v-else) {{valueProp(scope.value, 'text')}}
-  fv-dialog.fv-select(slot="out",
-    ref="dialog",
-    :class="dialogClass",
-    :left.sync="dialogPosition.left",
-    :top.sync="dialogPosition.top",
-    :width="dialogPosition.width",
-    @close="$emit('close')",
-    @open="$emit('open')",
-    :first-focus-on="firstFocusOn",
-    :auto-close="false")
-    fv-header(v-if="showInput")
-      fv-input.fv-grow(:placeholder="placeholder || locale.search()",
-        v-model="searchQuery",
-        @input="$emit('search', searchQuery)",
-        @keydown.native="$refs.list.onKeydown($event)",
-        ref="input")
-    fv-content.fv-no-padding
-      .fv-text-center.fv-padding(v-if="loading")
-        i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation
-      fv-list.fv-no-border(v-else,
-        :tabindex="-1",
-        parent,
-        ref="list")
-        fv-list-item(v-for="option in options",
-          :key="optionProp(option, 'value')",
-          v-if="equalSearch(option)",
-          @click="clickOption(option)",
-          :selected="isSelected(option)",
-          :disabled="optionProp(option, 'disabled')")
-          slot(v-if="$scopedSlots.option", name="option", :option="option", :selected="isSelected(option)")
-          span(v-else) {{optionProp(option, 'text')}}
-        fv-list-item(v-if="allowInsert && searchQuery",
-          @click="addOption(searchQuery)")
-          i.fa.fa-plus
-          =" "
-          | {{locale.add(searchQuery)}}
-    fv-footer(v-if="multiple || allowInsert")
-      .fv-grow
-      fv-button.fv-ok(icon="fa fa-check",
-        :text="locale.ok()",
-        @click="close()")
+  template(slot="in")
+    input.input(v-model="searchQuery",
+      v-if="search !== false",
+      @focus="onFocus(false)",
+      @blur="onBlur",
+      :disabled="disabled"
+      @keydown="onKeydown",
+      @input="onSearch",
+      :size="searchQuery.length || 1",
+      ref="input")
+    span(v-else,
+      tabindex="0",
+      @focus="onFocus(false)",
+      @blur="onBlur",
+      @keydown="onKeydown",
+      ref="input")
+  .box(slot="out")
+    .fv-padding.fv-text-center(v-if="loading")
+      i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation
+    fv-list.fv-no-border(v-else,
+      :tabindex="-1",
+      parent,
+      ref="list")
+      fv-list-item(v-for="(option, i) in filteredOptions",
+        :key="i",
+        @click="selectOption(option)")
+          slot(v-if="$scopedSlots.option", name="option", :option="option")
+          span(v-else, v-text="optionProp(option, 'text')")
+      fv-list-item(v-if="allowInsert && searchQuery",
+        @click="onInsert(searchQuery)")
+        i.fa.fa-plus
+        =" "
+        span(v-text="locale.add(searchQuery)")
 </template>
 
 <script>
-import utility from '../utility'
 import locale from 'locale'
-import fvMain from './fvMain.vue'
-import fvHeader from './fvHeader.vue'
-import fvContent from './fvContent.vue'
-import fvDialog from './fvDialog.vue'
-import fvInput from './fvInput.vue'
+import utility from '../utility'
+import fvInputbox from './fvInputbox.vue'
 import fvList from './fvList.vue'
 import fvListItem from './fvListItem.vue'
 
 export default {
   components: {
-    fvMain,
-    fvHeader,
-    fvContent,
-    fvDialog,
-    fvInput,
+    fvInputbox,
     fvList,
     fvListItem
   },
   props: {
+    value: {
+      default: undefined
+    },
     options: {
       type: Array,
       default: () => []
@@ -92,16 +82,6 @@ export default {
     textKey: {
       type: String,
       default: 'text'
-    },
-    dialogClass: {
-      default: ''
-    },
-    value: {
-      default: undefined
-    },
-    multiple: {
-      type: Boolean,
-      default: false
     },
     required: {
       type: [Boolean, Function],
@@ -122,6 +102,10 @@ export default {
       type: String,
       default: ''
     },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
     allowInsert: {
       type: Boolean,
       default: false
@@ -129,20 +113,43 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    deleteButton: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
     return {
       locale,
-      searchQuery: '',
-      firstFocusOn: false,
-      dialogPosition: {}
+      isFocused: false,
+      searchQuery: ''
     }
   },
   computed: {
+    isEmpty () {
+      return !this.value || (this.value instanceof Array && this.value.length === 0)
+    },
+    filteredOptions () {
+      return this.options.filter(option => {
+        if (this.isSelectedOption(option)) {
+          return false
+        }
+        if (this.search === true) {
+          if (utility.contains(JSON.stringify(option), this.searchQuery)) {
+            return true
+          }
+          return false
+        }
+        return true
+      })
+    },
+    showList () {
+      return !!(this.isFocused && (this.filteredOptions.length || (this.allowInsert && this.searchQuery) || (this.loading)))
+    },
     fvValidate () {
       if (this.required === true) {
-        if (typeof this.value === 'undefined' || (this.value instanceof Array && this.value.length === 0)) {
+        if (!this.value || (this.value instanceof Array && this.value.length === 0)) {
           return false
         }
         return true
@@ -150,46 +157,48 @@ export default {
         return this.required(this.value)
       }
       return true
-    },
-    showInput () {
-      return this.search !== false || this.allowInsert
     }
   },
   methods: {
-    setValue (value) {
-      this.$emit('input', value)
+    setStructure () {
+      if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
+        this.$emit('input', [])
+      }
     },
-    open () {
-      if (typeof this.value !== 'undefined') {
-        if (!(this.value instanceof Array) && this.multiple) {
-          this.setValue([this.value])
+    onFocus (inputFocus) {
+      if (!this.disabled) {
+        this.isFocused = true
+        if (inputFocus && this.$refs.input) {
+          this.$refs.input.focus()
         }
-      } else {
-        this.setValue(this.multiple ? [] : undefined)
+        if (this.$refs.inputBox) {
+          this.$refs.inputBox.calcOutPosition()
+        }
       }
-      const offset = utility.offsetTo(this.$el, utility.fvParent(this, 'fv-main').$el)
-      this.dialogPosition = {
-        left: `${offset.left}px`,
-        top: `${offset.top}px`,
-        width: `${this.$refs.inputEl.$el.offsetWidth}px`
-      }
+    },
+    onBlur () {
+      setTimeout(() => {
+        const elem = document.querySelector(':focus')
+        if (!elem || !utility.isChildOf(elem, this.$el)) {
+          this.isFocused = false
+          this.searchQuery = ''
+        }
+      }, 50)
+    },
+    onInsert (userString) {
+      this.$emit('insert', userString)
       this.searchQuery = ''
-      this.$refs.dialog.open()
     },
-    focus () {
-      this.$refs.inputEl.$el.focus()
-    },
-    close () {
-      this.$refs.dialog.close()
-    },
-    isSelected (option) {
-      if (this.multiple && this.value !== undefined) {
-        return this.value.indexOf(this.optionProp(option, 'value')) !== -1
-      } else {
-        return this.value === this.optionProp(option, 'value')
+    onSearch () {
+      if (this.$refs.inputBox) {
+        this.$refs.inputBox.calcOutPosition()
       }
+      this.$emit('search', this.searchQuery)
     },
-    optionProp (option, prop = 'value') {
+    optionProp (option, prop) {
+      if (!prop) {
+        return option
+      }
       switch (prop) {
         case 'value':
           return this.valueKey ? option[this.valueKey] : option
@@ -199,95 +208,103 @@ export default {
           return this.disabledKey ? option[this.disabledKey] : false
       }
     },
-    singleValueOption (value) {
-      const founded = this.options.findIndex(option => this.optionProp(option, 'value') === value)
-      if (founded !== -1) {
-        return this.options[founded]
+    valueProp (value, prop) {
+      const founded = this.options.find(option => this.optionProp(option, 'value') === value)
+      if (!prop) {
+        return founded
       }
-      const option = this.valueKey ? {} : value
-      if (this.valueKey) {
-        option[this.valueKey] = value
-      }
-      if (this.textKey) {
-        option[this.textKey] = value
-      }
-      return option
-    },
-    valueProp (value, prop = 'value') {
-      const founded = this.options.findIndex(option => this.optionProp(option, 'value') === value)
-      if (founded !== -1) {
-        return this.optionProp(this.options[founded], prop)
+      if (typeof founded !== 'undefined') {
+        return this.optionProp(founded, prop)
       }
       return value
     },
-    addOption (value, select = true) {
-      const options = JSON.parse(JSON.stringify(this.options))
-      const founded = options.findIndex(option => this.optionProp(option, 'value') === value)
-      let option
-      if (founded === -1) {
-        option = this.valueKey ? {} : ''
-        if (this.valueKey) {
-          option[this.valueKey] = value
-        } else {
-          option = value
-        }
-        if (this.textKey) {
-          option[this.textKey] = value
-        }
-        options.unshift(option)
-        this.$emit('update:options', options)
-        this.$emit('insert-option', option)
-      } else {
-        option = options[founded]
-      }
-
-      if (select) {
-        this.clickOption(option)
-      }
-      this.searchQuery = ''
-      this.$refs.input.$el.focus()
-    },
-    clickOption (option) {
-      let newValue = typeof this.value === 'undefined' ? undefined : JSON.parse(JSON.stringify(this.value))
-      if (this.multiple) {
-        if (this.isSelected(option)) {
-          newValue.splice(newValue.indexOf(this.optionProp(option, 'value')), 1)
-        } else {
-          newValue.push(this.optionProp(option, 'value'))
-        }
-      } else {
-        if (!this.isSelected(option)) {
-          newValue = this.optionProp(option, 'value')
-        }
-      }
-      this.$emit('input', newValue)
-      this.searchQuery = ''
-      if (!this.multiple && !this.allowInsert) {
-        this.close()
-      } else if (this.showInput && this.$refs.input) {
-        this.$refs.input.$el.focus()
-      }
-    },
-    deleteValue (val) {
+    selectOption (option) {
       let newValue
+      const optionValue = this.optionProp(option, 'value')
       if (this.multiple) {
-        newValue = JSON.parse(JSON.stringify(this.value))
-        newValue.splice(newValue.indexOf(val), 1)
+        newValue = [...this.value, optionValue]
+      } else {
+        newValue = optionValue
       }
       this.$emit('input', newValue)
+      this.onFocus(true)
+      this.searchQuery = ''
     },
-    equalSearch (option) {
-      if (this.search !== true ||
-        !this.searchQuery ||
-        utility.contains(this.optionProp(option, 'value'), this.searchQuery) ||
-        utility.contains(this.optionProp(option, 'text'), this.searchQuery)) {
-        return true
+    deleteValue (value) {
+      if (this.multiple) {
+        if (typeof value === 'undefined') {
+          this.$emit('input', [])
+        } else {
+          const newValue = JSON.parse(JSON.stringify(this.value))
+          const indexOf = newValue.findIndex(selectedValue => JSON.stringify(selectedValue) === JSON.stringify(value))
+          if (indexOf !== -1) {
+            newValue.splice(indexOf, 1)
+          }
+          this.$emit('input', newValue)
+        }
+      } else {
+        this.$emit('input', undefined)
       }
-      return false
+    },
+    isSelectedOption (option) {
+      if (typeof this.value === 'undefined') {
+        return false
+      }
+      if (this.multiple) {
+        const indexOf = this.value.findIndex(selectedValue => JSON.stringify(selectedValue) === JSON.stringify(this.optionProp(option, 'value')))
+        if (indexOf !== -1) {
+          return true
+        }
+        return false
+      }
+      return this.optionProp(option, 'value') === this.valueProp(this.value, 'value')
+    },
+    onKeydown (event) {
+      switch (event.which) {
+        case 37: // left
+        case 38: // up
+        case 39: // right
+        case 40: // down
+        case 13: // enter
+          if (this.$refs.list) {
+            this.$refs.list.onKeydown(event)
+          }
+          break
+        case 8: // backspace
+          if (this.searchQuery.length === 0 && this.deleteButton) {
+            if (this.multiple) {
+              if (this.value.length) {
+                this.deleteValue(this.value[this.value.length - 1])
+              }
+            } else {
+              this.deleteValue()
+            }
+          }
+          break
+        case 46: // delete
+          this.searchQuery = ''
+          if (this.deleteButton) {
+            this.deleteValue()
+          }
+      }
     }
   },
-  mounted () {
-    this.firstFocusOn = !utility.isSmallViewport()
+  created () {
+    this.setStructure()
   }
 }
 </script>
+
+<style lang="scss">
+@import '../styles/variables';
+@import '../styles/functions';
+@import '../styles/mixins';
+
+.fv-select {
+  & .input {
+    border: none;
+    background: transparent;
+    width: auto;
+  }
+}
+</style>

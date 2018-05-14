@@ -7,6 +7,7 @@ fv-inputbox.fv-autocomplete(:focus="isFocused",
   :value="multiple ? value : (typeof value !== 'undefined' ? [value] : [])",
   @value-delete="deleteValue",
   delete-button,
+  :show-out="isFocused",
   tabindex="")
   template(slot="value",
     slot-scope="scope")
@@ -21,7 +22,7 @@ fv-inputbox.fv-autocomplete(:focus="isFocused",
       @input="$emit('search', searchQuery)",
       :size="searchQuery.length || 1",
       ref="inputEl")
-  .list(slot="out", v-show="isFocused")
+  .list(slot="out")
     .fv-padding.fv-text-center(v-if="loading")
       i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation
     fv-list.fv-no-border(v-else,
@@ -267,16 +268,6 @@ export default {
     border: none;
     background: transparent;
     width: auto;
-  }
-
-  & .list {
-    @include yiq($bg-color);
-    @include shadow(bottom);
-
-    border: solid 1px darken($bg-color-light, $shadow-percent);
-    margin-top: #{$padding / 2};
-    border-radius: $border-radius;
-    overflow: hidden;
   }
 }
 </style>
