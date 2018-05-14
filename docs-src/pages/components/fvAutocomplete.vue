@@ -2,7 +2,7 @@
 fv-content
   div(:class="$root.mainClass")
     doc-description
-      | To create full featured autocomplete and tags input in your application, use this! (added from 1.1.0)
+      | To create full featured autocomplete and tags input in your application, use this! (added from 1.1.0) (will remove in 2.x.y. use fv-select instead)
     doc-code
       = "<fv-autocomplete></fv-autocomplete>"
     doc-example

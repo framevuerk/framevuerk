@@ -29,7 +29,7 @@ fv-content
           fv-datepicker(v-model="inputs.d1", placeholder="Pick your favorite date!")
         .fv-col-lg-6.fv-col-xs-12
           p Custom Formatted
-          fv-datepicker(v-model="inputs.d2", placeholder="Pick your favorite date!")
+          fv-datepicker(v-model="inputs.d2", placeholder="Pick your favorite date!", :delete-button="false")
             template(slot="value", slot-scope="scope")
               span {{scope.value.getDate()}} - {{scope.value.getMonth() + 1}} - {{scope.value.getFullYear()}}
         .fv-col-lg-6.fv-col-xs-12
@@ -115,6 +115,12 @@ export default {
             type: 'String',
             default: '""',
             description: 'Just like normal select placeholder attribute'
+          },
+          {
+            name: 'delete-button',
+            type: 'Boolean',
+            default: 'true',
+            description: 'Allow user to delete selected value.'
           },
           {
             name: 'date-library',
