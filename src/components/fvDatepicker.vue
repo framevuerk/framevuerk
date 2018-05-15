@@ -160,7 +160,7 @@ export default {
       return this.visualProps
     },
     focus () {
-      this.$refs.inputEl.$el.focus()
+      this.$refs.input.focus()
     },
     isSelected (date) {
       if (!this.value) {
