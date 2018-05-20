@@ -93,7 +93,8 @@ export default {
                 this.sidebarItem('fvFilepicker', null, 'fa fa-file'),
                 this.sidebarItem('fvAutocomplete', null, 'fa fa-tags'),
                 this.sidebarItem('fvForm', null, 'fa fa-wpforms'),
-                this.sidebarItem('fvSteps', null, 'fa fa-list-ol')
+                this.sidebarItem('fvSteps', null, 'fa fa-list-ol'),
+                this.sidebarItem('fvRange', null, 'fa fa-arrows-h')
               ]
             }, {
               text: 'Other',
