@@ -16,13 +16,13 @@ fv-content
       .fv-row
         .fv-col-12
           p Normal {{inputs.d1}}
-          fv-range(v-model="inputs.d1")
+          fv-range(v-model="inputs.d1", :data="{from: 10, to: 20}")
         .fv-col-12
           p Normal {{inputs.d2}}
           fv-range(v-model="inputs.d2", multiple)
         .fv-col-12
           p Normal {{inputs.d3}}
-          fv-range(v-model="inputs.d3", :data="[3,6,8,13]")
+          fv-range(v-model="inputs.d3", :data="[1,3,6,8,13]", disabled)
 
         //- .fv-col-sm-3
         //-   p Invalid
@@ -51,7 +51,7 @@ export default {
       inputs: {
         d1: 1,
         d2: [1, 4],
-        d3: 3
+        d3: 6
       },
       api: {
         prop: [
@@ -60,18 +60,6 @@ export default {
             type: '',
             default: '',
             description: 'Value of input'
-          },
-          {
-            name: 'offValue',
-            type: '',
-            default: 'false',
-            description: 'Value of switch, when it is unchecked'
-          },
-          {
-            name: 'onValue',
-            type: '',
-            default: 'true',
-            description: 'Value of switch, when it is checked'
           },
           {
             name: 'required',
@@ -83,7 +71,13 @@ export default {
             name: 'disabled',
             type: 'Boolean',
             default: 'false',
-            description: 'Just like normal input disabled attribute'
+            description: 'Just like normal input disabled attribute.'
+          },
+          {
+            name: 'multiple',
+            type: 'Boolean',
+            default: 'false',
+            description: 'Allow user to select from, to values.'
           }
         ],
         event: [],
@@ -95,11 +89,6 @@ export default {
           }
         ]
       }
-    }
-  },
-  methods: {
-    click(){
-      this.inputs.d1 = parseInt(prompt())
     }
   }
 }
