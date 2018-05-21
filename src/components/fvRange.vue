@@ -1,24 +1,19 @@
 <template lang="pug">
 div
   div {{filteredData}}
-  div {{width}}
-  div {{inlineWidth}}
-  div {{filteredValue}}
-  .fv-range(
-      zclick="focus")
-    .step(v-for="step in filteredData", :style="{left: step.x + 'px'}", :title="step.value")
+  .fv-range(:disabled="disabled",
+      @click="click")
     .filler(ref="filler")
+    .step(v-for="step in filteredData", :style="{left: blockStart === 'left' ? step.x + 'px' : 'auto', right: blockStart === 'right' ? step.x + 'px' : 'auto',}", :title="step.value")
     .handler(v-for="i in filteredValue.length",
+      :tabindex="disabled? '' : 0",
       ref="handler",
       :key="i",
+      @focus="onHandlerFocus(i - 1)",
       @mousedown="moveStart($event, i - 1)",
-      @mouseup="moveEnd($event, selectedHandler)",
-      zmousemove="moving($event, movingHandler)",
       @touchstart="moveStart($event, i - 1)",
-      @mousemove.stop="",
-      ztouchmove="moving($event, i - 1)",
-      @touchend="moveEnd($event, movingHandler)"
-      tabindex="0")
+      @keydown="onKeydown($event, i - 1)",
+      @click="onHandlerFocus(i - 1)")
 </template>
 
 <script>
@@ -32,7 +27,18 @@ export default {
     },
     data: {
       type: [Array, Object], // [1,2,3,...] or {from:1, to: 99}
-      default: () => [1,2,3,4,5,6]
+      default: () => {
+        return {
+          from: 1,
+          to: 10
+        }
+      },
+      validator: (value) => {
+        if (value instanceof Array || (value === Object(value) && typeof value.from === 'number' && typeof value.to === 'number' && value.from < value.to)) {
+          return true
+        }
+        return false
+      }
     },
     multiple: {
       type: Boolean,
@@ -50,16 +56,16 @@ export default {
   data () {
     return {
       width: 0,
-      isMoving: false,
-      handlerTempPosition: [0, 0],
-      selectedHandler: 0,
-      movingHandler: -1
+      height: 0,
+      blockStart: process.env.direction === 'ltr' ? 'left' : 'right',
+      blockEnd: process.env.direction === 'ltr' ? 'right' : 'left',
+      selectedHandler: -1
     }
   },
   computed: {
     fvValidate () {
       if (this.required === true) {
-        return this.value === this.onValue
+        return typeof this.value !== 'undefined'
       } else if (typeof this.required === 'function') {
         return this.required(this.value)
       }
@@ -75,74 +81,127 @@ export default {
         return [this.value]
       }
     },
+    dataLength () {
+      if (this.data instanceof Array) {
+        return this.data.length
+      } else if (this.data === Object(this.data)) {
+        return (this.data.to - this.data.from) + 1
+      }
+    },
     stepWidth () {
-      return (this.inlineWidth / (this.data.length - 1))
+      return (this.inlineWidth / (this.dataLength - 1))
     },
     filteredData () {
       const ret = []
-      
-      for(let index = 0; index < this.data.length; index++) {
-        ret.push({
-          x: this.stepWidth * index,
-          value: this.data[index]
-        })
+      if (this.data instanceof Array) {
+        for (let index = 0; index < this.dataLength; index++) {
+          ret.push({
+            x: this.stepWidth * index,
+            value: this.data[index]
+          })
+        }
+      } else if (this.data === Object(this.data)) {
+        let index = 0
+        for (let value = this.data.from; value <= this.data.to; value++ && index++) {
+          ret.push({
+            x: this.stepWidth * index,
+            value
+          })
+        }
       }
+
       return ret
-    },
-    handlerPosition () {
-      return this.filteredValue.map(fvalue => {
-        const filteredDataItem = this.filteredData.find(fd => fd.value === fvalue)
-        return `${(filteredDataItem ? filteredDataItem.x : 0)}px`
-      })
     }
   },
+  created () {
+    // TODO set structure
+  },
   mounted () {
-    utility.doIt(()=>{
+    utility.doIt(() => {
       this.width = this.$el.offsetWidth
       this.height = this.$refs.handler[0].offsetHeight
+      this.setValue(this.filteredValue[0], 0)
       if (this.multiple) {
-        this.setValue(this.value[0], 0)
-        this.setValue(this.value[1], 1)
+        this.setValue(this.filteredValue[1], 1)
       }
     })
   },
   methods: {
-    focus() {
+    focus (handlerIndex = -1) {
+      if (this.disabled) {
+        return
+      }
+      this.selectedHandler = handlerIndex || 0
       this.$refs.handler[this.selectedHandler].focus()
-    },  
-    moveStart (event, handlerIndex) {
-      event.preventDefault()
-      console.log('move start by', event.type, handlerIndex)
-      this.movingHandler = handlerIndex
+    },
+    onKeydown (event, handlerIndex) {
+      const currentValue = this.filteredValue[handlerIndex]
+      const index = this.filteredData.findIndex(fd => JSON.stringify(fd.value) === JSON.stringify(currentValue))
+      switch (event.which) {
+        case process.env.direction === 'ltr' ? 37 : 39: // 37: left, 39: right,
+          if (index === 0) {
+            return
+          }
+          this.setValue(this.filteredData[index - 1].value, handlerIndex)
+          break
+        case process.env.direction === 'ltr' ? 39 : 37: // 37: left, 39: right,
+          if (index === this.dataLength - 1) {
+            return
+          }
+          this.setValue(this.filteredData[index + 1].value, handlerIndex)
+          break
+      }
+    },
+    onHandlerFocus (handlerIndex) {
+      if (this.disabled) {
+        return
+      }
       this.selectedHandler = handlerIndex
+    },
+    moveStart (event, handlerIndex) {
+      if (this.disabled) {
+        return
+      }
+      event.preventDefault()
+      this.focus(handlerIndex)
       this.bindEvents()
-      
-
     },
     moveEnd (event) {
       event.preventDefault()
-      console.log('move end by', event.type, this.selectedHandler)
-      const x = parseInt(this.$refs.handler[this.selectedHandler].style.left)
+      this.focus(this.selectedHandler)
+
+      const x = parseInt(this.$refs.handler[this.selectedHandler].style[this.blockStart])
       const value = this.calcValueByX(x)
-      
-      this.setValue(value, this.selectedHandler)
-      this.unbindEvents()
-      this.movingHandler = -1
-      this.selectedHandler = 0
-    },
-    moving (event) {
-      event.preventDefault()
-      if (this.movingHandler === -1) {
+      if (typeof value === 'undefined') {
+        this.unbindEvents()
         return
       }
-      console.log('move ing by', event.type, this.movingHandler)
+      this.setValue(value, this.selectedHandler)
+      this.unbindEvents()
+    },
+    click (event) {
+      if (this.disabled) {
+        return
+      }
+      const x = this.calcXByEvent(event)
+      this.focus(this.selectedHandler)
+      this.setValue(this.calcValueByX(x), this.selectedHandler)
+    },
+    handlerFocus (handlerIndex) {
+      if (this.disabled) {
+        return
+      }
+      this.selectedHandler = handlerIndex
+    },
+    moving (event) {
+      if (this.selectedHandler === -1 || this.disabled) {
+        return
+      }
+      event.preventDefault()
       event.stopPropagation()
-      let x = event.changedTouches && event.changedTouches.length ? event.changedTouches[0].clientX: event.screenX
-      x-=this.$el.getBoundingClientRect().x
-      x = x > this.inlineWidth ? this.inlineWidth : x
-      x = x < 0 ? 0 : x
-
-      this.setValue(this.calcValueByX(x), this.movingHandler)
+      this.focus(this.selectedHandler)
+      const x = this.calcXByEvent(event)
+      this.setValue(this.calcValueByX(x), this.selectedHandler)
     },
     bindEvents () {
       document.body.addEventListener('mousemove', this.moving)
@@ -156,35 +215,40 @@ export default {
       document.body.removeEventListener('mouseup', this.moveEnd)
       document.body.removeEventListener('touchend', this.moveEnd)
     },
-    setValue(value, handlerIndex, emit = true) {
+    setValue (value, handlerIndex) {
       let ret = this.filteredValue
       ret[handlerIndex] = value
       ret.sort((a, b) => a >= b ? 1 : -1)
 
-      let left
-      let right
-      
       if (ret.length > 1) {
-        this.$refs.filler.style.left = `${this.calcXByValue(ret[0])}px`
-        this.$refs.filler.style.right = `${this.width - this.calcXByValue(ret[1])}px`
-        this.$refs.handler[0].style.left = `${this.calcXByValue(ret[0])}px`
-        this.$refs.handler[1].style.left = `${this.calcXByValue(ret[1])}px`
+        this.$refs.filler.style[this.blockStart] = `${this.calcXByValue(ret[0])}px`
+        this.$refs.filler.style[this.blockEnd] = `${this.width - this.calcXByValue(ret[1]) - (this.height / 2)}px`
+        this.$refs.handler[0].style[this.blockStart] = `${this.calcXByValue(ret[0])}px`
+        this.$refs.handler[1].style[this.blockStart] = `${this.calcXByValue(ret[1])}px`
         this.$emit('input', ret)
       } else {
-        this.$refs.filler.style.left = `0px`
-        this.$refs.filler.style.right = `${this.width - this.calcXByValue(ret[0])}px`
-        this.$refs.handler[0].style.left = `${this.calcXByValue(value)}px`
+        this.$refs.filler.style[this.blockStart] = `0px`
+        this.$refs.filler.style[this.blockEnd] = `${this.width - this.calcXByValue(ret[0]) - (this.height / 2)}px`
+        this.$refs.handler[0].style[this.blockStart] = `${this.calcXByValue(value)}px`
         this.$emit('input', ret[0])
       }
     },
-    calcValueByX(x){
-      for (const i = 0; i < this.filteredData.length; i++) {
+    calcXByEvent (event) {
+      let x = event.changedTouches && event.changedTouches.length ? event.changedTouches[0].clientX : (event.pageX - 0)
+      x -= this.$el.getBoundingClientRect().x
+      x = x > this.inlineWidth ? this.inlineWidth : x
+      x = x < 0 ? 0 : x
+      x = this.blockStart === 'right' ? this.width - x : x
+      return x
+    },
+    calcValueByX (x) {
+      for (let i = 0; i < this.dataLength; i++) {
         if (x >= this.filteredData[i].x - (this.stepWidth / 2) && x < this.filteredData[i].x + (this.stepWidth / 2)) {
           return this.filteredData[i].value
         }
       }
     },
-    calcXByValue(value){
+    calcXByValue (value) {
       return this.filteredData.find(fd => JSON.stringify(fd.value) === JSON.stringify(value)).x
     }
   }
@@ -197,58 +261,53 @@ export default {
 @import '../styles/mixins';
 
 .fv-range {
-  // @include shadow(inset-bottom, $shadow-color);
+  @include shadow(inset-bottom);
 
   background: $bg-color-dark;
   border: solid 1px $shadow-color;
   padding: 0;
   position: relative;
-  height: 0.5em;
-  border-radius: 0.3em;
-  margin: 0.9em 0;
+  height: 0.8em;
+  border-radius: 0.4em;
+  margin: 1em 0;
 
   & .step {
     width: 1px;
     margin-left: 1em;
-    display: block;
     position: absolute;
     top: 0;
     height: 100%;
     background: $shadow-color;
   }
+
   & .filler {
     margin: 0;
-    display: block;
     position: absolute;
     width: auto;
     height: 100%;
-    background: $primary-color;
-    border-radius: 0.3em;
+    background: $primary-color-light;
+    border-radius: 0.4em;
   }
 
   & > .handler {
     @include shadow(bottom, $shadow-color);
 
-    margin: 0 -1px;
     padding: 0;
     height: 2em;
     width: 2em;
-    top: -0.75em;
+    top: -0.6em;
     display: inline-block;
     position: absolute;
     border-radius: 1em;
     background: $bg-color-light;
     border: solid 1px $shadow-color;
     box-shadow: 0 1px 4px $shadow-color;
-
-    // transition-duration: $transition-speed;
-    // transition-property: left;
+    cursor: pointer;
 
     &:focus {
       @include outline;
     }
   }
-
 
   &[disabled] {
     @include disabled;
