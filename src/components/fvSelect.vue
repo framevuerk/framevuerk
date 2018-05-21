@@ -149,7 +149,7 @@ export default {
     },
     fvValidate () {
       if (this.required === true) {
-        if (!this.value || (this.value instanceof Array && this.value.length === 0)) {
+        if (typeof this.value === 'undefined' || (this.value instanceof Array && this.value.length === 0)) {
           return false
         }
         return true
