@@ -2,34 +2,24 @@
 fv-content
   div(:class="$root.mainClass")
     doc-description
-      | To create switch in your application, use this! Note that before using this, you can add
-      =" "
-      a.fv-link(href="http://hammerjs.github.io/", target="_blank") HammerJs
-      |  as dependency of framevuerk to allow touch actions.
-    doc-code(title="Javascript:", lang="javascript")
-      = "import Framevuerk from 'framevuerk'\n"
-      = "import Hammer from 'hammerjs'\n"
-      = "Framevuerk.use('hammer', Hammer)\n"
+      | To create normall and multiple range slider in your application, use this!
     doc-code
       = "<fv-range></fv-range>"
     doc-example
       .fv-row
         .fv-col-12
-          p Normal {{inputs.d1}}
-          fv-range(v-model="inputs.d1", :data="{from: 10, to: 20}")
+          p Normal
+          fv-range(v-model="inputs.d1", :data="{from: 1, to: 20}", required)
         .fv-col-12
-          p Normal {{inputs.d2}}
+          p Multiple
           fv-range(v-model="inputs.d2", multiple)
         .fv-col-12
-          p Normal {{inputs.d3}}
+          p Disabled
           fv-range(v-model="inputs.d3", :data="[1,3,6,8,13]", disabled)
 
-        //- .fv-col-sm-3
-        //-   p Invalid
-        //-   //fv-range.focus(invalid)
-        //- .fv-col-sm-3
-        //-   p Disabled
-        //-   //fv-range.fv-block(disabled)
+        .fv-col-12
+          p Invalid
+          fv-range.focus(v-model="inputs.d4", invalid)
     doc-api(:rows="api")
 </template>
 
@@ -49,9 +39,10 @@ export default {
   data () {
     return {
       inputs: {
-        d1: 1,
+        d1: 22,
         d2: [1, 4],
-        d3: 6
+        d3: 6,
+        d4: 1
       },
       api: {
         prop: [
@@ -59,7 +50,13 @@ export default {
             name: 'value',
             type: '',
             default: '',
-            description: 'Value of input'
+            description: 'Value of input.'
+          },
+          {
+            name: 'required',
+            type: '[Array, Object]',
+            default: '{ from: 1, to: 10}',
+            description: 'List of available data or just Object with from:Number and to:Number keys.'
           },
           {
             name: 'required',
@@ -78,14 +75,6 @@ export default {
             type: 'Boolean',
             default: 'false',
             description: 'Allow user to select from, to values.'
-          }
-        ],
-        event: [],
-        method: [
-          {
-            name: 'toggle',
-            params: '',
-            description: 'Toggle value of switch'
           }
         ]
       }
