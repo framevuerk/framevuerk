@@ -1,7 +1,7 @@
 <template lang="pug">
 fv-main#app
   fv-header
-    fv-button(@click="$refs.sidebar.toggle()", icon="fa fa-bars", v-show="isSidebarPinned !== false")
+    fv-button.fv-col-lg-0(@click="$refs.sidebar.toggle()", icon="fa fa-bars")
     .space(v-show="isSidebarPinned !== false")
     .title
       h2.fv-no-wrap {{$route.name}}
@@ -93,7 +93,8 @@ export default {
                 this.sidebarItem('fvFilepicker', null, 'fa fa-file'),
                 this.sidebarItem('fvAutocomplete', null, 'fa fa-tags'),
                 this.sidebarItem('fvForm', null, 'fa fa-wpforms'),
-                this.sidebarItem('fvSteps', null, 'fa fa-list-ol')
+                this.sidebarItem('fvSteps', null, 'fa fa-list-ol'),
+                this.sidebarItem('fvRange', null, 'fa fa-arrows-h')
               ]
             }, {
               text: 'Other',

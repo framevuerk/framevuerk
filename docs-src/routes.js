@@ -91,6 +91,11 @@ module.exports = function (mode) {
       component: mode === 'app' ? require('./pages/components/fvSwitch.vue').default : null
     },
     {
+      name: 'fvRange',
+      path: '/components=fvRange',
+      component: mode === 'app' ? require('./pages/components/fvRange.vue').default : null
+    },
+    {
       name: 'fvCheck',
       path: '/components=fvCheck',
       component: mode === 'app' ? require('./pages/components/fvCheck.vue').default : null

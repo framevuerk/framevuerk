@@ -10,7 +10,7 @@ $width-1: 8.33%;
   width: 100%;
 }
 
-[class*='fv-col'] {
+[class*='fv-col']:not([class*='-0']) {
   flex-grow: 1;
   max-width: 100%;
   min-height: 1px;

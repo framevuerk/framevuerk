@@ -28,6 +28,7 @@ import fvToast from './components/fvToast.vue'
 import fvAutocomplete from './components/fvAutocomplete.vue'
 import fvAvatar from './components/fvAvatar.vue'
 import fvSteps from './components/fvSteps.vue'
+import fvRange from './components/fvRange.vue'
 
 module.exports = {
   fvMain,
@@ -57,6 +58,7 @@ module.exports = {
   fvAutocomplete,
   fvAvatar,
   fvSteps,
+  fvRange,
   use (libName, lib) {
     this.dependencies[libName] = lib
   },
@@ -89,6 +91,7 @@ module.exports = {
     Vue.component('fvAutocomplete', fvAutocomplete)
     Vue.component('fvAvatar', fvAvatar)
     Vue.component('fvSteps', fvSteps)
+    Vue.component('fvRange', fvRange)
     Vue.prototype.$fvToast = new (Vue.extend(fvToast))()
     Vue.fvToast = Vue.prototype.$fvToast
     // Directives

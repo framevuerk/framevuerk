@@ -8,6 +8,9 @@ export default {
   methods: {
     submit () {
       function fvValidate (child) {
+        if (typeof child.disabled !== 'undefined' && child.disabled) {
+          return true
+        }
         if (typeof child.fvValidate !== 'undefined' && !child.fvValidate) {
           return false
         }
