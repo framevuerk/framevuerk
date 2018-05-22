@@ -1,8 +1,7 @@
 <template lang="pug">
-div
-  div {{filteredData}}
   .fv-range(:disabled="disabled",
-      @click="click")
+    :invalid="!fvValidate",
+    @click.left="onClick")
     .filler(ref="filler")
     .step(v-for="step in filteredData", :style="{left: blockStart === 'left' ? step.x + 'px' : 'auto', right: blockStart === 'right' ? step.x + 'px' : 'auto',}", :title="step.value")
     .handler(v-for="i in filteredValue.length",
@@ -22,8 +21,7 @@ import utility from '../utility'
 export default {
   props: {
     value: {
-      type: [Array, Number],
-      default: 0
+      required: true
     },
     data: {
       type: [Array, Object], // [1,2,3,...] or {from:1, to: 99}
@@ -83,7 +81,7 @@ export default {
     },
     dataLength () {
       if (this.data instanceof Array) {
-        return this.data.length
+        return this.data.filter((item, i, arr) => arr.indexOf(item) === i).length
       } else if (this.data === Object(this.data)) {
         return (this.data.to - this.data.from) + 1
       }
@@ -92,13 +90,14 @@ export default {
       return (this.inlineWidth / (this.dataLength - 1))
     },
     filteredData () {
-      const ret = []
+      let ret = []
       if (this.data instanceof Array) {
         for (let index = 0; index < this.dataLength; index++) {
           ret.push({
             x: this.stepWidth * index,
             value: this.data[index]
           })
+          ret = ret.filter((item, i, arr) => arr.indexOf(item) === i)
         }
       } else if (this.data === Object(this.data)) {
         let index = 0
@@ -109,12 +108,11 @@ export default {
           })
         }
       }
-
       return ret
     }
   },
   created () {
-    // TODO set structure
+    this.setStructure()
   },
   mounted () {
     utility.doIt(() => {
@@ -127,11 +125,29 @@ export default {
     })
   },
   methods: {
+    setStructure () {
+      const set = () => {
+        if (this.multiple) {
+          this.$emit('input', [this.filteredData[0].value, this.filteredData[this.dataLength - 1].value])
+        } else {
+          this.$emit('input', this.filteredData[0].value)
+        }
+      }
+      if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
+        set()
+      }
+      for (let val of this.filteredValue) {
+        if (this.filteredData.findIndex(item => item.value === val) === -1) {
+          set()
+          break
+        }
+      }
+    },
     focus (handlerIndex = -1) {
       if (this.disabled) {
         return
       }
-      this.selectedHandler = handlerIndex || 0
+      this.selectedHandler = handlerIndex < 0 ? 0 : handlerIndex
       this.$refs.handler[this.selectedHandler].focus()
     },
     onKeydown (event, handlerIndex) {
@@ -169,7 +185,6 @@ export default {
     moveEnd (event) {
       event.preventDefault()
       this.focus(this.selectedHandler)
-
       const x = parseInt(this.$refs.handler[this.selectedHandler].style[this.blockStart])
       const value = this.calcValueByX(x)
       if (typeof value === 'undefined') {
@@ -179,13 +194,15 @@ export default {
       this.setValue(value, this.selectedHandler)
       this.unbindEvents()
     },
-    click (event) {
+    onClick (event) {
       if (this.disabled) {
         return
       }
       const x = this.calcXByEvent(event)
-      this.focus(this.selectedHandler)
-      this.setValue(this.calcValueByX(x), this.selectedHandler)
+      const value = this.calcValueByX(x)
+      const handlerIndex = this.multiple && value >= this.filteredValue[1] ? 1 : 0
+      this.focus(handlerIndex)
+      this.setValue(this.calcValueByX(x), handlerIndex)
     },
     handlerFocus (handlerIndex) {
       if (this.disabled) {
@@ -302,7 +319,7 @@ export default {
     background: $bg-color-light;
     border: solid 1px $shadow-color;
     box-shadow: 0 1px 4px $shadow-color;
-    cursor: pointer;
+    cursor: move;
 
     &:focus {
       @include outline;
@@ -311,6 +328,12 @@ export default {
 
   &[disabled] {
     @include disabled;
+  }
+
+  &[invalid] {
+    & > .handler:focus {
+      @include outline($danger-color);
+    }
   }
 }
 </style>
