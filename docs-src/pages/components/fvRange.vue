@@ -2,7 +2,7 @@
 fv-content
   div(:class="$root.mainClass")
     doc-description
-      | To create normall and multiple range slider in your application, use this!
+      | To create normall and multiple range slider in your application, use this! (added from 1.10.0)
     doc-code
       = "<fv-range></fv-range>"
     doc-example
