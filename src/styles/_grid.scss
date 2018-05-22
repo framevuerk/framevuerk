@@ -10,12 +10,17 @@ $width-1: 8.33%;
   width: 100%;
 }
 
-[class*='fv-col']:not([class*='-0']) {
+[class*='fv-col'] {
   flex-grow: 1;
   max-width: 100%;
   min-height: 1px;
   padding: $padding / 2;
   position: relative;
+}
+
+[class*='fv-col'][class*='-0'] {
+  max-width: 0;
+  flex-grow: 0;
 }
 
 @for $j from 1 through 12 {
