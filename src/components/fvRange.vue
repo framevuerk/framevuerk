@@ -3,7 +3,6 @@
     :invalid="!fvValidate",
     @click.left="onClick")
     .filler(ref="filler")
-    .step(v-for="step in filteredData", :style="{left: blockStart === 'left' ? step.x + 'px' : 'auto', right: blockStart === 'right' ? step.x + 'px' : 'auto',}", :title="step.value")
     .handler(v-for="i in filteredValue.length",
       :tabindex="disabled? '' : 0",
       ref="handler",
@@ -69,9 +68,6 @@ export default {
       }
       return true
     },
-    inlineWidth () {
-      return this.width - this.height
-    },
     filteredValue () {
       if (this.multiple) {
         return this.value
@@ -87,7 +83,7 @@ export default {
       }
     },
     stepWidth () {
-      return (this.inlineWidth / (this.dataLength - 1))
+      return 100 / (this.dataLength - 1)
     },
     filteredData () {
       let ret = []
@@ -116,8 +112,6 @@ export default {
   },
   mounted () {
     utility.doIt(() => {
-      this.width = this.$el.offsetWidth
-      this.height = this.$refs.handler[0].offsetHeight
       this.setValue(this.filteredValue[0], 0)
       if (this.multiple) {
         this.setValue(this.filteredValue[1], 1)
@@ -238,29 +232,33 @@ export default {
       ret.sort((a, b) => a >= b ? 1 : -1)
 
       if (ret.length > 1) {
-        this.$refs.filler.style[this.blockStart] = `${this.calcXByValue(ret[0])}px`
-        this.$refs.filler.style[this.blockEnd] = `${this.width - this.calcXByValue(ret[1]) - (this.height / 2)}px`
-        this.$refs.handler[0].style[this.blockStart] = `${this.calcXByValue(ret[0])}px`
-        this.$refs.handler[1].style[this.blockStart] = `${this.calcXByValue(ret[1])}px`
+        this.$refs.filler.style[this.blockStart] = `${this.calcXByValue(ret[0])}%`
+        this.$refs.filler.style[this.blockEnd] = `${100 - this.calcXByValue(ret[1])}%`
+        this.$refs.handler[0].style[this.blockStart] = `${this.calcXByValue(ret[0])}%`
+        this.$refs.handler[1].style[this.blockStart] = `${this.calcXByValue(ret[1])}%`
         this.$emit('input', ret)
       } else {
-        this.$refs.filler.style[this.blockStart] = `0px`
-        this.$refs.filler.style[this.blockEnd] = `${this.width - this.calcXByValue(ret[0]) - (this.height / 2)}px`
-        this.$refs.handler[0].style[this.blockStart] = `${this.calcXByValue(value)}px`
+        this.$refs.filler.style[this.blockStart] = `0%`
+        this.$refs.filler.style[this.blockEnd] = `${100 - this.calcXByValue(ret[0])}%`
+        this.$refs.handler[0].style[this.blockStart] = `${this.calcXByValue(value)}%`
         this.$emit('input', ret[0])
       }
     },
     calcXByEvent (event) {
       let x = event.changedTouches && event.changedTouches.length ? event.changedTouches[0].clientX : (event.pageX - 0)
       x -= this.$el.getBoundingClientRect().x
-      x = x > this.inlineWidth ? this.inlineWidth : x
-      x = x < 0 ? 0 : x
-      x = this.blockStart === 'right' ? this.width - x : x
+      const width = this.$el.offsetWidth
+      x *= (100 / width) // convert to percetange
+      x = this.blockStart === 'right' ? 100 - x : x
       return x
     },
     calcValueByX (x) {
       for (let i = 0; i < this.dataLength; i++) {
-        if (x >= this.filteredData[i].x - (this.stepWidth / 2) && x < this.filteredData[i].x + (this.stepWidth / 2)) {
+        if (x >= 100) {
+          return this.filteredData[this.filteredData.length - 1].value
+        } else if (x <= 0) {
+          return this.filteredData[0].value
+        } else if (x >= this.filteredData[i].x - (this.stepWidth / 2) && x < this.filteredData[i].x + (this.stepWidth / 2)) {
           return this.filteredData[i].value
         }
       }
@@ -286,16 +284,7 @@ export default {
   position: relative;
   height: 0.8em;
   border-radius: 0.4em;
-  margin: 1em 0;
-
-  & .step {
-    width: 1px;
-    margin-left: 1em;
-    position: absolute;
-    top: 0;
-    height: 100%;
-    background: $shadow-color;
-  }
+  margin: 1em 1em;
 
   & .filler {
     margin: 0;
@@ -319,6 +308,7 @@ export default {
     background: $bg-color-light;
     border: solid 1px $shadow-color;
     box-shadow: 0 1px 4px $shadow-color;
+    margin-#{$block-start}: -1em;
     cursor: move;
 
     &:focus {

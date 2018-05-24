@@ -1,8 +1,8 @@
 <template lang="pug">
 fv-main#app
   fv-header
-    fv-button.fv-col-lg-0(@click="$refs.sidebar.toggle()", icon="fa fa-bars")
-    .space(v-show="isSidebarPinned !== false")
+    fv-button.fv-hide-on-lg(@click="$refs.sidebar.toggle()", icon="fa fa-bars")
+    .space.fv-hide-on-lg(v-show="isSidebarPinned !== false")
     .title
       h2.fv-no-wrap {{$route.name}}
     .space
