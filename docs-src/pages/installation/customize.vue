@@ -35,7 +35,7 @@ fv-content
       ="framevuerk-foobar.min.css\n"
     doc-description
       | You can also use <b>.framevuerkrc.json</b>, <b>.framevuerkrc</b> or <b>framevuerk</b> key inside your package.json to pass this variables to Framevuerk!
-      | <br> Framevuerk apply these config on before every install or by this cli command:
+      | <br> Framevuerk apply these config by this cli command:
     doc-code(v-pre, title=" ", lang="terminal")
       ="npm rebuild framevuerk\n"
     doc-description

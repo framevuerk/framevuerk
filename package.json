@@ -1,6 +1,6 @@
 {
   "name": "framevuerk",
-  "version": "1.10.2",
+  "version": "1.11.0",
   "description": "Fast, Responsive, Multi Language, Both Direction Support and Configurable UI Framework based on Vue.js.",
   "main": "dist/framevuerk-default.js",
   "scripts": {
@@ -19,7 +19,6 @@
     "build": "npm run build:lib",
     "prepublishOnly": "./prepublish.sh",
     "dev": "webpack --config ./build/webpack.config.js -w --display none & webpack-dev-server --config ./build/webpack.config.docs.js --host 0.0.0.0 --hot",
-    "postinstall": "npm run build:lib",
     "start": "echo \"Use 'npm run dev' instead.\""
   },
   "dependencies": {

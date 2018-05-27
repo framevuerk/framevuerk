@@ -114,7 +114,7 @@ export default {
   },
   computed: {
     isEmpty () {
-      return !this.value || (this.value instanceof Array && this.value.length === 0)
+      return typeof this.value === 'undefined' || (this.value instanceof Array && this.value.length === 0)
     },
     fvValidate () {
       if (this.required === true) {
