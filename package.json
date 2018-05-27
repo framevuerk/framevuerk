@@ -21,6 +21,7 @@
     "dev": "webpack --config ./build/webpack.config.js -w --display none & webpack-dev-server --config ./build/webpack.config.docs.js --host 0.0.0.0 --hot",
     "start": "echo \"Use 'npm run dev' instead.\""
   },
+  "bin": "./build/index.js",
   "dependencies": {
     "autoprefixer": "7.2.5",
     "babel-cli": "6.23.0",
@@ -45,8 +46,7 @@
     "vue-loader": "13.7.0",
     "vue-template-compiler": "2.5.13",
     "vue-template-compiler-loader": "1.0.4",
-    "webpack": "^3.11.0",
-    "webpackbar": "^2.6.1"
+    "webpack": "^3.11.0"
   },
   "devDependencies": {
     "axios": "^0.16.2",
