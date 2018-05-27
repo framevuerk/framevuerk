@@ -116,7 +116,9 @@ You can also use `.framevuerkrc.json`, `.framevuerkrc` or `framevuerk` key insid
 
 Framevuerk apply these config by this cli command:
 ```terminal
-npm rebuild framevuerk
+./node_modules/.bin/framevuerk
+# or on npm scripts, just:
+framevuerk
 ```
     
 You are now config your app to use `Framevuerk`! Let's go to use our components:
