@@ -114,7 +114,7 @@ And output files goes to `./node_modules/framevuerk/dist` directory:
 
 You can also use `.framevuerkrc.json`, `.framevuerkrc` or `framevuerk` key inside your `package.json` to pass this variables to Framevuerk!
 
-Framevuerk apply these config on before every install or by this cli command:
+Framevuerk apply these config by this cli command:
 ```terminal
 npm rebuild framevuerk
 ```
