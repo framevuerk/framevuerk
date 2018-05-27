@@ -19,7 +19,6 @@
     "build": "npm run build:lib",
     "prepublishOnly": "./prepublish.sh",
     "dev": "webpack --config ./build/webpack.config.js -w --display none & webpack-dev-server --config ./build/webpack.config.docs.js --host 0.0.0.0 --hot",
-    "postinstall": "npm run build:lib",
     "start": "echo \"Use 'npm run dev' instead.\""
   },
   "dependencies": {
