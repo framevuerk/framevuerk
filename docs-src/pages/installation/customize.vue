@@ -37,7 +37,9 @@ fv-content
       | You can also use <b>.framevuerkrc.json</b>, <b>.framevuerkrc</b> or <b>framevuerk</b> key inside your package.json to pass this variables to Framevuerk!
       | <br> Framevuerk apply these config by this cli command:
     doc-code(v-pre, title=" ", lang="terminal")
-      ="npm rebuild framevuerk\n"
+      ="./node_modules/.bin/framevuerk\n"
+      ="# or on npm scripts, just:\n"
+      ="framevuerk\n"
     doc-description
     | You are now config your app to use <b>Framevuerk</b>! Let's go to use our components.
 </template>
