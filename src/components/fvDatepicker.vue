@@ -92,7 +92,7 @@ export default {
     }
   },
   created () {
-    this.setEditingValue()
+    this.setEditingValue(true)
   },
   computed: {
     fvValidate () {
@@ -140,8 +140,8 @@ export default {
     deleteValue () {
       this.$emit('input', undefined)
     },
-    setEditingValue () {
-      if (!this.editingValue) {
+    setEditingValue (force = false) {
+      if (!this.editingValue || force) {
         this.editingValue = new this.Date(this.value || this.defaultValue)
       }
     },
