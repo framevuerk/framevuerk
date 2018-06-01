@@ -40,7 +40,7 @@ fv-content
           fv-datepicker(v-model="inputs.d5", disabled, placeholder="You can't pick me!")
         .fv-col-lg-6.fv-col-xs-12
           p Custom Required
-          fv-datepicker(v-model="inputs.d4", placeholder="Pick your favorite date just in this month!", :required="dateChecker")
+          fv-datepicker(v-model="inputs.d4", placeholder="Pick your favorite date just in this month!", :required="dateChecker", :default-value="nextMonthSix()")
             template(slot="value", slot-scope="scope")
               i.fa.fa-calendar
               =" "
@@ -88,9 +88,15 @@ export default {
         prop: [
           {
             name: 'value (required)',
-            type: 'Date',
+            type: '',
             default: '',
             description: 'Value of datepicker'
+          },
+          {
+            name: 'default-value',
+            type: '[Date, Number(timestamp), String(isodate)]',
+            default: 'Date.now()',
+            description: 'Default Value of datepicker, if value is not set yet'
           },
           {
             name: 'dialog-class',
@@ -154,6 +160,12 @@ export default {
   methods: {
     dateChecker (date) {
       return !!date && new Date(date.getTime()).getDate() >= 5 && new Date(date.getTime()).getDate() <= 20
+    },
+    nextMonthSix () {
+      const dt = new Date()
+      dt.setDate(6)
+      dt.setMonth(dt.getMonth() + 1)
+      return dt
     }
   }
 }
