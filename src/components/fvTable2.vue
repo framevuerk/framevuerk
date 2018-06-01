@@ -71,7 +71,6 @@ export default {
 
   border: 1px solid $shadow-color;
   border-radius: $border-radius;
-  overflow: hidden;
 
   & > table {
     border-spacing: 0;
