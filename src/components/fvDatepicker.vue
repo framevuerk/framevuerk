@@ -22,7 +22,7 @@ fv-inputbox.fv-datepicker(:focus="isFocused",
       ref="input")
   .box(slot="out",
     @close="$emit('close')")
-    fv-header.header(height="4em")
+    fv-header.header(height="4em", tabindex="-1")
       .fv-input-group.header-buttons
         fv-button.fv-sm(@click.prevent="moveValue('year', -1)", :icon="icons.prevYear", tabindex="-1")
         fv-button.fv-sm(@click.prevent="moveValue('month', -1)", :icon="icons.prevMonth", tabindex="-1")
@@ -31,7 +31,7 @@ fv-inputbox.fv-datepicker(:focus="isFocused",
       .fv-input-group.header-buttons
         fv-button.fv-sm(@click.prevent="moveValue('month', 1)", :icon="icons.nextMonth", tabindex="-1")
         fv-button.fv-sm(@click.prevent="moveValue('year', 1)", :icon="icons.nextYear", tabindex="-1")
-    fv-content.content
+    fv-content.content(tabindex="-1")
       table.days-table
         tbody
           tr(v-for="dp in [0, 7, 14, 21, 28]")
