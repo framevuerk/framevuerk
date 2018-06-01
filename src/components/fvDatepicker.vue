@@ -59,6 +59,9 @@ export default {
     value: {
       default: undefined
     },
+    defaultValue: {
+      default: Date.now()
+    },
     required: {
       type: [Boolean, Function],
       default: false
@@ -139,7 +142,7 @@ export default {
     },
     setEditingValue () {
       if (!this.editingValue) {
-        this.editingValue = new this.Date(this.value || Date.now())
+        this.editingValue = new this.Date(this.value || this.defaultValue)
       }
     },
     monthFirstDay (month, year) {
