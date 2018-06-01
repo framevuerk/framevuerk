@@ -22,16 +22,16 @@ fv-inputbox.fv-datepicker(:focus="isFocused",
       ref="input")
   .box(slot="out",
     @close="$emit('close')")
-    fv-header.header(height="4em", tabindex="-1")
+    fv-header.header(height="4em")
       .fv-input-group.header-buttons
-        fv-button.fv-sm(@click="moveValue('year', -1)", :icon="icons.prevYear", tabindex="-1")
-        fv-button.fv-sm(@click="moveValue('month', -1)", :icon="icons.prevMonth", tabindex="-1")
+        fv-button.fv-sm(@click.prevent="moveValue('year', -1)", :icon="icons.prevYear", tabindex="-1")
+        fv-button.fv-sm(@click.prevent="moveValue('month', -1)", :icon="icons.prevMonth", tabindex="-1")
       .title.fv-text-center
         h4 {{visualProps.month}}/{{visualProps.year}}
       .fv-input-group.header-buttons
-        fv-button.fv-sm(@click="moveValue('month', 1)", :icon="icons.nextMonth", tabindex="-1")
-        fv-button.fv-sm(@click="moveValue('year', 1)", :icon="icons.nextYear", tabindex="-1")
-    fv-content.content(tabindex="-1", @zkeydown.native="onKeydown", @zblur.native="onBlur")
+        fv-button.fv-sm(@click.prevent="moveValue('month', 1)", :icon="icons.nextMonth", tabindex="-1")
+        fv-button.fv-sm(@click.prevent="moveValue('year', 1)", :icon="icons.nextYear", tabindex="-1")
+    fv-content.content
       table.days-table
         tbody
           tr(v-for="dp in [0, 7, 14, 21, 28]")
