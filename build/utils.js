@@ -104,8 +104,12 @@ lib.generateConfig = (cnf) => {
           use: ExtractTextPlugin.extract(lib.styleLoader(cnf))
         },
         {
-          test: /\.(png|jpg|gif|svg|woff|woff2|eot|ttf|ico|zhtml)/,
+          test: /\.(png|jpg|gif|woff|woff2|eot|ttf|ico|zhtml)/,
           loader: 'file-loader?name=./[name].[ext]'
+        },
+        {
+          test: /\.(svg)/,
+          loader: 'raw-loader'
         },
         {
           test: /\.none$/,
