@@ -7,10 +7,10 @@
     @keydown.enter.space.prevent="selectOption(option)",
     :class="{'checked': isChecked(option), 'disabled': optionProp(option, 'disabled') || disabled || false}",
     :invalid="!fvValidate")
-    i.fv-check-icon.fa(v-if="multiple",
-      :class="{'fa-square-o': !isChecked(option), 'fa-check-square': isChecked(option)}")
-    i.fv-check-icon.fa(v-else,
-      :class="{'fa-circle-o': !isChecked(option), 'fa-dot-circle-o': isChecked(option)}")
+    span.fv-check-icon(v-if="multiple",
+      v-html="isChecked(option) ? icons.checkSquare : icons.square")
+    span.fv-check-icon(v-else,
+      v-html="isChecked(option) ? icons.checkCircle : icons.circle")
     =" "
     label.fv-control-label(v-html="optionProp(option, 'text')")
 </template>
@@ -52,7 +52,13 @@ export default {
   },
   data () {
     return {
-      isValid: true
+      isValid: true,
+      icons: {
+        square: require('../icons/feather/square.svg'),
+        circle: require('../icons/feather/circle.svg'),
+        checkSquare: require('../icons/feather/check-square.svg'),
+        checkCircle: require('../icons/feather/check-circle.svg')
+      }
     }
   },
   computed: {
@@ -176,9 +182,13 @@ export default {
   }
 
   & .fv-check-icon {
-    font-size: 18px;
     vertical-align: middle;
-    width: 20px;
+
+    & svg {
+      color: contrast($color, 2);
+      height: 1.3em;
+      vertical-align: middle;
+    }
   }
 
   & .fv-control-label {
