@@ -1,7 +1,6 @@
 <template lang="pug">
 fv-main.fv-slider
-  fv-header(v-if="showTabs",
-    height="3.5em")
+  .tabs-container(v-if="showTabs")
     fv-button.fv-sm.fv-grow(v-for="(i, slot) in $slots",
       :key="slot",
       :class="{'fv-selected': value === slot}",
@@ -151,9 +150,15 @@ export default {
     overflow-x: hidden;
   }
 
-  & > .fv-header {
-    background: transparent;
+  & > .tabs-container {
+    // background: transparent;
+    @include shadow(bottom);
+
     padding: 0;
+    border-bottom: solid 1px contrast($bg-color, 2);
+    display: flex;
+    height: 3.5em;
+    flex-direction: row;
 
     & > .fv-button {
       height: 100%;
