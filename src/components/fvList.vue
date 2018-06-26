@@ -111,21 +111,16 @@ export default {
 @import '../styles/variables';
 
 .fv-list {
-  border: solid 1px darken($bg-color-light, $shadow-percent);
+  border: solid 1px contrast($bg-color, 2);
   clear: both;
-
-  & .fv-list-item:not(:last-child) {
-    border-bottom: solid 1px darken($bg-color-light, $shadow-percent);
-
-    &.selected {
-      border-bottom: solid 1px transparent;
-    }
-  }
 
   &:hover {
     & .fv-list-item.highlighted > .content:not(:hover) {
       background: inherit;
     }
+  }
+  & > .fv-list-item:first-child > .content {
+    border-top: none;
   }
 }
 </style>

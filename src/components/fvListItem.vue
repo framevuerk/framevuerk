@@ -1,13 +1,14 @@
 <template lang="pug">
 li.fv-list-item(:class="{highlighted: isHighlighted, selected: selected}",
   :disabled="disabled")
-  .content(@click="onClick", @mousedown="onMousedown")
+  .content(@click="onClick", @mousemove="onHover")
     .fv-no-wrap.text
       slot(name="default")
-    fv-button.expand(v-if="hasSubList",
+    .expand(v-if="hasSubList",
       @click="toggle()",
-        tabindex="-1")
-      i.fa(:class="{'fa-caret-down': !isExpanded,'fa-caret-up': isExpanded}")
+      tabindex="-1",
+      v-html="require('../icons/feather/chevron-down.svg')",
+      :class="{rotate: isExpanded}")
   transition(name="sub-list")
     .sub-list(v-if="hasSubList",
       v-show="isExpanded",
@@ -73,7 +74,7 @@ export default {
       }
       return false
     },
-    onMousedown () {
+    onHover () {
       if (!this.disabled) {
         this.bigParent().highlighted = this.$el
       }
@@ -99,13 +100,15 @@ export default {
 .fv-list-item {
   clear: both;
   overflow: hidden;
+  border: 0;
 
   & .content {
     align-items: center;
     display: flex;
+    position: relative;
     flex-direction: row;
     justify-content: space-between;
-    min-height: 3.5em;
+    min-height: 3em;
 
     & > .text {
       flex-grow: 1;
@@ -113,19 +116,25 @@ export default {
     }
 
     & .expand {
-      background: transparent;
-      border: 0;
-      border-radius: 0;
-      box-shadow: inset 0 0 0 $primary-color;
-      color: inherit;
+      // @include fvButton($bg-color, yiq($bg-color), false);
+      // @include fvButton(contrast($bg-color, 1));
+      padding: 0 $padding-small;
       cursor: pointer;
-      font-weight: bold;
-      height: 100%;
-      max-width: 45px;
-      min-width: 45px;
-      padding: 0 $padding;
-      width: 45px;
+      transition: transform $transition-speed;
+
+      & > svg {
+        vertical-align: middle;
+      }
+
+      &.rotate {
+        transform: rotateX(180deg);
+      }
     }
+  }
+
+  & > .content,
+  & > .sub-list {
+    border-top: solid 1px contrast($bg-color, 2);
   }
 
   &[disabled] {
@@ -133,51 +142,35 @@ export default {
   }
 
   &.highlighted > .content,
-  &:not(.unclickable) > .content:hover {
-    background: yiq($bg-color, 2%);
-  }
-
-  &:not(.unclickable) > .content:active {
-    background: yiq($bg-color, 10%);
+  &:not(.unclickable):not([disabled]) > .content:hover {
+    @include yiq(contrast($bg-color, 1));
   }
 
   &.selected {
-    @include yiq($primary-color);
-
-    &.highlighted > .content,
-    &:not(.unclickable) > .content:hover {
-      background: yiq($primary-color, 2%);
-    }
-
-    &:not(.unclickable) > .content:active {
-      background: yiq($primary-color, 10%);
-    }
+    // @include yiq(contrast($bg-color, 1));
+    border-#{$block-start}: solid 4px $primary-color;
   }
 
   & .sub-list {
     & > .fv-list {
-      border-#{$block-end}: 0;
-      border-#{$block-start}: solid 1em transparent;
-      border-bottom: 0;
-      border-top: 0;
+      // @include shadow(inset-bottom);
 
-      & > .fv-list-item:first-child {
-        border-top: solid 1px darken($bg-color-light, $shadow-percent);
-      }
+      border: 0;
+      border-#{$block-start}: solid 1.5em transparent;
     }
 
     &.sub-list-enter-active,
     &.sub-list-leave-active {
-      transform: translateX(0);
       transition-duration: $transition-speed;
-      transition-property: opacity, transform;
-      will-change: opacity, transform;
+      transition-property: opacity, max-height;
+      will-change: opacity, max-height;
+      max-height: 100vh;
     }
 
     &.sub-list-enter,
     &.sub-list-leave-to {
       opacity: 0;
-      transform: translateX(if($direction == 'ltr', -1em, 1em));
+      max-height: 0px;
     }
   }
 }
