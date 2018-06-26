@@ -21,17 +21,23 @@
   }
 
   &::-webkit-scrollbar {
-    height: 12px;
-    width: 12px;
+    height: 9px;
+    width: 9px;
   }
 
   &::-webkit-scrollbar-track {
-    background: $bg-color;
+    background: transparent;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: $bg-color-dark;
+    background: contrast($bg-color, 2);
     border: solid 2px $bg-color;
   }
+
+  // &:hover {
+  //   &::-webkit-scrollbar-thumb {
+  //     background: contrast($bg-color, 2);
+  //   }
+  // }
 }
 </style>
