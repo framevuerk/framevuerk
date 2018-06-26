@@ -2,10 +2,52 @@
   @return 0.299 * red($color) + 0.587 * green($color) + 0.114 * blue($color);
 }
 
-@function yiq($color, $percetange: 90%) {
+@function yiq($color, $percetange: 90%, $threshold: 180) {
   $light: lighten($color, $percetange);
   $dark: darken($color, $percetange);
-  $threshold: 180;
-
   @return if(luma($color) < $threshold, $light, $dark);
+}
+
+@function contrast($color: $bg-color, $level: 1, $var: dark) {
+  $threshold: -1;
+
+  @if $var == force-dark {
+    $threshold: -1;
+  }
+
+  @else if $var == force-light {
+    $threshold: 256;
+  }
+
+  @else if $var == dark {
+    $threshold: 60;
+  }
+
+  @else if $var == hard-dark {
+    $threshold: 25;
+  }
+
+  @else if $var == light {
+    $threshold: 180;
+  }
+
+  @else if $var == hard-light {
+    $threshold: 215;
+  }
+
+  @if $level == 1 {
+    @return yiq($color, 4%, $threshold);
+  }
+
+  @else if $level == 2 {
+    @return yiq($color, 12%, $threshold);
+  }
+
+  @else if $level == 3 {
+    @return yiq($color, 30%, $threshold);
+  }
+
+  @else {
+    @return yiq($color, 40%, $threshold);
+  }
 }
