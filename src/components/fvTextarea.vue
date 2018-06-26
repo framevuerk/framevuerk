@@ -65,5 +65,19 @@ export default {
     overflow-y: hidden;
     resize: none;
   }
+
+  &::-webkit-scrollbar {
+    height: 9px;
+    width: 9px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: contrast($bg-color, 2);
+    border: solid 2px $bg-color;
+  }
 }
 </style>
