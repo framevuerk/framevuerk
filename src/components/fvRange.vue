@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import utility from '../utility'
-
 export default {
   props: {
     value: {
@@ -111,7 +109,7 @@ export default {
     this.setStructure()
   },
   mounted () {
-    utility.doIt(() => {
+    this.$nextTick(() => {
       this.setValue(this.filteredValue[0], 0)
       if (this.multiple) {
         this.setValue(this.filteredValue[1], 1)
@@ -308,7 +306,7 @@ export default {
     background: $bg-color-light;
     border: solid 1px $shadow-color;
     box-shadow: 0 1px 4px $shadow-color;
-    margin-#{$block-start}: -1em;
+    // margin-#{$block-start}: -1em;
     cursor: move;
 
     &:focus {
