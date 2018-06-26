@@ -41,6 +41,74 @@
   }
 }
 
+@mixin fvButton($bg, $fg, $border: true) {
+  background: $bg;
+  color: $fg;
+
+  @if $border {
+    @include shadow(bottom);
+
+    border: solid 1px contrast($bg, 2, hard-dark);
+  } @else {
+    border: none;
+    box-shadow: none;
+  }
+  &:not([disabled]) {
+    &:hover,
+    &:focus {
+      background: contrast($bg, 1, hard-light);
+      transition-duration: 0;
+    }
+    &:active {
+      @if $border {
+        @include shadow(inset-bottom);
+      }
+      background: contrast($bg, 2, hard-dark);
+      transition-duration: $transition-speed;
+    }
+  }
+
+  &[disabled] {
+    @include disabled;
+  }
+}
+
+@mixin fvInput($bg) {
+  @include yiq(contrast($bg, 1, force-light));
+  @include shadow(bottom);
+  @include sizes;
+
+  border: solid 1px contrast($bg, 2, hard-dark);
+  border-radius: $border-radius;
+  font-family: inherit;
+  position: relative;
+  padding: 0 $padding-small;
+
+  &:not([disabled]) {
+    &:hover {
+      border: solid 1px contrast($bg, 3, hard-dark);
+    }
+  
+    &:focus,
+    &[focus] {
+      @include outline;
+  
+      &:invalid,
+      &[invalid] {
+        @include outline($danger-color);
+      }
+    }
+  }
+
+  &[disabled] {
+    @include disabled;
+  }
+
+  &::placeholder {
+    color: contrast($bg, 3, light);
+  }
+}
+
 @mixin vue-animation($selector, $on, $static: false) {
   @if $static == true {
     &.#{$selector}-#{$on} {
@@ -77,14 +145,14 @@
   }
 
   &.fv-sm {
-    font-size: 0.9em;
-    min-height: 2.85em;
+    font-size: 0.8em;
+    min-height: 2.8em;
   }
 
   &,
   &.fv-md {
-    font-size: 1em;
-    min-height: 3.1em;
+    font-size: 0.99em;
+    min-height: 2.9em;
   }
 
   &.fv-lg {
@@ -225,5 +293,13 @@
 
   @else if $to == inset-left {
     box-shadow: inset #{-1 * $shadow-size} 0 $shadow-size $color;
+  }
+
+  @else if $to == all {
+    box-shadow: 0 0 $shadow-size $color;
+  }
+
+  @else if $to == inset-all {
+    box-shadow: inset 0 0 $shadow-size $color;
   }
 }
