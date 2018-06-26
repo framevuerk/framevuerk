@@ -19,16 +19,15 @@ import fvFilepicker from './components/fvFilepicker.vue'
 import fvSwitch from './components/fvSwitch.vue'
 import fvDialog from './components/fvDialog.vue'
 import fvTable from './components/fvTable.vue'
-import fvTable2 from './components/fvTable2.vue'
 import fvCheck from './components/fvCheck.vue'
 import fvTextarea from './components/fvTextarea.vue'
 import fvImg from './components/fvImg.vue'
 import fvSlider from './components/fvSlider.vue'
 import fvToast from './components/fvToast.vue'
-import fvAutocomplete from './components/fvAutocomplete.vue'
 import fvAvatar from './components/fvAvatar.vue'
 import fvSteps from './components/fvSteps.vue'
 import fvRange from './components/fvRange.vue'
+import fvLoading from './components/fvLoading.vue'
 
 module.exports = {
   fvMain,
@@ -49,16 +48,15 @@ module.exports = {
   fvSwitch,
   fvDialog,
   fvTable,
-  fvTable2,
   fvCheck,
   fvTextarea,
   fvImg,
   fvSlider,
   fvToast,
-  fvAutocomplete,
   fvAvatar,
   fvSteps,
   fvRange,
+  fvLoading,
   use (libName, lib) {
     this.dependencies[libName] = lib
   },
@@ -83,15 +81,14 @@ module.exports = {
     Vue.component('fvSwitch', fvSwitch)
     Vue.component('fvDialog', fvDialog)
     Vue.component('fvTable', fvTable)
-    Vue.component('fvTable2', fvTable2)
     Vue.component('fvCheck', fvCheck)
     Vue.component('fvTextarea', fvTextarea)
     Vue.component('fvImg', fvImg)
     Vue.component('fvSlider', fvSlider)
-    Vue.component('fvAutocomplete', fvAutocomplete)
     Vue.component('fvAvatar', fvAvatar)
     Vue.component('fvSteps', fvSteps)
     Vue.component('fvRange', fvRange)
+    Vue.component('fvLoading', fvLoading)
     Vue.prototype.$fvToast = new (Vue.extend(fvToast))()
     Vue.fvToast = Vue.prototype.$fvToast
     // Directives
