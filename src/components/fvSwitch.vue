@@ -31,12 +31,7 @@ export default {
   },
   data () {
     return {
-      hammer: undefined,
-      pValue: this.value,
-      dirs: {
-        off: process.env.direction === 'ltr' ? 'left' : 'right',
-        on: process.env.direction === 'ltr' ? 'right' : 'left'
-      }
+      pValue: this.value
     }
   },
   computed: {
@@ -57,10 +52,6 @@ export default {
   },
   created () {
     this.setStructure()
-    this.hammer = require('../').dependencies.hammer
-  },
-  mounted () {
-    this.initHammer()
   },
   methods: {
     toggle () {
@@ -93,17 +84,6 @@ export default {
           this.toggle()
           break
       }
-    },
-    initHammer () {
-      if (this.hammer) {
-        const mc = new this.hammer.Manager(this.$el, {
-          recognizers: [
-            [this.hammer.Swipe, { direction: this.hammer.DIRECTION_HORIZONTAL }]
-          ]
-        })
-        mc.on(`swipe${this.dirs.on}`, this.on)
-        mc.on(`swipe${this.dirs.off}`, this.off)
-      }
     }
   }
 }
@@ -115,24 +95,27 @@ export default {
 @import '../styles/mixins';
 
 .fv-switch {
-  background: $bg-color-dark;
-  border: solid 1px $shadow-color;
+  @include shadow(bottom);
+
+  background: contrast($bg-color, 1, force-light);
+  border: solid 1px contrast($bg-color, 2, hard-dark);
   border-radius: 25px;
   cursor: pointer;
   direction: $direction;
   display: inline-block;
-  height: 2em;
+  height: 2.2em;
   margin: 0.9em 0;
-  padding: 0.1em;
+  padding: 0.2em;
   vertical-align: middle;
   width: 3.8em;
   text-align: $block-start;
 
   & > .fv-handler {
-    background: $bg-color-light;
-    border: solid 1px $shadow-color;
+    @include shadow(bottom);
+
+    background: contrast($bg-color, 2, force-light);
+    border: solid 1px contrast($bg-color, 2);
     border-radius: 25px;
-    box-shadow: 0 1px 4px $shadow-color;
     display: inline-block;
     height: 100%;
     width: calc(1.8em - 2px);
@@ -143,11 +126,10 @@ export default {
   }
 
   &.on {
-    background: $primary-color-light;
-
     & > .fv-handler {
-      border: solid 1px $shadow-color-light;
-      margin-#{$block-start}: 1.8em;
+      // border: solid 1px $shadow-color-light;
+      background: contrast($primary-color, 1, force-light);
+      margin-#{$block-start}: 1.7em;
     }
   }
 
@@ -158,6 +140,10 @@ export default {
     &[invalid] {
       @include outline($danger-color);
     }
+  }
+
+  &:active > .fv-handler{
+    @include shadow(inset-bottom);
   }
 
   &[disabled] {
