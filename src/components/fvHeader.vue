@@ -20,7 +20,7 @@ export default {
 
   & > header {
     width: 100%;
-    padding: $padding;
+    padding: #{$padding / 2} $padding;
     align-items: center;
     display: flex;
     justify-content: space-between;
