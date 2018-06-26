@@ -46,9 +46,8 @@ export default {
     animationName () {
       if (this.isRendered === true) {
         return `fv-sidebar-${this.actualPosition}`
-      } else {
-        return ''
       }
+      return ''
     },
     actualPosition () {
       return this.position !== null ? this.position : process.env.direction === 'ltr' ? 'left' : 'right'
@@ -63,10 +62,10 @@ export default {
     },
     isPinned () {
       if (this.pin === null) {
-        return !utility.isSmallViewport(this.bigParent().$el)
-      } else {
-        return this.pin
+        const main = utility.fvParent(this, 'fv-main')
+        return utility.viewportSize(main.$el).indexOf('lg') !== -1
       }
+      return this.pin
     }
   },
   methods: {
@@ -77,7 +76,7 @@ export default {
         this.bigParent().$el.style[`padding${utility.capitalizeFirstLetter(this.actualPosition)}`] = this.width
       } else {
         this.focusBackElem = document.querySelector(':focus')
-        utility.doIt(() => {
+        this.$nextTick(() => {
           const focusableItems = this.$el.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
           if (focusableItems.length) {
             focusableItems[0].focus()
@@ -115,7 +114,7 @@ export default {
       this.close()
     }
 
-    utility.doIt(() => {
+    this.$nextTick(() => {
       this.isRendered = true
     })
   }
@@ -127,6 +126,8 @@ export default {
 @import '../styles/mixins';
 
 .fv-sidebar {
+  @include yiq($sidebar-bg-color);
+
   backface-visibility: hidden;
   height: 100%;
   max-width: 80%;
@@ -143,7 +144,7 @@ export default {
   }
 
   &.right-border {
-    border-right: solid 1px $shadow-color;
+    border-right: solid 1px contrast($sidebar-bg-color, 1, hard-dark);
   }
 
   &.left {
@@ -153,9 +154,31 @@ export default {
   }
 
   &.left-border {
-    border-left: solid 1px $shadow-color;
+    border-left: solid 1px contrast($sidebar-bg-color, 1, hard-dark);
   }
 
+  & .fv-content {
+    &::-webkit-scrollbar-thumb {
+      background: contrast($sidebar-bg-color, 2);
+      border: solid 2px $sidebar-bg-color;
+    }
+  }
+  & .fv-list > .fv-list-item {
+    & > .content,
+    & > .sub-list {
+      border-top: solid 1px contrast($sidebar-bg-color, 1);
+    }
+
+    &.highlighted > .content,
+    &:not(.unclickable) > .content:hover {
+      @include yiq(contrast($sidebar-bg-color, 1));
+    }
+
+    &.selected {
+      // @include yiq(contrast($sidebar-bg-color, 1));
+      border-#{$block-start}-color: $primary-color;
+    }
+  }
   &.fv-sidebar-left-enter-active,
   &.fv-sidebar-left-leave-active,
   &.fv-sidebar-right-enter-active,
