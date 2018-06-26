@@ -17,14 +17,21 @@ fv-content
           .title
             h2 Hello
         br
+        h4 With .fv-primary class:
+        fv-header.fv-primary
+          .title
+            h2 Hello
+          .space
+          fv-button(icon="fa fa-search")
+        br
         h4 Custom elements:
-        fv-header
+        fv-header.fv-default
           fv-input.fv-grow(placeholder="Type anything to search!")
           .space
           fv-button(icon="fa fa-search")
         br
-        h4 With Buttons and description:
-        fv-header
+        h4 With Buttons and description and .fv-secondary class:
+        fv-header.fv-secondary
           fv-button(icon="fa fa-chevron-left")
           .space
           .title
@@ -43,7 +50,7 @@ fv-content
           a.fv-link I'm Link
         br
         h4 Modified height:
-        fv-header(height="35px")
+        fv-header
           i.fa.fa-apple
           .space
           .title

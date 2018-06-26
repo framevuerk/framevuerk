@@ -8,7 +8,7 @@ span(v-show="$slots.default")
       target="_blank",
       :title="$route.name + ' source code on GitHub'") View Source
   .doc-example(v-if="$slots.default")
-    fv-main(:parent="true")
+    fv-main(:parent="false")
       slot
   div(v-else)
     p.fv-text-center Not Available
@@ -22,7 +22,7 @@ export default {}
 <style lang="scss">
 body .doc-example {
   border: solid 1px rgba(0, 0, 0, 0.19);
-  overflow: hidden;
+  // overflow: hidden;
 
   h4 {
     margin-bottom: 4px;

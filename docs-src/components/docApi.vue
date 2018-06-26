@@ -6,7 +6,7 @@ span(v-show="show")
       | {{ tabs.filter(function(tab){ return tab.slot===scope.value; })[0].title }}
     div(v-for="tab in tabs", :slot="tab.slot")
       br
-      fv-table2.doc-api-table(v-if="rows[tab.slot] && rows[tab.slot].length > 0",
+      fv-table.doc-api-table(v-if="rows[tab.slot] && rows[tab.slot].length > 0",
         :fields="fields(tab.slot)",
         :rows="rows[tab.slot]")
         template(slot="field-Name", slot-scope="scope")

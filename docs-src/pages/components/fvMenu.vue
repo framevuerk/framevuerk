@@ -23,7 +23,7 @@ fv-content
         h4 Custom Template + User Argument
         .fv-input-group.fv-flex
           fv-input.fv-grow(placeholder="Enter Argument", v-model="inputs.d1")
-          fv-button.fv-ok(@click="$refs.m3.open($event, inputs.d1)", icon="fa fa-ellipsis-v")
+          fv-button.fv-default(@click="$refs.m3.open($event, inputs.d1)", icon="fa fa-ellipsis-v")
         .fv-col-12
           br
         .fv-col-12

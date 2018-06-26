@@ -1,11 +1,11 @@
 <template lang="pug">
-  .logo-container(:class="{ready: ready}", style="opacity: 0")
-    img.logo(src="../assets/logo.svg")
+  .logo-container
+    .logo(:class="{ready: ready}", v-html="require('../assets/logo.svg')")
     .sp
     .logo-text
       h1 Framevuerk
       p <b>Fast</b>, <b>Responsive</b>, <b>Multi Language</b>, <b>Both Direction Support</b> and <b>Configurable</b> UI Framework based on <a class="fv-link" href="http://vuejs.org" target="_blank">Vue.js</a>.
-      router-link.get-started(to="/installation=setup") GET STARTED
+      router-link.fv-link.get-started(to="/installation=setup") GET STARTED
       a.github(:href="$root.githubRepo", target="_blank") GITHUB
 </template>
 
@@ -18,8 +18,8 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.ready = true
-    }, 250)
+      this.ready = !this.ready
+    }, 300)
   }
 }
 </script>
@@ -34,10 +34,34 @@ export default {
 }
 
 .logo {
-  width: 11em;
-  transform: rotateY(180deg);
+  width: 19em;
+  & svg {
+    max-width: 100%;
+    height: auto;
+    & polygon {
+      transform: translateY(-100%);
+      transition-duration: 2s;
+    }
+    & path {
+      fill: transparent;
+      transition-delay: 0.6s;
+      transition-duration: 1s;
+    }
+  }
+  &.ready {
+    & svg {
+      & polygon {
+        transform: translateY(0);
+        fill: #41B883;
+      }
+      & path {
+        stroke: transparent;
+        stroke-width: 0;
+        fill: #35495E;
+      }
+    }
+  }
 }
-
 .sp {
   height: 1px;
   display: inline-block;
@@ -75,13 +99,4 @@ export default {
   font-weight: bold;
 }
 
-.logo-container * {
-  transition: all 1s;
-}
-
-.logo-container,
-.logo-container.ready * {
-  transform: translate(0) rotate(0deg) !important;
-  opacity: 1 !important;
-}
 </style>

@@ -19,9 +19,8 @@ fv-content
         .fv-col-sm-12
           label.fv-control-label Input
           .fv-input-group.fv-flex
-            fv-input.fv-grow(v-model="inputs.d4.value", :display-value="inputs.d4.displayValue", render-type="display", placeholder="I'm required!", required)
-            fv-button(@click.native.prevent="inputs.d4.value = undefined; inputs.d4.displayValue = null;") Clear
-            fv-button(@click.native.prevent="inputs.d4.value = new Date().getTime(); inputs.d4.displayValue = new Date(inputs.d4.value).getMilliseconds();") Change
+            fv-input.fv-grow(v-model="inputs.d4.value", :display-value="inputs.d4.displayValue", render-type="display", placeholder="Type something", required)
+            fv-button(@click.native.prevent="inputs.d4.value = new Date().getTime(); inputs.d4.displayValue = new Date(inputs.d4.value).getMilliseconds();") OK
         .fv-col-6
           label.fv-control-label Range
           fv-range.fv-form-control(v-model="inputs.d12", :data="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]", required)

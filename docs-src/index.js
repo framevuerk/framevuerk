@@ -7,7 +7,7 @@ import '../dist/framevuerk.css'
 import Hammer from 'hammerjs'
 import VueHighlightJS from 'vue-highlightjs'
 import 'highlight.js/styles/dark.css'
-import 'font-awesome/css/font-awesome.css'
+// import 'font-awesome/css/font-awesome.css'
 
 import './favicon.ico'
 import './CNAME.none'
