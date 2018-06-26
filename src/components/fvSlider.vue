@@ -2,18 +2,18 @@
 fv-main.fv-slider
   .tabs-container(v-if="showTabs")
     fv-button.fv-sm.fv-grow(v-for="(i, slot) in $slots",
-      :key="slot",
+      :key="'button' + slot + i",
       :class="{'fv-selected': value === slot}",
       @click.prevent="setValue(slot)")
       slot(v-if="$scopedSlots.button", :value="slot", name="button")
       span(v-else) {{slot}}
   fv-content.slider-page
-    transition(:name="animationName")
+    transition-group(:name="animationName")
       fv-content.slider-page(v-for="(i, slot) in $slots",
-        :key="slot",
+        :key="'content' + slot + i",
         ref="slot",
-        v-if="slot === value")
-        slot(:name="value")
+        v-show="slot === value")
+        slot(:name="slot")
   fv-button.fv-xl.next(v-if="showButtons",
     @click.prevent="moveSlide(true)",
     :icon="'fa fa-chevron-'+dirs.prev")
@@ -21,7 +21,10 @@ fv-main.fv-slider
     @click.prevent="moveSlide(false)",
     :icon="'fa fa-chevron-'+dirs.next")
   ul.nav(v-if="showNavs")
-    li(v-for="(i, slot) in $slots", @click.prevent="setValue(slot)", :class="{selected: value === slot}")
+    li(v-for="(i, slot) in $slots",
+      :key="'nav' + slot + i",
+      @click.prevent="setValue(slot)",
+      :class="{selected: value === slot}")
 </template>
 
 <script>
@@ -144,10 +147,12 @@ export default {
 
 .fv-slider {
   overflow: hidden;
+  backface-visibility: hidden;
 
   & .slider-page {
     padding: 0;
     overflow-x: hidden;
+    float: $block-start;
   }
 
   & > .tabs-container {
@@ -188,6 +193,7 @@ export default {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    z-index: 3;
 
     &.next {
       #{$block-end}: 0;
@@ -207,6 +213,7 @@ export default {
     text-align: center;
     transform: translateX(-50%);
     width: auto;
+    z-index: 3;
 
     & li {
       background: rgba($color, 0.5);
@@ -235,14 +242,17 @@ export default {
   transform: translateX(0);
   transition-duration: $transition-speed-slow;
   transition-property: transform, opacity;
+  will-change: transform, opacity;
 }
 
 .fv-slider-left-enter {
-  transform: translateX(100%);
+  transform: translateX(30%);
+  z-index: 1;
 }
 
 .fv-slider-right-enter {
-  transform: translateX(-100%);
+  transform: translateX(-30%);
+  z-index: 1;
 }
 
 .fv-slider-fade-leave-active,
@@ -262,11 +272,15 @@ export default {
 
 .fv-slider-right-leave-active,
 .fv-slider-right-leave-to {
-  transform: translateX(100%);
+  transform: translateX(50%);
+  opacity: 0;
+  z-index: 2;
 }
 
 .fv-slider-left-leave-active,
 .fv-slider-left-leave-to {
-  transform: translateX(-100%);
+  transform: translateX(-50%);
+  opacity: 0;
+  z-index: 2;
 }
 </style>
