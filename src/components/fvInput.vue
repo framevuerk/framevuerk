@@ -35,6 +35,11 @@ export default {
       }
       return true
     }
+  },
+  methods: {
+    focus () {
+      this.$refs.inputEl.focus()
+    }
   }
 }
 </script>
@@ -45,32 +50,6 @@ export default {
 @import '../styles/mixins';
 
 .fv-input {
-  @include yiq($bg-color-light);
-  @include shadow(bottom);
-  @include sizes;
-
-  border: 1px solid darken($bg-color-light, $shadow-percent);
-  border-radius: $border-radius;
-  font-family: inherit;
-  position: relative;
-  padding: 0 $padding-small;
-
-  &:focus,
-  &[focus] {
-    @include outline;
-
-    &:invalid,
-    &[invalid] {
-      @include outline($danger-color);
-    }
-  }
-
-  &[disabled] {
-    @include disabled;
-  }
-
-  &::placeholder {
-    color: $gray-color-dark;
-  }
+  @include fvInput($bg-color);
 }
 </style>
