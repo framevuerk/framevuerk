@@ -65,7 +65,7 @@ import docDescription from '../../components/docDescription.vue'
 import docExample from '../../components/docExample.vue'
 import docCode from '../../components/docCode.vue'
 import IDate from 'idate'
-
+global.IDate = IDate
 export default {
   components: {
     docApi,

@@ -36,10 +36,10 @@
         fv-content.fv-no-padding
           slot(name="out")
     fv-dialog(ref="outDialog", v-if="isBreaked", :first-focus-on="0", :top="padding", :left="padding", width="100%", @close="onOutClose")
-      fv-header.fv-padding(height="auto", v-if="header")
-        fv-input.fv-grow(v-if="input",
+      fv-header
+        fv-input.fv-block(v-if="input",
           ref="dialogInput",
-          v-model="searchQuery",
+          :value="searchQuery",
           :placeholder="placeholder",
           @keydown.native="onInputKeydown",
           @input="onTyping")
@@ -94,10 +94,6 @@ export default {
       type: Boolean,
       default: true
     },
-    header: {
-      type: Boolean,
-      default: true
-    },
     breaked: {
       type: [Boolean, Object],
       validator: (value) => {
@@ -144,7 +140,6 @@ export default {
       }
     },
     onFocus () {
-      console.log('onFocus')
       this.isFocused = true
     },
     onBlur () {
@@ -152,12 +147,10 @@ export default {
         const elem = document.querySelector(':focus')
         if (this.isBreaked) {
           if (!this.showOut && (!elem || !utility.isChildOf(elem, this.$el))) {
-            console.log('onBlur')
             this.isFocused = false
           }
         } else {
           if ((!elem || !utility.isChildOf(elem, this.$el))) {
-            console.log('onBlur')
             this.isFocused = false
             this.close()
           }
@@ -165,10 +158,9 @@ export default {
       })
     },
     onTyping (event) {
-      // console.log('onTyping')
       const searchQuery = typeof event === 'object' ? event.target.value : event
       this.showOut = true
-      this.$emit('searchQuery:update', searchQuery)
+      this.$emit('update:searchQuery', searchQuery)
       this.$emit('typing', searchQuery)
     },
     onEnter (event) {
@@ -183,7 +175,6 @@ export default {
         target = target.parentElement || null
       }
       this.focus()
-      // console.log('onEnter')
       this.open()
     },
     calcOutPosition () {
@@ -192,7 +183,6 @@ export default {
       const top = utility.offsetTo(this.$el, utility.fvParent(this, 'fv-main').$el).top
       this.outOnBottom = !(top > (parentHeight / 2))
       const bottom = parentHeight - top - elHeight
-      console.log(parentHeight, elHeight, top)
       const padding = parseInt(process.env.padding)
       this.outMaxHeight = `${(parentHeight - (this.outOnBottom ? top : bottom) - elHeight) - (padding * 2)}px`
     },
@@ -209,7 +199,6 @@ export default {
       }
     },
     onValueDelete (value) {
-      console.log('onValueDelete')
       this.$emit('value-delete', value)
     },
     close () {
@@ -221,12 +210,12 @@ export default {
       this.$emit('searchQuery:update', '')
     },
     onOutClose () {
-      console.log('onOutClose')
       this.showOut = false
     },
     onInputKeydown (event) {
-      console.log('onInputKeydown')
-      this.$emit('input-keydown', event)
+      if (this.showOut) {
+        this.$emit('input-keydown', event)
+      }
     }
   }
 }
@@ -315,6 +304,7 @@ export default {
     width: 100%;
     border: solid 1px contrast($bg-color, 2);
     margin: $padding 0;
+    cursor: default;
     border-radius: $border-radius;
     z-index: 2;
 

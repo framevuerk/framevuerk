@@ -1,46 +1,32 @@
 <template lang="pug">
-fv-inputbox.fv-select(:focus="isFocused",
-  @enter="onFocus(true)",
-  :invalid="!fvValidate",
-  :placeholder="searchQuery || !isEmpty ? '' : placeholder",
+fv-inputbox.fv-select(:invalid="!fvValidate",
+  :placeholder="placeholder",
   :disabled="disabled",
-  :value="multiple ? value : (typeof value !== 'undefined' ? [value] : [])",
+  :value="value",
+  :input="search !== false",
+  @input-keydown="onKeydown",
+  @typing="onSearch",
+  :multiple="multiple",
+  :search-query.sync="searchQuery",
   @value-delete="deleteValue",
   :delete-button="deleteButton",
-  :show-out="showList",
-  tabindex="",
-  caret-icon="fa fa-chevron-down",
+  :caret-icon="require('../icons/feather/chevron-down.svg')",
   ref="inputBox")
   template(slot="value",
     slot-scope="scope")
     slot(v-if="$scopedSlots.value", name="value", :value="scope.value", :option="valueProp(scope.value)")
     span(v-else) {{valueProp(scope.value, 'text')}}
-  template(slot="in")
-    input.input(v-model="searchQuery",
-      v-if="search !== false",
-      @focus="onFocus(false)",
-      @blur="onBlur",
-      :disabled="disabled"
-      @keydown="onKeydown",
-      @input="onSearch",
-      :size="searchQuery.length || 1",
-      ref="input")
-    span(v-else,
-      tabindex="0",
-      @focus="onFocus(false)",
-      @blur="onBlur",
-      @keydown="onKeydown",
-      ref="input")
-  .box(slot="out")
+  template(slot="out")
     .fv-padding.fv-text-center(v-if="loading")
-      i.loading-icon.fa.fa-spin.fa-circle-o-notch.fv-fast-animation
+      fv-loading
     fv-list.fv-no-border(v-else,
       :tabindex="-1",
       parent,
       ref="list")
       fv-list-item(v-for="(option, i) in filteredOptions",
+        :class="{selected: isSelectedOption(option)}",
         :key="i",
-        @click="selectOption(option)")
+        @click="clickOption(option)")
           slot(v-if="$scopedSlots.option", name="option", :option="option")
           span(v-else, v-text="optionProp(option, 'text')")
       fv-list-item(v-if="allowInsert && searchQuery",
@@ -56,12 +42,14 @@ import utility from '../utility'
 import fvInputbox from './fvInputbox.vue'
 import fvList from './fvList.vue'
 import fvListItem from './fvListItem.vue'
+import fvLoading from './fvLoading.vue'
 
 export default {
   components: {
     fvInputbox,
     fvList,
-    fvListItem
+    fvListItem,
+    fvLoading
   },
   props: {
     value: {
@@ -127,14 +115,8 @@ export default {
     }
   },
   computed: {
-    isEmpty () {
-      return typeof this.value === 'undefined' || (this.value instanceof Array && this.value.length === 0)
-    },
     filteredOptions () {
       return this.options.filter(option => {
-        if (this.isSelectedOption(option)) {
-          return false
-        }
         if (this.search === true) {
           if (utility.contains(JSON.stringify(option), this.searchQuery)) {
             return true
@@ -143,9 +125,15 @@ export default {
         }
         return true
       })
-    },
-    showList () {
-      return !!(this.isFocused && (this.filteredOptions.length || (this.allowInsert && this.searchQuery) || (this.loading)))
+      // .sort((a, b) => {
+      //   const selected = [this.isSelectedOption(a), this.isSelectedOption(b)]
+      //   if (!selected[0] && selected[1]) {
+      //     return 1
+      //   } else if (selected[0] && !selected[1]) {
+      //     return -1
+      //   }
+      //   return 0
+      // })
     },
     fvValidate () {
       if (this.required === true) {
@@ -168,16 +156,8 @@ export default {
         this.$emit('input', [])
       }
     },
-    onFocus (inputFocus) {
-      if (!this.disabled) {
-        this.isFocused = true
-        if (inputFocus && this.$refs.input) {
-          this.$refs.input.focus()
-        }
-        if (this.$refs.inputBox) {
-          this.$refs.inputBox.calcOutPosition()
-        }
-      }
+    onTyping (value) {
+      // this.searchQuery = value
     },
     onBlur () {
       setTimeout(() => {
@@ -221,6 +201,22 @@ export default {
       }
       return value
     },
+    clickOption (option) {
+      if (this.isSelectedOption(option) && this.multiple) {
+        const optionValue = this.optionProp(option, 'value')
+        this.deleteValue(optionValue)
+      } else {
+        this.selectOption(option)
+      }
+      // this.searchQuery = ''
+      this.$nextTick(() => {
+        if (!this.multiple) {
+          this.$refs.inputBox.close()
+        } else {
+          this.$refs.inputBox.focusInput()
+        }
+      })
+    },
     selectOption (option) {
       let newValue
       const optionValue = this.optionProp(option, 'value')
@@ -230,8 +226,6 @@ export default {
         newValue = optionValue
       }
       this.$emit('input', newValue)
-      this.onFocus(true)
-      this.searchQuery = ''
     },
     deleteValue (value) {
       if (this.multiple) {

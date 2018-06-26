@@ -1,28 +1,23 @@
 <template lang="pug">
-span
-  transition(name="fv-fade")
-    .fv-overlay(v-if="visible",
-      @click="closeIf()")
-  transition(name="fv-dialog")
-    fv-main.fv-dialog(:class="left === null || top === null ? 'center' : ''",
-      :style="{left: left === null ? false : left, top: top === null ? false : top, width: width, height: height}",
-      v-if="visible",
-      ref="dialog",
-      @keydown.native="onKeydown($event); $emit('keydown', $event)",
-      @click.native="$emit('click', $event)")
-      fv-header(height="3em",
-        v-if="title.length > 0")
-        .title
-          label.fv-control-label(v-html="title")
-      fv-content(v-if="content",
-        v-html="content")
-      slot(v-else)
-      fv-footer(v-if="buttons.length > 0")
-        .fv-grow
-        fv-button(v-for="(button, i) in buttons",
-          :key="i",
-          v-bind="button",
-          @click="onButtonClick(button)")
+transition(name="fv-fade")
+  fv-main.fv-dialog(:class="left === null || top === null ? 'center' : ''",
+    :parent="false",
+    :style="{left: left === null ? false : left, top: top === null ? false : top, width: width, height: height}",
+    v-if="visible",
+    ref="dialog",
+    @keydown.native="onKeydown($event); $emit('keydown', $event)",
+    @click.native="$emit('click', $event)")
+    .fv-padding-small(v-if="title.length > 0")
+      b.fv-control-label(v-html="title")
+    fv-content.fv-padding-small(v-if="content",
+      v-html="content")
+    slot(v-else, :param="param")
+    .footer(v-if="buttons.length > 0")
+      .fv-grow
+      fv-button(v-for="(button, i) in buttons",
+        :key="i",
+        v-bind="button",
+        @click="onButtonClick(button)")
 </template>
 
 <script>
@@ -55,10 +50,10 @@ export default {
       default: null
     },
     width: {
-      default: 'auto'
+      default: undefined
     },
     height: {
-      default: 'height'
+      default: undefined
     },
     modal: {
       type: Boolean,
@@ -79,25 +74,39 @@ export default {
   },
   data () {
     return {
-      isRendered: false,
       visible: false,
       param: null,
       focusBackElem: null,
-      focusableItems: []
+      focusableItems: [],
+      hashChange: true // some hash changes applied by this component and does not need to be handeled. this variable keep state of this.
+    }
+  },
+  computed: {
+    hash () {
+      return `${window.location.hash.indexOf('?') !== -1 ? '&' : '?'}fv${this._uid}`
     }
   },
   methods: {
+    addHash () {
+      window.location.hash += this.hash
+    },
+    removeHash () {
+      window.location.hash = window.location.hash.replace(this.hash, '')
+    },
     toggle () {
       this[this.visible ? 'close' : 'open']()
     },
     open (param = null) {
+      this.addHash()
       const main = utility.fvParent(this, 'fv-main')
+      main.lock()
+      main.$on('overlay-click', this.closeIf)
       main.$el.appendChild(this.$el)
       this.visible = true
       this.param = param
       this.focusBackElem = document.querySelector(':focus')
       this.$emit('open', this.param)
-      setTimeout(() => {
+      this.$nextTick(() => {
         const padding = parseInt(process.env.padding)
         const bottom = this.$refs.dialog.$el.offsetHeight + this.$refs.dialog.$el.offsetTop
         const right = this.$refs.dialog.$el.offsetLeft + this.$refs.dialog.$el.offsetWidth
@@ -109,19 +118,36 @@ export default {
           const newLeft = this.$refs.dialog.$el.offsetLeft - (right - main.$el.offsetWidth)
           this.$emit('update:left', `${newLeft - padding}px`)
         }
-        this.focus(this.firstFocusOn)
-      }, 100)
+        setTimeout(() => {
+          this.focus(this.firstFocusOn)
+          window.addEventListener('hashchange', this.closeIf)
+        })
+      })
     },
     close () {
+      window.removeEventListener('hashchange', this.closeIf)
+      this.removeHash()
+      const main = utility.fvParent(this, 'fv-main')
+      main.unlock()
+      main.$off('overlay-click', this.closeIf)
       this.visible = false
       if (this.focusBackElem) {
-        this.focusBackElem.focus()
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.focusBackElem.focus()
+          })
+        })
       }
       this.$emit('close', this.param)
     },
-    closeIf () {
+    closeIf (event) {
       if (this.modal === false) {
         this.close()
+      } else if (event.type === 'hashchange') {
+        if (this.hashChange) {
+          this.addHash()
+        }
+        this.hashChange = !this.hashChange
       }
     },
     focus (index = true) {
@@ -146,7 +172,7 @@ export default {
           }
           break
         case 27: // esc
-          this.closeIf()
+          this.closeIf(event)
       }
     },
     onButtonClick (button) {
@@ -155,11 +181,6 @@ export default {
         this.close()
       }
     }
-  },
-  mounted () {
-    utility.doIt(() => {
-      this.isRendered = true
-    })
   },
   beforeDestroy () {
     this.$el.remove()
@@ -178,12 +199,12 @@ export default {
 
   backface-visibility: hidden;
   height: auto;
-  min-width: 280px;
+  min-width: 200px;
   overflow: auto;
   position: absolute;
   border-radius: $border-radius;
-  max-height: 90%;
-  max-width: 90%;
+  max-height: calc( 100% - #{$padding * 2});
+  max-width: calc( 100% - #{$padding * 2});
   z-index: 2;
 
   &.center {
@@ -192,24 +213,12 @@ export default {
     top: 50%;
   }
 
-  @include vue-animation(fv-dialog, enter) {
-    opacity: 1;
-    transition-duration: $transition-speed;
-    transition-property: transform, opacity;
-    transition-timing-function: ease;
-    transition-delay: 0.1s;
-    will-change: transform, opacity;
-  }
+  & > .footer {
+    display: flex;
+    padding: $padding-small 0;
 
-  @include vue-animation(fv-dialog, leave) {
-    opacity: 0;
-
-    &:not(.center) {
-      transform: translate3d(0, -10%, 0);
-    }
-
-    &.center {
-      transform: translate3d(-50%, -60%, 0);
+    & > .fv-button {
+      margin-#{$block-end}: $padding-small;
     }
   }
 }
