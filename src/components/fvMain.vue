@@ -1,6 +1,8 @@
 <template lang="pug">
 .fv-main
   slot
+  transition(name="fv-fade")
+    .fv-overlay(v-if="isLocked", @click="$emit('overlay-click', $event)")
 </template>
 
 <script>
@@ -9,6 +11,19 @@ export default {
     parent: {
       type: Boolean,
       default: true
+    }
+  },
+  data () {
+    return {
+      isLocked: false
+    }
+  },
+  methods: {
+    lock () {
+      this.isLocked = true
+    },
+    unlock () {
+      this.isLocked = false
     }
   }
 }
@@ -26,6 +41,6 @@ export default {
   flex-direction: column;
   height: inherit;
   position: relative;
-  width: inherit;
+  // width: inherit;
 }
 </style>
