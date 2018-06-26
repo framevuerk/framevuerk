@@ -2,41 +2,46 @@
 fv-inputbox.fv-datepicker(:focus="isFocused",
   @enter="onFocus(true)",
   :invalid="!fvValidate",
-  :placeholder="typeof value !== 'undefined' ? '' : placeholder",
+  :placeholder="placeholder",
   :disabled="disabled",
-  :value="typeof value !== 'undefined' ? [value] : []",
+  :value="value",
+  :input="false",
+  @input-keydown="onKeydown",
   @value-delete="deleteValue",
   :delete-button="deleteButton",
   :show-out="isFocused",
   tabindex="",
-  caret-icon="fa fa-calendar-o",
+  @open="onFocus",
+  :caret-icon="require('../icons/feather/calendar.svg')",
   ref="inputBox")
   template(slot="value", slot-scope="scope")
     slot(v-if="$scopedSlots.value", name="value", :value="scope.value")
-    span(v-else) {{scope.value}}
-  template(slot="in")
-    span(tabindex="0",
-      @focus="onFocus(false)",
-      @blur="onBlur",
-      @keydown="onKeydown",
-      ref="input")
-  .box(slot="out",
-    @close="$emit('close')")
-    fv-header.header(height="4em", tabindex="-1")
+    span(v-else, v-text="defaultFormattedValue")
+  .fv-datepicker-box(slot="out")
+    fv-header.header(tabindex="-1")
       .fv-input-group.header-buttons
-        fv-button.fv-sm(@click.prevent="moveValue('year', -1)", :icon="icons.prevYear", tabindex="-1")
-        fv-button.fv-sm(@click.prevent="moveValue('month', -1)", :icon="icons.prevMonth", tabindex="-1")
+        fv-button(@click.prevent="moveValue('year', -1)", tabindex="-1")
+          .icon(v-html="icons.prevYear")
+        fv-button(@click.prevent="moveValue('month', -1)", tabindex="-1")
+          .icon(v-html="icons.prevMonth")
       .title.fv-text-center
-        h4 {{visualProps.month}}/{{visualProps.year}}
+        h3(v-text="monthNames[visualProps.month - 1]")
+        p(v-text="visualProps.year")
       .fv-input-group.header-buttons
-        fv-button.fv-sm(@click.prevent="moveValue('month', 1)", :icon="icons.nextMonth", tabindex="-1")
-        fv-button.fv-sm(@click.prevent="moveValue('year', 1)", :icon="icons.nextYear", tabindex="-1")
+        fv-button(@click.prevent="moveValue('month', 1)", tabindex="-1")
+          .icon(v-html="icons.nextMonth")
+        fv-button(@click.prevent="moveValue('year', 1)", tabindex="-1")
+          .icon(v-html="icons.nextYear")
     fv-content.content(tabindex="-1")
       table.days-table
+        thead
+          tr
+            td(v-for="weekDay in weekDayNames",
+              v-html="weekDay")
         tbody
           tr(v-for="dp in [0, 7, 14, 21, 28]")
             td(v-for="d in 7",
-              @click="setDate((d + dp) - visualProps.monthFirstDay, true)",
+              @click="selectDate((d + dp) - visualProps.monthFirstDay, $event)",
               :disabled="isDateDisabled((d + dp) - visualProps.monthFirstDay, editingValue.getMonth(), editingValue.getFullYear())",
               :class="{highlighted: isHighlighted((d + dp) - visualProps.monthFirstDay), selected: isSelected((d + dp) - visualProps.monthFirstDay)}") {{ (d + dp) > visualProps.monthFirstDay && (d + dp) - visualProps.monthFirstDay <= visualProps.daysInMonth ? (d + dp) - visualProps.monthFirstDay : ''}}
 </template>
@@ -88,11 +93,27 @@ export default {
       editingValue: undefined,
       visualProps: {},
       highlightedDate: null,
-      isFocused: false
+      isFocused: false,
+      weekDayNames: [],
+      monthNames: []
     }
   },
   created () {
     this.setEditingValue(true)
+
+    const dt = new this.Date()
+    dt.setDate(dt.getDate() - (dt.getDay()))
+    for (let i = 0; i < 7; i++) {
+      this.weekDayNames.push(dt.toString().toString().split(' ')[0])
+      dt.setDate(dt.getDate() + 1)
+    }
+
+    dt.setDate(1)
+    dt.setMonth(0)
+    for (let i = 0; i < 12; i++) {
+      this.monthNames.push(dt.toString().replace(/[0-9,۰-۹]/g, '').split(' ').filter(p => !!p)[1])
+      dt.setMonth(dt.getMonth() + 1)
+    }
   },
   computed: {
     fvValidate () {
@@ -106,12 +127,22 @@ export default {
       }
       return true
     },
+    defaultFormattedValue () {
+      if (this.value) {
+        return `${this.value.getDate()}-${this.value.getMonth() + 1}-${this.value.getFullYear()}`
+      }
+      return ''
+    },
     icons () {
+      const chevronLeft = require('../icons/feather/chevron-left.svg')
+      const chevronRight = require('../icons/feather/chevron-right.svg')
+      const chevronsLeft = require('../icons/feather/chevrons-left.svg')
+      const chevronsRight = require('../icons/feather/chevrons-right.svg')
       return {
-        nextMonth: `fa fa-angle-${process.env.direction === 'ltr' ? 'right' : 'left'}`,
-        prevMonth: `fa fa-angle-${process.env.direction === 'rtl' ? 'right' : 'left'}`,
-        nextYear: `fa fa-angle-double-${process.env.direction === 'ltr' ? 'right' : 'left'}`,
-        prevYear: `fa fa-angle-double-${process.env.direction === 'rtl' ? 'right' : 'left'}`
+        nextMonth: process.env.direction === 'ltr' ? chevronRight : chevronLeft,
+        prevMonth: process.env.direction === 'ltr' ? chevronLeft : chevronRight,
+        nextYear: process.env.direction === 'ltr' ? chevronsRight : chevronsLeft,
+        prevYear: process.env.direction === 'ltr' ? chevronsLeft : chevronsRight
       }
     }
   },
@@ -120,13 +151,6 @@ export default {
       if (!this.disabled) {
         this.setEditingValue()
         this.calcVisualProps()
-        this.isFocused = true
-        if (inputFocus && this.$refs.input) {
-          this.$refs.input.focus()
-        }
-        if (this.$refs.inputBox) {
-          this.$refs.inputBox.calcOutPosition()
-        }
       }
     },
     onBlur () {
@@ -192,18 +216,21 @@ export default {
       }
       this.onFocus()
     },
-    setDate (value, emit = false) {
-      if (value !== null) {
-        this.editingValue.setDate(value)
-      }
-      if (this.isDateDisabled(this.editingValue.getDate(), this.editingValue.getMonth(), this.editingValue.getFullYear())) {
+    selectDate (value = null, event = null) {
+      this.setDate(value)
+      if (event.target.getAttribute('disabled') || this.isDateDisabled(this.editingValue.getDate(), this.editingValue.getMonth(), this.editingValue.getFullYear())) {
         return
       }
       const ret = new this.Date(this.editingValue)
-      if (emit) {
-        this.$emit('input', ret)
+      this.$emit('input', ret)
+      this.$nextTick(() => {
+        this.$refs.inputBox.close()
+      })
+    },
+    setDate (value) {
+      if (value !== null) {
+        this.editingValue.setDate(value)
       }
-      this.onFocus()
     },
     onKeydown (event) {
       switch (event.which) {
@@ -225,7 +252,7 @@ export default {
           break
         case 13: // enter
           event.preventDefault()
-          this.setDate(null, true)
+          this.selectDate(null, event)
           break
         case 8: // backspace
         case 46: // delete
@@ -258,63 +285,73 @@ export default {
 
 .fv-datepicker {
   & .out-container {
-    max-width: 300px;
-    min-width: 250px;
+    max-width: 380px;
+    min-width: 380px;
   }
-
-  & .box {
-    & .header {
-      &:focus {
-        color: $primary-color;
-      }
-
-      & .header-buttons {
-        overflow: visible;
+}
+.fv-datepicker-box {
+  & .header {
+    & .header-buttons {
+      overflow: visible;
+      & > .fv-button {
+        padding: 0 7px;
       }
     }
+  }
 
-    & .content {
-      padding: $padding-small;
+  & .content {
+    padding: $padding-small;
+    width: 100%;
+    text-align: center;
+
+    & table {
       width: 100%;
-      text-align: center;
 
-      & table {
-        width: 100%;
+      & thead td {
+        @include nowrap;
 
-        & td {
-          width: 14.2%;
-          height: 40px;
-          vertical-align: middle;
-          border-radius: $border-radius;
-          cursor: pointer;
+        font-size: 0.8em;
+        color: contrast($bg-color, 4);
+        padding-bottom: #{$padding / 2};
+      }
 
-          &[disabled] {
-            @include disabled;
-          }
+      & tbody td {
+        width: 14.2%;
+        max-width: 14.2%;
+        min-width: 14.2%;
+        overflow: hidden;
+        height: 40px;
+        vertical-align: middle;
+        border-radius: $border-radius;
+        cursor: pointer;
+        padding: $padding / 3;
 
-          &.highlighted {
-            background: yiq($bg-color, 3%);
-          }
+        &[disabled] {
+          @include disabled;
+        }
 
-          &.selected {
-            @include yiq($primary-color);
+        &.highlighted {
+          background: yiq($bg-color, 3%);
+        }
 
-            &:not([disabled]):hover {
-              background: yiq($primary-color, 3%);
-            }
-
-            &:not([disabled]):active {
-              background: yiq($primary-color, 10%);
-            }
-          }
+        &.selected {
+          @include yiq($primary-color);
 
           &:not([disabled]):hover {
-            background: yiq($bg-color, 3%);
+            background: yiq($primary-color, 3%);
           }
 
           &:not([disabled]):active {
-            background: yiq($bg-color, 10%);
+            background: yiq($primary-color, 10%);
           }
+        }
+
+        &:not([disabled]):hover {
+          background: yiq($bg-color, 3%);
+        }
+
+        &:not([disabled]):active {
+          background: yiq($bg-color, 10%);
         }
       }
     }
