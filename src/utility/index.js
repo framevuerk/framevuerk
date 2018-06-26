@@ -12,6 +12,30 @@ module.exports = {
   isSmallViewport (el = document.body) {
     return el.offsetWidth < 992
   },
+  viewportSize (el = document.body) {
+    const breakXs = 480
+    const breakSm = 768
+    const breakMd = 992
+    const breakLg = 1200
+    const size = el.offsetWidth
+    const ret = []
+    if (size < breakXs) {
+      ret.push('xs')
+    }
+    if (size >= breakXs) {
+      ret.push('sm')
+    }
+    if (size >= breakSm) {
+      ret.push('md')
+    }
+    if (size >= breakMd) {
+      ret.push('lg')
+    }
+    if (size >= breakLg) {
+      ret.push('xl')
+    }
+    return ret
+  },
   fvParent (vueComponent, vueElName = 'fv-main') {
     let ret = vueComponent.$parent
     while (ret) {
