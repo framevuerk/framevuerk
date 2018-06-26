@@ -13,8 +13,12 @@ $block-start: if($direction == rtl, right, left);
 $block-end: if($direction == rtl, left, right);
 
 // $bg-color: #f9f9f9 !default;
+$bg-color-contrast: yiq($bg-color, 3%) !default;
+$bg-color-contrast-more: yiq($bg-color, 20%) !default;
+$bg-color-contrast-much-more: yiq($bg-color, 30%) !default;
+
 $bg-color-light: lighten($bg-color, 5%) !default;
-$bg-color-dark: darken($bg-color, 4%) !default;
+$bg-color-dark: darken($bg-color, 3%) !default;
 
 $color: yiq($bg-color) !default;
 $color-light: lighten($color, 36%) !default;
@@ -22,11 +26,11 @@ $color-dark: darken($color, 5%) !default;
 
 $night-bg-color: #383f47 !default;
 
-$shadow-percent: 10%;
-$shadow-percent-light: 1%;
+$shadow-percent: 20%;
+$shadow-percent-light: 5%;
 $shadow-percent-dark: 35%;
-$shadow-color: rgba(0, 0, 0, 0.1) !default;
-$shadow-color-light: rgba(0, 0, 0, 0.01) !default;
+$shadow-color: rgba(0, 0, 0, 0.2) !default;
+$shadow-color-light: rgba(0, 0, 0, 0.05) !default;
 $shadow-color-dark: rgba(0, 0, 0, 0.35) !default;
 
 $highlight-percent: 19%;

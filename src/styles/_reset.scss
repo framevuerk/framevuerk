@@ -154,6 +154,7 @@ table {
 a,
 a:hover,
 a:focus {
+  color: inherit;
   text-decoration: blink;
   cursor: pointer;
 }
