@@ -108,7 +108,7 @@ export default {
     position: relative;
     flex-direction: row;
     justify-content: space-between;
-    min-height: 3em;
+    min-height: 3.5em;
 
     & > .text {
       flex-grow: 1;
@@ -116,8 +116,6 @@ export default {
     }
 
     & .expand {
-      // @include fvButton($bg-color, yiq($bg-color), false);
-      // @include fvButton(contrast($bg-color, 1));
       padding: 0 $padding-small;
       cursor: pointer;
       transition: transform $transition-speed;
@@ -144,17 +142,16 @@ export default {
   &.highlighted > .content,
   &:not(.unclickable):not([disabled]) > .content:hover {
     @include yiq(contrast($bg-color, 1));
+
+    cursor: pointer;
   }
 
   &.selected {
-    // @include yiq(contrast($bg-color, 1));
     border-#{$block-start}: solid 4px $primary-color;
   }
 
   & .sub-list {
     & > .fv-list {
-      // @include shadow(inset-bottom);
-
       border: 0;
       border-#{$block-start}: solid 1.5em transparent;
     }
@@ -170,7 +167,7 @@ export default {
     &.sub-list-enter,
     &.sub-list-leave-to {
       opacity: 0;
-      max-height: 0px;
+      max-height: 0;
     }
   }
 }

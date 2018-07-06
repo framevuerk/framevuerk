@@ -114,13 +114,14 @@ export default {
   border: solid 1px contrast($bg-color, 2);
   clear: both;
 
+  & > .fv-list-item:first-child > .content {
+    border-top: none;
+  }
+
   &:hover {
     & .fv-list-item.highlighted > .content:not(:hover) {
       background: inherit;
     }
-  }
-  & > .fv-list-item:first-child > .content {
-    border-top: none;
   }
 }
 </style>
