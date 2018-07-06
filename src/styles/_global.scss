@@ -127,76 +127,53 @@ html > body {
 .fv-padding {
   padding: $padding !important;
 }
+
 .fv-margin {
   margin: $padding !important;
 }
 
-.fv-vertical-padding {
-  padding-bottom: $padding !important;
-  padding-top: $padding !important;
-}
-.fv-vertical-margin {
-  margin-bottom: $padding !important;
-  margin-top: $padding !important;
-}
+@each $direction in '', 'vertical-', 'horizontal-' {
+  @each $property in 'margin', 'padding' {
+    .fv-no-#{$direction}#{$property} {
+      @if $direction == '' {
+        #{$property}: 0 !important;
+      }
 
-.fv-horizontal-padding {
-  padding-left: $padding !important;
-  padding-right: $padding !important;
-}
-.fv-horizontal-margin {
-  margin-left: $padding !important;
-  margin-right: $padding !important;
-}
+      @else if $direction == 'vertical-' {
+        #{$property}-top: 0 !important;
+        #{$property}-bottom: 0 !important;
+      }
 
-.fv-padding-small {
-  padding: $padding-small !important;
-}
-.fv-margin-small {
-  margin: $padding-small !important;
-}
+      @else if $direction == 'horizontal-' {
+        #{$property}-left: 0 !important;
+        #{$property}-right: 0 !important;
+      }
+    }
 
-.fv-vertical-padding-small {
-  padding-bottom: $padding-small !important;
-  padding-top: $padding-small !important;
-}
-.fv-vertical-margin-small {
-  margin-bottom: $padding-small !important;
-  margin-top: $padding-small !important;
-}
+    @each $size in '', '-small' {
+      $val: $padding;
 
-.fv-horizontal-padding-small {
-  padding-left: $padding-small !important;
-  padding-right: $padding-small !important;
-}
-.fv-horizontal-margin-small {
-  margin-left: $padding-small !important;
-  margin-right: $padding-small !important;
-}
+      @if $size == '-small' {
+        $val: $padding / 2;
+      }
 
-.fv-no-padding {
-  padding: 0 !important;
-}
-.fv-no-margin {
-  margin: 0 !important;
-}
+      .fv-#{$direction}#{$property}#{$size} {
+        @if $direction == '' {
+          #{$property}: $val !important;
+        }
 
-.fv-no-vertical-padding {
-  padding-bottom: 0 !important;
-  padding-top: 0 !important;
-}
-.fv-no-vertical-margin {
-  margin-bottom: 0 !important;
-  margin-top: 0 !important;
-}
+        @else if $direction == 'vertical-' {
+          #{$property}-top: $val !important;
+          #{$property}-bottom: $val !important;
+        }
 
-.fv-no-horizontal-padding {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-.fv-no-horizontal-margin {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
+        @else if $direction == 'horizontal-' {
+          #{$property}-left: $val !important;
+          #{$property}-right: $val !important;
+        }
+      }
+    }
+  }
 }
 
 .fv-no-border {
@@ -298,29 +275,15 @@ html > body {
   display: inline-block;
 
   & > * {
-    margin: 0;
+    margin-left: 0 #{$padding-small / 2};
   }
 
   & > *:first-child {
     margin-#{$block-start}: 0;
-    // border-bottom-#{$block-end}-radius: 0;
-    // border-top-#{$block-end}-radius: 0;
   }
 
   & > *:last-child {
     margin-#{$block-end}: 0;
-    // border-bottom-#{$block-start}-radius: 0;
-    // border-top-#{$block-start}-radius: 0;
-  }
-
-  & > *:not(:last-child) {
-    // border-#{$block-end}: 0;
-  }
-
-  & > * {
-    // border-radius: 0;
-    margin-left: $padding-small / 2;
-    margin-right: $padding-small / 2;
   }
 }
 
