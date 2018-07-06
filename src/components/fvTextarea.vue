@@ -55,8 +55,11 @@ export default {
 
 <style lang="scss">
 @import '../styles/variables';
+@import '../styles/mixins';
 
 .fv-textarea {
+  @include scrollbar($bg-color);
+
   line-height: 1.3em;
   padding: $padding-small;
 
@@ -64,20 +67,6 @@ export default {
     overflow-x: auto;
     overflow-y: hidden;
     resize: none;
-  }
-
-  &::-webkit-scrollbar {
-    height: 9px;
-    width: 9px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: contrast($bg-color, 2);
-    border: solid 2px $bg-color;
   }
 }
 </style>
