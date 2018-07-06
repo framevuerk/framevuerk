@@ -97,14 +97,13 @@ export default {
 .fv-switch {
   @include shadow(bottom);
 
-  background: contrast($bg-color, 1, force-light);
+  background: contrast($bg-color, 1, force-dark);
   border: solid 1px contrast($bg-color, 2, hard-dark);
   border-radius: 25px;
   cursor: pointer;
   direction: $direction;
   display: inline-block;
   height: 2.2em;
-  margin: 0.9em 0;
   padding: 0.2em;
   vertical-align: middle;
   width: 3.8em;
@@ -126,9 +125,9 @@ export default {
   }
 
   &.on {
+    background: contrast($primary-color, 2, hard-light);
+
     & > .fv-handler {
-      // border: solid 1px $shadow-color-light;
-      background: contrast($primary-color, 1, force-light);
       margin-#{$block-start}: 1.7em;
     }
   }
@@ -142,8 +141,12 @@ export default {
     }
   }
 
-  &:active > .fv-handler{
+  &:active > .fv-handler {
     @include shadow(inset-bottom);
+  }
+
+  &:hover:not(:focus):not([disabled]) {
+    border: solid 1px contrast($bg-color, 3, hard-dark);
   }
 
   &[disabled] {
