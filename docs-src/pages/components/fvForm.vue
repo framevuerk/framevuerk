@@ -9,21 +9,25 @@ fv-content
       fv-form.fv-row
         .fv-col
           p Check Box
-          fv-check(v-model="inputs.d1", :options="['A.C. Milan', 'Juventus', 'Inter Milan']", value-key="", text-key="", disabled-key="", multiple)
+          .fv-form-control
+            fv-check(v-model="inputs.d1", v-for="i in ['A.C. Milan', 'Juventus']", :key="i", :label="i", :content="i", multiple)
         .fv-col
           p Radio + Required
-          fv-check(v-model="inputs.d2", :options="['Amir', 'Farzad', 'Jeff']", required, value-key="", text-key="", disabled-key="")
+          .fv-form-control
+            fv-check(v-model="inputs.d2", v-for="i in ['Amir', 'Farzad']", required, :key="i", :label="i", :content="i")
         .fv-col
           label.fv-control-label Switch
-          fv-switch(v-model="inputs.d3", required)
-        .fv-col-sm-12
+          .fv-form-control
+            fv-switch(v-model="inputs.d3", required)
+        .fv-col
           label.fv-control-label Input
-          .fv-input-group.fv-flex
+          .fv-form-control.fv-input-group.fv-flex
             fv-input.fv-grow(v-model="inputs.d4.value", :display-value="inputs.d4.displayValue", render-type="display", placeholder="Type something", required)
             fv-button(@click.native.prevent="inputs.d4.value = new Date().getTime(); inputs.d4.displayValue = new Date(inputs.d4.value).getMilliseconds();") OK
-        .fv-col-6
+        .fv-col
           label.fv-control-label Range
-          fv-range.fv-form-control(v-model="inputs.d12", :data="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]", required)
+          .fv-form-control
+            fv-range(v-model="inputs.d12", :data="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]", required)
         .fv-col-6
           label.fv-control-label Select
           fv-select.fv-form-control(v-model="inputs.d5", placeholder="Select your city", :options="[{text: 'Tehran', value: 'teh'}, {text: 'LA', value: 'la'}]", required)
@@ -53,8 +57,8 @@ export default {
   data () {
     return {
       inputs: {
-        d1: '',
-        d2: '',
+        d1: [],
+        d2: [],
         d3: '',
         d4: {
           value: '',

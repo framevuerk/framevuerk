@@ -8,17 +8,29 @@ fv-content
     doc-example
       .fv-row
         .fv-col
-          p Check Box
-          fv-check(v-model="inputs.d1", :options="['A.C. Milan', 'Juventus', 'Inter Milan']", value-key="", text-key="", disabled-key="", multiple)
+          label.fv-form-control-label {{inputs.d1}}
+          .fv-form-control
+            | salam aziiizam
+            fv-check(v-model="inputs.d1", content="iran", multiple) J.S Iran
+            fv-check(v-model="inputs.d1", content="israeil", multiple) Israeil
+            fv-check(v-model="inputs.d1", content="ghazbin", multiple, disabled) Ghazbin
         .fv-col
-          p Radio + Required
-          fv-check(v-model="inputs.d2", :options="['Amir', 'Farzad', 'Jeff']", required, value-key="", text-key="", disabled-key="")
-        .fv-col
-          p Option Disabled
-          fv-check(v-model="inputs.d3", :options="[{value: 'Ghazvin', disabled: false}, {value: 'Tehran', disabled: false}, {value: 'Qom', disabled: true}]", text-key="value", multiple)
-        .fv-col
-          p Disabled
-          fv-check(v-model="inputs.d4", :options="['Ronaldo', 'Messi']", disabled, value-key="", text-key="", disabled-key="")
+          label.fv-form-control-label {{inputs.d2}} {{typeof inputs.d2}}
+          .fv-form-control
+            fv-check(v-model="inputs.d2", content="iran") J.S Iran
+            fv-check(v-model="inputs.d2", content="israeil") Israeil
+        //- .fv-col
+        //-   p Check Box
+        //-   fv-check(v-model="inputs.d1", :options="['A.C. Milan', 'Juventus', 'Inter Milan']", value-key="", text-key="", disabled-key="", multiple)
+        //- .fv-col
+        //-   p Radio + Required
+        //-   fv-check(v-model="inputs.d2", :options="['Amir', 'Farzad', 'Jeff']", required, value-key="", text-key="", disabled-key="")
+        //- .fv-col
+        //-   p Option Disabled
+        //-   fv-check(v-model="inputs.d3", :options="[{value: 'Ghazvin', disabled: false}, {value: 'Tehran', disabled: false}, {value: 'Qom', disabled: true}]", text-key="value", multiple)
+        //- .fv-col
+        //-   p Disabled
+        //-   fv-check(v-model="inputs.d4", :options="['Ronaldo', 'Messi']", disabled, value-key="", text-key="", disabled-key="")
     doc-api(:rows="api")
 </template>
 
@@ -38,8 +50,8 @@ export default {
   data () {
     return {
       inputs: {
-        d1: '',
-        d2: '',
+        d1: ['iran'],
+        d2: 'iran',
         d3: ''
       },
       api: {
