@@ -246,12 +246,12 @@ export default {
 }
 
 .fv-slider-left-enter {
-  transform: translateX(30%);
+  transform: translateX(100%);
   z-index: 1;
 }
 
 .fv-slider-right-enter {
-  transform: translateX(-30%);
+  transform: translateX(-100%);
   z-index: 1;
 }
 
