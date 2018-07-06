@@ -73,6 +73,9 @@ export default {
         return [this.value]
       }
     },
+    middleValue () {
+      return this.filteredData[parseInt(this.dataLength / 2)].value
+    },
     dataLength () {
       if (this.data instanceof Array) {
         return this.data.filter((item, i, arr) => arr.indexOf(item) === i).length
@@ -228,17 +231,23 @@ export default {
       let ret = this.filteredValue
       ret[handlerIndex] = value
       ret.sort((a, b) => a >= b ? 1 : -1)
-
+      const handlerPosition = []
       if (ret.length > 1) {
-        this.$refs.filler.style[this.blockStart] = `${this.calcXByValue(ret[0])}%`
-        this.$refs.filler.style[this.blockEnd] = `${100 - this.calcXByValue(ret[1])}%`
-        this.$refs.handler[0].style[this.blockStart] = `${this.calcXByValue(ret[0])}%`
-        this.$refs.handler[1].style[this.blockStart] = `${this.calcXByValue(ret[1])}%`
+        handlerPosition.push(this.calcXByValue(ret[0]))
+        handlerPosition.push(this.calcXByValue(ret[1]))
+        this.$refs.filler.style[this.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.filler.style[this.blockEnd] = `${100 - handlerPosition[1]}%`
+        this.$refs.handler[0].style[this.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
+        this.$refs.handler[1].style[this.blockStart] = `${handlerPosition[1]}%`
+        this.$refs.handler[1].style.transform = `translateX(-${handlerPosition[1]}%)`
         this.$emit('input', ret)
       } else {
+        handlerPosition.push(this.calcXByValue(value))
         this.$refs.filler.style[this.blockStart] = `0%`
         this.$refs.filler.style[this.blockEnd] = `${100 - this.calcXByValue(ret[0])}%`
-        this.$refs.handler[0].style[this.blockStart] = `${this.calcXByValue(value)}%`
+        this.$refs.handler[0].style[this.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
         this.$emit('input', ret[0])
       }
     },
@@ -276,25 +285,24 @@ export default {
 .fv-range {
   @include shadow(inset-bottom);
 
-  background: $bg-color-dark;
-  border: solid 1px $shadow-color;
+  background: contrast($bg-color, 1, force-light);
+  border: solid 1px contrast($bg-color, 2, hard-dark);
   padding: 0;
   position: relative;
   height: 0.8em;
-  border-radius: 0.4em;
-  margin: 1em 1em;
+  border-radius: $border-radius;
+  margin: 1em 0;
 
   & .filler {
     margin: 0;
     position: absolute;
     width: auto;
     height: 100%;
-    background: $primary-color-light;
-    border-radius: 0.4em;
+    background: contrast($primary-color, 2, hard-light);
   }
 
   & > .handler {
-    @include shadow(bottom, $shadow-color);
+    @include shadow(bottom);
 
     padding: 0;
     height: 2em;
@@ -303,14 +311,23 @@ export default {
     display: inline-block;
     position: absolute;
     border-radius: 1em;
-    background: $bg-color-light;
-    border: solid 1px $shadow-color;
-    box-shadow: 0 1px 4px $shadow-color;
-    // margin-#{$block-start}: -1em;
+    background: contrast($bg-color, 1, force-light);
+    border: solid 1px contrast($bg-color, 2, hard-dark);
     cursor: move;
 
     &:focus {
       @include outline;
+    }
+  }
+
+  &:not([disabled]) > .handler {
+    &:active {
+      @include shadow(inset-bottom);
+    }
+
+    &:active,
+    &:hover {
+      border: solid 1px contrast($bg-color, 3, hard-dark);
     }
   }
 
