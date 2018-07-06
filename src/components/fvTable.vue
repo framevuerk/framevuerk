@@ -5,7 +5,8 @@
       tr
         th(v-for="field in fields",
           :key="field")
-          | {{field}}
+          slot(v-if="$scopedSlots['title-'+field]", :name="'title-'+field", :field="field", :index="index")
+          span(v-else) {{field}}
     tbody
       tr(v-for="(row, index) in rows",
         :key="index")
@@ -13,10 +14,8 @@
           :key="field")
           .field-name(v-if="isBreaked && title") {{field}}
           .field-value
-            slot(:name="'field-' + field",
-              :row="row",
-              :field="field",
-              :index="index")
+            slot(v-if="$scopedSlots['field-'+field]", :name="'field-'+field", :row="row", :field="field", :index="index")
+            span(v-else) {{defaultFieldValueInRow(field, row)}}
     tfoot(v-if="$slots.footer")
       slot(name="footer")
 </template>
@@ -49,6 +48,14 @@ export default {
   data () {
     return {
       isBreaked: this.breaked
+    }
+  },
+  methods: {
+    defaultFieldValueInRow (field, row) {
+      if (typeof row === 'object') {
+        return row[field]
+      }
+      return row
     }
   },
   mounted () {
