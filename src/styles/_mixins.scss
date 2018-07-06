@@ -1,11 +1,14 @@
 @import './variables';
 @import './functions';
 
-@mixin outline($color: $primary-color) {
+@mixin outline($color: $primary-color, $border: true) {
   z-index: 2;
   box-shadow: 0 #{$shadow-size} $shadow-size $shadow-color-light, 0 0 #{$shadow-size / 2} 1px $color;
-  border-color: transparent;
   outline: none;
+
+  @if $border {
+    border-color: transparent;
+  }
 }
 
 @mixin textoutline($color: $primary-color) {
@@ -71,20 +74,25 @@
     @include shadow(bottom);
 
     border: solid 1px contrast($bg, 2, hard-dark);
-  } @else {
+  }
+
+  @else {
     border: none;
     box-shadow: none;
   }
+
   &:not([disabled]) {
     &:hover,
     &:focus {
       background: contrast($bg, 1, hard-light);
       transition-duration: 0;
     }
+
     &:active {
       @if $border {
         @include shadow(inset-bottom);
       }
+
       background: contrast($bg, 2, hard-dark);
       transition-duration: $transition-speed;
     }
@@ -110,11 +118,11 @@
     &:hover {
       border: solid 1px contrast($bg, 3, hard-dark);
     }
-  
+
     &:focus,
     &[focus] {
       @include outline;
-  
+
       &:invalid,
       &[invalid] {
         @include outline($danger-color);
