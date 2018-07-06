@@ -20,8 +20,8 @@ export default {
 
   & > header {
     width: 100%;
-    padding: #{$padding / 2} $padding;
-    align-items: center;
+    padding: $padding;
+    // align-items: center;
     display: flex;
     justify-content: space-between;
     overflow: hidden;
@@ -58,37 +58,24 @@ export default {
     }
   }
 
-  &,
+  &:not(.fv-default) {
+    @include yiq($header-bg-color);
+
+    border-bottom: solid 1px contrast($header-bg-color, 2, hard-dark);
+
+    & .fv-button {
+      @include fvButton($header-bg-color, yiq($header-bg-color), false);
+    }
+
+    & .fv-input {
+      @include fvInput($header-bg-color);
+    }
+  }
+
   &.fv-default {
     @include yiq($bg-color);
 
     border-bottom: solid 1px contrast($bg-color, 2, hard-dark);
-  }
-
-  &.fv-primary {
-    @include yiq($primary-color);
-
-    border-bottom: solid 1px contrast($primary-color, 2, hard-dark);
-    & .fv-button {
-      @include fvButton($primary-color, yiq($primary-color), false);
-    }
-
-    & .fv-input {
-      @include fvInput($primary-color);
-    }
-  }
-
-  &.fv-secondary {
-    @include yiq($secondary-color);
-
-    border-bottom: solid 1px contrast($secondary-color, 2, hard-dark);
-    & .fv-button {
-      @include fvButton($secondary-color, yiq($secondary-color), false);
-    }
-
-    & .fv-input {
-      @include fvInput($secondary-color);
-    }
   }
 }
 </style>
