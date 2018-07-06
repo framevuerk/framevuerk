@@ -6,6 +6,7 @@
 @import '../styles/variables';
 @import '../styles/functions';
 @import '../styles/mixins';
+
 .fv-loading {
   display: inline-block;
   width: 1.3em;
