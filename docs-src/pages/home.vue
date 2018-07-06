@@ -35,33 +35,39 @@ export default {
 
 .logo {
   width: 19em;
+
   & svg {
     max-width: 100%;
     height: auto;
+
     & polygon {
       transform: translateY(-100%);
       transition-duration: 2s;
     }
+
     & path {
       fill: transparent;
       transition-delay: 0.6s;
       transition-duration: 1s;
     }
   }
+
   &.ready {
     & svg {
       & polygon {
         transform: translateY(0);
-        fill: #41B883;
+        fill: #41b883;
       }
+
       & path {
         stroke: transparent;
         stroke-width: 0;
-        fill: #35495E;
+        fill: #35495e;
       }
     }
   }
 }
+
 .sp {
   height: 1px;
   display: inline-block;

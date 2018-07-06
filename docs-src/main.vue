@@ -162,12 +162,13 @@ body .sidebar {
   }
 
   & .fvlogo {
-    & svg{
+    & svg {
       margin-right: 5px;
       height: 25px;
       width: auto;
       vertical-align: middle;
-      & > *{
+
+      & > * {
         fill: #fff;
       }
     }
@@ -175,13 +176,6 @@ body .sidebar {
 
   & .fv-tabs {
     height: auto;
-  }
-
-  & .fv-list-item {
-    & .p-icon {
-      // font-size: 1.4em;
-      // min-width: 1.4em;
-    }
   }
 }
 </style>

@@ -5,6 +5,7 @@
 @function yiq($color, $percetange: 90%, $threshold: 180) {
   $light: lighten($color, $percetange);
   $dark: darken($color, $percetange);
+
   @return if(luma($color) < $threshold, $light, $dark);
 }
 
