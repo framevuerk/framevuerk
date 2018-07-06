@@ -18,7 +18,7 @@ fv-inputbox.fv-datepicker(:focus="isFocused",
     slot(v-if="$scopedSlots.value", name="value", :value="scope.value")
     span(v-else, v-text="defaultFormattedValue")
   .fv-datepicker-box(slot="out")
-    fv-header.header(tabindex="-1")
+    fv-header.fv-default.header(tabindex="-1")
       .fv-input-group.header-buttons
         fv-button(@click.prevent="moveValue('year', -1)", tabindex="-1")
           .icon(v-html="icons.prevYear")
@@ -289,10 +289,12 @@ export default {
     min-width: 380px;
   }
 }
+
 .fv-datepicker-box {
   & .header {
     & .header-buttons {
       overflow: visible;
+
       & > .fv-button {
         padding: 0 7px;
       }
