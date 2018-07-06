@@ -36,7 +36,7 @@
         fv-content.fv-no-padding
           slot(name="out")
     fv-dialog(ref="outDialog", v-if="isBreaked", :first-focus-on="0", :top="padding", :left="padding", width="100%", @close="onOutClose")
-      fv-header
+      fv-header.fv-default
         fv-input.fv-block(v-if="input",
           ref="dialogInput",
           :value="searchQuery",
@@ -48,13 +48,6 @@
           tabindex="0",
           @keydown="onInputKeydown")
           h4.fv-control-label {{placeholder}}
-        //- .space
-        //- fv-button(@click="close")
-        //-   .icon(v-html="require('../icons/feather/check.svg')")
-          //.text(v-text="locale.ok()")
-      //span(v-else,
-          tabindex="0",
-          @keydown="onInputKeydown")
       fv-content.fv-no-padding
         slot(name="out")
 </template>
@@ -233,6 +226,17 @@ export default {
   justify-content: space-between;
   align-items: center;
 
+  & > .caret-icon {
+    #{$block-end}: 0;
+    padding-#{$block-start}: $padding;
+    height: 100%;
+
+    & > svg {
+      height: 100%;
+      vertical-align: middle;
+    }
+  }
+
   & > .value-container {
     width: 100%;
 
@@ -251,6 +255,7 @@ export default {
         padding: 0;
         border: 0;
         box-shadow: none;
+
         & .input {
           display: inline-block;
           border: none;
@@ -260,7 +265,6 @@ export default {
       }
 
       & .button {
-        // display: inline-block;
         margin-#{$block-start}: $padding;
         cursor: pointer;
         color: $color;
@@ -280,17 +284,6 @@ export default {
           color: contrast($color, 3);
         }
       }
-    }
-  }
-
-  & > .caret-icon {
-    #{$block-end}: 0;
-    padding-#{$block-start}: $padding;
-    height: 100%;
-
-    & > svg {
-      height: 100%;
-      vertical-align: middle;
     }
   }
 
