@@ -158,11 +158,9 @@ export default {
   }
 
   & .fv-content {
-    &::-webkit-scrollbar-thumb {
-      background: contrast($sidebar-bg-color, 2);
-      border: solid 2px $sidebar-bg-color;
-    }
+    @include scrollbar($sidebar-bg-color);
   }
+
   & .fv-list > .fv-list-item {
     & > .content,
     & > .sub-list {
@@ -173,12 +171,8 @@ export default {
     &:not(.unclickable) > .content:hover {
       @include yiq(contrast($sidebar-bg-color, 1));
     }
-
-    &.selected {
-      // @include yiq(contrast($sidebar-bg-color, 1));
-      border-#{$block-start}-color: $primary-color;
-    }
   }
+
   &.fv-sidebar-left-enter-active,
   &.fv-sidebar-left-leave-active,
   &.fv-sidebar-right-enter-active,
