@@ -7,9 +7,10 @@ transition(name="fv-fade")
     ref="dialog",
     @keydown.native="onKeydown($event); $emit('keydown', $event)",
     @click.native="$emit('click', $event)")
-    .fv-padding-small(v-if="title.length > 0")
-      b.fv-control-label(v-html="title")
-    fv-content.fv-padding-small(v-if="content",
+    .header(v-if="title.length > 0")
+      .title
+        label.fv-control-label(v-html="title")
+    fv-content(v-if="content",
       v-html="content")
     slot(v-else, :param="param")
     .footer(v-if="buttons.length > 0")
@@ -203,9 +204,15 @@ export default {
   overflow: auto;
   position: absolute;
   border-radius: $border-radius;
-  max-height: calc( 100% - #{$padding * 2});
-  max-width: calc( 100% - #{$padding * 2});
+  max-height: calc(100% - #{$padding * 2});
+  max-width: calc(100% - #{$padding * 2});
+  padding: 0;
   z-index: 2;
+
+  & > .header,
+  & > .footer {
+    padding: $padding;
+  }
 
   &.center {
     transform: translate3d(-50%, -50%, 0);
@@ -215,10 +222,9 @@ export default {
 
   & > .footer {
     display: flex;
-    padding: $padding-small 0;
 
     & > .fv-button {
-      margin-#{$block-end}: $padding-small;
+      margin-#{$block-start}: $padding;
     }
   }
 }
