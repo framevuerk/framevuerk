@@ -1,40 +1,23 @@
 <template lang="pug">
-.fv-check
-  span.fv-check-item(:tabindex="disabled || option.disabled? '': 0",
-    v-for="option in options",
-    ref="option",
-    @click="selectOption(option)",
-    @keydown.enter.space.prevent="selectOption(option)",
-    :class="{'checked': isChecked(option), 'disabled': optionProp(option, 'disabled') || disabled || false}",
-    :invalid="!fvValidate")
-    span.fv-check-icon(v-if="multiple",
-      v-html="isChecked(option) ? icons.checkSquare : icons.square")
-    span.fv-check-icon(v-else,
-      v-html="isChecked(option) ? icons.checkCircle : icons.circle")
-    =" "
-    label.fv-control-label(v-html="optionProp(option, 'text')")
+.fv-check(:checked="isChecked", :multiple="multiple", :disabled="disabled", @click="onClick", @keydown.space.prevent="onClick", :tabindex="disabled ? '' : 0")
+  .box(:class="{square: multiple, circle: !multiple}")
+  span.label
+    template(v-if="!label")
+      slot
+    template(v-else) {{label}}
 </template>
 
 <script>
 export default {
   props: {
-    options: {
-      type: Array,
-      default: () => []
-    },
-    disabledKey: {
-      type: String,
-      default: 'disabled'
-    },
-    valueKey: {
-      type: String,
-      default: 'value'
-    },
-    textKey: {
-      type: String,
-      default: 'text'
-    },
     value: {
+      default: undefined
+    },
+    content: {
+      default: undefined,
+      required: true
+    },
+    label: {
       default: undefined
     },
     multiple: {
@@ -73,68 +56,49 @@ export default {
         return this.required(this.value)
       }
       return true
+    },
+    isChecked () {
+      const content = JSON.stringify(this.content)
+      if (this.multiple) {
+        if (this.value.findIndex(v => JSON.stringify(v) === content) > -1) {
+          return true
+        }
+      } else {
+        return JSON.stringify(this.value) === content
+      }
+      return false
     }
   },
   methods: {
-    focus () {
-      this.$refs.option[0].focus()
-    },
-    optionProp (option, prop = 'value') {
-      switch (prop) {
-        case 'value':
-          return this.valueKey ? option[this.valueKey] : option
-        case 'text':
-          return this.textKey ? option[this.textKey] : option
-        case 'disabled':
-          return this.disabledKey ? option[this.disabledKey] : false
+    setStructure () {
+      if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
+        this.$emit('input', [])
       }
     },
-    selectOption (option) {
-      if (!this.optionProp(option, 'disabled') && !this.disabled) {
-        const optionValue = this.optionProp(option, 'value')
-        let newValue
-        if (this.multiple) {
-          if (this.value && this.value.constructor === Array) {
-            if (this.isChecked(option)) {
-              newValue = this.value
-              newValue.splice(newValue.indexOf(optionValue), 1)
-            } else {
-              newValue = this.value.concat(optionValue)
-            }
-          } else {
-            newValue = [optionValue]
-          }
-        } else {
-          if (this.isChecked(option)) {
-            newValue = undefined
-          } else {
-            newValue = optionValue
-          }
-        }
-        this.$emit('input', newValue)
+    onClick () {
+      if (this.disabled) {
+        return
       }
-    },
-    isChecked (option) {
-      const optionValue = this.optionProp(option, 'value')
-      const value = this.multipe ? (this.value && this.value.constructor === Array ? this.value : []) : (this.value)
+      let value = typeof this.value === 'undefined' ? undefined : JSON.parse(JSON.stringify(this.value))
       if (this.multiple) {
-        if (this.value && this.value.constructor === Array) {
-          return value.indexOf(optionValue) !== -1
+        const content = JSON.stringify(this.content)
+        if (this.isChecked) {
+          value.splice(value.findIndex(v => JSON.stringify(v) === content), 1)
+        } else {
+          value.push(this.content)
         }
-        return false
       } else {
-        return value === optionValue
+        if (this.isChecked) {
+          value = undefined
+        } else {
+          value = JSON.parse(JSON.stringify(this.content))
+        }
       }
+      this.$emit('input', value)
     }
   },
   created () {
-    if (typeof this.value !== 'undefined') {
-      if (!(this.value instanceof Array) && this.multiple) {
-        this.$emit('input', [this.value])
-      }
-    } else {
-      this.$emit('input', this.multiple ? [] : undefined)
-    }
+    this.setStructure()
   }
 }
 </script>
@@ -145,34 +109,75 @@ export default {
 
 .fv-check {
   display: inline-block;
-  height: 2em;
-  margin: 0.9em 0;
+  margin: 0;
+  margin-#{$block-end}: #{$padding};
+  background: contrast($bg-color, 1, force-light);
+  cursor: pointer;
 
-  & .fv-check-item {
-    border-radius: $border-radius;
-    color: inherit;
-    padding: ($padding-small / 2);
+  & > .box {
+    @include shadow(bottom);
 
-    &,
-    & * {
-      cursor: pointer;
+    height: 1.5em;
+    width: 1.5em;
+    border: solid 1px contrast($bg-color, 2, hard-dark);
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    margin-#{$block-end}: #{$padding / 2};
+
+    &.square {
+      border-radius: 2px;
     }
 
-    &:not(:last-child) {
-      margin-#{$block-end}: 0.7em;
+    &.circle {
+      border-radius: 50%;
+    }
+  }
+
+  & > .label {
+    display: inline-block;
+  }
+
+  &[checked] {
+    & > .box::before {
+      @include shadow(bottom);
+
+      content: '';
+      height: 50%;
+      width: 50%;
+      border-radius: 100%;
+      border: none;
+      background: $primary-color;
+      position: absolute;
+      transform: translate(50%, 50%);
     }
 
-    &.disabled {
-      @include disabled;
+    &[multiple] > .box::before {
+      background: transparent;
+      height: 30%;
+      width: 70%;
+      border-radius: 0;
+      border-bottom-left-radius: 0.1em;
+      border: solid 0.2em $primary-color;
+      border-top: none;
+      border-right: none;
+      position: absolute;
+      transform: translate(7%, 35%) rotateZ(-45deg);
+    }
+  }
+
+  &:not([disabled]) {
+    &:hover {
+      & > .box {
+        border: solid 1px contrast($bg-color, 3, hard-dark);
+      }
     }
 
-    &.checked,
-    &.checked * {
-      color: $primary-color;
-    }
-
-    &:focus {
-      @include outline;
+    &:focus,
+    &[focus] {
+      & > .box {
+        @include outline;
+      }
 
       &:invalid,
       &[invalid] {
@@ -181,19 +186,8 @@ export default {
     }
   }
 
-  & .fv-check-icon {
-    vertical-align: middle;
-
-    & svg {
-      color: contrast($color, 2);
-      height: 1.3em;
-      vertical-align: middle;
-    }
-  }
-
-  & .fv-control-label {
-    display: inline;
-    vertical-align: middle;
+  &[disabled] {
+    @include disabled;
   }
 }
 </style>
