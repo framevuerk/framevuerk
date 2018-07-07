@@ -176,10 +176,6 @@ html > body {
   }
 }
 
-.fv-no-border {
-  border: 0 !important;
-}
-
 .fv-vertical-middle {
   vertical-align: middle !important;
 }
@@ -260,9 +256,10 @@ html > body {
 }
 
 .fv-form-control-group {
-  border: 1px solid $shadow-color;
+  @include shadow(bottom);
+
+  border: solid 1px contrast($bg-color, 2, hard-dark);
   border-radius: $border-radius;
-  box-shadow: 0 0.3em 0.5em $shadow-color-light;
   clear: both;
   padding: #{$padding / 2};
 
@@ -271,11 +268,35 @@ html > body {
   }
 }
 
+.fv-radius {
+  border-radius: $border-radius !important;
+}
+
+.fv-no-radius {
+  border-radius: 0 !important;
+}
+
+.fv-border {
+  border: solid 1px contrast($bg-color, 2, hard-dark) !important;
+}
+
+.fv-no-border {
+  border: 0 !important;
+}
+
+.fv-shadow {
+  @include shadow(bottom);
+}
+
+.fv-no-shadow {
+  box-shadow: none !important;
+}
+
 .fv-input-group {
   display: inline-block;
 
   & > * {
-    margin-left: 0 #{$padding-small / 2};
+    margin: 0 #{$padding-small / 2};
   }
 
   & > *:first-child {
