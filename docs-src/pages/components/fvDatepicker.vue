@@ -15,7 +15,7 @@ fv-content
       |  as dependency of framevuerk to support jalaali dates.
       br
       | From version 1.5.0 fv-datepicker will unselectable unvalidated dates that <i>required</i> function didn't accept them! So with this implementation, fv-datepicker will support range date limitation (from, to, etc) technically!
-    doc-code(title="Javascript (just if you want globally support jalaali dates for fvDatepicker)", lang="javascript")
+    doc-code(title="Javascript", description="just if you want globally support jalaali dates for fvDatepicker", lang="javascript")
       = "import IDate from 'idate'\n"
       = "Framevuerk.use('date', IDate)\n"
     doc-code
@@ -48,6 +48,14 @@ fv-content
               b  {{scope.value.getDate()}}
               i , month:
               b  {{scope.value.getMonth() + 1}}
+        .fv-col-12
+          fieldset.fv-form-control-group
+            legend From, To + Validation
+            .fv-row.fv-no-padding
+              .fv-col-6
+                fv-datepicker(v-model="inputs.d7", placeholder="From Date", :required="d7Checker")
+              .fv-col-6
+                fv-datepicker(v-model="inputs.d8", placeholder="To Date", :required="d8Checker", zdefault-value="nextMonthSix()")
         .fv-col-12
           br
         .fv-col-12
@@ -82,7 +90,9 @@ export default {
         d3: undefined,
         d4: undefined,
         d5: undefined,
-        d6: undefined
+        d6: undefined,
+        d7: undefined,
+        d8: undefined
       },
       api: {
         prop: [
@@ -160,6 +170,17 @@ export default {
   methods: {
     dateChecker (date) {
       return !!date && new Date(date.getTime()).getDate() >= 5 && new Date(date.getTime()).getDate() <= 20
+    },
+    d7Checker (date) {
+      if (!date || !this.inputs.d8) {
+        return true
+      }
+      return date.getTime() < this.inputs.d8.getTime()
+      // return !!date && new Date(date.getTime()).getDate() >= 5 && new Date(date.getTime()).getDate() <= 20
+    },
+    d8Checker (date) {
+      return this.inputs.d7 && date && date.getTime() > this.inputs.d7.getTime()
+      // return !!date && new Date(date.getTime()).getDate() >= 5 && new Date(date.getTime()).getDate() <= 20
     },
     nextMonthSix () {
       const dt = new Date()

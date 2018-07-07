@@ -1,8 +1,10 @@
 <template lang="pug">
 span
-  h3(v-if="title", v-html="title")
+  div
+  h3(v-if="title", v-html="title + ':'")
   h3(v-else) Code:
-  .doc-code(v-if="$slots.default")
+  p.fv-control-label(v-if="description", v-html="description")
+  .doc-code.fv-border.fv-radius.fv-shadow(v-if="$slots.default")
     pre(v-highlightjs)
       code(:class="lang")
         slot
@@ -21,6 +23,7 @@ export default {
   },
   props: {
     title: String,
+    description: String,
     lang: {
       type: String,
       default: 'html'
