@@ -330,6 +330,8 @@ export default {
 
         &[disabled] {
           @include disabled;
+
+          text-decoration: line-through;
         }
 
         &.highlighted {
