@@ -149,7 +149,9 @@ export default {
       border: none;
       background: $primary-color;
       position: absolute;
-      transform: translate(50%, 50%);
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
     }
 
     &[multiple] > .box::before {
@@ -162,7 +164,9 @@ export default {
       border-top: none;
       border-right: none;
       position: absolute;
-      transform: translate(7%, 35%) rotateZ(-45deg);
+      transform: rotateZ(-45deg);
+      left: 5%;
+      top: 21%;
     }
   }
 
