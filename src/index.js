@@ -91,7 +91,6 @@ module.exports = {
     Vue.component('fvLoading', fvLoading)
     Vue.prototype.$fvToast = new (Vue.extend(fvToast))()
     Vue.fvToast = Vue.prototype.$fvToast
-    // Directives
   },
   name: process.env.name,
   version: process.env.version,
