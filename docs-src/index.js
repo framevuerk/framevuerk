@@ -4,7 +4,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Framevuerk from '../dist/framevuerk.js'
 import '../dist/framevuerk.css'
-import Hammer from 'hammerjs'
 import VueHighlightJS from 'vue-highlightjs'
 import 'highlight.js/styles/github-gist.css'
 // import 'font-awesome/css/font-awesome.css'
@@ -13,7 +12,6 @@ import './favicon.ico'
 import './CNAME.none'
 import main from './main.vue'
 
-Framevuerk.use('hammer', Hammer)
 Vue.use(VueRouter)
 Vue.use(VueHighlightJS)
 Vue.use(Framevuerk)
