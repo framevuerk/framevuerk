@@ -60,7 +60,8 @@ export default {
   },
   mounted () {
     if (this.breaked === null) {
-      this.isBreaked = utility.isSmallViewport()
+      const main = utility.fvParent(this, 'fv-main')
+      this.breaked = utility.viewportSize(main.$el).indexOf('md') === -1
     }
   }
 }
