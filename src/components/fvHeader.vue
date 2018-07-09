@@ -20,8 +20,7 @@ export default {
 
   & > header {
     width: 100%;
-    padding: $padding;
-    // align-items: center;
+    padding: #{$padding/1.2} $padding;
     display: flex;
     justify-content: space-between;
     overflow: hidden;
