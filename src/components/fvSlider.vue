@@ -7,19 +7,20 @@ fv-main.fv-slider
       @click.prevent="setValue(slot)")
       slot(v-if="$scopedSlots.button", :value="slot", name="button")
       span(v-else) {{slot}}
-  fv-content.slider-page
+  fv-content.slider-page(@mousedown.native="moveStart($event)",
+    @touchstart.native="moveStart($event)",
+    ref="sliderContainer")
     transition-group(:name="animationName")
       fv-content.slider-page(v-for="(i, slot) in $slots",
         :key="'content' + slot + i",
-        ref="slot",
         v-show="slot === value")
         slot(:name="slot")
   fv-button.fv-xl.next(v-if="showButtons",
-    @click.prevent="moveSlide(true)",
-    :icon="'fa fa-chevron-'+dirs.prev")
+    @click.prevent="moveSlide(true)")
+    .icon(v-html="icons.next")
   fv-button.fv-xl.prev(v-if="showButtons",
-    @click.prevent="moveSlide(false)",
-    :icon="'fa fa-chevron-'+dirs.next")
+    @click.prevent="moveSlide(false)")
+    .icon(v-html="icons.prev")
   ul.nav(v-if="showNavs")
     li(v-for="(i, slot) in $slots",
       :key="'nav' + slot + i",
@@ -63,13 +64,11 @@ export default {
   },
   data () {
     return {
-      hammer: undefined,
       timer: null,
       animationName: 'fv-slider-prev',
-      dirs: {
-        next: process.env.direction === 'ltr' ? 'left' : 'right',
-        prev: process.env.direction === 'ltr' ? 'right' : 'left'
-      }
+      startX: 0,
+      blockStart: process.env.direction === 'ltr' ? 'left' : 'right',
+      blockEnd: process.env.direction === 'ltr' ? 'right' : 'left'
     }
   },
   computed: {
@@ -78,19 +77,58 @@ export default {
     },
     currentIndex () {
       return this.items.findIndex(slide => slide === this.value)
+    },
+    icons () {
+      const chevronLeft = require('../icons/feather/chevron-left.svg')
+      const chevronRight = require('../icons/feather/chevron-right.svg')
+      return {
+        next: this.blockStart === 'left' ? chevronRight : chevronLeft,
+        prev: this.blockStart === 'left' ? chevronLeft : chevronRight
+      }
     }
   },
   methods: {
+    calcXByEvent (event) {
+      return event.changedTouches && event.changedTouches.length ? event.changedTouches[0].clientX : (event.pageX - 0)
+    },
+    calcDirection (startX, endX) {
+      const calced = startX - endX
+      return {
+        moveNext: this.blockStart === 'left' ? calced > 0 : calced < 0,
+        x: calced
+      }
+    },
+    moveStart (event) {
+      this.startX = this.calcXByEvent(event)
+      this.bindEvents()
+    },
+    moveEnd (event) {
+      this.unbindEvents()
+      const endX = this.calcXByEvent(event)
+      const direction = this.calcDirection(this.startX, endX)
+      if (Math.abs(direction.x) < 70) {
+        return
+      }
+      this.moveSlide(direction.moveNext)
+    },
+    bindEvents () {
+      document.body.addEventListener('mouseup', this.moveEnd)
+      document.body.addEventListener('touchend', this.moveEnd)
+    },
+    unbindEvents () {
+      document.body.removeEventListener('mouseup', this.moveEnd)
+      document.body.removeEventListener('touchend', this.moveEnd)
+    },
     setValue (value, next = null) {
       const newIndex = this.items.findIndex(slide => slide === value)
       if (!this.value) {
         this.animationName = ''
       } else if (next === null) {
-        this.animationName = `fv-slider-${newIndex >= this.currentIndex ? this.dirs.next : this.dirs.prev}`
+        this.animationName = `fv-slider-${newIndex >= this.currentIndex ? this.blockEnd : this.blockStart}`
       } else if (next) {
-        this.animationName = `fv-slider-${this.dirs.next}`
+        this.animationName = `fv-slider-${this.blockStart}`
       } else {
-        this.animationName = `fv-slider-${this.dirs.prev}`
+        this.animationName = `fv-slider-${this.blockEnd}`
       }
       this.initerval()
       this.$emit('input', value)
@@ -104,21 +142,6 @@ export default {
       }
       this.setValue(this.items[newIndex], next)
     },
-    initHammer () {
-      if (this.hammer && this.items.length > 1) {
-        const mc = new this.hammer.Manager(this.$el, {
-          recognizers: [
-            [this.hammer.Swipe, { direction: this.hammer.DIRECTION_HORIZONTAL }]
-          ]
-        })
-        mc.on(`swipe${this.dirs.next}`, () => {
-          this.moveSlide(true)
-        })
-        mc.on(`swipe${this.dirs.prev}`, () => {
-          this.moveSlide(false)
-        })
-      }
-    },
     initerval () {
       clearTimeout(this.timer)
       if (this.interval > 0 && this.items.length > 1) {
@@ -128,12 +151,8 @@ export default {
       }
     }
   },
-  created () {
-    this.hammer = require('../').dependencies.hammer
-  },
   mounted () {
     this.initerval()
-    this.initHammer()
     if (!this.value) {
       this.setValue(this.items[0])
     }
@@ -156,7 +175,6 @@ export default {
   }
 
   & > .tabs-container {
-    // background: transparent;
     @include shadow(bottom);
 
     padding: 0;
@@ -192,8 +210,8 @@ export default {
     box-shadow: none;
     position: absolute;
     top: 50%;
+    padding: 0 #{$padding / 2};
     transform: translateY(-50%);
-    z-index: 3;
 
     &.next {
       #{$block-end}: 0;
@@ -213,7 +231,6 @@ export default {
     text-align: center;
     transform: translateX(-50%);
     width: auto;
-    z-index: 3;
 
     & li {
       background: rgba($color, 0.5);
@@ -246,12 +263,12 @@ export default {
 }
 
 .fv-slider-left-enter {
-  transform: translateX(100%);
+  transform: translateX(100%) !important;
   z-index: 1;
 }
 
 .fv-slider-right-enter {
-  transform: translateX(-100%);
+  transform: translateX(-100%) !important;
   z-index: 1;
 }
 
@@ -272,14 +289,14 @@ export default {
 
 .fv-slider-right-leave-active,
 .fv-slider-right-leave-to {
-  transform: translateX(50%);
+  transform: translateX(100%) !important;
   opacity: 0;
   z-index: 2;
 }
 
 .fv-slider-left-leave-active,
 .fv-slider-left-leave-to {
-  transform: translateX(-50%);
+  transform: translateX(-100%) !important;
   opacity: 0;
   z-index: 2;
 }
