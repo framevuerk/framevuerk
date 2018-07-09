@@ -3,14 +3,8 @@ module.exports = {
   contains (text = '', search = '') {
     return text.toString().toUpperCase().indexOf(search.toString().toUpperCase()) !== -1
   },
-  doIt (action) {
-    return setTimeout(action, 250)
-  },
   capitalizeFirstLetter (str = '') {
     return str.charAt(0).toUpperCase() + str.slice(1)
-  },
-  isSmallViewport (el = document.body) {
-    return el.offsetWidth < 992
   },
   viewportSize (el = document.body) {
     const breakXs = 480
@@ -43,13 +37,6 @@ module.exports = {
         return ret
       }
       ret = ret.$parent
-    }
-  },
-  fvChild (vueComponent, vueElName = 'fv-content') {
-    for (let i = 0; i < vueComponent.$children.length; i++) {
-      if (vueComponent.$children[i].$vnode.componentOptions.tag === vueElName) {
-        return vueComponent.$children[i]
-      }
     }
   },
   isChildOf (el, parent) {
