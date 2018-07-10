@@ -141,11 +141,13 @@ export default {
         if (this.isBreaked) {
           if (!this.showOut && (!elem || !utility.isChildOf(elem, this.$el))) {
             this.isFocused = false
+            this.$emit('blur')
           }
         } else {
           if ((!elem || !utility.isChildOf(elem, this.$el))) {
             this.isFocused = false
             this.close()
+            this.$emit('blur')
           }
         }
       })
