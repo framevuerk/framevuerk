@@ -9,6 +9,7 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
   :multiple="multiple",
   :search-query.sync="searchQuery",
   @value-delete="deleteValue",
+  @blur="searchQuery = ''",
   :delete-button="deleteButton",
   :caret-icon="require('../icons/feather/chevron-down.svg')",
   ref="inputBox")
