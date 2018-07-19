@@ -124,7 +124,7 @@ export default {
       if (!this.value) {
         this.animationName = ''
       } else if (next === null) {
-        this.animationName = `fv-slider-${newIndex >= this.currentIndex ? this.blockEnd : this.blockStart}`
+        this.animationName = `fv-slider-${newIndex >= this.currentIndex ? this.blockStart : this.blockEnd}`
       } else if (next) {
         this.animationName = `fv-slider-${this.blockStart}`
       } else {
