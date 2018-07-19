@@ -1,6 +1,7 @@
 <template lang="pug">
   .fv-range(:disabled="disabled",
     :invalid="!fvValidate",
+    @wheel="wheel",
     @click.left="onClick")
     .filler(ref="filler")
     .handler(v-for="i in filteredValue.length",
@@ -200,7 +201,7 @@ export default {
       this.setValue(this.calcValueByX(x), handlerIndex)
     },
     handlerFocus (handlerIndex) {
-      if (this.disabled) {
+      if (this.disabled || this.selectedHandler === handlerIndex) {
         return
       }
       this.selectedHandler = handlerIndex
@@ -214,6 +215,19 @@ export default {
       this.focus(this.selectedHandler)
       const x = this.calcXByEvent(event)
       this.setValue(this.calcValueByX(x), this.selectedHandler)
+    },
+    wheel (event) {
+      event.preventDefault()
+      if (this.selectedHandler < 0) {
+        this.handlerFocus(0)
+      }
+      const currentValue = this.filteredValue[this.selectedHandler]
+      const index = this.filteredData.findIndex(fd => JSON.stringify(fd.value) === JSON.stringify(currentValue))
+      if ((event.deltaX < 0 || event.deltaY < 0) && index > 0) {
+        this.setValue(this.filteredData[index - 1].value, this.selectedHandler)
+      } else if (index < this.filteredData.length - 1) {
+        this.setValue(this.filteredData[index + 1].value, this.selectedHandler)
+      }
     },
     bindEvents () {
       document.body.addEventListener('mousemove', this.moving)
