@@ -126,15 +126,6 @@ export default {
         }
         return true
       })
-      // .sort((a, b) => {
-      //   const selected = [this.isSelectedOption(a), this.isSelectedOption(b)]
-      //   if (!selected[0] && selected[1]) {
-      //     return 1
-      //   } else if (selected[0] && !selected[1]) {
-      //     return -1
-      //   }
-      //   return 0
-      // })
     },
     fvValidate () {
       if (this.required === true) {
@@ -156,9 +147,6 @@ export default {
       if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
         this.$emit('input', [])
       }
-    },
-    onTyping (value) {
-      // this.searchQuery = value
     },
     onBlur () {
       setTimeout(() => {
@@ -209,7 +197,6 @@ export default {
       } else {
         this.selectOption(option)
       }
-      // this.searchQuery = ''
       this.$nextTick(() => {
         if (!this.multiple) {
           this.$refs.inputBox.close()

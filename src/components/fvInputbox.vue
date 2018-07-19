@@ -182,7 +182,9 @@ export default {
       this.outMaxHeight = `${(parentHeight - (this.outOnBottom ? top : bottom) - elHeight) - (padding * 2)}px`
     },
     open () {
-      this.$emit('open')
+      if (!this.showOut) {
+        this.$emit('open')
+      }
       if (this.isBreaked) {
         this.showOut = true
         this.$refs.outDialog.open()

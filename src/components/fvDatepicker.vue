@@ -1,7 +1,5 @@
 <template lang="pug">
-fv-inputbox.fv-datepicker(:focus="isFocused",
-  @enter="onFocus(true)",
-  :invalid="!fvValidate",
+fv-inputbox.fv-datepicker(:invalid="!fvValidate",
   :placeholder="placeholder",
   :disabled="disabled",
   :value="value",
@@ -9,9 +7,8 @@ fv-inputbox.fv-datepicker(:focus="isFocused",
   @input-keydown="onKeydown",
   @value-delete="deleteValue",
   :delete-button="deleteButton",
-  :show-out="isFocused",
   tabindex="",
-  @open="onFocus",
+  @open="onOpen",
   :caret-icon="require('../icons/feather/calendar.svg')",
   ref="inputBox")
   template(slot="value", slot-scope="scope")
@@ -39,15 +36,16 @@ fv-inputbox.fv-datepicker(:focus="isFocused",
             td(v-for="weekDay in weekDayNames",
               v-html="weekDay")
         tbody
-          tr(v-for="dp in [0, 7, 14, 21, 28]")
-            td(v-for="d in 7",
-              @click="selectDate((d + dp) - visualProps.monthFirstDay, $event)",
-              :disabled="isDateDisabled((d + dp) - visualProps.monthFirstDay, editingValue.getMonth(), editingValue.getFullYear())",
-              :class="{highlighted: isHighlighted((d + dp) - visualProps.monthFirstDay), selected: isSelected((d + dp) - visualProps.monthFirstDay)}") {{ (d + dp) > visualProps.monthFirstDay && (d + dp) - visualProps.monthFirstDay <= visualProps.daysInMonth ? (d + dp) - visualProps.monthFirstDay : ''}}
+          tr(v-for="dp in 6")
+            td(v-for="d in dpRow(dp, editingValue.getMonth(), editingValue.getFullYear())",
+              :disabled="d.disabled",
+              @click="selectDate(d.date, $event)",
+              :class="{highlighted: d.highlighted, selected: d.selected, hidden: d.hidden}",
+              v-html="d.realDate")
+
 </template>
 
 <script>
-import utility from '../utility'
 import fvButton from './fvButton.vue'
 import fvHeader from './fvHeader.vue'
 import fvContent from './fvContent.vue'
@@ -83,6 +81,10 @@ export default {
       type: Boolean,
       default: true
     },
+    resetTime: {
+      type: Boolean,
+      default: true
+    },
     dateLibrary: {
       type: [Object, Function]
     }
@@ -92,8 +94,6 @@ export default {
       Date: this.dateLibrary || require('../').dependencies['date'] || Date,
       editingValue: undefined,
       visualProps: {},
-      highlightedDate: null,
-      isFocused: false,
       weekDayNames: [],
       monthNames: []
     }
@@ -147,19 +147,8 @@ export default {
     }
   },
   methods: {
-    onFocus (inputFocus) {
-      if (!this.disabled) {
-        this.setEditingValue()
-        this.calcVisualProps()
-      }
-    },
-    onBlur () {
-      setTimeout(() => {
-        const elem = document.querySelector(':focus')
-        if (!elem || !utility.isChildOf(elem, this.$el)) {
-          this.isFocused = false
-        }
-      }, 50)
+    onOpen () {
+      this.setEditingValue(true)
     },
     deleteValue () {
       this.$emit('input', undefined)
@@ -167,6 +156,7 @@ export default {
     setEditingValue (force = false) {
       if (!this.editingValue || force) {
         this.editingValue = new this.Date(this.value || this.defaultValue)
+        this.calcVisualProps()
       }
     },
     monthFirstDay (month, year) {
@@ -176,52 +166,92 @@ export default {
       return new this.Date(year, month + 1, 0).getDate()
     },
     calcVisualProps () {
-      this.visualProps = {
+      const visualProps = {
         year: this.editingValue.getFullYear(),
         month: this.editingValue.getMonth() + 1,
         date: this.editingValue.getDate(),
         monthFirstDay: this.monthFirstDay(this.editingValue.getMonth(), this.editingValue.getFullYear()),
         daysInMonth: this.daysInMonth(this.editingValue.getMonth(), this.editingValue.getFullYear())
       }
-      this.$forceUpdate()
-      return this.visualProps
+      this.$set(this, 'visualProps', visualProps)
+      return visualProps
     },
     focus () {
       this.$refs.input.focus()
     },
-    isSelected (date) {
+    dpRow (dp, month, year) {
+      const calc = (d, dp) => {
+        const date = (d + ((dp - 1) * 7)) - this.visualProps.monthFirstDay
+        const hidden = !(date > 0 && date <= this.visualProps.daysInMonth)
+        let realDate = date
+        let realMonth = month
+        let realYear = year
+        if (date < 1 || date > this.visualProps.daysInMonth) {
+          const dt = new this.Date(year, month, date)
+          realDate = dt.getDate()
+          realMonth = dt.getMonth()
+          realYear = dt.getFullYear()
+        }
+        return {
+          date,
+          realDate,
+          realMonth,
+          realYear,
+          hidden,
+          highlighted: this.isHighlighted(realDate, realMonth, realYear),
+          selected: this.isSelected(realDate, realMonth, realYear),
+          disabled: this.isDateDisabled(realDate, realMonth, realYear)
+        }
+      }
+      const ret = []
+      for (let d = 1; d <= 7; d++) {
+        ret.push(calc(d, dp))
+      }
+      return ret
+    },
+    isSelected (date, month, year) {
       if (!this.value) {
         return false
       }
       const value = new this.Date(this.value)
-      return value.getDate() === date && value.getMonth() === this.editingValue.getMonth() && value.getFullYear() === this.editingValue.getFullYear()
+      return value.getDate() === date && value.getMonth() === month && value.getFullYear() === year
     },
-    isHighlighted (date) {
+    isHighlighted (date, month, year) {
       if (!this.editingValue) {
         return false
       }
-      return this.editingValue.getDate() === date
+      return this.editingValue.getDate() === date && this.editingValue.getMonth() === month && this.editingValue.getFullYear() === year
     },
     moveValue (unit, value) {
+      const editingValue = new this.Date(this.editingValue)
       switch (unit) {
         case 'year':
-          this.editingValue.setFullYear(this.editingValue.getFullYear() + value)
+          editingValue.setFullYear(editingValue.getFullYear() + value)
           break
         case 'month':
-          this.editingValue.setMonth(this.editingValue.getMonth() + value)
+          editingValue.setMonth(editingValue.getMonth() + value)
           break
         case 'date':
-          this.editingValue.setDate(this.editingValue.getDate() + value)
+          editingValue.setDate(editingValue.getDate() + value)
           break
       }
-      this.onFocus()
+      this.$set(this, 'editingValue', editingValue)
+      this.calcVisualProps()
     },
     selectDate (value = null, event = null) {
       this.setDate(value)
-      if (event.target.getAttribute('disabled') || this.isDateDisabled(this.editingValue.getDate(), this.editingValue.getMonth(), this.editingValue.getFullYear())) {
+      if (event.target.getAttribute('disabled')) {
         return
       }
       const ret = new this.Date(this.editingValue)
+      if (this.resetTime) {
+        const timezoneOffset = ret.getTimezoneOffset() * 60000
+        ret.setHours(0)
+        ret.setMinutes(0)
+        ret.setSeconds(0)
+        ret.setMilliseconds(0)
+        ret.setTime(ret.getTime() - timezoneOffset)
+      }
       this.$emit('input', ret)
       this.$nextTick(() => {
         this.$refs.inputBox.close()
@@ -260,20 +290,16 @@ export default {
             this.deleteValue()
           }
       }
-      this.calcVisualProps()
     },
     checkFvValidity (day, month, year) {
       if (typeof this.required === 'function') {
-        const dt = new this.Date()
-        dt.setDate(day)
-        dt.setMonth(month)
-        dt.setFullYear(year)
+        const dt = new this.Date(year, month, day)
         return this.required(dt)
       }
       return true
     },
     isDateDisabled (day, month, year) {
-      return day <= 0 || day > this.daysInMonth(month, year) || !this.checkFvValidity(day, month, year)
+      return !this.checkFvValidity(day, month, year)
     }
   }
 }
@@ -334,8 +360,12 @@ export default {
           text-decoration: line-through;
         }
 
+        &.hidden {
+          opacity: 0.3;
+        }
+
         &.highlighted {
-          background: yiq($bg-color, 3%);
+          @include yiq(contrast($bg-color, 1));
         }
 
         &.selected {
