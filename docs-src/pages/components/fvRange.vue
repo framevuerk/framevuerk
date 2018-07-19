@@ -53,7 +53,7 @@ export default {
             description: 'Value of input.'
           },
           {
-            name: 'required',
+            name: 'data',
             type: '[Array, Object]',
             default: '{ from: 1, to: 10}',
             description: 'List of available data or just Object with from:Number and to:Number keys.'
