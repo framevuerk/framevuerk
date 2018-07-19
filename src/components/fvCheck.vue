@@ -70,6 +70,11 @@ export default {
     }
   },
   methods: {
+    focus () {
+      if (!this.disabled) {
+        this.$el.focus()
+      }
+    },
     setStructure () {
       if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
         this.$emit('input', [])
