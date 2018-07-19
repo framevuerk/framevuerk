@@ -29,11 +29,13 @@ fv-content
           fv-datepicker(v-model="inputs.d1", placeholder="Pick your favorite date!")
         .fv-col-lg-6.fv-col-xs-12
           p Custom Formatted
+          div {{inputs.d2}}
           fv-datepicker(v-model="inputs.d2", placeholder="Pick your favorite date!", :delete-button="false")
             template(slot="value", slot-scope="scope")
               span {{scope.value.getDate()}} - {{scope.value.getMonth() + 1}} - {{scope.value.getFullYear()}}
         .fv-col-lg-6.fv-col-xs-12
           p Jalaali Date Object (Use IDate)
+          div {{inputs.d6}}
           fv-datepicker(v-model="inputs.d6", placeholder="Pick your favorite jalaali date!", :date-library="IDate")
         .fv-col-lg-6.fv-col-xs-12
           p Disabled:
@@ -55,7 +57,7 @@ fv-content
               .fv-col-6
                 fv-datepicker(v-model="inputs.d7", placeholder="From Date", :required="d7Checker")
               .fv-col-6
-                fv-datepicker(v-model="inputs.d8", placeholder="To Date", :required="d8Checker", zdefault-value="nextMonthSix()")
+                fv-datepicker(v-model="inputs.d8", placeholder="To Date", :required="d8Checker", :default-value="oneDayAfter(inputs.d7)")
         .fv-col-12
           br
         .fv-col-12
@@ -170,6 +172,14 @@ export default {
   methods: {
     dateChecker (date) {
       return !!date && new Date(date.getTime()).getDate() >= 5 && new Date(date.getTime()).getDate() <= 20
+    },
+    oneDayAfter (date) {
+      if (!date) {
+        return Date.now()
+      }
+      const dt = new Date(date)
+      dt.setDate(dt.getDate() + 1)
+      return dt
     },
     d7Checker (date) {
       if (!date || !this.inputs.d8) {

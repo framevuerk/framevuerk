@@ -7,14 +7,13 @@ fv-content
       = "<fv-check></fv-check>"
     doc-example
       .fv-row
-        .fv-col
+        .fv-col-6
           label.fv-form-control-label {{inputs.d1}}
           .fv-form-control
-            | salam aziiizam
             fv-check(v-model="inputs.d1", content="iran", multiple) J.S Iran
             fv-check(v-model="inputs.d1", content="israeil", multiple) Israeil
             fv-check(v-model="inputs.d1", content="ghazbin", multiple, disabled) Ghazbin
-        .fv-col
+        .fv-col-6
           label.fv-form-control-label {{inputs.d2}} {{typeof inputs.d2}}
           .fv-form-control
             fv-check(v-model="inputs.d2", content="iran") J.S Iran
