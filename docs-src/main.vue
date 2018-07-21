@@ -12,8 +12,10 @@ fv-main#app
   fv-content.fv-no-padding
     router-view.fv-row
   fv-sidebar.sidebar(:pin="isSidebarPinned", ref="sidebar", width="300px")
+    .fv-padding
+      fv-input.fv-block(placeholder="Type to search...", @input="searchSidebar")
     fv-content.fv-no-padding
-      fv-list.fv-no-border(parent)
+      fv-list.fv-no-border(v-if="!searching", parent)
         fv-list-item.framevuerk
           router-link.fv-block(to="/")
             .fvlogo(v-html="require('./assets/logo.svg')")
@@ -40,13 +42,22 @@ fv-main#app
                   :selected="$route.name === subItemItem.text")
                   router-link.fv-padding-small.fv-block(:to="subItemItem.route || ''")
                     |  {{subItemItem.text}}
+      fv-list.fv-no-border(v-else, parent)
+        fv-list-item(v-for="item in searchResult",
+          :key="item.text",
+          :selected="$route.name === item.text")
+          router-link.fv-padding-small.fv-block(:to="item.route || ''")
+            |  {{item.text}}
+
 </template>
 
 <script>
 export default {
   data () {
     return {
-      isSidebarPinned: this.$route.name === 'Home' ? false : null
+      isSidebarPinned: this.$route.name === 'Home' ? false : null,
+      searching: false,
+      searchResult: []
     }
   },
   computed: {
@@ -125,6 +136,21 @@ export default {
       if (item.route) {
         this.$router.push(item.route)
       }
+    },
+    searchSidebar (text) {
+      this.searching = !!text
+      this.searchResult = []
+      const search = (list) => {
+        list.forEach(item => {
+          if (item.route && item.text.indexOf(text) !== -1) {
+            this.searchResult.push(item)
+          }
+          if (item.items && item.items.length) {
+            search(item.items)
+          }
+        })
+      }
+      search(this.sidebarItems)
     },
     sidebarItem (name, route, icon) {
       return {
