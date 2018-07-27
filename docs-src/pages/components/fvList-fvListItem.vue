@@ -66,9 +66,7 @@ export default {
             default: 'locale.notFoundText()',
             description: 'If list items is empty, show this text.'
           }
-        ],
-        event: [],
-        method: []
+        ]
       },
       listItemApi: {
         prop: [

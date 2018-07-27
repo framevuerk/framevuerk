@@ -2,14 +2,7 @@
 fv-content
   div(:class="$root.mainClass")
     doc-description
-      | To creating slider element, use this component. Note that before using this, you can add
-      =" "
-      a.fv-link(href="http://hammerjs.github.io/", target="_blank") HammerJs
-      |  as dependency of framevuerk to allow touch actions. This component make every slots in body to slider item.
-    doc-code(title="Javascript:", lang="javascript")
-      = "import Framevuerk from 'framevuerk'\n"
-      = "import Hammer from 'hammerjs'\n"
-      = "Framevuerk.use('hammer', Hammer)\n"
+      | To creating slider element, use this component.
     doc-code
       = "<fv-slider></fv-slider>"
     doc-example

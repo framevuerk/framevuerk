@@ -8,7 +8,7 @@ span(v-show="$slots.default")
       target="_blank",
       :title="$route.name + ' source code on GitHub'") View Source
   .doc-example.fv-border.fv-radius.fv-shadow(v-if="$slots.default")
-    fv-main(:parent="false")
+    fv-main(:parent="parent", :style="{overflow: parent ? 'hidden' : 'auto'}")
       slot
   div(v-else)
     p.fv-text-center Not Available
@@ -16,7 +16,14 @@ span(v-show="$slots.default")
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    parent: {
+      type: Boolean,
+      default: false
+    }
+  }
+}
 </script>
 
 <style lang="scss">

@@ -10,7 +10,7 @@ fv-content
       = "<fv-sidebar>\n"
       = "\t<!-- contents -->\n"
       = "</fv-sidebar>\n"
-    doc-example
+    doc-example(parent)
       fv-sidebar(ref="pinnedright", :pin="true", position="right", width="170px")
         h3.fv-text-center.fv-padding I'm Pinned at Right!
       fv-sidebar(ref="unpinnedleft", :pin="false", position="left", width="170px")
@@ -59,7 +59,7 @@ export default {
             name: 'position',
             type: 'Enum ["left", "right", null]',
             default: 'null',
-            description: 'Position of sidebar. if it\'s null, value cacculate based on main direction!'
+            description: 'Position of sidebar. if it\'s null, value calculate based on main direction!'
           },
           {
             name: 'pin',
