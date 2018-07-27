@@ -15,7 +15,7 @@ fv-main#app
     .fv-padding
       fv-input.fv-block(placeholder="Type to search...", @input="searchSidebar")
     fv-content.fv-no-padding
-      fv-list.fv-no-border(v-if="!searching", parent)
+      fv-list.fv-no-border(v-show="!searching", parent)
         fv-list-item.framevuerk
           router-link.fv-block(to="/")
             .fvlogo(v-html="require('./assets/logo.svg')")
@@ -42,7 +42,7 @@ fv-main#app
                   :selected="$route.name === subItemItem.text")
                   router-link.fv-padding-small.fv-block(:to="subItemItem.route || ''")
                     |  {{subItemItem.text}}
-      fv-list.fv-no-border(v-else, parent)
+      fv-list.fv-no-border(v-show="searching", parent)
         fv-list-item(v-for="item in searchResult",
           :key="item.text",
           :selected="$route.name === item.text")
@@ -66,8 +66,8 @@ export default {
         {
           text: 'Installation',
           items: [
-            this.sidebarItem('Setup', '/installation=setup', 'fa fa-cogs'),
-            this.sidebarItem('Customize', '/installation=customize', 'fa fa-cogs')
+            this.sidebarItem('Setup', '/installation=setup', ['setup']),
+            this.sidebarItem('Customize', '/installation=customize', ['customize'])
           ]
         },
         {
@@ -76,43 +76,43 @@ export default {
             {
               text: 'Main',
               items: [
-                this.sidebarItem('fvMain'),
-                this.sidebarItem('fvHeader'),
-                this.sidebarItem('fvContent'),
-                this.sidebarItem('fvFooter'),
-                this.sidebarItem('fvSidebar'),
-                this.sidebarItem('fvList-fvListItem', '/components=fvList-fvListItem', 'fa fa-list-ol')
+                this.sidebarItem('fvMain', null, ['main', 'fv-main', 'fvmain', 'layout']),
+                this.sidebarItem('fvHeader', null, ['header', 'fv-header', 'fvheader', 'layout']),
+                this.sidebarItem('fvContent', null, ['content', 'fv-content', 'fvcontent', 'layout']),
+                this.sidebarItem('fvFooter', null, ['footer', 'fv-footer', 'fvfooter', 'layout']),
+                this.sidebarItem('fvSidebar', null, ['sidebar', 'fv-sidebar', 'fvsidebar', 'layout']),
+                this.sidebarItem('fvList-fvListItem', '/components=fvList-fvListItem', ['list', 'list-item', 'item', 'fvlist', 'fv-list', 'fvlistitem', 'fv-list-item'])
               ]
             },
             {
               text: 'Dialog',
               items: [
-                this.sidebarItem('fvDialog', null, 'fa fa-window-maximize'),
-                this.sidebarItem('fvMenu', null, 'fa fa-ellipsis-h')
+                this.sidebarItem('fvDialog', null, ['dialog', 'modal', 'alert', 'message', 'box', 'fv-dialog', 'fvdialog']),
+                this.sidebarItem('fvMenu', null, ['menu', 'sheet', 'fv-menu', 'fvmenu', 'dialog'])
               ]
             }, {
               text: 'Form',
               items: [
-                this.sidebarItem('fvButton'),
-                this.sidebarItem('fvInput', null, 'fa fa-keyboard-o'),
-                this.sidebarItem('fvTextarea', null, 'fa fa-keyboard-o'),
-                this.sidebarItem('fvSelect', null, 'fa fa-bars'),
-                this.sidebarItem('fvDatepicker', null, 'fa fa-calendar-o'),
-                this.sidebarItem('fvSwitch', null, 'fa fa-toggle-on'),
-                this.sidebarItem('fvCheck', null, 'fa fa-check-circle'),
-                this.sidebarItem('fvFilepicker', null, 'fa fa-file'),
-                this.sidebarItem('fvForm', null, 'fa fa-wpforms'),
-                this.sidebarItem('fvSteps', null, 'fa fa-list-ol'),
-                this.sidebarItem('fvRange', null, 'fa fa-arrows-h')
+                this.sidebarItem('fvButton', null, ['button', 'fv-button', 'fvbutton', 'form']),
+                this.sidebarItem('fvInput', null, ['input', 'text-box', 'textbox', 'form', 'fv-input', 'fvinput']),
+                this.sidebarItem('fvTextarea', null, ['input', 'text-box', 'textbox', 'form', 'fv-textarea', 'fvtextarea', 'textarea']),
+                this.sidebarItem('fvSelect', null, ['input', 'select', 'option', 'form', 'dropdown', 'fv-select', 'fvselect']),
+                this.sidebarItem('fvDatepicker', null, ['input', 'date-picker', 'datepicker', 'form', 'fv-datepicker', 'fvdatepicker']),
+                this.sidebarItem('fvSwitch', null, ['switch', 'toggle', 'handle', 'check', 'form', 'fv-switch', 'fvswitch']),
+                this.sidebarItem('fvCheck', null, ['checkbox', 'check-box', 'check', 'radio', 'radiobutton', 'radio-button', 'form', 'fv-check', 'fvcheck']),
+                this.sidebarItem('fvFilepicker', null, ['filepicker', 'file-picker', 'file-select', 'form', 'browse', 'fv-filepicker', 'fvfilepicker']),
+                this.sidebarItem('fvForm', null, ['submit', 'form', 'fv-form', 'fvform']),
+                this.sidebarItem('fvSteps', null, ['steps', 'step', 'form', 'fv-steps', 'fvsteps']),
+                this.sidebarItem('fvRange', null, ['range', 'slider', 'from', 'to', 'form', 'fv-range', 'fvrange'])
               ]
             }, {
               text: 'Other',
               items: [
-                this.sidebarItem('fvTable', null, 'fa fa-th-large'),
-                this.sidebarItem('fvSlider'),
-                this.sidebarItem('fvImg', null, 'fa fa-image'),
-                this.sidebarItem('fvToast', null, 'fa fa-info'),
-                this.sidebarItem('fvAvatar', null, 'fa fa-user')
+                this.sidebarItem('fvTable', null, ['table', 'list', 'fv-table', 'fvtable']),
+                this.sidebarItem('fvSlider', null, ['slider', 'fv-slider', 'fvslider']),
+                this.sidebarItem('fvImg', null, ['image', 'picture', 'img', 'pic', 'fv-img', 'fvimg']),
+                this.sidebarItem('fvToast', null, ['toast', 'alert', 'msg', 'message', 'fv-toast', 'fvtoast']),
+                this.sidebarItem('fvAvatar', null, ['avatar', 'profile-picture', 'profile', 'display-image', 'fv-avatar', 'fvavatar'])
               ]
             }
           ]
@@ -120,7 +120,7 @@ export default {
         {
           text: 'Styles',
           items: [
-            this.sidebarItem('fvRow-fvCol', '/styles=fvRow-fvCol')
+            this.sidebarItem('fvRow-fvCol', '/styles=fvRow-fvCol', ['css', 'style', 'grid', 'row', 'col', 'column', 'fv-row', 'fvrow', 'fv-col', 'fvcol'])
           ]
         }
       ]
@@ -140,23 +140,33 @@ export default {
     searchSidebar (text) {
       this.searching = !!text
       this.searchResult = []
+      text = text.toLowerCase()
       const search = (list) => {
         list.forEach(item => {
-          if (item.route && item.text.indexOf(text) !== -1) {
-            this.searchResult.push(item)
-          }
           if (item.items && item.items.length) {
-            search(item.items)
+            return search(item.items)
+          }
+          if (item.tags) {
+            let pushed = false
+            item.tags.forEach(tag => {
+              if (pushed) {
+                return false
+              }
+              if (tag.indexOf(text) !== -1 || text.indexOf(tag) !== -1) {
+                this.searchResult.push(item)
+                pushed = true
+              }
+            })
           }
         })
       }
       search(this.sidebarItems)
     },
-    sidebarItem (name, route, icon) {
+    sidebarItem (name, route = null, tags = null) {
       return {
         text: name,
         route: route || `/components=${name}`,
-        icon: icon || 'fa fa-cube'
+        tags: tags || []
       }
     },
     routeChange () {
