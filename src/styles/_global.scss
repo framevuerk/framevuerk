@@ -54,7 +54,7 @@ html > body {
 }
 
 .fv-overlay {
-  background: $shadow-color-dark;
+  background: $shadow-color;
   height: 100%;
   left: 0;
   position: absolute;
@@ -64,7 +64,7 @@ html > body {
   z-index: 2;
 
   &.light {
-    background: $shadow-color-light;
+    background: $shadow-color;
   }
 }
 
