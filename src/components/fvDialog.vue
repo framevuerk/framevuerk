@@ -1,9 +1,10 @@
 <template lang="pug">
-transition(name="fv-fade")
-  fv-main.fv-dialog(:class="left === null || top === null ? 'center' : ''",
+transition(:name="animation")
+  fv-main.fv-dialog(:class="left === null && top === null && right === null && bottom === null ? 'center' : ''",
     :parent="false",
-    :style="{left: left === null ? false : left, top: top === null ? false : top, width: width, height: height}",
+    :style="{left: left === null ? false : left, right: right === null ? false : right, top: top === null ? false : top, bottom: bottom === null ? false : bottom, width: width, height: height}",
     v-if="visible",
+    key="dialog",
     ref="dialog",
     @keydown.native="onKeydown($event); $emit('keydown', $event)",
     @click.native="$emit('click', $event)")
@@ -47,7 +48,13 @@ export default {
     left: {
       default: null
     },
+    right: {
+      default: null
+    },
     top: {
+      default: null
+    },
+    bottom: {
       default: null
     },
     width: {
@@ -59,6 +66,14 @@ export default {
     modal: {
       type: Boolean,
       default: false
+    },
+    overlay: {
+      type: Boolean,
+      default: true
+    },
+    animation: {
+      type: String,
+      default: 'fv-fade'
     },
     autoClose: {
       type: Boolean,
@@ -79,87 +94,97 @@ export default {
       param: null,
       focusBackElem: null,
       focusableItems: [],
-      hashChange: true // some hash changes applied by this component and does not need to be handeled. this variable keep state of this.
+      overlayId: null,
+      main: undefined
     }
   },
   computed: {
-    hash () {
-      return `${window.location.hash.indexOf('?') !== -1 ? '&' : '?'}fv${this._uid}`
+    showOverlay () {
+      return this.modal || this.overlay
     }
   },
   methods: {
-    addHash () {
-      window.location.hash += this.hash
+    getMain () {
+      if (!this.main) {
+        this.main = utility.fvParent(this, 'fv-main')
+      }
+      return this.main
     },
-    removeHash () {
-      window.location.hash = window.location.hash.replace(this.hash, '')
+    fixPosition () {
+      const main = this.getMain()
+      const padding = parseInt(process.env.padding)
+      const bottom = this.$refs.dialog.$el.offsetHeight + this.$refs.dialog.$el.offsetTop
+      const right = this.$refs.dialog.$el.offsetLeft + this.$refs.dialog.$el.offsetWidth
+      if (bottom > main.$el.offsetHeight - padding) {
+        const newTop = this.$refs.dialog.$el.offsetTop - (bottom - main.$el.offsetHeight)
+        this.$emit('update:top', `${newTop - padding}px`)
+      }
+      if (right > main.$el.offsetWidth - padding) {
+        const newLeft = this.$refs.dialog.$el.offsetLeft - (right - main.$el.offsetWidth)
+        this.$emit('update:left', `${newLeft - padding}px`)
+      }
     },
     toggle () {
       this[this.visible ? 'close' : 'open']()
     },
     open (param = null) {
-      this.addHash()
-      const main = utility.fvParent(this, 'fv-main')
-      main.lock()
-      main.$on('overlay-click', this.closeIf)
-      main.$el.appendChild(this.$el)
-      this.visible = true
+      if (this.visible) {
+        return
+      }
       this.param = param
-      this.focusBackElem = document.querySelector(':focus')
+      this.visible = true
       this.$emit('open', this.param)
+      const main = this.getMain()
+      this.focusBackElem = document.querySelector(':focus')
       this.$nextTick(() => {
-        const padding = parseInt(process.env.padding)
-        const bottom = this.$refs.dialog.$el.offsetHeight + this.$refs.dialog.$el.offsetTop
-        const right = this.$refs.dialog.$el.offsetLeft + this.$refs.dialog.$el.offsetWidth
-        if (bottom > main.$el.offsetHeight - padding) {
-          const newTop = this.$refs.dialog.$el.offsetTop - (bottom - main.$el.offsetHeight)
-          this.$emit('update:top', `${newTop - padding}px`)
+        if (this.showOverlay) {
+          this.overlayId = main.$lock(this.forceClose, this.modal)
+          setTimeout(() => {
+            this.focus(this.firstFocusOn)
+          })
         }
-        if (right > main.$el.offsetWidth - padding) {
-          const newLeft = this.$refs.dialog.$el.offsetLeft - (right - main.$el.offsetWidth)
-          this.$emit('update:left', `${newLeft - padding}px`)
-        }
-        setTimeout(() => {
-          this.focus(this.firstFocusOn)
-          window.addEventListener('hashchange', this.closeIf)
-        })
+        main.$appendChild(this.$refs.dialog.$el)
+        this.fixPosition()
       })
     },
-    close () {
-      window.removeEventListener('hashchange', this.closeIf)
-      this.removeHash()
-      const main = utility.fvParent(this, 'fv-main')
-      main.unlock()
-      main.$off('overlay-click', this.closeIf)
+    onCancel () {
+      if (this.visible && !this.modal) {
+        this.forceClose()
+      }
+    },
+    forceClose () {
       this.visible = false
-      if (this.focusBackElem) {
+      this.$emit('close', this.param)
+      if (this.focusBackElem && this.overlay) {
         this.$nextTick(() => {
           setTimeout(() => {
             this.focusBackElem.focus()
           })
         })
       }
-      this.$emit('close', this.param)
     },
-    closeIf (event) {
-      if (this.modal === false) {
-        this.close()
-      } else if (event.type === 'hashchange') {
-        if (this.hashChange) {
-          this.addHash()
-        }
-        this.hashChange = !this.hashChange
+    close () {
+      if (!this.visible) {
+        return
+      }
+      if (this.showOverlay) {
+        const main = this.getMain()
+        main.$unlock(this.overlayId)
+      } else {
+        this.forceClose()
       }
     },
     focus (index = true) {
-      this.focusableItems = this.$el.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
+      this.focusableItems = this.$refs.dialog.$el.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
       let i
       if (typeof index === 'boolean') {
         i = index ? 0 : this.focusableItems.length - 1
       } else {
         i = index
       }
-      this.focusableItems[i].focus()
+      if (this.focusableItems.length) {
+        this.focusableItems[i].focus()
+      }
     },
     onKeydown (event) {
       switch (event.which) {
@@ -173,7 +198,7 @@ export default {
           }
           break
         case 27: // esc
-          this.closeIf(event)
+          this.onCancel()
       }
     },
     onButtonClick (button) {
@@ -184,6 +209,10 @@ export default {
     }
   },
   beforeDestroy () {
+    if (this.overlayId) {
+      const main = this.getMain()
+      main.$unlock(this.overlayId)
+    }
     this.$el.remove()
   }
 }
@@ -195,7 +224,7 @@ export default {
 @import '../styles/mixins';
 
 .fv-dialog {
-  @include yiq($bg-color);
+  // @include yiq($bg-color);
   @include shadow(bottom);
 
   backface-visibility: hidden;
@@ -204,8 +233,10 @@ export default {
   overflow: auto;
   position: absolute;
   border-radius: $border-radius;
-  max-height: calc(100% - #{$padding * 2});
-  max-width: calc(100% - #{$padding * 2});
+  // max-height: calc(100% - #{$padding * 2});
+  // max-width: calc(100% - #{$padding * 2});
+  max-height: 100%;
+  max-width: 100%;
   padding: 0;
   z-index: 2;
 

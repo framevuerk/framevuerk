@@ -1,14 +1,16 @@
 <template lang="pug">
-span
-  transition(name="fv-fade")
-    .fv-overlay(v-if="visible && !isPinned",
-      @click="close()")
-  transition(:name="animationName")
-    aside.fv-main.fv-sidebar(v-if="visible",
-      :style="{ width: width }",
-      :class="classList",
-      ref="sidebar")
-      slot
+  fv-dialog.fv-sidebar(:class="classList",
+    :animation="animation",
+    :modal="false",
+    :overlay="!isPinned",
+    :left="actualPosition === 'left' ? '0px' : null",
+    :right="actualPosition === 'right' ? '0px' : null",
+    :first-focus-on="true",
+    top="0px",
+    @open="onOpen",
+    @close="onClose",
+    ref="sidebar")
+    slot
 </template>
 
 <script>
@@ -16,10 +18,6 @@ import utility from '../utility'
 
 export default {
   props: {
-    width: {
-      type: String,
-      default: '250px'
-    },
     position: {
       type: [String, Object],
       validator: (value) => {
@@ -38,12 +36,11 @@ export default {
   data () {
     return {
       isRendered: false,
-      visible: false,
-      focusBackElem: null
+      main: undefined
     }
   },
   computed: {
-    animationName () {
+    animation () {
       if (this.isRendered === true) {
         return `fv-sidebar-${this.actualPosition}`
       }
@@ -69,42 +66,46 @@ export default {
     }
   },
   methods: {
-    open () {
-      this.bigParent().$el.appendChild(this.$el)
-      this.visible = true
+    getMain () {
+      if (!this.main) {
+        this.main = utility.fvParent(this, 'fv-main')
+      }
+      return this.main
+    },
+    fixSize () {
       if (this.isPinned) {
-        this.bigParent().$el.style[`padding${utility.capitalizeFirstLetter(this.actualPosition)}`] = this.width
-      } else {
-        this.focusBackElem = document.querySelector(':focus')
         this.$nextTick(() => {
-          const focusableItems = this.$el.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
-          if (focusableItems.length) {
-            focusableItems[0].focus()
-          }
+          const main = this.getMain()
+          setTimeout(() => {
+            const size = this.$refs.sidebar.visible ? `${this.$el.offsetWidth}px` : 0
+            console.log(size, this.$refs.sidebar.visible)
+            main.setOffset(this.actualPosition, size)
+          })
         })
       }
+    },
+    onOpen () {
+      console.log('opeeeen')
+      this.$nextTick(() => {
+        this.fixSize()
+      })
+    },
+    onClose () {
+      console.log('closeeeee')
+      this.$nextTick(() => {
+        this.fixSize()
+      })
+    },
+    open () {
+      this.$refs.sidebar.open()
       this.$emit('open')
     },
     close () {
-      this.visible = false
-      this.bigParent().$el.style[`padding${utility.capitalizeFirstLetter(this.actualPosition)}`] = '0px'
-      if (!this.isPinned && this.focusBackElem) {
-        this.focusBackElem.focus()
-      }
+      this.$refs.sidebar.close()
       this.$emit('close')
     },
     toggle () {
-      this[this.visible ? 'close' : 'open']()
-    },
-    bigParent () {
-      let ret = this
-      while (ret) {
-        if (ret.parent) {
-          return ret
-        }
-        ret = ret.$parent
-      }
-      return false
+      this.$refs.sidebar.toggle()
     }
   },
   mounted () {
@@ -113,10 +114,13 @@ export default {
     } else {
       this.close()
     }
-
+    window.addEventListener('resize', this.fixSize)
     this.$nextTick(() => {
       this.isRendered = true
     })
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.fixSize)
   }
 }
 </script>
@@ -125,17 +129,12 @@ export default {
 @import '../styles/variables';
 @import '../styles/mixins';
 
-.fv-sidebar {
+.fv-main.fv-sidebar {
   @include yiq($sidebar-bg-color);
 
-  backface-visibility: hidden;
-  height: 100%;
-  max-width: 80%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  position: absolute;
-  top: 0;
+  border-radius: 0;
   z-index: 2;
+  height: 100%;
 
   &.right {
     @include shadow(left);
