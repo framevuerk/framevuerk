@@ -11,7 +11,7 @@ fv-main#app
       target="_blank") View Source
   fv-content.fv-no-padding
     router-view.fv-row
-  fv-sidebar.sidebar(:pin="isSidebarPinned", ref="sidebar", width="300px")
+  fv-sidebar.sidebar.fv-col-xs-10.fv-col-sm-6.fv-col-md-4.fv-col-lg-2(:pin="isSidebarPinned", ref="sidebar", width="300px")
     .fv-padding
       fv-input.fv-block(placeholder="Type to search...", @input="searchSidebar")
     fv-content.fv-no-padding
@@ -127,7 +127,7 @@ export default {
     }
   },
   watch: {
-    $route () {
+    '$route.name' () {
       this.routeChange()
     }
   },
