@@ -1,10 +1,12 @@
 <template lang="pug">
 fv-dialog.fv-menu(ref="dialog",
-  :left.sync="dialogPosition.left",
-  :top.sync="dialogPosition.top",
+  :style="dialogStyle",
+  :class="dialogClass",
   :title="title",
+  :visible="visible",
+  @update:visible="$emit('update:visible', $event)",
   @close="$emit('close')",
-  @open="$emit('open')")
+  @open="onOpen")
   fv-content.fv-no-padding
     fv-list.fv-no-border(ref="list",
       parent)
@@ -41,33 +43,61 @@ export default {
       type: String,
       default: 'text'
     },
+    visible: {
+      type: Boolean
+    },
+    sourceElement: {
+      default: null
+    },
     title: {
       type: String,
       default: ''
-    },
-    autoClose: {
-      type: Boolean,
-      default: true
     }
   },
   data () {
     return {
       userArgument: null,
-      dialogPosition: {}
+      dialogStyle: {},
+      dialogClass: [],
+      main: null
     }
   },
   methods: {
+    getMain () {
+      if (!this.main) {
+        this.main = utility.fvParent(this, 'fv-main')
+      }
+      return this.main
+    },
     open (event = null, userArgument = null) {
       this.userArgument = userArgument
-      const offset = utility.offsetTo(event.target, utility.fvParent(this, 'fv-main').$el)
-      this.dialogPosition = {
-        left: `${offset.left}px`,
-        top: `${offset.top}px`
-      }
+
       this.$refs.dialog.open()
     },
-    close () {
-      this.$refs.dialog.close()
+    onOpen () {
+      this.$emit('open')
+      const main = utility.fvParent(this, 'fv-main')
+      const isSmall = utility.viewportSize(main.$el).indexOf('md') === -1
+      if (isSmall) {
+        this.dialogStyle = {
+          width: `calc(100% - ${parseInt(process.env.padding) * 2}px)`,
+          maxHeight: `calc(100% - ${parseInt(process.env.padding) * 8}px)`,
+          bottom: process.env.padding,
+          left: process.env.padding,
+          right: process.env.padding
+        }
+        this.dialogClass = ['not-center']
+      } else if (this.sourceElement) {
+        const offset = utility.offsetTo(this.sourceElement, utility.fvParent(this, 'fv-main').$el)
+        this.dialogStyle = {
+          left: `${offset.left}px`,
+          top: `${offset.top}px`
+        }
+        this.dialogClass = ['not-center']
+      } else {
+        this.dialogStyle = {}
+        this.dialogClass = []
+      }
     },
     toggle () {
       this.$refs.dialog.toggle()
@@ -82,9 +112,7 @@ export default {
     },
     onItemClick (item) {
       this.$emit('item-click', item, this.userArgument)
-      if (this.autoClose) {
-        this.close()
-      }
+      this.$emit('update:visible', false)
     }
   }
 }

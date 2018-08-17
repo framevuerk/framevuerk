@@ -35,9 +35,10 @@
       fv-main.out-container(v-if="showOut && !isBreaked", :class="{top: !outOnBottom, bottom: outOnBottom}", :style="{maxHeight: outMaxHeight}")
         fv-content.fv-no-padding
           slot(name="out")
-    fv-dialog(ref="outDialog", v-if="isBreaked", :first-focus-on="0", :top="padding", :left="padding", width="100%", @close="onOutClose")
+    fv-dialog.not-center(ref="outDialog", v-if="isBreaked", :visible="showOut", @update:visible="showOut = $event", :style="dialogStyle", @close="onOutClose")
       fv-header.fv-default
         fv-input.fv-block(v-if="input",
+          autofocus,
           ref="dialogInput",
           :value="searchQuery",
           :placeholder="placeholder",
@@ -45,6 +46,7 @@
           @input="onTyping")
         .title(v-else,
           ref="dialogInput",
+          autofocus,
           tabindex="0",
           @keydown="onInputKeydown")
           h4.fv-control-label {{placeholder}}
@@ -101,8 +103,7 @@ export default {
       showOut: false,
       outOnBottom: true,
       outMaxHeight: 'auto',
-      locale,
-      padding: process.env.padding
+      locale
     }
   },
   computed: {
@@ -118,6 +119,15 @@ export default {
         return utility.viewportSize(main.$el).indexOf('md') === -1
       }
       return this.breaked
+    },
+    dialogStyle () {
+      return {
+        width: `calc(100% - ${parseInt(process.env.padding) * 2}px)`,
+        maxHeight: `calc(100% - ${parseInt(process.env.padding) * 8}px)`,
+        top: process.env.padding,
+        left: process.env.padding,
+        right: process.env.padding
+      }
     }
   },
   methods: {
@@ -187,7 +197,7 @@ export default {
       }
       if (this.isBreaked) {
         this.showOut = true
-        this.$refs.outDialog.open()
+        // this.$refs.outDialog.open()
         this.focus()
       } else {
         this.calcOutPosition()
@@ -201,7 +211,7 @@ export default {
     close () {
       this.$emit('close')
       if (this.isBreaked) {
-        this.$refs.outDialog.close()
+        // this.$refs.outDialog.close()
       }
       this.showOut = false
       this.$emit('searchQuery:update', '')

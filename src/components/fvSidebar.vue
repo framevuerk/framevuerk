@@ -1,15 +1,12 @@
 <template lang="pug">
-  fv-dialog.fv-sidebar(:class="classList",
+  fv-dialog.fv-sidebar.not-center(:class="classList",
     :animation="animation",
-    :modal="false",
-    :overlay="!isPinned",
-    :left="actualPosition === 'left' ? '0px' : null",
-    :right="actualPosition === 'right' ? '0px' : null",
-    :first-focus-on="true",
+    :visible="visible",
+    @update:visible="$emit('update:visible', $event)",
+    :overlay="!pin",
     top="0px",
     @open="onOpen",
-    @close="onClose",
-    ref="sidebar")
+    @close="onClose")
     slot
 </template>
 
@@ -19,18 +16,17 @@ import utility from '../utility'
 export default {
   props: {
     position: {
-      type: [String, Object],
+      type: String,
       validator: (value) => {
-        return ['right', 'left', null].indexOf(value) > -1
+        return ['right', 'left'].indexOf(value) > -1
       },
-      default: null
+      default: process.env.direction === 'ltr' ? 'left' : 'right'
+    },
+    visible: {
+      type: Boolean
     },
     pin: {
-      type: [Object, Boolean],
-      validator: (value) => {
-        return [true, false, null].indexOf(value) > -1
-      },
-      default: null
+      type: Boolean
     }
   },
   data () {
@@ -42,27 +38,17 @@ export default {
   computed: {
     animation () {
       if (this.isRendered === true) {
-        return `fv-sidebar-${this.actualPosition}`
+        return `fv-sidebar-${this.position}`
       }
       return ''
     },
-    actualPosition () {
-      return this.position !== null ? this.position : process.env.direction === 'ltr' ? 'left' : 'right'
-    },
     classList () {
       return {
-        'left': this.actualPosition === 'left',
-        'right-border': this.actualPosition === 'left' && this.isPinned,
-        'right': this.actualPosition === 'right',
-        'left-border': this.actualPosition === 'right' && this.isPinned
+        'left': this.position === 'left',
+        'right-border': this.position === 'left' && this.pin,
+        'right': this.position === 'right',
+        'left-border': this.position === 'right' && this.pin
       }
-    },
-    isPinned () {
-      if (this.pin === null) {
-        const main = utility.fvParent(this, 'fv-main')
-        return utility.viewportSize(main.$el).indexOf('lg') !== -1
-      }
-      return this.pin
     }
   },
   methods: {
@@ -73,48 +59,39 @@ export default {
       return this.main
     },
     fixSize () {
-      if (this.isPinned) {
+      if (this.pin) {
         this.$nextTick(() => {
           const main = this.getMain()
           setTimeout(() => {
-            const size = this.$refs.sidebar.visible ? `${this.$el.offsetWidth}px` : 0
-            console.log(size, this.$refs.sidebar.visible)
-            main.setOffset(this.actualPosition, size)
+            const size = this.visible ? `${this.$el.offsetWidth}px` : 0
+            main.setOffset(this.position, size)
           })
         })
       }
     },
     onOpen () {
-      console.log('opeeeen')
       this.$nextTick(() => {
         this.fixSize()
       })
     },
     onClose () {
-      console.log('closeeeee')
+      console.log('onClose')
       this.$nextTick(() => {
         this.fixSize()
       })
-    },
-    open () {
-      this.$refs.sidebar.open()
-      this.$emit('open')
-    },
-    close () {
-      this.$refs.sidebar.close()
-      this.$emit('close')
-    },
-    toggle () {
-      this.$refs.sidebar.toggle()
     }
   },
   mounted () {
-    if (this.isPinned) {
-      this.open()
-    } else {
-      this.close()
-    }
     window.addEventListener('resize', this.fixSize)
+    const main = utility.fvParent(this, 'fv-main')
+    if (utility.viewportSize(main.$el).indexOf('lg') === -1) {
+      this.$emit('update:pin', false)
+      this.$emit('update:visible', false)
+    } else {
+      this.$emit('update:pin', true)
+      this.$emit('update:visible', true)
+    }
+    this.fixSize()
     this.$nextTick(() => {
       this.isRendered = true
     })
