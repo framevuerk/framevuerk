@@ -89,8 +89,7 @@ module.exports = {
     Vue.component('fvSteps', fvSteps)
     Vue.component('fvRange', fvRange)
     Vue.component('fvLoading', fvLoading)
-    Vue.prototype.$fvToast = new (Vue.extend(fvToast))()
-    Vue.fvToast = Vue.prototype.$fvToast
+    Vue.component('fvToast', fvToast)
   },
   name: process.env.name,
   version: process.env.version,
