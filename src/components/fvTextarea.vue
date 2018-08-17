@@ -42,7 +42,7 @@ export default {
       if (this.autoHeight) {
         let height
         if (this.value) {
-          height = this.value.split('\n').length + 1
+          height = this.value.split('\n').length + 2
         } else {
           height = 2
         }
@@ -67,6 +67,7 @@ export default {
     overflow-x: auto;
     overflow-y: hidden;
     resize: none;
+    transition: height 0.1s;
   }
 }
 </style>
