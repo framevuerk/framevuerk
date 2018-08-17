@@ -1,25 +1,9 @@
 <template lang="pug">
 transition(:name="animation")
-  fv-main.fv-dialog(:class="left === null && top === null && right === null && bottom === null ? 'center' : ''",
-    :parent="false",
-    :style="{left: left === null ? false : left, right: right === null ? false : right, top: top === null ? false : top, bottom: bottom === null ? false : bottom, width: width, height: height}",
+  fv-main.fv-dialog(:parent="false",
     v-if="visible",
-    key="dialog",
-    ref="dialog",
-    @keydown.native="onKeydown($event); $emit('keydown', $event)",
-    @click.native="$emit('click', $event)")
-    .header(v-if="title.length > 0")
-      .title
-        label.fv-control-label(v-html="title")
-    fv-content(v-if="content",
-      v-html="content")
-    slot(v-else, :param="param")
-    .footer(v-if="buttons.length > 0")
-      .fv-grow
-      fv-button(v-for="(button, i) in buttons",
-        :key="i",
-        v-bind="button",
-        @click="onButtonClick(button)")
+    @keydown.native="onKeydown($event)")
+    slot
 </template>
 
 <script>
@@ -39,34 +23,6 @@ export default {
     fvButton
   },
   props: {
-    title: {
-      default: ''
-    },
-    content: {
-      default: ''
-    },
-    left: {
-      default: null
-    },
-    right: {
-      default: null
-    },
-    top: {
-      default: null
-    },
-    bottom: {
-      default: null
-    },
-    width: {
-      default: undefined
-    },
-    height: {
-      default: undefined
-    },
-    modal: {
-      type: Boolean,
-      default: false
-    },
     overlay: {
       type: Boolean,
       default: true
@@ -75,32 +31,21 @@ export default {
       type: String,
       default: 'fv-fade'
     },
-    autoClose: {
-      type: Boolean,
-      default: true
-    },
-    buttons: {
-      type: Array,
-      default: () => []
-    },
-    firstFocusOn: {
-      type: [Number, Boolean],
-      default: false // can be index or false (lastindex) or true (firstindex)
+    visible: {
+      type: Boolean
     }
   },
   data () {
     return {
-      visible: false,
-      param: null,
-      focusBackElem: null,
+      focusBackElement: null,
       focusableItems: [],
-      overlayId: null,
+      overlayElement: null,
       main: undefined
     }
   },
   computed: {
-    showOverlay () {
-      return this.modal || this.overlay
+    hash () {
+      return `fv-dialog-${this._uid}`
     }
   },
   methods: {
@@ -110,80 +55,88 @@ export default {
       }
       return this.main
     },
-    fixPosition () {
-      const main = this.getMain()
-      const padding = parseInt(process.env.padding)
-      const bottom = this.$refs.dialog.$el.offsetHeight + this.$refs.dialog.$el.offsetTop
-      const right = this.$refs.dialog.$el.offsetLeft + this.$refs.dialog.$el.offsetWidth
-      if (bottom > main.$el.offsetHeight - padding) {
-        const newTop = this.$refs.dialog.$el.offsetTop - (bottom - main.$el.offsetHeight)
-        this.$emit('update:top', `${newTop - padding}px`)
+    addHash (addEvent = true) {
+      if (window.location.hash.indexOf(this.hash) === -1) {
+        const seperator = window.location.hash.indexOf('?') !== -1 ? '&' : '?'
+        window.location.hash += seperator + this.hash
       }
-      if (right > main.$el.offsetWidth - padding) {
-        const newLeft = this.$refs.dialog.$el.offsetLeft - (right - main.$el.offsetWidth)
-        this.$emit('update:left', `${newLeft - padding}px`)
-      }
-    },
-    toggle () {
-      this[this.visible ? 'close' : 'open']()
-    },
-    open (param = null) {
-      if (this.visible) {
-        return
-      }
-      this.param = param
-      this.visible = true
-      this.$emit('open', this.param)
-      const main = this.getMain()
-      this.focusBackElem = document.querySelector(':focus')
-      this.$nextTick(() => {
-        if (this.showOverlay) {
-          this.overlayId = main.$lock(this.forceClose, this.modal)
-          setTimeout(() => {
-            this.focus(this.firstFocusOn)
-          })
-        }
-        main.$appendChild(this.$refs.dialog.$el)
-        this.fixPosition()
-      })
-    },
-    onCancel () {
-      if (this.visible && !this.modal) {
-        this.forceClose()
-      }
-    },
-    forceClose () {
-      this.visible = false
-      this.$emit('close', this.param)
-      if (this.focusBackElem && this.overlay) {
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.focusBackElem.focus()
-          })
+      if (addEvent) {
+        setTimeout(() => {
+          window.addEventListener('hashchange', this.onHashChange)
         })
       }
     },
-    close () {
-      if (!this.visible) {
-        return
-      }
-      if (this.showOverlay) {
-        const main = this.getMain()
-        main.$unlock(this.overlayId)
-      } else {
-        this.forceClose()
+    removeHash () {
+      window.location.hash = window.location.hash.replace(this.hash, '')
+      window.removeEventListener('hashchange', this.onHashChange)
+    },
+    onHashChange () {
+      if (window.location.hash.indexOf(this.hash) === -1) {
+        this.close()
       }
     },
-    focus (index = true) {
-      this.focusableItems = this.$refs.dialog.$el.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
-      let i
-      if (typeof index === 'boolean') {
-        i = index ? 0 : this.focusableItems.length - 1
-      } else {
-        i = index
+    addOverlay () {
+      this.overlayElement = document.createElement('div')
+      this.overlayElement.classList.add('fv-overlay')
+      this.overlayElement.addEventListener('click', this.close)
+      const main = this.getMain()
+      main.$el.insertBefore(this.overlayElement, this.$el)
+    },
+    removeOverlay () {
+      if (this.overlayElement) {
+        this.overlayElement.removeEventListener('click', this.close)
+        this.overlayElement.remove()
       }
-      if (this.focusableItems.length) {
-        this.focusableItems[i].focus()
+    },
+    close () {
+      this.$emit('update:visible', false)
+    },
+    onOpen () {
+      this.$emit('open')
+      this.$nextTick(() => {
+        const main = this.getMain()
+        main.$el.appendChild(this.$el)
+        if (this.overlay) {
+          this.addOverlay()
+          this.focus()
+          this.addHash()
+        }
+      })
+    },
+    visibleHandler (value) {
+      if (value) {
+        return this.onOpen()
+      }
+      return this.onClose()
+    },
+    onCancel () {
+      if (this.visible && this.overlay) {
+        this.close()
+      }
+    },
+    onClose () {
+      this.$emit('close')
+      this.$nextTick(() => {
+        if (this.overlay && !this.visible) {
+          this.removeOverlay()
+          this.focusBack()
+          this.removeHash()
+        }
+      })
+    },
+    focus () {
+      this.focusBackElement = document.querySelector(':focus')
+      this.focusableItems = this.$el.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
+      const autoFocus = this.$el.querySelector('[autofocus]')
+      if (autoFocus) {
+        autoFocus.focus()
+      } else if (this.focusableItems.length) {
+        this.focusableItems[this.focusableItems.length - 1].focus()
+      }
+    },
+    focusBack () {
+      if (this.focusBackElement) {
+        this.focusBackElement.focus()
       }
     },
     onKeydown (event) {
@@ -200,19 +153,15 @@ export default {
         case 27: // esc
           this.onCancel()
       }
-    },
-    onButtonClick (button) {
-      this.$emit('button-click', button, this.param)
-      if (this.autoClose) {
-        this.close()
-      }
+    }
+  },
+  watch: {
+    visible (value) {
+      this.visibleHandler(value)
     }
   },
   beforeDestroy () {
-    if (this.overlayId) {
-      const main = this.getMain()
-      main.$unlock(this.overlayId)
-    }
+    this.onClose()
     this.$el.remove()
   }
 }
@@ -224,8 +173,7 @@ export default {
 @import '../styles/mixins';
 
 .fv-dialog {
-  // @include yiq($bg-color);
-  @include shadow(bottom);
+  @include shadow(bottom, $shadow-color);
 
   backface-visibility: hidden;
   height: auto;
@@ -233,8 +181,6 @@ export default {
   overflow: auto;
   position: absolute;
   border-radius: $border-radius;
-  // max-height: calc(100% - #{$padding * 2});
-  // max-width: calc(100% - #{$padding * 2});
   max-height: 100%;
   max-width: 100%;
   padding: 0;
@@ -245,7 +191,7 @@ export default {
     padding: $padding;
   }
 
-  &.center {
+  &:not(.not-center) {
     transform: translate3d(-50%, -50%, 0);
     left: 50%;
     top: 50%;
