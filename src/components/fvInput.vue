@@ -1,7 +1,5 @@
 <template lang="pug">
-input.fv-input(ref="inputEl",
-  :disabled="disabled",
-  :invalid="!fvValidate",
+input.fv-input(:invalid="!fvValidate",
   :value="value",
   :placeholder="placeholder",
   @input="$emit('input', $event.target.value)")
@@ -15,10 +13,6 @@ export default {
     },
     required: {
       type: [Boolean, Function],
-      default: false
-    },
-    disabled: {
-      type: Boolean,
       default: false
     },
     placeholder: {
@@ -38,7 +32,7 @@ export default {
   },
   methods: {
     focus () {
-      this.$refs.inputEl.focus()
+      this.$el.focus()
     }
   }
 }
