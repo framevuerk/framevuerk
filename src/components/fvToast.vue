@@ -1,35 +1,61 @@
 <template lang="pug">
 transition(name="fv-toast")
   .fv-toast(v-if="visible",
-    v-html="text",
-    @click="hide")
+    @click="close")
+    slot
 </template>
 
 <script>
+import utility from '../utility'
+
 export default {
+  props: {
+    visible: {
+      type: Boolean
+    },
+    timeout: {
+      type: Number,
+      default: 3000
+    }
+  },
   data () {
     return {
-      visible: false,
-      text: null,
-      timer: null
+      timer: null,
+      main: null
     }
   },
   methods: {
-    show (text = null, timeout = 5500) {
-      this.hide()
-      if (!this.$parent) {
-        this.$mount()
-        document.body.appendChild(this.$el)
+    getMain () {
+      if (!this.main) {
+        this.main = utility.fvParent(this, 'fv-main')
       }
-      this.visible = true
-      this.text = text
-      this.timer = setTimeout(() => {
-        this.visible = false
-      }, timeout)
+      return this.main
     },
-    hide () {
-      this.visible = false
+    onOpen () {
+      this.$emit('open')
+      const main = this.getMain()
+      main.$el.appendChild(this.$el)
+      if (this.timeout > 0) {
+        this.timer = setTimeout(this.close, this.timeout)
+      }
+    },
+    onClose () {
+      this.$emit('close')
       clearTimeout(this.timer)
+    },
+    close () {
+      this.$emit('update:visible', false)
+    },
+    visibleHandler (value) {
+      if (value) {
+        return this.onOpen()
+      }
+      return this.onClose()
+    }
+  },
+  watch: {
+    visible (value) {
+      this.visibleHandler(value)
     }
   }
 }
@@ -40,7 +66,7 @@ export default {
 @import '../styles/mixins';
 
 .fv-toast {
-  @include yiq($night-bg-color);
+  @include yiq($sidebar-bg-color);
 
   backface-visibility: hidden;
   border-radius: $border-radius $border-radius 0 0;

@@ -8,31 +8,35 @@ fv-content
       = "\t<!-- contents -->\n"
       = "</fv-dialog>\n"
     doc-example
-      fv-dialog.fv-col-xs-10.fv-col-md-8.fv-col-lg-6(ref="d1", :buttons="[{icon: 'fa fa-check',text: 'Cancel'}, {class: 'fv-primary', icon: 'fa fa-check',text: 'OK'}]", content="This is simple dialog. And this is content of dialog. so can you go and come?", title="Simple")
-      fv-dialog.fv-col-xs-10.fv-col-md-8.fv-col-lg-6(ref="d15", :overlay="false", :buttons="[{icon: 'fa fa-check',text: 'Cancel'}, {class: 'fv-primary', icon: 'fa fa-check',text: 'OK'}]", content="This is simple dialog. And this is content of dialog. so can you go and come?", title="Simple")
-      fv-dialog(ref="d2", :auto-close="false", :modal="true")
+      fv-dialog.fv-col-xs-10.fv-col-md-8.fv-col-lg-6(:visible.sync="dialogHandlers.d1")
+        .title Simple
+        .content Salam chetori?
+        .footer
+          fv-button(@click="dialogHandlers.d1 = false") OK
+      fv-dialog.fv-col-xs-10.fv-col-md-8.fv-col-lg-6(:visible.sync="dialogHandlers.d2", :overlay="false")
+        div Another Simple dialog
+        fv-button(@click="dialogHandlers.d2 = false") salam
+      fv-dialog(:visible.sync="dialogHandlers.d3", ref="d2", :auto-close="false", :modal="true")
         fv-content.fv-text-center
           fv-button.fv-ok.fv-xl(:style="{borderRadius: '100px', width: '100px', height: '100px'}", @click.native="$refs.d2.close()") OK
-      fv-dialog(ref="d3", :auto-close="false", @close="$root.log", modal)
+      fv-dialog(:visible="dialogHandlers.d4", ref="d3", :auto-close="false", @close="$root.log", modal)
         template(slot-scope="scope")
           fv-content
             | Hi, My name is Beem And User Arg Is
             =" "
             b {{scope.param}}
           .fv-padding-small.fv-text-end
-            fv-button(@click="$refs.d2.open()") Open D2
-            fv-button.fv-block(@click="$refs.d3.close()", icon="fa fa-check") OK
+            fv-button(@click="dialogHandlers.d3 = true", autofocus) Open D2
+            fv-button.fv-block(@click="dialogHandlers.d4 = false", icon="fa fa-check") OK
       fv-content.fv-row
-        fv-button(@click="$refs.d1.open()") Simple
+        fv-button(@click="dialogHandlers.d1 = true") D1
+        hr
+        fv-button(@click="dialogHandlers.d2 = true") D2
         br
-        fv-button(@click="$refs.d15.open()") Simple No Overlay
+        fv-button(@click="dialogHandlers.d3 = true") D3
         br
-        fv-button(@click="$refs.d2.open()") Modal, Without built-in Buttons
+        fv-button(@click="dialogHandlers.d4 = true") D4
         br
-        h4 Custom Template + User Argument
-        .fv-input-group.fv-flex
-          fv-input.fv-grow(placeholder="Enter Argument", v-model="inputs.d1")
-          fv-button(@click="$refs.d3.open(inputs.d1)") Open
     doc-api(:rows="api")
 </template>
 
@@ -53,6 +57,12 @@ export default {
     return {
       inputs: {
         d1: 'X Arg'
+      },
+      dialogHandlers: {
+        d1: false,
+        d2: false,
+        d3: false,
+        d4: false
       },
       api: {
         prop: [
