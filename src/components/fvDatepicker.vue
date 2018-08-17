@@ -100,11 +100,10 @@ export default {
   },
   created () {
     this.setEditingValue(true)
-
     const dt = new this.Date()
     dt.setDate(dt.getDate() - (dt.getDay()))
     for (let i = 0; i < 7; i++) {
-      this.weekDayNames.push(dt.toString().toString().split(' ')[0])
+      this.weekDayNames.push(dt.toString().split(' ')[0])
       dt.setDate(dt.getDate() + 1)
     }
 
