@@ -1,19 +1,19 @@
 <template lang="pug">
 fv-main#app
   fv-header
-    fv-button.fv-hide-on-lg(@click="$refs.sidebar.toggle()")
+    fv-button.fv-hide-on-lg(@click="sidebarVisible = !sidebarVisible")
       .icon(v-html="require('../src/icons/feather/menu.svg')")
     .space.fv-hide-on-lg
     .title
-      h2.fv-no-wrap {{$route.name}}
+      h2.fv-no-wrap {{$route.name}} pin:{{sidebarPin}} visible:{{sidebarVisible}}
     .space
     a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('-') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name + '.vue'",
       target="_blank") View Source
   fv-content.fv-no-padding
     router-view.fv-row
-  fv-sidebar.sidebar.fv-col-xs-10.fv-col-sm-6.fv-col-md-4.fv-col-lg-2(:pin="isSidebarPinned", ref="sidebar", width="300px")
+  fv-sidebar.sidebar.fv-col-xs-10.fv-col-sm-6.fv-col-md-4.fv-col-lg-2(:pin="sidebarPin", @update:pin="sidebarPin = $event; $root.log('sidebar pin changes', $event, sidebarPin); ", :visible.sync="sidebarVisible")
     .fv-padding
-      fv-input.fv-block(placeholder="Type to search...", @input="searchSidebar")
+      fv-input.fv-block(placeholder="Type to search...", @input="searchSidebar", autofocus)
     fv-content.fv-no-padding
       fv-list.fv-no-border(v-show="!searching", parent)
         fv-list-item.framevuerk
@@ -55,9 +55,11 @@ fv-main#app
 export default {
   data () {
     return {
-      isSidebarPinned: this.$route.name === 'Home' ? false : null,
+      // isSidebarPinned: this.$route.name === 'Home' ? false : undefined,
       searching: false,
-      searchResult: []
+      searchResult: [],
+      sidebarVisible: false,
+      sidebarPin: false
     }
   },
   computed: {
@@ -129,6 +131,9 @@ export default {
   watch: {
     '$route.name' () {
       this.routeChange()
+    },
+    sidebarPin (value, oldValue) {
+      console.log('sidebarPin changes from', oldValue, 'to', value)
     }
   },
   methods: {
@@ -170,17 +175,17 @@ export default {
       }
     },
     routeChange () {
-      this.isSidebarPinned = this.$route.name === 'Home' ? false : null
-      if (this.$route.name === 'Home') {
-        this.$refs.sidebar.close()
-      }
-      setTimeout(() => {
-        if (this.$refs.sidebar.isPinned === true && this.$refs.sidebar.visible === false) {
-          this.$refs.sidebar.open()
-        } else if (!this.$refs.sidebar.isPinned) {
-          this.$refs.sidebar.close()
-        }
-      })
+      // this.isSidebarPinned = this.$route.name === 'Home' ? false : null
+      // if (this.$route.name === 'Home') {
+      //   this.$refs.sidebar.close()
+      // }
+      // setTimeout(() => {
+      //   if (this.$refs.sidebar.isPinned === true && this.$refs.sidebar.visible === false) {
+      //     this.$refs.sidebar.open()
+      //   } else if (!this.$refs.sidebar.isPinned) {
+      //     this.$refs.sidebar.close()
+      //   }
+      // })
     }
   },
   mounted () {

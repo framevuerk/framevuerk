@@ -5,18 +5,19 @@ fv-content
       | To show toast message, use this component.
     doc-code(title="Javascript (inside your component):", lang="javascript")
       = "this.$fvToast.show('blah blah')'\n"
-    doc-example
+    doc-example(parent)
       .fv-padding
         h4 Normal
         .fv-row
           .fv-col
             label.fv-control-label Text
-            fv-input.fv-form-control(placeholder="Text", v-model="inputs.d1")
+            fv-input.fv-form-control(placeholder="Text", v-model="inputs.d3")
           .fv-col
             label.fv-control-label Timouet
             fv-input.fv-form-control(placeholder="Timeout", type="number", v-model="inputs.d2")
           .fv-col-12
-            fv-button.fv-block.fv-ok(@click="$fvToast.show(inputs.d1, inputs.d2)", icon="fa fa-eye") Show
+            fv-button.fv-block.fv-ok(@click="inputs.d1 = !inputs.d1", icon="fa fa-eye") Show
+          fv-toast(:visible.sync="inputs.d1", :timeout="d2Number") {{inputs.d3}}
     doc-api(:rows="api")
 </template>
 
@@ -33,11 +34,20 @@ export default {
     docExample,
     docCode
   },
+  computed: {
+    d2Number () {
+      if (this.inputs.d2) {
+        return parseInt(this.inputs.d2)
+      }
+      return 0
+    }
+  },
   data () {
     return {
       inputs: {
-        d1: 'Hello',
-        d2: 3000
+        d1: false,
+        d2: 3000,
+        d3: 'Hello'
       },
       api: {
         method: [

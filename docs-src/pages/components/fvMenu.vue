@@ -6,24 +6,24 @@ fv-content
     doc-code
       = "<fv-menu></fv-menu>"
     doc-example
-      fv-menu(ref="m1", :items="['Item 1', 'Item 2','Item 3']", text-key="", disabled-key="", @item-click="doIt")
-      fv-menu(ref="m2", :sheet="true", :items="[{text: 'Copy', disabled: false}, {text: 'Cut', disabled: false}, {text: 'Paste', disabled: true}]", @item-click="doIt")
-      fv-menu(ref="m3", :sheet="null", :items="[{text: 'Google', icon: 'fa fa-google'}, {text: 'Yahoo', icon: 'fa fa-yahoo'}, {text: 'Microsoft', icon: 'fa fa-windows'}]", title="Select your favorite company", @item-click="doIt")
+      fv-menu(:visible.sync="menuHandlers.d1", :source-element="menuHandlers.e1", :items="['Item 1', 'Item 2','Item 3']", text-key="", disabled-key="", @item-click="doIt")
+      fv-menu(:visible.sync="menuHandlers.d2", :sheet="true", :items="[{text: 'Copy', disabled: false}, {text: 'Cut', disabled: false}, {text: 'Paste', disabled: true}]", @item-click="doIt")
+      fv-menu(:visible.sync="menuHandlers.d3", :sheet="null", :items="[{text: 'Google', icon: 'fa fa-google'}, {text: 'Yahoo', icon: 'fa fa-yahoo'}, {text: 'Microsoft', icon: 'fa fa-windows'}]", title="Select your favorite company", @item-click="doIt")
         template(slot-scope="scope")
           i(:class="scope.item.icon")
           |  {{scope.item.text}}
           | : {{scope.userArgument}}
       fv-content.fv-row
         h4 Normal
-        fv-button.fv-default(@click="$refs.m1.open($event)", icon="fa fa-ellipsis-v")
+        fv-button.fv-default(@click="menuHandlers.e1 = $event.target; menuHandlers.d1 = true", icon="fa fa-ellipsis-v")
         br
         h4 With disabled item
-        fv-button.fv-default(@click="$refs.m2.open($event)", icon="fa fa-ellipsis-v")
+        fv-button.fv-default(@click="menuHandlers.d2 = true", icon="fa fa-ellipsis-v")
         br
         h4 Custom Template + User Argument
         .fv-input-group.fv-flex
           fv-input.fv-grow(placeholder="Enter Argument", v-model="inputs.d1")
-          fv-button.fv-default(@click="$refs.m3.open($event, inputs.d1)", icon="fa fa-ellipsis-v")
+          fv-button.fv-default(@click="menuHandlers.d3 = true", icon="fa fa-ellipsis-v")
         .fv-col-12
           br
         .fv-col-12
@@ -52,6 +52,13 @@ export default {
     return {
       inputs: {
         d1: 'X Arg'
+      },
+      menuHandlers: {
+        d1: false,
+        e1: null,
+        d2: false,
+        d3: false,
+        d4: false
       },
       api: {
         prop: [
