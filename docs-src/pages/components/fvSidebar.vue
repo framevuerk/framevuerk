@@ -48,7 +48,7 @@ export default {
   data () {
     return {
       inputs: {
-        s1: false,
+        s1: true,
         s2: false,
         s3: false
       },
