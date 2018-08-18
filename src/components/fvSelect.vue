@@ -141,7 +141,7 @@ export default {
   },
   methods: {
     focus () {
-      this.$refs.input.focus()
+      this.$refs.inputBox.focus()
     },
     setStructure () {
       if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
