@@ -338,7 +338,7 @@ export default {
         @include nowrap;
 
         font-size: 0.8em;
-        color: contrast($bg-color, 4);
+        color: contrast($bg-color, 3, light);
         padding-bottom: #{$padding / 2};
       }
 
@@ -363,28 +363,18 @@ export default {
           opacity: 0.3;
         }
 
-        &.highlighted {
-          @include yiq(contrast($bg-color, 1));
+        &:not([disabled]):not(.selected) {
+          &.highlighted,
+          &:hover {
+            @include yiq(contrast($bg-color, 1));
+          }
         }
-
-        &.selected {
+        &:not([disabled]).selected {
           @include yiq($primary-color);
 
-          &:not([disabled]):hover {
-            background: yiq($primary-color, 3%);
+          &:hover {
+            @include yiq(contrast($primary-color, 1));
           }
-
-          &:not([disabled]):active {
-            background: yiq($primary-color, 10%);
-          }
-        }
-
-        &:not([disabled]):hover {
-          background: yiq($bg-color, 3%);
-        }
-
-        &:not([disabled]):active {
-          background: yiq($bg-color, 10%);
         }
       }
     }
