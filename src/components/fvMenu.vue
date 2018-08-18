@@ -69,11 +69,6 @@ export default {
       }
       return this.main
     },
-    open (event = null, userArgument = null) {
-      this.userArgument = userArgument
-
-      this.$refs.dialog.open()
-    },
     onOpen () {
       this.$emit('open')
       const main = utility.fvParent(this, 'fv-main')
@@ -99,9 +94,6 @@ export default {
         this.dialogClass = []
       }
     },
-    toggle () {
-      this.$refs.dialog.toggle()
-    },
     itemProp (item, prop = 'text') {
       switch (prop) {
         case 'text':
@@ -111,7 +103,7 @@ export default {
       }
     },
     onItemClick (item) {
-      this.$emit('item-click', item, this.userArgument)
+      this.$emit('item-click', item)
       this.$emit('update:visible', false)
     }
   }
