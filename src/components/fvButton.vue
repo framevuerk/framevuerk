@@ -73,7 +73,7 @@ export default {
 
     & > svg {
       vertical-align: middle;
-      height: 1.4em;
+      height: 1.3em;
     }
   }
 
