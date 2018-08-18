@@ -271,6 +271,7 @@ export default {
           border: none;
           background: transparent;
           width: auto;
+          color: inherit;
         }
       }
 
@@ -321,7 +322,6 @@ export default {
   }
 
   & > .placeholder {
-    color: contrast($bg-color, 3);
     position: absolute;
     display: inline-block;
     overflow: hidden;
