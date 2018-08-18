@@ -1,7 +1,7 @@
 <template lang="pug">
 transition(:name="animation")
   fv-main.fv-dialog(:parent="false",
-    v-if="visible",
+    v-show="visible",
     @keydown.native="onKeydown($event)")
     slot
 </template>
