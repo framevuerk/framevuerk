@@ -1,12 +1,13 @@
 <template lang="pug">
 .fv-input-group.fv-pagination
-  fv-button.fv-sm(v-if="showNavigateButtons")
+  fv-button.fv-sm(v-if="prev || next", :disabled="value === 1", @click="$emit('input', value - 1)")
     .icon(v-html="icons.firstPage")
-  fv-button.fv-sm(v-for="page in pages",
-    :disabled="page.type === 'dots'",
-    :class="{'fv-primary': page.number === value}",
-    @click="$emit('input', page.number)") {{page.text || page.number}}
-  fv-button.fv-sm(v-if="showNavigateButtons")
+  span.page(v-for="page in pages")
+    b.fv-padding-small.fv-text-gray(v-if="page.type === 'dots'") ...
+    fv-button.fv-sm(v-else,
+      :class="{'fv-primary': page.number === value}",
+      @click="$emit('input', page.number)") {{page.text || page.number}}
+  fv-button.fv-sm(v-if="prev || next", :disabled="!next || value === total", @click="$emit('input', value + 1)")
     .icon(v-html="icons.lastPage")
 </template>
 
@@ -21,18 +22,23 @@ export default {
     },
     size: {
       type: Number
+    },
+    next: {
+      type: Boolean,
+      default: true
+    },
+    prev: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
-    showNavigateButtons () {
-      return !this.total
-    },
     icons () {
-      const chevronsLeft = require('../icons/feather/chevrons-left.svg')
-      const chevronsRight = require('../icons/feather/chevrons-right.svg')
+      const chevronLeft = require('../icons/feather/chevron-left.svg')
+      const chevronRight = require('../icons/feather/chevron-right.svg')
       return {
-        lastPage: process.env.direction === 'ltr' ? chevronsRight : chevronsLeft,
-        firstPage: process.env.direction === 'ltr' ? chevronsLeft : chevronsRight
+        lastPage: process.env.direction === 'ltr' ? chevronRight : chevronLeft,
+        firstPage: process.env.direction === 'ltr' ? chevronLeft : chevronRight
       }
     },
     pages () {
