@@ -176,7 +176,7 @@ export default {
       return visualProps
     },
     focus () {
-      this.$refs.input.focus()
+      this.$refs.inputBox.focus()
     },
     dpRow (dp, month, year) {
       const calc = (d, dp) => {
