@@ -18,7 +18,7 @@ fv-content
         fv-button(@click="dialogHandlers.d2 = false") salam
       fv-dialog(:visible.sync="dialogHandlers.d3", ref="d2", :auto-close="false", :modal="true")
         fv-content.fv-text-center
-          fv-button.fv-ok.fv-xl(:style="{borderRadius: '100px', width: '100px', height: '100px'}", @click.native="$refs.d2.close()") OK
+          fv-button.fv-ok.fv-xl(:style="{borderRadius: '100px', width: '100px', height: '100px'}", @click.native="dialogHandlers.d2 = false") OK
       fv-dialog(:visible="dialogHandlers.d4", ref="d3", :auto-close="false", @close="$root.log", modal)
         template(slot-scope="scope")
           fv-content
