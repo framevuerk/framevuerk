@@ -10,7 +10,7 @@ fv-content
         .fv-col
           p Check Box
           .fv-form-control
-            fv-check(v-model="inputs.d1", v-for="i in ['A.C. Milan', 'Juventus']", :key="i", :label="i", :content="i", multiple)
+            fv-check(v-model="inputs.d1", v-for="i in ['A.C. Milan', 'Juventus']", :key="i", :label="i", :content="i", multiple, required)
         .fv-col
           p Radio + Required
           .fv-form-control
@@ -24,10 +24,10 @@ fv-content
           .fv-form-control.fv-input-group.fv-flex
             fv-input.fv-grow(v-model="inputs.d4.value", :display-value="inputs.d4.displayValue", render-type="display", placeholder="Type something", required)
             fv-button(@click.native.prevent="inputs.d4.value = new Date().getTime(); inputs.d4.displayValue = new Date(inputs.d4.value).getMilliseconds();") OK
-        .fv-col
-          label.fv-control-label Range
+        .fv-col-12
+          label.fv-control-label Range {{inputs.d12}}
           .fv-form-control
-            fv-range(v-model="inputs.d12", :data="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]", required)
+            fv-range(v-model="inputs.d12", :data="[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]", :required="rangeRequired")
         .fv-col-6
           label.fv-control-label Select
           fv-select.fv-form-control(v-model="inputs.d5", placeholder="Select your city", :options="[{text: 'Tehran', value: 'teh'}, {text: 'LA', value: 'la'}]", required)
@@ -94,6 +94,11 @@ export default {
           }
         ]
       }
+    }
+  },
+  methods: {
+    rangeRequired (value) {
+      return value > 3
     }
   }
 }
