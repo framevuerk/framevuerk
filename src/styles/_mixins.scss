@@ -134,7 +134,8 @@
     @include disabled;
   }
 
-  &::placeholder {
+  &::placeholder,
+  & > .placeholder {
     color: contrast($bg, 3, light);
   }
 }
