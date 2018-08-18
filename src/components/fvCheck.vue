@@ -1,5 +1,11 @@
 <template lang="pug">
-.fv-check(:checked="isChecked", :multiple="multiple", :disabled="disabled", @click="onClick", @keydown.space.prevent="onClick", :tabindex="disabled ? '' : 0")
+.fv-check(:checked="isChecked",
+  :multiple="multiple",
+  :disabled="disabled",
+  @click="onClick",
+  @keydown.space.prevent="onClick",
+  :invalid="!fvValidate",
+  :tabindex="disabled ? '' : 0")
   .box(:class="{square: multiple, circle: !multiple}")
   span.label
     template(v-if="!label")
@@ -116,7 +122,6 @@ export default {
   display: inline-block;
   margin: 0;
   margin-#{$block-end}: #{$padding};
-  background: contrast($bg-color, 1, force-light);
   cursor: pointer;
 
   & > .box {
@@ -124,6 +129,7 @@ export default {
 
     height: 1.5em;
     width: 1.5em;
+    background: contrast($bg-color, 1, force-light);
     border: solid 1px contrast($bg-color, 2, hard-dark);
     display: inline-block;
     position: relative;
@@ -190,7 +196,9 @@ export default {
 
       &:invalid,
       &[invalid] {
-        @include outline($danger-color);
+        & > .box {
+          @include outline($danger-color);
+        }
       }
     }
   }
