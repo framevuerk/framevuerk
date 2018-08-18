@@ -28,6 +28,7 @@ import fvAvatar from './components/fvAvatar.vue'
 import fvSteps from './components/fvSteps.vue'
 import fvRange from './components/fvRange.vue'
 import fvLoading from './components/fvLoading.vue'
+import fvPagination from './components/fvPagination.vue'
 
 module.exports = {
   fvMain,
@@ -57,6 +58,7 @@ module.exports = {
   fvSteps,
   fvRange,
   fvLoading,
+  fvPagination,
   use (libName, lib) {
     this.dependencies[libName] = lib
   },
@@ -90,6 +92,7 @@ module.exports = {
     Vue.component('fvRange', fvRange)
     Vue.component('fvLoading', fvLoading)
     Vue.component('fvToast', fvToast)
+    Vue.component('fvPagination', fvPagination)
   },
   name: process.env.name,
   version: process.env.version,

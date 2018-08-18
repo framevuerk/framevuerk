@@ -106,6 +106,11 @@ module.exports = function (mode) {
       component: mode === 'app' ? require('./pages/components/fvCheck.vue').default : null
     },
     {
+      name: 'fvPagination',
+      path: '/components=fvPagination',
+      component: mode === 'app' ? require('./pages/components/fvPagination.vue').default : null
+    },
+    {
       name: 'fvFilepicker',
       path: '/components=fvFilepicker',
       component: mode === 'app' ? require('./pages/components/fvFilepicker.vue').default : null

@@ -115,7 +115,8 @@ export default {
                 this.sidebarItem('fvImg', null, ['image', 'picture', 'img', 'pic', 'fv-img', 'fvimg']),
                 this.sidebarItem('fvToast', null, ['toast', 'alert', 'msg', 'message', 'fv-toast', 'fvtoast']),
                 this.sidebarItem('fvAvatar', null, ['avatar', 'profile-picture', 'profile', 'display-image', 'fv-avatar', 'fvavatar']),
-                this.sidebarItem('fvLoading', null, ['loading', 'spinner', 'waiting', 'fv-loading', 'fvloading'])
+                this.sidebarItem('fvLoading', null, ['loading', 'spinner', 'waiting', 'fv-loading', 'fvloading']),
+                this.sidebarItem('fvPagination', null, ['pagination', 'paginate', 'page', 'fv-pagination', 'fvpagination'])
               ]
             }
           ]
