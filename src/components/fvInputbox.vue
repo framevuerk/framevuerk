@@ -197,7 +197,6 @@ export default {
       }
       if (this.isBreaked) {
         this.showOut = true
-        // this.$refs.outDialog.open()
         this.focus()
       } else {
         this.calcOutPosition()
@@ -210,9 +209,6 @@ export default {
     },
     close () {
       this.$emit('close')
-      if (this.isBreaked) {
-        // this.$refs.outDialog.close()
-      }
       this.showOut = false
       this.$emit('searchQuery:update', '')
     },
