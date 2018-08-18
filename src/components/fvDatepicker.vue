@@ -369,6 +369,7 @@ export default {
             @include yiq(contrast($bg-color, 1));
           }
         }
+
         &:not([disabled]).selected {
           @include yiq($primary-color);
 
