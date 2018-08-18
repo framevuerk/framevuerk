@@ -60,13 +60,9 @@ export default {
     },
     fixSize () {
       if (this.pin) {
-        this.$nextTick(() => {
-          const main = this.getMain()
-          setTimeout(() => {
-            const size = this.visible ? `${this.$el.offsetWidth}px` : 0
-            main.setOffset(this.position, size)
-          })
-        })
+        const main = this.getMain()
+        const size = this.visible ? `${this.$el.offsetWidth}px` : 0
+        main.setOffset(this.position, size)
       }
     },
     onOpen () {
@@ -75,7 +71,6 @@ export default {
       })
     },
     onClose () {
-      console.log('onClose')
       this.$nextTick(() => {
         this.fixSize()
       })
