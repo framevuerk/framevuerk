@@ -1,12 +1,11 @@
 <template lang="pug">
   fv-dialog.fv-sidebar.not-center(:class="classList",
     :animation="animation",
-    :visible="visible",
-    @update:visible="$emit('update:visible', $event)",
-    :overlay="!pin",
-    top="0px",
-    @open="onOpen",
-    @close="onClose")
+    :value="value",
+    @open="onToggle('open')",
+    @close="onToggle('close')",
+    @input="$emit('input', $event)",
+    :overlay="!pin")
     slot
 </template>
 
@@ -15,18 +14,18 @@ import utility from '../utility'
 
 export default {
   props: {
+    value: {
+      type: Boolean
+    },
+    pin: {
+      type: Boolean
+    },
     position: {
       type: String,
       validator: (value) => {
         return ['right', 'left'].indexOf(value) > -1
       },
       default: process.env.direction === 'ltr' ? 'left' : 'right'
-    },
-    visible: {
-      type: Boolean
-    },
-    pin: {
-      type: Boolean
     }
   },
   data () {
@@ -59,21 +58,18 @@ export default {
       return this.main
     },
     fixSize () {
-      if (this.pin) {
-        const main = this.getMain()
-        const size = this.visible ? `${this.$el.offsetWidth}px` : 0
-        main.setOffset(this.position, size)
-      }
-    },
-    onOpen () {
       this.$nextTick(() => {
-        this.fixSize()
+        if (this.pin) {
+          const main = this.getMain()
+          const size = this.value ? `${this.$el.offsetWidth}px` : 0
+          main.setOffset(this.position, size)
+        }
       })
     },
-    onClose () {
-      this.$nextTick(() => {
-        this.fixSize()
-      })
+    onToggle (value) {
+      this.$emit('input', value === 'open')
+      this.$emit(value)
+      this.fixSize()
     }
   },
   mounted () {
@@ -81,10 +77,10 @@ export default {
     const main = utility.fvParent(this, 'fv-main')
     if (utility.viewportSize(main.$el).indexOf('lg') === -1) {
       this.$emit('update:pin', false)
-      this.$emit('update:visible', false)
+      this.$emit('input', false)
     } else {
       this.$emit('update:pin', true)
-      this.$emit('update:visible', true)
+      this.$emit('input', true)
     }
     this.fixSize()
     this.$nextTick(() => {

@@ -1,7 +1,7 @@
 <template lang="pug">
 transition(:name="animation")
   fv-main.fv-dialog(:parent="false",
-    v-show="visible",
+    v-show="value",
     @keydown.native="onKeydown($event)")
     slot
 </template>
@@ -23,6 +23,10 @@ export default {
     fvButton
   },
   props: {
+    value: {
+      type: Boolean,
+      default: false
+    },
     overlay: {
       type: Boolean,
       default: true
@@ -30,9 +34,6 @@ export default {
     animation: {
       type: String,
       default: 'fv-fade'
-    },
-    visible: {
-      type: Boolean
     }
   },
   data () {
@@ -89,7 +90,7 @@ export default {
       }
     },
     close () {
-      this.$emit('update:visible', false)
+      this.$emit('input', false)
     },
     onOpen () {
       this.$emit('open')
@@ -103,21 +104,21 @@ export default {
         }
       })
     },
-    visibleHandler (value) {
+    valueHandler (value) {
       if (value) {
         return this.onOpen()
       }
       return this.onClose()
     },
     onCancel () {
-      if (this.visible && this.overlay) {
+      if (this.value && this.overlay) {
         this.close()
       }
     },
     onClose () {
       this.$emit('close')
       this.$nextTick(() => {
-        if (this.overlay && !this.visible) {
+        if (this.overlay && !this.value) {
           this.removeOverlay()
           this.focusBack()
           this.removeHash()
@@ -156,8 +157,8 @@ export default {
     }
   },
   watch: {
-    visible (value) {
-      this.visibleHandler(value)
+    value (value) {
+      this.valueHandler(value)
     }
   },
   beforeDestroy () {
@@ -173,7 +174,7 @@ export default {
 @import '../styles/mixins';
 
 .fv-dialog {
-  @include shadow(bottom, $shadow-color);
+  @include shadow(bottom, $shadow-color-light);
 
   backface-visibility: hidden;
   height: auto;
