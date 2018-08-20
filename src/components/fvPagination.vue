@@ -1,13 +1,26 @@
 <template lang="pug">
 .fv-input-group.fv-pagination
-  fv-button.fv-sm(v-if="navigation", :disabled="value === 1 || !prev", @click="$emit('input', value - 1)")
+  fv-button.fv-sm(v-if="navigation",
+    :disabled="value === 1 || !prev",
+    @click="$emit('input', value - 1)")
     .icon(v-html="icons.firstPage")
   span.page(v-for="page in pages")
-    b.fv-padding-small.fv-text-gray(v-if="page.type === 'dots'") ...
-    fv-button.fv-sm(v-else,
-      :class="{'fv-primary': page.number === value}",
+    b.fv-padding-small.fv-text-gray(v-if="page.type === 'dots'") …
+    fv-button.fv-sm(v-else-if="page.number !== value",
       @click="$emit('input', page.number)") {{page.text || page.number}}
-  fv-button.fv-sm(v-if="navigation", :disabled="value === total || !next", @click="$emit('input', value + 1)")
+    fv-button.fv-sm.fv-primary(v-else-if="!inputMode",
+      @click="turnInputMode") {{page.number}}
+    fv-input.fv-sm.fv-text-primary.input(v-else,
+      ref="input",
+      :value="page.number",
+      type="number",
+      :min="1",
+      :max="total || undefined",
+      @blur.native="inputMode = false",
+      @keyup.native.enter="onEnterPage")
+  fv-button.fv-sm(v-if="navigation",
+    :disabled="value === total || !next",
+    @click="$emit('input', value + 1)")
     .icon(v-html="icons.lastPage")
 </template>
 
@@ -33,6 +46,11 @@ export default {
     prev: {
       type: Boolean,
       default: true
+    }
+  },
+  data () {
+    return {
+      inputMode: false
     }
   },
   computed: {
@@ -90,26 +108,30 @@ export default {
     }
   },
   methods: {
-
+    turnInputMode () {
+      this.inputMode = true
+      this.$nextTick(() => {
+        this.$refs.input[0].focus()
+      })
+    },
+    onEnterPage (event) {
+      this.inputMode = false
+      if (event.target.value) {
+        const page = parseInt(event.target.value)
+        if (page > 0 && (!this.total || page <= this.total)) {
+          this.$emit('input', page)
+        }
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss">
-@import '../styles/variables';
-@import '../styles/mixins';
-
-.fv-textarea {
-  @include scrollbar($bg-color);
-
-  line-height: 1.3em;
-  padding: $padding-small;
-
-  &.auto-height {
-    overflow-x: auto;
-    overflow-y: hidden;
-    resize: none;
-    transition: height 0.1s;
+.fv-pagination {
+  & .page > .input {
+    width: 6em;
+    text-align: center;
   }
 }
 </style>
