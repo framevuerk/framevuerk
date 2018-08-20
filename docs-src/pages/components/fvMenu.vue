@@ -103,11 +103,6 @@ export default {
         ]
       }
     }
-  },
-  methods: {
-    doIt (a, b) {
-      this.$fvToast.show(`You clicked on ${typeof a === 'string' ? a : a.text}${b ? ` and user-argument is ${b}` : ''}`)
-    }
   }
 }
 </script>

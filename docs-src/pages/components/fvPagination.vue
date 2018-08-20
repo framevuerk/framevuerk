@@ -1,6 +1,5 @@
 <template lang="pug">
-fv-content
-  div(:class="$root.mainClass")
+  div
     doc-description
       | To create pagination component to handle data pages, use this!
     doc-code
