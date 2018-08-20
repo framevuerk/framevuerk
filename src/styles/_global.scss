@@ -54,7 +54,7 @@ html > body {
 }
 
 .fv-overlay {
-  background: $shadow-color;
+  background: $shadow-color-dark;
   height: 100%;
   left: 0;
   position: absolute;
@@ -62,11 +62,20 @@ html > body {
   top: 0;
   width: 100%;
   z-index: 2;
-
-  &.light {
-    background: $shadow-color;
+  animation-name: fv-overlay;
+  animation-duration: $transition-speed;
+  will-change: opacity;
+  animation-iteration-count: 1;
+}
+@keyframes fv-overlay {
+  from   {
+    opacity: 0;
+  }
+  to  {
+    opacity: 1;
   }
 }
+
 
 .fv-link {
   &,
