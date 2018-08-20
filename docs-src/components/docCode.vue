@@ -1,15 +1,16 @@
 <template lang="pug">
-span
-  div
-  h3(v-if="title", v-html="title + ':'")
-  h3(v-else) Code:
-  p.fv-control-label(v-if="description", v-html="description")
-  .doc-code.fv-border.fv-radius.fv-shadow(v-if="$slots.default")
-    pre(v-highlightjs)
-      code(:class="lang")
-        slot
-  div(v-else)
-    p.fv-text-center Nothing to show!
+.fv-row.bg-2
+  div(:class="$root.mainClass")
+    div
+    h3(v-if="title", v-html="title + ':'")
+    h3(v-else) Code:
+    p.fv-control-label(v-if="description", v-html="description")
+    .doc-code.fv-border.fv-radius.fv-shadow(v-if="$slots.default")
+      pre(v-highlightjs)
+        code(:class="lang")
+          slot
+    div(v-else)
+      p.fv-text-center Nothing to show!
   br
 </template>
 

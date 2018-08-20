@@ -1,6 +1,6 @@
 <template lang="pug">
-span
-  p
+.fv-row.bg-3
+  p(:class="$root.mainClass")
     slot
   br
 </template>

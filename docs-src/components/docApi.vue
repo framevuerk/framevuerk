@@ -1,25 +1,26 @@
 <template lang="pug">
-span(v-show="show")
-  h3 {{title}}
-  fv-slider(v-model="value")
-    template(slot-scope="scope", slot="button")
-      | {{ tabs.filter(function(tab){ return tab.slot===scope.value; })[0].title }}
-    div(v-for="tab in tabs", :slot="tab.slot")
-      br
-      fv-table.doc-api-table(v-if="rows[tab.slot] && rows[tab.slot].length > 0",
-        :fields="fields(tab.slot)",
-        :rows="rows[tab.slot]")
-        template(slot="field-Name", slot-scope="scope")
-          .fmin.fv-text-primary {{scope.row.name}}
-        template(slot="field-Type", slot-scope="scope")
-          .fmin {{scope.row.type === '' ? 'Any': scope.row.type}}
-        template(slot="field-Default", slot-scope="scope")
-          .fmin.fv-control-label {{scope.row.default === '' ? 'undefined': scope.row.default}}
-        template(slot="field-Params", slot-scope="scope")
-          .fmin {{scope.row.params === '' ? '---': scope.row.params}}
-        template(slot="field-Description", slot-scope="scope")
-          p.fv-text-justify.fv-inline-block {{scope.row.description}}
-      p.fv-text-center(v-else) No {{tab.title}} are available!
+.fv-row.bg-1
+  div(:class="$root.mainClass")
+    span(v-show="show")
+      h3 {{title}}:
+      fv-slider.fv-border.fv-radius.fv-shadow(v-model="value")
+        template(slot-scope="scope", slot="button")
+          | {{ tabs.filter(function(tab){ return tab.slot===scope.value; })[0].title }}
+        div(v-for="tab in tabs", :slot="tab.slot")
+          fv-table.doc-api-table.fv-no-border.fv-no-shadow(v-if="rows[tab.slot] && rows[tab.slot].length > 0",
+            :fields="fields(tab.slot)",
+            :rows="rows[tab.slot]")
+            template(slot="field-Name", slot-scope="scope")
+              .fmin.fv-text-primary {{scope.row.name}}
+            template(slot="field-Type", slot-scope="scope")
+              .fmin {{scope.row.type === '' ? 'Any': scope.row.type}}
+            template(slot="field-Default", slot-scope="scope")
+              .fmin.fv-control-label {{scope.row.default === '' ? 'undefined': scope.row.default}}
+            template(slot="field-Params", slot-scope="scope")
+              .fmin {{scope.row.params === '' ? '---': scope.row.params}}
+            template(slot="field-Description", slot-scope="scope")
+              p.fv-text-justify.fv-inline-block(v-html="scope.row.description")
+          p.fv-text-center(v-else) No {{tab.title}} are available!
   br
 </template>
 

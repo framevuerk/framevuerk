@@ -11,11 +11,11 @@ fv-content
       = "\t<!-- contents -->\n"
       = "</fv-sidebar>\n"
     doc-example(parent)
-      fv-sidebar(:visible="inputs.s1", :pin="true", position="right", width="170px")
+      fv-sidebar(:value="inputs.s1", :pin="true", position="right", width="170px")
         h3.fv-text-center.fv-padding I'm Pinned at Right!
-      fv-sidebar(:visible.sync="inputs.s2", :pin="false", position="left", width="170px")
+      fv-sidebar(v-model="inputs.s2", :pin="false", position="left", width="170px")
         h3.fv-text-center.fv-padding I'm Unpinned at Left!
-      fv-sidebar(:visible.sync="inputs.s3", :pin="false", position="left", width="50px")
+      fv-sidebar(v-model="inputs.s3", :pin="false", position="left", width="50px")
         ul
           li.fv-text-center.fv-vertical-padding
             i.fa.fa-facebook.fa-2x

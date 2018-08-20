@@ -10,8 +10,8 @@ fv-main#app
     a.fv-link(v-if="$route.path.indexOf('/components') !== -1 && $route.path.indexOf('-') === -1", :href="$root.githubRepo + '/tree/master/src/components/' + $route.name + '.vue'",
       target="_blank") View Source
   fv-content.fv-no-padding
-    router-view.fv-row
-  fv-sidebar.sidebar.fv-col-xs-10.fv-col-sm-6.fv-col-md-4.fv-col-lg-2(:pin="sidebarPin", @update:pin="sidebarPin = $event; $root.log('sidebar pin changes', $event, sidebarPin); ", :visible.sync="sidebarVisible")
+    router-view
+  fv-sidebar.sidebar.fv-col-xs-10.fv-col-sm-6.fv-col-md-4.fv-col-lg-2(:pin="sidebarPin", @update:pin="sidebarPin = $event;", v-model="sidebarVisible")
     .fv-padding
       fv-input.fv-block(placeholder="Type to search...", @input="searchSidebar", autofocus)
     fv-content.fv-no-padding
@@ -219,6 +219,18 @@ body .sidebar {
 
   & .fv-tabs {
     height: auto;
+  }
+}
+body {
+  & .bg-1 {
+  }
+  & .bg-2 {
+  }
+  & .bg-3 {
+  }
+  & .bg-4 {
+  }
+  & .bg-5 {
   }
 }
 </style>

@@ -198,7 +198,7 @@ export default {
             description: 'Close dialog'
           }
         ],
-        scopedSlot: [
+        slot: [
           {
             name: 'value',
             params: '(value, option)',

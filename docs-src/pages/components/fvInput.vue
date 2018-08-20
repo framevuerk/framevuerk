@@ -85,18 +85,6 @@ export default {
             type: '[Boolean, Function]',
             default: 'false',
             description: 'Just like normal input required attribute. Also you can pass a function to check validity of value as you want.'
-          },
-          {
-            name: 'disabled',
-            type: 'Boolean',
-            default: 'false',
-            description: 'Just like normal input disabled attribute'
-          },
-          {
-            name: 'placeholder',
-            type: 'String',
-            default: '',
-            description: 'Just like normal input placeholder attribute'
           }
         ]
       }
