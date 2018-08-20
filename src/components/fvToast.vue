@@ -1,6 +1,6 @@
 <template lang="pug">
 transition(name="fv-toast")
-  .fv-toast(v-if="visible",
+  .fv-toast(v-if="value",
     @click="close")
     slot
 </template>
@@ -10,8 +10,9 @@ import utility from '../utility'
 
 export default {
   props: {
-    visible: {
-      type: Boolean
+    value: {
+      type: Boolean,
+      default: false
     },
     timeout: {
       type: Number,
@@ -44,9 +45,10 @@ export default {
       clearTimeout(this.timer)
     },
     close () {
-      this.$emit('update:visible', false)
+      this.$emit('input', false)
     },
     visibleHandler (value) {
+      alert('gi')
       if (value) {
         return this.onOpen()
       }
