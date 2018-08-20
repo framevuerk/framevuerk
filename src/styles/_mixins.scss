@@ -56,8 +56,18 @@
   color: yiq($color, $percetange);
 }
 
-@mixin disabled {
-  opacity: 0.35;
+@mixin disabled($inside: false) {
+  $opacity: 0.35;
+  @if $inside {
+    & > * {
+      opacity: $opacity;
+    }
+  }
+
+  @else {
+    opacity: $opacity;
+  }
+  
 
   &,
   & * {
