@@ -136,7 +136,9 @@ export default {
   }
 
   &[disabled] {
-    @include disabled;
+    & > .content {
+      @include disabled(true);
+    }
   }
 
   &.highlighted > .content,
