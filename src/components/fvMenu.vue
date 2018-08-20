@@ -2,9 +2,8 @@
 fv-dialog.fv-menu(ref="dialog",
   :style="dialogStyle",
   :class="dialogClass",
-  :title="title",
-  :visible="visible",
-  @update:visible="$emit('update:visible', $event)",
+  :value="value",
+  @input="$emit('input', $event)",
   @close="$emit('close')",
   @open="onOpen")
   fv-content.fv-no-padding
@@ -14,7 +13,7 @@ fv-dialog.fv-menu(ref="dialog",
         :key="itemProp(item, 'value')",
         @click="onItemClick(item)",
         :disabled="itemProp(item, 'disabled')")
-        slot(v-if="$scopedSlots.default || $slots.default", :item="item", :user-argument="userArgument")
+        slot(v-if="$scopedSlots.default || $slots.default", :item="item")
         span(v-else) {{itemProp(item, 'text')}}
 </template>
 
@@ -31,32 +30,28 @@ export default {
     fvList
   },
   props: {
+    value: {
+      type: Boolean,
+      default: false
+    },
+    sourceElement: {
+      default: null
+    },
     items: {
       type: Array,
       default: () => []
-    },
-    disabledKey: {
-      type: String,
-      default: 'disabled'
     },
     textKey: {
       type: String,
       default: 'text'
     },
-    visible: {
-      type: Boolean
-    },
-    sourceElement: {
-      default: null
-    },
-    title: {
+    disabledKey: {
       type: String,
-      default: ''
+      default: 'disabled'
     }
   },
   data () {
     return {
-      userArgument: null,
       dialogStyle: {},
       dialogClass: [],
       main: null
@@ -103,8 +98,8 @@ export default {
       }
     },
     onItemClick (item) {
-      this.$emit('item-click', item)
-      this.$emit('update:visible', false)
+      this.$emit('click', item)
+      this.$emit('input', false)
     }
   }
 }
