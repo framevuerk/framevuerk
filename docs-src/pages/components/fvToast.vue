@@ -17,7 +17,7 @@ fv-content
             fv-input.fv-form-control(placeholder="Timeout", type="number", v-model="inputs.d2")
           .fv-col-12
             fv-button.fv-block.fv-ok(@click="inputs.d1 = !inputs.d1", icon="fa fa-eye") Show
-          fv-toast(:visible.sync="inputs.d1", :timeout="d2Number") {{inputs.d3}}
+          fv-toast(v-model="inputs.d1", :timeout="d2Number") {{inputs.d3}}
     doc-api(:rows="api")
 </template>
 

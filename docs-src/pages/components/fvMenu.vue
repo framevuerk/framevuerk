@@ -1,37 +1,21 @@
 <template lang="pug">
-fv-content
-  div(:class="$root.mainClass")
+  div
     doc-description
       | To create full featured menu in your application, use this!
     doc-code
       = "<fv-menu></fv-menu>"
     doc-example
-      fv-menu(:visible.sync="menuHandlers.d1", :source-element="menuHandlers.e1", :items="['Item 1', 'Item 2','Item 3']", text-key="", disabled-key="", @item-click="doIt")
-      fv-menu(:visible.sync="menuHandlers.d2", :sheet="true", :items="[{text: 'Copy', disabled: false}, {text: 'Cut', disabled: false}, {text: 'Paste', disabled: true}]", @item-click="doIt")
-      fv-menu(:visible.sync="menuHandlers.d3", :sheet="null", :items="[{text: 'Google', icon: 'fa fa-google'}, {text: 'Yahoo', icon: 'fa fa-yahoo'}, {text: 'Microsoft', icon: 'fa fa-windows'}]", title="Select your favorite company", @item-click="doIt")
+      fv-menu(v-model="inputs.d1",
+        :source-element="inputs.e1",
+        :items="[{text: 'Copy as JSON', icon: require('../../../src/icons/feather/copy.svg')}, {text: 'Send Poke', icon: require('../../../src/icons/feather/thumbs-up.svg')}, {text: 'Call', icon: require('../../../src/icons/feather/phone-call.svg')}, {text: 'Add to Users', icon: require('../../../src/icons/feather/user-plus.svg'), disabled: true}]",
+        title="Select your favorite company",
+        @click="inputs.clicked = $event")
         template(slot-scope="scope")
-          i(:class="scope.item.icon")
-          |  {{scope.item.text}}
-          | : {{scope.userArgument}}
-      fv-content.fv-row
-        h4 Normal
-        fv-button.fv-default(@click="menuHandlers.e1 = $event.target; menuHandlers.d1 = true", icon="fa fa-ellipsis-v")
-        br
-        h4 With disabled item
-        fv-button.fv-default(@click="menuHandlers.d2 = true", icon="fa fa-ellipsis-v")
-        br
-        h4 Custom Template + User Argument
-        .fv-input-group.fv-flex
-          fv-input.fv-grow(placeholder="Enter Argument", v-model="inputs.d1")
-          fv-button.fv-default(@click="menuHandlers.d3 = true", icon="fa fa-ellipsis-v")
-        .fv-col-12
-          br
-        .fv-col-12
-          br
-        .fv-col-12
-          br
-        .fv-col-12
-          br
+          span.fv-vertical-middle.fv-margin-end(v-html="scope.item.icon", :style="{fontSize: '2em'}")
+          span.fv-padding-small
+          span {{scope.item.text}}
+      fv-content
+        fv-button.fv-default(@click="inputs.d1 = true; inputs.e1 = $event.target;") Click to Open Menu
     doc-api(:rows="api")
 </template>
 
@@ -51,80 +35,70 @@ export default {
   data () {
     return {
       inputs: {
-        d1: 'X Arg'
-      },
-      menuHandlers: {
         d1: false,
         e1: null,
-        d2: false,
-        d3: false,
-        d4: false
+        clicked: null
       },
       api: {
         prop: [
           {
-            name: 'title',
-            type: 'String',
-            default: '""',
-            description: 'Title of dialog'
+            name: 'value',
+            type: 'Boolean',
+            default: 'false',
+            description: 'Visibility of menu.'
           },
           {
-            name: 'auto-close',
-            type: 'Boolean',
-            default: 'true',
-            description: 'Close dialog by clicking buttons'
+            name: 'source-element',
+            type: '',
+            default: 'null',
+            description: 'Element that try to open menu. <b>fvMenu</b> use this to calculate menu position. You can pass <b>$event.target</b> inside <b>@click</b> event that open the menu.'
           },
           {
             name: 'items',
             type: 'Array',
             default: '[]',
-            description: 'List of items in menu.'
+            description: 'List of menu items.'
           },
           {
-            name: 'textKey',
+            name: 'text-key',
             type: 'String',
             default: '"text"',
-            description: 'Text key in each object in items.'
+            description: 'If type of menu <b>items</b> is array of object, pass the <b>text</b> key in each object. If it\'s array of anythings, put empty string.'
           },
           {
-            name: 'disabledKey',
+            name: 'disabled-key',
             type: 'String',
             default: '"disabled"',
-            description: 'Disabled key in each object in items.'
+            description: 'If type of menu <b>items</b> is array of object, pass the <b>disabled</b> key in each object. If it\'s array of anythings or non of <b>items</b> is disabled, put empty string.'
           }
         ],
         event: [
           {
+            name: 'input',
+            params: '(value)',
+            description: 'Fired when menu try to change <b>value</b> prop. If you want to manually close the menu, do not handle this, so menu component cann\'t close self by clicking overlay or items.'
+          },
+          {
+            name: 'click',
+            params: '(item)',
+            description: 'Fired when user click on menu <b>items</b>.'
+          },
+          {
             name: 'open',
             params: '',
-            description: 'Fired when dialog opened'
+            description: 'Fired when menu opened.'
           },
           {
             name: 'close',
             params: '',
-            description: 'Fired when dialog closed'
-          },
-          {
-            name: 'item-click',
-            params: '(item, user-argument)',
-            description: 'Fired when user click on item.'
+            description: 'Fired when menu closed.'
           }
         ],
-        method: [
+        scopedSlot: [
           {
-            name: 'open',
-            params: '(event, user-argument)',
-            description: 'Open menu.<br>For calculating menu position you should pass event variable accessed on click event and the optional user-argument can be accessed on click-item event and in custom template.'
-          },
-          {
-            name: 'close',
-            params: '',
-            description: 'Close dialog'
-          },
-          {
-            name: 'toggle',
-            params: '',
-            description: 'Toggle dialog'
+            name: 'default',
+            params: '(item)',
+            description: 'Template of each item appear in menu.'
           }
         ]
       }

@@ -6,22 +6,17 @@ div
     = "<fv-dialog>\n"
     = "\t<!-- contents -->\n"
     = "</fv-dialog>\n"
-  doc-features(:features="features")
   doc-example
-    .fv-row
-      .fv-col
-        label.fv-control-label Overlay
-        .fv-form-control
+    .fv-padding
+      label.fv-control-label
+      .fv-form-control
+        fv-button(@click="inputs.dialog = true") Click to Open Dialog
+        span.fv-padding-small
+        label
+          | Overlay:
+          span.fv-padding-small
           fv-switch(v-model="inputs.overlay")
-      .fv-col
-        label.fv-control-label Handle @input
-        .fv-form-control
-          fv-switch(v-model="inputs.handleInput")
-      .fv-col-12
-        label.fv-control-label
-        .fv-form-control
-          fv-button(@click="inputs.dialog = true") Click to Open
-    fv-dialog.fv-border(:value="inputs.dialog", :overlay="inputs.overlay", @input="inputs.dialog = inputs.handleInput ? $event : inputs.dialog")
+    fv-dialog.fv-border(v-model="inputs.dialog", :overlay="inputs.overlay")
       fv-header.fv-default
         .title My name is Dialog
       fv-content
@@ -30,13 +25,13 @@ div
         fv-button(@click="inputs.anotherDialog = true") Open Another Dialog
         span.fv-padding-small
         fv-button.fv-primary(@click="inputs.dialog = false", autofocus) Close
-    fv-dialog.fv-border(v-model="inputs.anotherDialog", overlay)
+    fv-dialog.fv-border(v-model="inputs.anotherDialog", :overlay="inputs.overlay")
       fv-content
         | I Am Another Dialog And Blah Blah.
       .fv-padding-small.fv-text-end
         fv-button.fv-danger(@click="inputs.dialog = false", autofocus) Close Behind Dialog
         span.fv-padding-small
-        fv-button.fv-primary(@click="inputs.anotherDialog = false", icon="fa fa-check") Close
+        fv-button.fv-primary(@click="inputs.anotherDialog = false") Close
   doc-api(:rows="api")
 </template>
 
@@ -45,29 +40,21 @@ import docApi from '../../components/docApi.vue'
 import docDescription from '../../components/docDescription.vue'
 import docExample from '../../components/docExample.vue'
 import docCode from '../../components/docCode.vue'
-import docFeatures from '../../components/docFeatures.vue'
 
 export default {
   components: {
     docApi,
     docDescription,
     docExample,
-    docCode,
-    docFeatures
+    docCode
   },
   data () {
     return {
       inputs: {
         dialog: false,
         anotherDialog: false,
-        overlay: true,
-        handleInput: true
+        overlay: true
       },
-      features: [
-        'Developer Friendly',
-        'Simple Structure',
-        'Responsive'
-      ],
       api: {
         prop: [
           {
@@ -92,7 +79,7 @@ export default {
         event: [
           {
             name: 'input',
-            params: 'value',
+            params: '(value)',
             description: 'Fired when dialog try to change <b>value</b> prop. If you want to show modal dialog, do not handle this, so dialog user cann\'t close dialog by clicking overlay.'
           },
           {
