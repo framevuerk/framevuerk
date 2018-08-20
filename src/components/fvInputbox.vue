@@ -4,11 +4,11 @@
     :disabled="disabled",
     @click="onEnter",
     @keydown.enter="onEnter",
-    @keydown.esc="onOutClose")
+    @keydown.esc="showOut = false")
     .placeholder(v-if="showPlaceholder", v-text="placeholder")
     .value-container
       .item(v-for="singleValue in values")
-        slot(v-if="$scopedSlots.value",
+        slot(v-if="$scopedSlots.value || $slots.value",
           name="value",
           :value="singleValue")
         span(v-else) {{singleValue}}
@@ -35,7 +35,11 @@
       fv-main.out-container(v-if="showOut && !isBreaked", :class="{top: !outOnBottom, bottom: outOnBottom}", :style="{maxHeight: outMaxHeight}")
         fv-content.fv-no-padding
           slot(name="out")
-    fv-dialog.not-center(ref="outDialog", v-if="isBreaked", :visible="showOut", @update:visible="showOut = $event", :style="dialogStyle", @close="onOutClose")
+    fv-dialog.not-center(ref="outDialog",
+      v-if="isBreaked",
+      :value="showOut",
+      @input="showOut = $event",
+      :style="dialogStyle")
       fv-header.fv-default
         fv-input.fv-block(v-if="input",
           autofocus,
@@ -211,9 +215,6 @@ export default {
       this.$emit('close')
       this.showOut = false
       this.$emit('searchQuery:update', '')
-    },
-    onOutClose () {
-      this.showOut = false
     },
     onInputKeydown (event) {
       if (this.showOut) {

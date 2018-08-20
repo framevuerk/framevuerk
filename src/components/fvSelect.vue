@@ -15,7 +15,7 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
   ref="inputBox")
   template(slot="value",
     slot-scope="scope")
-    slot(v-if="$scopedSlots.value", name="value", :value="scope.value", :option="valueProp(scope.value)")
+    slot(v-if="$scopedSlots.value || $slots.value", name="value", :value="scope.value", :option="valueProp(scope.value)")
     span(v-else) {{valueProp(scope.value, 'text')}}
   template(slot="out")
     .fv-padding.fv-text-center(v-if="loading")
@@ -28,7 +28,7 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
         :class="{selected: isSelectedOption(option)}",
         :key="i",
         @click="clickOption(option)")
-          slot(v-if="$scopedSlots.option", name="option", :option="option")
+          slot(v-if="$scopedSlots.option || $slots.option", name="option", :option="option")
           span(v-else, v-text="optionProp(option, 'text')")
       fv-list-item(v-if="allowInsert && searchQuery",
         @click="onInsert(searchQuery)")

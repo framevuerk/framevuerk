@@ -5,7 +5,7 @@ fv-main.fv-slider
       :key="'button' + slot + i",
       :class="{'fv-selected': value === slot}",
       @click.prevent="setValue(slot)")
-      slot(v-if="$scopedSlots.button", :value="slot", name="button")
+      slot(v-if="$scopedSlots.button || $slots.button", :value="slot", name="button")
       span(v-else) {{slot}}
   fv-content.slider-page(@mousedown.native="moveStart($event)",
     @touchstart.native="moveStart($event)",

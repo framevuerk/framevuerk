@@ -12,7 +12,7 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
   :caret-icon="require('../icons/feather/calendar.svg')",
   ref="inputBox")
   template(slot="value", slot-scope="scope")
-    slot(v-if="$scopedSlots.value", name="value", :value="scope.value")
+    slot(v-if="$scopedSlots.value || $slots.value", name="value", :value="scope.value")
     span(v-else, v-text="defaultFormattedValue")
   .fv-datepicker-box(slot="out")
     fv-header.fv-default.header(tabindex="-1")

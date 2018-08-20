@@ -5,7 +5,7 @@
       tr
         th(v-for="field in fields",
           :key="field")
-          slot(v-if="$scopedSlots['title-'+field]", :name="'title-'+field", :field="field", :index="index")
+          slot(v-if="$scopedSlots['title-'+field] || $slots['title-'+field]", :name="'title-'+field", :field="field", :index="index")
           span(v-else) {{field}}
     tbody
       tr(v-for="(row, index) in rows",
@@ -14,9 +14,9 @@
           :key="field")
           .field-name(v-if="isBreaked && title") {{field}}
           .field-value
-            slot(v-if="$scopedSlots['field-'+field]", :name="'field-'+field", :row="row", :field="field", :index="index")
+            slot(v-if="$scopedSlots['field-'+field] || $slots['field-'+field]", :name="'field-'+field", :row="row", :field="field", :index="index")
             span(v-else) {{defaultFieldValueInRow(field, row)}}
-    tfoot(v-if="$slots.footer")
+    tfoot(v-if="$scopedSlots.footer || $slots.default")
       slot(name="footer")
 </template>
 

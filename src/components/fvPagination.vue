@@ -1,13 +1,13 @@
 <template lang="pug">
 .fv-input-group.fv-pagination
-  fv-button.fv-sm(v-if="prev || next", :disabled="value === 1", @click="$emit('input', value - 1)")
+  fv-button.fv-sm(v-if="navigation", :disabled="value === 1 || !prev", @click="$emit('input', value - 1)")
     .icon(v-html="icons.firstPage")
   span.page(v-for="page in pages")
     b.fv-padding-small.fv-text-gray(v-if="page.type === 'dots'") ...
     fv-button.fv-sm(v-else,
       :class="{'fv-primary': page.number === value}",
       @click="$emit('input', page.number)") {{page.text || page.number}}
-  fv-button.fv-sm(v-if="prev || next", :disabled="!next || value === total", @click="$emit('input', value + 1)")
+  fv-button.fv-sm(v-if="navigation", :disabled="value === total || !next", @click="$emit('input', value + 1)")
     .icon(v-html="icons.lastPage")
 </template>
 
@@ -15,13 +15,16 @@
 export default {
   props: {
     value: {
-      default: undefined
+      type: Number
     },
     total: {
       type: Number
     },
     size: {
       type: Number
+    },
+    navigation: {
+      type: Boolean
     },
     next: {
       type: Boolean,
@@ -54,7 +57,7 @@ export default {
           return item
         })
       }
-      if (!this.total) {
+      if (!this.total || this.total < 1) {
         list.push(this.value)
         return end()
       } else if (this.total < this.size) {

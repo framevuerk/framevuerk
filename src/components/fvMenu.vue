@@ -14,7 +14,7 @@ fv-dialog.fv-menu(ref="dialog",
         :key="itemProp(item, 'value')",
         @click="onItemClick(item)",
         :disabled="itemProp(item, 'disabled')")
-        slot(v-if="$scopedSlots.default", :item="item", :user-argument="userArgument")
+        slot(v-if="$scopedSlots.default || $slots.default", :item="item", :user-argument="userArgument")
         span(v-else) {{itemProp(item, 'text')}}
 </template>
 

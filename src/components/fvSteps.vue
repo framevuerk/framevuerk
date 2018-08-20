@@ -5,11 +5,11 @@
     .top
       .line.before
       h2.circle
-        slot(v-if="$scopedSlots.circle", name="circle", :step="step", :highlighted="i <= value", :completed="i < value", :index="i")
+        slot(v-if="$scopedSlots.circle || $slots.circle", name="circle", :step="step", :highlighted="i <= value", :completed="i < value", :index="i")
         span(v-else, v-text="i + 1")
       .line.after
     h3.text
-      slot(v-if="$scopedSlots.text", name="text", :step="step", :highlighted="i <= value", :completed="i < value", :index="i")
+      slot(v-if="$scopedSlots.text || $slots.text", name="text", :step="step", :highlighted="i <= value", :completed="i < value", :index="i")
       span(v-else, v-text="step")
 </template>
 

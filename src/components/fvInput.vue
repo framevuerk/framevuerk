@@ -1,7 +1,6 @@
 <template lang="pug">
 input.fv-input(:invalid="!fvValidate",
   :value="value",
-  :placeholder="placeholder",
   @input="$emit('input', $event.target.value)")
 </template>
 
@@ -14,10 +13,6 @@ export default {
     required: {
       type: [Boolean, Function],
       default: false
-    },
-    placeholder: {
-      type: String,
-      default: ''
     }
   },
   computed: {

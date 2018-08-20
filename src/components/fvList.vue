@@ -1,6 +1,6 @@
 <template lang="pug">
 ul.fv-list(@keydown.self="onKeydown", @focus="onFocus", @blur="onBlur", :tabindex="tabindex")
-  slot(v-if="$slots.default")
+  slot(v-if="$scopedSlots.default || $slots.default")
   fv-list-item.unclickable(v-else-if="notFoundText") {{notFoundText}}
 </template>
 
