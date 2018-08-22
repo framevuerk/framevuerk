@@ -77,14 +77,24 @@ export default {
     const main = utility.fvParent(this, 'fv-main')
     if (utility.viewportSize(main.$el).indexOf('lg') === -1) {
       this.$emit('update:pin', false)
-      this.$emit('input', false)
+      setTimeout(() => {
+        if (this.pin === false) {
+          this.$emit('input', false)
+        }
+      })
     } else {
       this.$emit('update:pin', true)
-      this.$emit('input', true)
+      setTimeout(() => {
+        if (this.pin === true) {
+          this.$emit('input', true)
+        }
+      })
     }
     this.fixSize()
     this.$nextTick(() => {
-      this.isRendered = true
+      setTimeout(() => {
+        this.isRendered = true
+      }, 1000)
     })
   },
   beforeDestroy () {
