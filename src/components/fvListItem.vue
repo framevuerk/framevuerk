@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     hasSubList () {
-      return this.$slots.hasOwnProperty('sub-list')
+      return this.$slots.hasOwnProperty('sub-list') || this.$scopedSlots.hasOwnProperty('sub-list')
     },
     isHighlighted () {
       const bigParent = this.bigParent()
