@@ -1,24 +1,26 @@
 <template lang="pug">
-fv-content
-  div(:class="$root.mainClass")
+  div
     doc-description
       | Framevuerk can have different language, direction, and colors based on the user's taste. To setup your custom version, create a file called <b>.framevuerkrc.js</b> in root of your project and put these on:
-    doc-code(v-pre, title=".framevuerkrc.js:", lang="javascript")
+    doc-code(v-pre, title=".framevuerkrc.js", lang="javascript")
       ="module.export = {\n"
       ="\t// config name\n"
       ="\t'config-name': 'foobar',\n\n"
       ="\t// your locale and direction.\n"
-      ="\tlocale: 'en', // or 'fa'\n"
-      ="\tdirection: 'ltr', // or 'rtl'\n\n"
+      ="\t'locale': 'en', // or 'fa' or 'de'\n"
+      ="\t'direction': 'ltr', // or 'rtl'\n\n"
       ="\t// theme colors:\n"
       ="\t'primary-color': '#41b883',\n"
       ="\t'secondary-color': '#35485d',\n"
       ="\t'danger-color': '#dd4b39',\n"
       ="\t'warning-color': '#ef8f00',\n"
       ="\t'info-color': '#14b0cf',\n"
-      ="\t'bg-color': '#f9f9f9',\n\n"
+      ="\t'bg-color': '#f9f9f9',\n"
+      ="\t'header-bg-color': '#35485d',\n"
+      ="\t'sidebar-bg-color': '#3a3a3a',\n"
+      ="\t'footer-bg-color': '#3a3a3a',\n\n"
       ="\t// base padding size\n"
-      ="\tpadding: '15px',\n\n"
+      ="\t'padding': '15px',\n\n"
       ="\t// base animation speed\n"
       ="\t'transition-speed': '0.35s',\n\n"
       ="\t// base border radius applied to buttons, inputs and etc.\n"
@@ -27,7 +29,7 @@ fv-content
       ="\t'shadow-size': '3px'\n"
       ="}"
     doc-description
-    | And output files goes to <b>dist</b> directory:
+      | And output files goes to <b>dist</b> directory:
     doc-code(v-pre, title="framevuerk/dist", lang="javascript")
       ="framevuerk-foobar.js\n"
       ="framevuerk-foobar.min.js\n"
@@ -35,13 +37,13 @@ fv-content
       ="framevuerk-foobar.min.css\n"
     doc-description
       | You can also use <b>.framevuerkrc.json</b>, <b>.framevuerkrc</b> or <b>framevuerk</b> key inside your package.json to pass this variables to Framevuerk!
-      | <br> Framevuerk apply these config by this cli command:
-    doc-code(v-pre, title=" ", lang="terminal")
+      | <br> Framevuerk apply these config by postinstall script or manually by this cli command:
+    doc-code(v-pre, title="Terminal", lang="terminal")
       ="./node_modules/.bin/framevuerk\n"
       ="# or on npm scripts, just:\n"
       ="framevuerk\n"
     doc-description
-    | You are now config your app to use <b>Framevuerk</b>! Let's go to use our components.
+      | You are now config your app to use <b>Framevuerk</b>! Let's go to use our components.
 </template>
 
 <script>

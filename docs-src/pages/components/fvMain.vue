@@ -1,20 +1,10 @@
 <template lang="pug">
-fv-content
-  div(:class="$root.mainClass")
+  div
     doc-description
-      | This is the main part of framevuerk.
-      =" "
-      router-link.fv-link(to="/components=fvHeader") fvHeader
-      =", "
-      router-link.fv-link(to="/components=fvContent") fvContent
-      =", "
-      router-link.fv-link(to="/components=fvSidebar") fvSidebar
-      =", "
-      router-link.fv-link(to="/components=fvFooter") fvFooter
-      |  and also all dialog-style components make use of this container for best styles matching. It's very simple as follows:
+      | This is the main part of Framevuerk. For use the most of our components, you should put them into this container for best styles matching. It's very simple as follows:
     doc-code(v-pre)
       = "<fv-main>\n"
-      = "\t<!-- contents -->\n"
+      = "\t<!-- Your App -->\n"
       = "</fv-main>\n"
     doc-example
     doc-api(:rows="api")

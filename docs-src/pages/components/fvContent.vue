@@ -1,15 +1,13 @@
 <template lang="pug">
-fv-content
-  div(:class="$root.mainClass")
+  div
     doc-description
-      | To creating content section inside
-      =" "
-      router-link.fv-link(to="/components=fvMain") fvMain
-      | , use this component.
-    doc-code(v-pre)
-      = "<fv-content>\n"
-      = "\t<!-- contents -->\n"
-      = "</fv-content>\n"
+      | To creating content part of your app, use this component.
+    doc-code
+      = "<fv-main>\n"
+      = "\t<fv-content>\n"
+      = "\t\t<!-- Content -->\n"
+      = "\t</fv-content>\n"
+      = "</fv-main>\n"
     doc-example
     doc-api(:rows="api")
 

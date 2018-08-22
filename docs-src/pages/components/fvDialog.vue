@@ -3,9 +3,12 @@ div
   doc-description
     | To create full featured dialog in your application, use this!
   doc-code
-    = "<fv-dialog>\n"
-    = "\t<!-- contents -->\n"
-    = "</fv-dialog>\n"
+    = "<fv-main>\n"
+    = "\t<fv-dialog v-model=\"yourBooleanVar\">\n"
+    = "\t\t<!-- Content -->\n"
+    = "\t</fv-dialog>\n"
+    = "</fv-main>\n"
+  doc-features(:features="features")
   doc-example
     .fv-padding
       label.fv-control-label
@@ -40,13 +43,15 @@ import docApi from '../../components/docApi.vue'
 import docDescription from '../../components/docDescription.vue'
 import docExample from '../../components/docExample.vue'
 import docCode from '../../components/docCode.vue'
+import docFeatures from '../../components/docFeatures.vue'
 
 export default {
   components: {
     docApi,
     docDescription,
     docExample,
-    docCode
+    docCode,
+    docFeatures
   },
   data () {
     return {
@@ -55,6 +60,12 @@ export default {
         anotherDialog: false,
         overlay: true
       },
+      features: [
+        'Developer Friendly',
+        'Handle Mobile Back Button',
+        'Responsive',
+        'Editable'
+      ],
       api: {
         prop: [
           {
@@ -91,13 +102,6 @@ export default {
             name: 'close',
             params: '',
             description: 'Fired when dialog closed.'
-          }
-        ],
-        slot: [
-          {
-            name: 'default',
-            params: '',
-            description: 'Content of dialog'
           }
         ]
       }

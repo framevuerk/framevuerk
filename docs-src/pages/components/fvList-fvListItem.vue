@@ -1,12 +1,18 @@
 <template lang="pug">
-fv-content
-  div(:class="$root.mainClass")
+  div
     doc-description
-      | To creating fulll-featured list inside your application, use this component.
+      | To creating full-featured list inside your application, use this component.
     doc-code
-      = "<fv-list>\n"
-      = "\t<fv-list-item>Item</fv-list-item>\n"
+      = "<fv-list parent>\n"
+      = "\t<fv-list-item>Item One</fv-list-item>\n"
+      = "\t<fv-list-item expanded>\n"
+      = "\t\tItem Two\n"
+      = "\t\t<fv-list slot=\"sub-list\">\n"
+      = "\t\t\t<fv-list-item>Sub Item</fv-list-item>\n"
+      = "\t\t</fv-list>\n"
+      = "\t</fv-list-item>\n"
       = "</fv-list>"
+    doc-features(:features="features")
     doc-example
       fv-content.fv-row
         .fv-col-xs-12
@@ -15,26 +21,26 @@ fv-content
           fv-list(parent)
             fv-list-item One
             fv-list-item Two
-            fv-list-item(disabled) Three
+            fv-list-item(disabled) Three (disabled)
             fv-list-item Four
-            fv-list-item(selected) Five
+            fv-list-item(selected) Five (selected)
         .fv-col-xs-12
-          h4 With Sub-List
+          h4 With Sub-List and .unclickable class.
         .fv-col-xs-12
           fv-list
-            fv-list-item.unclickable Salam
-            fv-list-item.unclickable Chetori?
+            fv-list-item.unclickable One
+            fv-list-item.unclickable Two
             fv-list-item.unclickable(expanded)
-              | Khubi?
+              | Tree
               fv-list(slot="sub-list")
-                fv-list-item.unclickable Che Khabar?
+                fv-list-item.unclickable Child of Tree
                 fv-list-item.unclickable
-                  | Amme ina khuban?
+                  | Another Child of Tree
                   fv-list(slot="sub-list")
-                    fv-list-item.unclickable Pesar Amuha?
-                    fv-list-item.unclickable Dige che khabar?
-    doc-api(:rows="listApi", title="List API")
-    doc-api(:rows="listItemApi", title="ListItem API")
+                    fv-list-item.unclickable Child of Another Child of Tree
+                    fv-list-item.unclickable Another Child of Another Child of Tree
+    doc-api(:rows="listApi", title="fvList API")
+    doc-api(:rows="listItemApi", title="fvListItem API")
 </template>
 
 <script>
@@ -42,28 +48,35 @@ import docApi from '../../components/docApi.vue'
 import docDescription from '../../components/docDescription.vue'
 import docExample from '../../components/docExample.vue'
 import docCode from '../../components/docCode.vue'
+import docFeatures from '../../components/docFeatures.vue'
 
 export default {
   components: {
     docApi,
     docDescription,
     docExample,
-    docCode
+    docCode,
+    docFeatures
   },
   data () {
     return {
+      features: [
+        'Editable',
+        'Focusable',
+        'Keyboard Navigation Support'
+      ],
       listApi: {
         prop: [
           {
             name: 'parent',
             type: 'Boolean',
             default: 'false',
-            description: 'Set it true to calculate highlighted.'
+            description: 'Set it true to calculate highlighted <b>fv-list-item</b> childs and keyboard navigations.'
           },
           {
             name: 'not-found-text',
             type: '',
-            default: 'locale.notFoundText()',
+            default: 'Based on locale field in user config.',
             description: 'If list items is empty, show this text.'
           }
         ]
@@ -106,21 +119,11 @@ export default {
             description: 'Fired when api \'sub-list\' slot expanded.'
           }
         ],
-        method: [
+        slot: [
           {
-            name: 'collapse',
+            name: 'sub-list',
             params: '',
-            description: 'Collapse \'sub-list\' slot.'
-          },
-          {
-            name: 'expand',
-            params: '',
-            description: 'Expand \'sub-list\' slot.'
-          },
-          {
-            name: 'toggle',
-            params: '',
-            description: 'Collapse/Expand \'sub-list\' slot'
+            description: 'If current list-item has sub-list, put <b>fv-list</b> with this slot name as child in template.'
           }
         ]
       }

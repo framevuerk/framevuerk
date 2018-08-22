@@ -1,37 +1,17 @@
 <template lang="pug">
-fv-content
-  div(:class="$root.mainClass")
+  div
     doc-description
-      | To creating footer inside
-      =" "
-      router-link.fv-link(to="/components=fvMain") fvMain
-      | , use this component.
+      | To creating content part of your app, use this component.
     doc-code
-      = "<fv-footer>\n"
-      = "\t<!-- contents -->\n"
-      = "</fv-footer>\n"
+      = "<fv-main>\n"
+      = "\t<fv-footer>\n"
+      = "\t\t<!-- Content -->\n"
+      = "\t</fv-footer>\n"
+      = "</fv-main>\n"
     doc-example
       .fv-padding
-        h4 With Buttons:
-        fv-footer
-          fv-button.fv-default.fv-block.fv-sm Cancel
-          fv-button.fv-default.fv-block.fv-sm No
-          fv-button.fv-primary.fv-block.fv-sm Yes
-        br
-        h4 With Texts:
-        fv-footer
-          .fv-grow
-          .fv-title
-            p Footer content
-          .fv-grow
-        br
-        h4 Modified Height:
-        fv-footer(height="35px")
-          .fv-grow
-          a.fv-link
-            i.fa.fa.fa-github
-            |  Link
-
+        fv-footer.fv-text-center
+          p Footer content
     doc-api(:rows="api")
 </template>
 
