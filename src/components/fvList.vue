@@ -1,26 +1,14 @@
 <template lang="pug">
 ul.fv-list(@keydown.self="onKeydown", @focus="onFocus", @blur="onBlur", :tabindex="tabindex")
   slot(v-if="$scopedSlots.default || $slots.default")
-  fv-list-item.unclickable(v-else-if="notFoundText") {{notFoundText}}
 </template>
 
 <script>
-import locale from 'locale'
-import fvListItem from './fvListItem.vue'
-import fvButton from './fvButton.vue'
-
 export default {
-  components: {
-    fvListItem,
-    fvButton
-  },
   props: {
     parent: {
       type: Boolean,
       default: false
-    },
-    notFoundText: {
-      default: locale.notFound()
     }
   },
   data () {
