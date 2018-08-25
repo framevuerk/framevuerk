@@ -32,9 +32,9 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
           span(v-else, v-text="optionProp(option, 'text')")
       fv-list-item(v-if="allowInsert && searchQuery",
         @click="onInsert(searchQuery)")
-        i.fa.fa-plus
-        =" "
         span(v-text="locale.add(searchQuery)")
+      fv-list-item.unclickable(v-else-if="filteredOptions.length === 0")
+        span(v-text="locale.notFound()")
 </template>
 
 <script>
