@@ -39,6 +39,9 @@ fv-content
         .fv-col-md-6
           p Loading...:
           fv-select(placeholder="Select me!", :options=['Pato', 'Robinho', 'Ronaldinho', 'Ronaldo', 'Roberto Carlos'], loading)
+        .fv-col-md-6
+          p Without option:
+          fv-select(placeholder="Select me!", :options=[])
         .fv-col-12
           br
           br

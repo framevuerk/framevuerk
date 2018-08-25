@@ -63,6 +63,7 @@ export default {
       features: [
         'Editable',
         'Focusable',
+        'Support Sub List With Expand and Collapse',
         'Keyboard Navigation Support'
       ],
       listApi: {
@@ -72,12 +73,6 @@ export default {
             type: 'Boolean',
             default: 'false',
             description: 'Set it true to calculate highlighted <b>fv-list-item</b> childs and keyboard navigations.'
-          },
-          {
-            name: 'not-found-text',
-            type: '',
-            default: 'Based on locale field in user config.',
-            description: 'If list items is empty, show this text.'
           }
         ]
       },
