@@ -35,6 +35,7 @@ export default {
       default: false
     },
     sourceElement: {
+      type: HTMLElement,
       default: null
     },
     items: {
