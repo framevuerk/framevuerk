@@ -67,15 +67,16 @@ html > body {
   will-change: opacity;
   animation-iteration-count: 1;
 }
+
 @keyframes fv-overlay {
-  from   {
+  from {
     opacity: 0;
   }
-  to  {
+
+  to {
     opacity: 1;
   }
 }
-
 
 .fv-link {
   &,
