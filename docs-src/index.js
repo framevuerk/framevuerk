@@ -5,7 +5,7 @@ import VueRouter from 'vue-router'
 import Framevuerk from '../dist/framevuerk.js'
 import '../dist/framevuerk.css'
 import VueHighlightJS from 'vue-highlightjs'
-import 'highlight.js/styles/github-gist.css'
+import 'highlight.js/styles/dark.css'
 // import 'font-awesome/css/font-awesome.css'
 
 import './favicon.ico'
