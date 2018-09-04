@@ -61,7 +61,7 @@ export default {
           },
           {
             name: 'source-element',
-            type: '',
+            type: 'HTMLElement',
             default: 'null',
             description: 'Element that try to open menu. <b>fvMenu</b> use this to calculate menu position. You can pass <b>$event.target</b> inside <b>@click</b> event of element that try to open the menu.'
           },

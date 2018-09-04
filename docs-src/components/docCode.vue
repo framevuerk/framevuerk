@@ -37,6 +37,7 @@ export default {
 body .doc-code {
   & > pre > code {
     padding: 15px;
+    background: #3a3a3a;
   }
 
   &,
