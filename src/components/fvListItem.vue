@@ -108,7 +108,7 @@ export default {
     position: relative;
     flex-direction: row;
     justify-content: space-between;
-    min-height: 3.5em;
+    min-height: 2.5em;
 
     & > .text {
       flex-grow: 1;
