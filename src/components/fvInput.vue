@@ -1,6 +1,7 @@
 <template lang="pug">
 input.fv-input(:invalid="!fvValidate",
   :value="value",
+  @focus="onFocus",
   @input="$emit('input', $event.target.value)")
 </template>
 
@@ -28,6 +29,9 @@ export default {
   methods: {
     focus () {
       this.$el.focus()
+    },
+    onFocus (event) {
+      this.$el.select()
     }
   }
 }
