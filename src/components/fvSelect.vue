@@ -204,6 +204,7 @@ export default {
           this.$refs.inputBox.focusInput()
         }
       })
+      this.searchQuery = ''
     },
     selectOption (option) {
       let newValue
