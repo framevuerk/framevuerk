@@ -7,8 +7,9 @@
     p.fv-control-label(v-if="description", v-html="description")
     .doc-code.fv-border.fv-radius.fv-shadow(v-if="$slots.default")
       pre.markup(v-highlightjs)
-        span.copy-markup-btn(@click="copyMarkup") Copy
-        code(:class="lang")
+        span.copy-markup-btn(@click="copyMarkup", v-if="readyForCopy") Copy
+        span.copy-markup-btn(v-else) Copied!
+        code(:class="lang", ref="markup")
           slot
     div(v-else)
       p.fv-text-center Nothing to show!
@@ -20,7 +21,8 @@ export default {
   data () {
     return {
       highlightjs: '',
-      v: ''
+      v: '',
+      readyForCopy: true
     }
   },
   props: {
@@ -33,8 +35,7 @@ export default {
   },
   methods: {
     copyMarkup (event) {
-      let button = event.target
-      let markup = button.nextSibling
+      let markup = this.$refs.markup
       markup.setAttribute('contenteditable', 'true')
       markup.focus()
       document.execCommand('selectAll', false, null)
@@ -42,9 +43,9 @@ export default {
       markup.removeAttribute('contenteditable')
       window.getSelection().removeAllRanges()
 
-      button.innerHTML = '&#10004;Copied'
-      setTimeout(function () {
-        button.innerHTML = 'Copy'
+      this.readyForCopy = false
+      setTimeout(() => {
+        this.readyForCopy = true
       }, 1500)
     }
   }
