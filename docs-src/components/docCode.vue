@@ -3,8 +3,8 @@ span
   h3(v-if="title", v-html="title")
   h3(v-else) Code:
   .doc-code(v-if="$slots.default")
-    pre(v-highlightjs, class="code")
-      span(@click="copyCode", class="copy-code-btn") Copy
+    pre(v-highlightjs, class="markup")
+      span(@click="copyMarkup", class="copy-markup-btn") Copy
       code(:class="lang")
         slot
   div(v-else)
@@ -26,6 +26,23 @@ export default {
       type: String,
       default: 'html'
     }
+  },
+  methods: {
+    copyMarkup (event) {
+      let button = event.target
+      let markup = button.nextSibling
+      markup.setAttribute('contenteditable', 'true')
+      markup.focus()
+      document.execCommand('selectAll', false, null)
+      document.execCommand('copy')
+      markup.removeAttribute('contenteditable')
+      window.getSelection().removeAllRanges()
+
+      button.textContent = 'Copied'
+      setTimeout(function () {
+        button.textContent = 'Copy'
+      }, 1500)
+    }
   }
 }
 </script>
@@ -41,10 +58,10 @@ body .doc-code {
     user-select: text;
   }
 
-  .code {
+  .markup {
     position: relative;
   }
-  .copy-code-btn {
+  .copy-markup-btn {
     position: absolute;
     right: 0;
     top: 0;
