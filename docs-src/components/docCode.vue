@@ -4,7 +4,8 @@ span
   h3(v-else) Code:
   .doc-code(v-if="$slots.default")
     pre(v-highlightjs)
-      code(:class="lang")
+      code(:class="lang", class="code")
+        span(@click="copyCode", class="copy-code-btn") Copy
         slot
   div(v-else)
     p.fv-text-center Nothing to show!
@@ -38,6 +39,22 @@ body .doc-code {
   &,
   & * {
     user-select: text;
+  }
+
+  .code {
+    position: relative;
+  }
+  .copy-code-btn {
+    position: absolute;
+    right: 0px;
+    top: 0;
+    padding: 6px 0;
+    background: #606060;
+    color: #fff;
+    border-bottom-left-radius: 4px;
+    width: 84px;
+    text-align: center;
+    cursor: pointer;
   }
 }
 </style>
