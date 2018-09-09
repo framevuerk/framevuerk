@@ -38,9 +38,9 @@ export default {
       markup.removeAttribute('contenteditable')
       window.getSelection().removeAllRanges()
 
-      button.textContent = 'Copied'
+      button.innerHTML = '&#10004;Copied'
       setTimeout(function () {
-        button.textContent = 'Copy'
+        button.innerHTML = 'Copy'
       }, 1500)
     }
   }
