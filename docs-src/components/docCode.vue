@@ -3,8 +3,8 @@ span
   h3(v-if="title", v-html="title")
   h3(v-else) Code:
   .doc-code(v-if="$slots.default")
-    pre(v-highlightjs, class="markup")
-      span(@click="copyMarkup", class="copy-markup-btn") Copy
+    pre.markup(v-highlightjs)
+      span.copy-markup-btn(@click="copyMarkup") Copy
       code(:class="lang")
         slot
   div(v-else)
