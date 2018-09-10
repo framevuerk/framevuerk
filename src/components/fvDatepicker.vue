@@ -81,10 +81,6 @@ export default {
       type: Boolean,
       default: true
     },
-    resetTime: {
-      type: Boolean,
-      default: true
-    },
     dateLibrary: {
       type: [Object, Function]
     }
@@ -128,7 +124,8 @@ export default {
     },
     defaultFormattedValue () {
       if (this.value) {
-        return `${this.value.getDate()}-${this.value.getMonth() + 1}-${this.value.getFullYear()}`
+        const value = new this.Date(this.value)
+        return `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`
       }
       return ''
     },
@@ -243,14 +240,6 @@ export default {
         return
       }
       const ret = new this.Date(this.editingValue)
-      if (this.resetTime) {
-        const timezoneOffset = ret.getTimezoneOffset() * 60000
-        ret.setHours(0)
-        ret.setMinutes(0)
-        ret.setSeconds(0)
-        ret.setMilliseconds(0)
-        ret.setTime(ret.getTime() - timezoneOffset)
-      }
       this.$emit('input', ret)
       this.$nextTick(() => {
         this.$refs.inputBox.close()
