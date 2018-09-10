@@ -21,8 +21,8 @@ const configs = (() => {
     'footer-bg-color': '#3a3a3a',
     'padding': '15px',
     'transition-speed': '0.35s',
-    'border-radius': '4px',
-    'shadow-size': '3px'
+    'border-radius': '2px',
+    'shadow-size': '1px'
   }
   if (searchedFor) {
     let configs = Array.isArray(searchedFor.config) ? searchedFor.config : [searchedFor.config]
