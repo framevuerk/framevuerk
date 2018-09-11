@@ -43,7 +43,6 @@ import docApi from '../../components/docApi.vue'
 import docDescription from '../../components/docDescription.vue'
 import docExample from '../../components/docExample.vue'
 import docCode from '../../components/docCode.vue'
-import axios from 'axios'
 import '../../assets/images/face-01.jpg'
 import '../../assets/images/face-02.jpg'
 import '../../assets/images/face-03.jpg'
@@ -60,7 +59,6 @@ export default {
   },
   data () {
     return {
-      axios,
       fields: [
         'Name',
         'Username',
