@@ -119,7 +119,7 @@ export default {
     },
     isBreaked () {
       if (this.breaked === null) {
-        const main = utility.fvParent(this, 'fv-main')
+        const main = utility.fvParent(this, 'fvMain')
         return utility.viewportSize(main.$el).indexOf('md') === -1
       }
       return this.breaked
@@ -187,9 +187,10 @@ export default {
       this.open()
     },
     calcOutPosition () {
-      const parentHeight = utility.fvParent(this, 'fv-main').$el.offsetHeight
+      const parent = utility.fvParent(this, 'fvMain')
+      const parentHeight = parent.$el.offsetHeight
       const elHeight = this.$el.offsetHeight
-      const top = utility.offsetTo(this.$el, utility.fvParent(this, 'fv-main').$el).top
+      const top = utility.offsetTo(this.$el, parent.$el).top
       this.outOnBottom = !(top > (parentHeight / 2))
       const bottom = parentHeight - top - elHeight
       const padding = parseInt(process.env.padding)

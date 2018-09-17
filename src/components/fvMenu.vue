@@ -61,13 +61,13 @@ export default {
   methods: {
     getMain () {
       if (!this.main) {
-        this.main = utility.fvParent(this, 'fv-main')
+        this.main = utility.fvParent(this, 'fvMain')
       }
       return this.main
     },
     onOpen () {
       this.$emit('open')
-      const main = utility.fvParent(this, 'fv-main')
+      const main = this.getMain()
       const isSmall = utility.viewportSize(main.$el).indexOf('md') === -1
       if (isSmall) {
         this.dialogStyle = {
@@ -79,7 +79,7 @@ export default {
         }
         this.dialogClass = ['not-center']
       } else if (this.sourceElement) {
-        const offset = utility.offsetTo(this.sourceElement, utility.fvParent(this, 'fv-main').$el)
+        const offset = utility.offsetTo(this.sourceElement, this.getMain().$el)
         this.dialogStyle = {
           left: `${offset.left}px`,
           top: `${offset.top}px`

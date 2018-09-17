@@ -52,7 +52,7 @@ export default {
   methods: {
     getMain () {
       if (!this.main) {
-        this.main = utility.fvParent(this, 'fv-main')
+        this.main = utility.fvParent(this, 'fvMain')
       }
       return this.main
     },

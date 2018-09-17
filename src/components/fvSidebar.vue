@@ -53,7 +53,7 @@ export default {
   methods: {
     getMain () {
       if (!this.main) {
-        this.main = utility.fvParent(this, 'fv-main')
+        this.main = utility.fvParent(this, 'fvMain')
       }
       return this.main
     },
@@ -74,8 +74,7 @@ export default {
   },
   mounted () {
     window.addEventListener('resize', this.fixSize)
-    const main = utility.fvParent(this, 'fv-main')
-    if (utility.viewportSize(main.$el).indexOf('lg') === -1) {
+    if (utility.viewportSize(this.getMain().$el).indexOf('lg') === -1) {
       this.$emit('update:pin', false)
       setTimeout(() => {
         if (this.pin === false) {
