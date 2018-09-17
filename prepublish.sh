@@ -1,10 +1,9 @@
 #!/bin/bash
 
-npm install
+npm i
 npm rebuild node-sass
 npm run clean
-npm run build:lib
-npm run build:docs
+npm run build
 
 git clone https://github.com/framevuerk/public.git
 
