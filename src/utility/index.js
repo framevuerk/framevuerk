@@ -30,10 +30,14 @@ module.exports = {
     }
     return ret
   },
-  fvParent (vueComponent, vueElName = 'fv-main') {
+  fvParent (vueComponent, vueElName = 'fvMain') {
+    console.log('fvParent started')
+    console.log(vueComponent.$el)
     let ret = vueComponent.$parent
     while (ret) {
-      if ((typeof ret.parent !== 'undefined' ? ret.parent : true) && ret.$vnode && ret.$vnode.componentOptions.tag === vueElName) {
+      console.log(ret.$el)
+      if ((typeof ret.parent !== 'undefined' ? ret.parent : true) && ret.$vnode && ret.$vnode.tag.indexOf(vueElName) >= -1) {
+        console.log('fvParent end')
         return ret
       }
       ret = ret.$parent
