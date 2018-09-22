@@ -1,4 +1,3 @@
-
 module.exports = {
   contains (text = '', search = '') {
     return text.toString().toUpperCase().indexOf(search.toString().toUpperCase()) !== -1
@@ -31,13 +30,9 @@ module.exports = {
     return ret
   },
   fvParent (vueComponent, vueElName = 'fvMain') {
-    console.log('fvParent started')
-    console.log(vueComponent.$el)
     let ret = vueComponent.$parent
     while (ret) {
-      console.log(ret.$el)
-      if ((typeof ret.parent !== 'undefined' ? ret.parent : true) && ret.$vnode && ret.$vnode.tag.indexOf(vueElName) >= -1) {
-        console.log('fvParent end')
+      if (ret.$el !== vueComponent.$el && (typeof ret.parent !== 'undefined' ? !!ret.parent : true) && ret.$vnode && ret.$vnode.tag.indexOf(vueElName) > -1) {
         return ret
       }
       ret = ret.$parent
@@ -71,6 +66,18 @@ module.exports = {
       eli = eli.parentElement
     }
     return ret
+  },
+  requestParent (vueComponent, request, data) {
+    let parent = vueComponent.$parent
+    while (parent) {
+      if (parent.$el !== vueComponent.$el && parent.parent === true && parent.$vnode.tag.indexOf('fvMain') > -1) {
+        break
+      }
+      parent = parent.$parent
+    }
+    if (parent) {
+      return parent.onRequest(vueComponent, request, data)
+    }
   },
   _dependencies: {}
 }
