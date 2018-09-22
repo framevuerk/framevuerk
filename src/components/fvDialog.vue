@@ -40,22 +40,15 @@ export default {
     return {
       focusBackElement: null,
       focusableItems: [],
-      overlayElement: null,
-      main: undefined
+      overlayElement: null
     }
   },
   computed: {
     hash () {
-      return `fv-dialog-${this._uid}`
+      return `fv-${this._uid}`
     }
   },
   methods: {
-    getMain () {
-      if (!this.main) {
-        this.main = utility.fvParent(this, 'fvMain')
-      }
-      return this.main
-    },
     addHash (addEvent = true) {
       if (window.location.hash.indexOf(this.hash) === -1) {
         const seperator = window.location.hash.indexOf('?') !== -1 ? '&' : '?'
@@ -68,7 +61,12 @@ export default {
       }
     },
     removeHash () {
-      window.location.hash = window.location.hash.replace(this.hash, '')
+      let hash = window.location.hash
+      hash = hash.replace(this.hash, '')
+      if (hash.lastIndexOf('&') === hash.length - 1 || hash.lastIndexOf('?') === hash.length - 1) {
+        hash = hash.slice(0, hash.length - 1)
+      }
+      window.location.hash = hash
       window.removeEventListener('hashchange', this.onHashChange)
     },
     onHashChange () {
@@ -77,11 +75,10 @@ export default {
       }
     },
     addOverlay () {
-      this.overlayElement = document.createElement('div')
-      this.overlayElement.classList.add('fv-overlay')
-      this.overlayElement.addEventListener('click', this.close)
-      const main = this.getMain()
-      main.$el.insertBefore(this.overlayElement, this.$el)
+      this.overlayElement = utility.requestParent(this, 'appendOverlay', {
+        before: this.$el,
+        onClick: this.close
+      })
     },
     removeOverlay () {
       if (this.overlayElement) {
@@ -95,8 +92,9 @@ export default {
     onOpen () {
       this.$emit('open')
       this.$nextTick(() => {
-        const main = this.getMain()
-        main.$el.appendChild(this.$el)
+        utility.requestParent(this, 'appendChild', {
+          el: this.$el
+        })
         if (this.overlay) {
           this.addOverlay()
           this.focus()

@@ -21,21 +21,15 @@ export default {
   },
   data () {
     return {
-      timer: null,
-      main: null
+      timer: null
     }
   },
   methods: {
-    getMain () {
-      if (!this.main) {
-        this.main = utility.fvParent(this, 'fvMain')
-      }
-      return this.main
-    },
     onOpen () {
       this.$emit('open')
-      const main = this.getMain()
-      main.$el.appendChild(this.$el)
+      utility.requestParent(this, 'appendChild', {
+        el: this.$el
+      })
       if (this.timeout > 0) {
         this.timer = setTimeout(this.close, this.timeout)
       }

@@ -4,11 +4,13 @@
 </template>
 
 <script>
+import utility from '../utility/index.js'
+
 export default {
   props: {
     parent: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data () {
@@ -23,6 +25,25 @@ export default {
   methods: {
     setOffset (position = 'left', size = '0px') {
       this.offset[position] = size
+    },
+    onRequest (emitterComponent, eventName, eventData) {
+      if (eventName === 'setOffset') {
+        this.offset[eventData.position] = eventData.size
+        return true
+      } else if (eventName === 'appendChild') {
+        this.$el.appendChild(eventData.el)
+        return true
+      } else if (eventName === 'appendOverlay') {
+        const overlayElement = document.createElement('div')
+        overlayElement.classList.add('fv-overlay')
+        overlayElement.addEventListener('click', eventData.onClick)
+        this.$el.insertBefore(overlayElement, eventData.before)
+        return overlayElement
+      } else if (eventName === 'getSize') {
+        return utility.viewportSize(this.$el)
+      } else if (eventName === 'getElement') {
+        return this.$el
+      }
     }
   }
 }

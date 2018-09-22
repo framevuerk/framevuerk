@@ -54,21 +54,13 @@ export default {
   data () {
     return {
       dialogStyle: {},
-      dialogClass: [],
-      main: null
+      dialogClass: []
     }
   },
   methods: {
-    getMain () {
-      if (!this.main) {
-        this.main = utility.fvParent(this, 'fvMain')
-      }
-      return this.main
-    },
     onOpen () {
       this.$emit('open')
-      const main = this.getMain()
-      const isSmall = utility.viewportSize(main.$el).indexOf('md') === -1
+      const isSmall = utility.requestParent(this, 'getSize').indexOf('md') === -1
       if (isSmall) {
         this.dialogStyle = {
           width: `calc(100% - ${parseInt(process.env.padding) * 2}px)`,
@@ -79,7 +71,7 @@ export default {
         }
         this.dialogClass = ['not-center']
       } else if (this.sourceElement) {
-        const offset = utility.offsetTo(this.sourceElement, this.getMain().$el)
+        const offset = utility.offsetTo(this.sourceElement, utility.requestParent(this, 'getElement'))
         this.dialogStyle = {
           left: `${offset.left}px`,
           top: `${offset.top}px`

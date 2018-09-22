@@ -107,6 +107,7 @@ export default {
       showOut: false,
       outOnBottom: true,
       outMaxHeight: 'auto',
+      isRendered: false,
       locale
     }
   },
@@ -118,9 +119,8 @@ export default {
       return this.multiple ? this.value : (typeof this.value === 'undefined' ? [] : [this.value])
     },
     isBreaked () {
-      if (this.breaked === null) {
-        const main = utility.fvParent(this, 'fvMain')
-        return utility.viewportSize(main.$el).indexOf('md') === -1
+      if (this.isRendered && this.breaked === null) {
+        return utility.requestParent(this, 'getSize').indexOf('md') === -1
       }
       return this.breaked
     },
@@ -187,10 +187,10 @@ export default {
       this.open()
     },
     calcOutPosition () {
-      const parent = utility.fvParent(this, 'fvMain')
-      const parentHeight = parent.$el.offsetHeight
+      const parentEl = utility.requestParent(this, 'getElement')
+      const parentHeight = parentEl.offsetHeight
       const elHeight = this.$el.offsetHeight
-      const top = utility.offsetTo(this.$el, parent.$el).top
+      const top = utility.offsetTo(this.$el, parentEl).top
       this.outOnBottom = !(top > (parentHeight / 2))
       const bottom = parentHeight - top - elHeight
       const padding = parseInt(process.env.padding)
@@ -222,6 +222,11 @@ export default {
         this.$emit('input-keydown', event)
       }
     }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.isRendered = true
+    })
   }
 }
 </script>

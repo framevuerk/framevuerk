@@ -30,8 +30,7 @@ export default {
   },
   data () {
     return {
-      isRendered: false,
-      main: undefined
+      isRendered: false
     }
   },
   computed: {
@@ -51,53 +50,52 @@ export default {
     }
   },
   methods: {
-    getMain () {
-      if (!this.main) {
-        this.main = utility.fvParent(this, 'fvMain')
-      }
-      return this.main
-    },
     fixSize () {
       this.$nextTick(() => {
-        if (this.pin) {
-          const main = this.getMain()
-          const size = this.value ? `${this.$el.offsetWidth}px` : 0
-          main.setOffset(this.position, size)
-        }
+        utility.requestParent(this, 'setOffset', {
+          position: this.position,
+          size: this.value && this.pin ? `${this.$el.offsetWidth}px` : 0
+        })
       })
     },
     onToggle (value) {
       this.$emit('input', value === 'open')
       this.$emit(value)
       this.fixSize()
+    },
+    onResize () {
+      const parentSize = utility.requestParent(this, 'getSize')
+
+      if (parentSize.indexOf('lg') === -1) {
+        this.$emit('update:pin', false)
+        setTimeout(() => {
+          if (this.pin === false) {
+            this.$emit('input', false)
+          }
+        })
+      } else {
+        this.$emit('update:pin', true)
+        setTimeout(() => {
+          if (this.pin === true) {
+            this.$emit('input', true)
+          }
+        })
+      }
+      this.fixSize()
     }
   },
   mounted () {
-    window.addEventListener('resize', this.fixSize)
-    if (utility.viewportSize(this.getMain().$el).indexOf('lg') === -1) {
-      this.$emit('update:pin', false)
-      setTimeout(() => {
-        if (this.pin === false) {
-          this.$emit('input', false)
-        }
-      })
-    } else {
-      this.$emit('update:pin', true)
-      setTimeout(() => {
-        if (this.pin === true) {
-          this.$emit('input', true)
-        }
-      })
-    }
-    this.fixSize()
+    window.addEventListener('resize', this.onResize)
+    this.onResize()
     this.$nextTick(() => {
+      // wait until start position calculated and then active animation
       setTimeout(() => {
         this.isRendered = true
-      }, 1000)
+      }, 100)
     })
   },
   beforeDestroy () {
-    window.removeEventListener('resize', this.fixSize)
+    window.removeEventListener('resize', this.onResize)
   }
 }
 </script>
