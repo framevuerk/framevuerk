@@ -183,27 +183,32 @@
   &.fv-xs {
     font-size: 0.7em;
     min-height: 2.7em;
+    line-height: 2.7em;
   }
 
   &.fv-sm {
     font-size: 0.8em;
     min-height: 2.8em;
+    line-height: 2.8em;
   }
 
   &,
   &.fv-md {
     font-size: 0.99em;
     min-height: 2.9em;
+    line-height: 2.9em;
   }
 
   &.fv-lg {
     font-size: 1.2em;
     min-height: 3.4em;
+    line-height: 3.4em;
   }
 
   &.fv-xl {
     font-size: 1.4em;
     min-height: 3.5em;
+    line-height: 3.5em;
   }
 }
 
