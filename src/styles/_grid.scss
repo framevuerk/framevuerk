@@ -25,6 +25,7 @@ $width-1: 8.33%;
 
 @for $j from 1 through 12 {
   .fv-col-#{$j} {
+    display: block;
     flex: 0 0 #{$width-1 * $j};
     width: #{$width-1 * $j};
     max-width: #{$width-1 * $j};
@@ -38,6 +39,7 @@ $width-1: 8.33%;
   @include respond-to($media) {
     @for $i from 1 through 12 {
       .fv-col-#{$media}-#{$i} {
+        display: block;
         flex: 0 0 #{$width-1 * $i};
         width: #{$width-1 * $i};
         max-width: #{$width-1 * $i};
@@ -51,13 +53,14 @@ $width-1: 8.33%;
 
     .fv-col-#{$media}-#{$i},
     .fv-hide-on-#{$media} {
-      display: none !important;
+      display: none;
     }
   }
 
   @include respond-to(only-#{$media}) {
     @for $i from 1 through 12 {
       .fv-col-only-#{$media}-#{$i} {
+        display: block;
         flex: 0 0 #{$width-1 * $i};
         width: #{$width-1 * $i};
         max-width: #{$width-1 * $i};
@@ -71,13 +74,14 @@ $width-1: 8.33%;
 
     .fv-col-only-#{$media}-#{$i},
     .fv-hide-on-only-#{$media} {
-      display: none !important;
+      display: none;
     }
   }
 
   @include respond-to(lower-#{$media}) {
     @for $i from 1 through 12 {
       .fv-col-lower-#{$media}-#{$i} {
+        display: block;
         flex: 0 0 #{$width-1 * $i};
         width: #{$width-1 * $i};
         max-width: #{$width-1 * $i};
@@ -91,7 +95,7 @@ $width-1: 8.33%;
 
     .fv-col-lower-#{$media}-#{$i},
     .fv-hide-on-lower-#{$media} {
-      display: none !important;
+      display: none;
     }
   }
 }
