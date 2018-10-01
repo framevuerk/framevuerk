@@ -13,7 +13,6 @@
   display: block;
   flex-grow: 1;
   overflow: auto;
-  padding: $padding;
   width: 100%;
 
   &::after {
