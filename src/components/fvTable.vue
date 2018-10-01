@@ -1,20 +1,20 @@
 <template lang="pug">
-.fv-table(:class="{breaked: isBreaked, title: title}")
+.fv-table(:class="{breaked: breaked, title: title}")
   table
     thead(v-if="title")
       tr
         th(v-for="field in fields",
           :key="field")
-          slot(v-if="$scopedSlots['title-'+field] || $slots['title-'+field]", :name="'title-'+field", :field="field", :index="index")
+          slot(v-if="$scopedSlots['title-'+field] || $slots['title-'+field]", :name="'title-'+field", :field="field", :index="index", :breaked="breaked")
           span(v-else) {{field}}
     tbody
       tr(v-for="(row, index) in rows",
         :key="index")
         td(v-for="(field, index2) in fields",
           :key="field")
-          .field-name(v-if="isBreaked && title") {{field}}
+          .field-name(v-if="breaked && title") {{field}}
           .field-value
-            slot(v-if="$scopedSlots['field-'+field] || $slots['field-'+field]", :name="'field-'+field", :row="row", :field="field", :index="index")
+            slot(v-if="$scopedSlots['field-'+field] || $slots['field-'+field]", :name="'field-'+field", :row="row", :field="field", :index="index", :breaked="breaked")
             span(v-else) {{defaultFieldValueInRow(field, row)}}
     tfoot(v-if="$scopedSlots.footer || $slots.default")
       slot(name="footer")
@@ -38,16 +38,8 @@ export default {
       default: true
     },
     breaked: {
-      type: [Object, Boolean],
-      validator: (value) => {
-        return [true, false, null].indexOf(value) > -1
-      },
-      default: null
-    }
-  },
-  data () {
-    return {
-      isBreaked: this.breaked
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -56,13 +48,23 @@ export default {
         return row[field]
       }
       return row
+    },
+    onResize () {
+      const parentSize = utility.requestParent(this, 'getSize')
+
+      if (parentSize.indexOf('lg') === -1) {
+        this.$emit('update:breaked', true)
+      } else {
+        this.$emit('update:breaked', false)
+      }
     }
   },
   mounted () {
-    if (this.breaked === null) {
-      const main = utility.fvParent(this, 'fvMain')
-      this.isBreaked = utility.viewportSize(main.$el).indexOf('md') === -1
-    }
+    window.addEventListener('resize', this.onResize)
+    this.onResize()
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.onResize)
   }
 }
 </script>
