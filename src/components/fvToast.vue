@@ -41,8 +41,7 @@ export default {
     close () {
       this.$emit('input', false)
     },
-    visibleHandler (value) {
-      alert('gi')
+    valueHandler (value) {
       if (value) {
         return this.onOpen()
       }
@@ -50,8 +49,8 @@ export default {
     }
   },
   watch: {
-    visible (value) {
-      this.visibleHandler(value)
+    value (value) {
+      this.valueHandler(value)
     }
   }
 }
