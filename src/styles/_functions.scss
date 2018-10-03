@@ -52,3 +52,51 @@
     @return yiq($color, 40%, $threshold);
   }
 }
+
+@function fontSize($size: sm) {
+  $base-size: 1;
+
+  @if $size == xs {
+    @return #{$base-size * 0.7}em;
+  }
+
+  @else if $size == sm {
+    @return #{$base-size * 0.8}em;
+  }
+
+  @else if $size == md {
+    @return #{$base-size * 0.99}em;
+  }
+
+  @else if $size == lg {
+    @return #{$base-size * 1.2}em;
+  }
+
+  @else if $size == xl {
+    @return #{$base-size * 1.4}em;
+  }
+}
+
+@function heightSize($size: sm) {
+  $base-size: 2.9;
+
+  @if $size == xs {
+    @return #{$base-size * 0.83}em;
+  }
+
+  @else if $size == sm {
+    @return #{$base-size * 0.9}em;
+  }
+
+  @else if $size == md {
+    @return #{$base-size * 1}em;
+  }
+
+  @else if $size == lg {
+    @return #{$base-size * 1.2}em;
+  }
+
+  @else if $size == xl {
+    @return #{$base-size * 1.4}em;
+  }
+}
