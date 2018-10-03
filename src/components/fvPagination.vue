@@ -1,16 +1,16 @@
 <template lang="pug">
 .fv-input-group.fv-pagination
-  fv-button.fv-sm(v-if="navigation",
+  fv-button.fv-size-sm(v-if="navigation",
     :disabled="value === 1 || !prev",
     @click="$emit('input', value - 1)")
     .icon(v-html="icons.firstPage")
   span.page(v-for="page in pages")
     b.fv-padding-small.fv-text-gray(v-if="page.type === 'dots'") …
-    fv-button.fv-sm(v-else-if="page.number !== value",
+    fv-button.fv-size-sm(v-else-if="page.number !== value",
       @click="$emit('input', page.number)") {{page.text || page.number}}
-    fv-button.fv-sm.fv-primary(v-else-if="!inputMode",
+    fv-button.fv-size-sm.fv-primary(v-else-if="!inputMode",
       @click="turnInputMode") {{page.number}}
-    fv-input.fv-sm.fv-text-primary.input(v-else,
+    fv-input.fv-size-sm.fv-text-primary.input(v-else,
       ref="input",
       :value="page.number",
       type="number",
@@ -18,7 +18,7 @@
       :max="total || undefined",
       @blur.native="inputMode = false",
       @keyup.native.enter="onEnterPage")
-  fv-button.fv-sm(v-if="navigation",
+  fv-button.fv-size-sm(v-if="navigation",
     :disabled="value === total || !next",
     @click="$emit('input', value + 1)")
     .icon(v-html="icons.lastPage")

@@ -1,7 +1,7 @@
 <template lang="pug">
 fv-main.fv-slider
   .tabs-container(v-if="showTabs")
-    fv-button.fv-sm.fv-grow(v-for="(i, slot) in $slots",
+    fv-button.fv-size-sm.fv-grow(v-for="(i, slot) in $slots",
       :key="'button' + slot + i",
       :class="{'fv-selected': value === slot}",
       @click.prevent="setValue(slot)")
@@ -15,10 +15,10 @@ fv-main.fv-slider
         :key="'content' + slot + i",
         v-show="slot === value")
         slot(:name="slot")
-  fv-button.fv-xl.next(v-if="showButtons",
+  fv-button.fv-size-xl.next(v-if="showButtons",
     @click.prevent="moveSlide(true)")
     .icon(v-html="icons.next")
-  fv-button.fv-xl.prev(v-if="showButtons",
+  fv-button.fv-size-xl.prev(v-if="showButtons",
     @click.prevent="moveSlide(false)")
     .icon(v-html="icons.prev")
   ul.nav(v-if="showNavs")
