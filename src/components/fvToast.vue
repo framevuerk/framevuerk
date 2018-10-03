@@ -75,6 +75,7 @@ export default {
   text-align: center;
   transform: translate3d(-50%, 0, 0);
   width: auto;
+  z-index: 3;
 
   &.fv-toast-enter-active,
   &.fv-toast-leave-active {

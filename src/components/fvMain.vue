@@ -1,5 +1,5 @@
 <template lang="pug">
-.fv-main(:style="{paddingLeft: offset.left, paddingRight: offset.right}")
+.fv-main(:style="{paddingLeft: offset.left, paddingRight: offset.right}", :data-parent="parent")
   slot
 </template>
 
@@ -60,7 +60,6 @@ export default {
   display: flex;
   flex-direction: column;
   height: inherit;
-  position: relative;
-  // width: inherit;
+  overflow: hidden;
 }
 </style>
