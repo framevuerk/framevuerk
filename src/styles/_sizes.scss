@@ -1,0 +1,15 @@
+[class*='fv-size'] {
+  height: auto;
+}
+
+@each $media in 'xs', 'sm', 'md', 'lg', 'xl' {
+  .fv-size-#{$media} {
+    font-size: fontSize($media) !important;
+    min-height: heightSize($media) !important;
+    line-height: heightSize($media) !important;
+  }
+
+  .fv-font-#{$media} {
+    font-size: fontSize($media) !important;
+  }
+}
