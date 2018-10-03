@@ -4,11 +4,6 @@
     slot
 </template>
 
-<script>
-export default {
-}
-</script>
-
 <style lang="scss">
 @import '../styles/variables';
 @import '../styles/mixins';
@@ -34,26 +29,9 @@ export default {
       align-items: center;
       display: flex;
       height: auto;
-      justify-content: center;
+      // justify-content: center;
       max-height: 100%;
       max-width: 100%;
-    }
-
-    & > .fv-title,
-    & > .title {
-      flex-direction: column;
-      flex-grow: 1;
-      line-height: 1.3;
-
-      & > * {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-      }
-    }
-
-    & > .space {
-      width: $padding;
     }
   }
 
@@ -72,8 +50,7 @@ export default {
   }
 
   &.fv-default {
-    @include yiq($bg-color);
-
+    background: transparent;
     border-bottom: solid 1px contrast($bg-color, 2, hard-dark);
   }
 }
