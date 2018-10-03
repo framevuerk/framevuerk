@@ -21,7 +21,7 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
           .icon(v-html="icons.prevYear")
         fv-button(@click.prevent="moveValue('month', -1)", tabindex="-1")
           .icon(v-html="icons.prevMonth")
-      .title.fv-text-center
+      .fv-grow.fv-text-center
         h3(v-text="monthNames[visualProps.month - 1]")
         p(v-text="visualProps.year")
       .fv-input-group.header-buttons

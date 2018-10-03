@@ -48,7 +48,7 @@
           :placeholder="placeholder",
           @keydown.native="onInputKeydown",
           @input="onTyping")
-        .title(v-else,
+        .fv-grow.fv-text-start(v-else,
           ref="dialogInput",
           autofocus,
           tabindex="0",
