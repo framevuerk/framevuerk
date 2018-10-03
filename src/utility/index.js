@@ -67,13 +67,18 @@ module.exports = {
     }
     return ret
   },
-  requestParent (vueComponent, request, data) {
+  requestParent (vueComponent, request, data, parentComponent = 'fvMain', level = 999) {
     let parent = vueComponent.$parent
     while (parent) {
-      if (parent.$el !== vueComponent.$el && parent.parent === true && parent.$vnode.tag.indexOf('fvMain') > -1) {
+      if (level === 0) {
+        parent = undefined
+        break
+      }
+      if (parent.$el !== vueComponent.$el && (parent.parent === true || typeof parent.parent === 'undefined') && parent.$vnode.tag.indexOf(parentComponent) > -1) {
         break
       }
       parent = parent.$parent
+      level--
     }
     if (parent) {
       return parent.onRequest(vueComponent, request, data)
