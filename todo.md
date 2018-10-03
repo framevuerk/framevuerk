@@ -7,4 +7,6 @@
 - fv-content scroll or body?
 
 ## v3:
-framevuerk-builder package!
+- framevuerk-builder package!
+
+- make configs available in json and scss and less
