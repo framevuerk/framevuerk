@@ -44,5 +44,9 @@ export default {
 
 .fv-input {
   @include fvInput($bg-color);
+
+  font-size: fontSize(md);
+  min-height: heightSize(md);
+  line-height: heightSize(md);
 }
 </style>

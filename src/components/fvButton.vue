@@ -50,8 +50,9 @@ export default {
 @import '../styles/mixins';
 
 .fv-button {
-  @include sizes;
-
+  font-size: fontSize(md);
+  min-height: heightSize(md);
+  line-height: heightSize(md);
   border-radius: $border-radius;
   cursor: pointer;
   display: inline-block;
@@ -63,6 +64,7 @@ export default {
   transition-duration: $transition-speed-fast;
   transition-property: background-color, color, box-shadow;
   border: none;
+  user-select: none;
 
   &,
   & .text,
