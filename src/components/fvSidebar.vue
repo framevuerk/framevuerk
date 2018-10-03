@@ -63,23 +63,26 @@ export default {
       this.$emit(value)
       this.fixSize()
     },
-    onResize () {
+    onResize (event) {
       const parentSize = utility.requestParent(this, 'getSize')
-
       if (parentSize.indexOf('lg') === -1) {
-        this.$emit('update:pin', false)
-        setTimeout(() => {
-          if (this.pin === false) {
-            this.$emit('input', false)
-          }
-        })
+        if (this.pin !== false) {
+          this.$emit('update:pin', false)
+          setTimeout(() => {
+            if (this.pin === false) {
+              this.$emit('input', false)
+            }
+          })
+        }
       } else {
-        this.$emit('update:pin', true)
-        setTimeout(() => {
-          if (this.pin === true) {
-            this.$emit('input', true)
-          }
-        })
+        if (this.pin !== true) {
+          this.$emit('update:pin', true)
+          setTimeout(() => {
+            if (this.pin === true) {
+              this.$emit('input', true)
+            }
+          })
+        }
       }
       this.fixSize()
     }

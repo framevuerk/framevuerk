@@ -160,8 +160,12 @@ export default {
     }
   },
   beforeDestroy () {
-    this.onClose()
+    this.removeHash()
+    this.removeOverlay()
     this.$el.remove()
+  },
+  mounted () {
+    this.valueHandler(this.value)
   }
 }
 
@@ -183,7 +187,7 @@ export default {
   max-height: 100%;
   max-width: 100%;
   padding: 0;
-  z-index: 2;
+  z-index: 3;
 
   & > .header,
   & > .footer {
