@@ -25,17 +25,16 @@
 
 @mixin scrollbar($color: $bg-color) {
   &::-webkit-scrollbar {
-    height: 9px;
-    width: 9px;
+    height: 7px;
+    width: 7px;
   }
 
   &::-webkit-scrollbar-track {
-    background: transparent;
+    background: $color;
   }
 
   &::-webkit-scrollbar-thumb {
     background: contrast($color, 2);
-    border: solid 2px $color;
   }
 
   &:hover {
@@ -116,7 +115,6 @@
 @mixin fvInput($bg) {
   @include yiq(contrast($bg, 1, force-light));
   @include shadow(bottom);
-  @include sizes;
 
   border: solid 1px contrast($bg, 2, hard-dark);
   border-radius: $border-radius;
@@ -169,46 +167,6 @@
     &.#{$selector}-leave-active {
       @content;
     }
-  }
-}
-
-@mixin sizes {
-  height: auto;
-  max-width: 100%;
-
-  &.fv-rounded {
-    border-radius: $border-radius-large;
-  }
-
-  &.fv-xs {
-    font-size: 0.7em;
-    min-height: 2.7em;
-    line-height: 2.7em;
-  }
-
-  &.fv-sm {
-    font-size: 0.8em;
-    min-height: 2.8em;
-    line-height: 2.8em;
-  }
-
-  &,
-  &.fv-md {
-    font-size: 0.99em;
-    min-height: 2.9em;
-    line-height: 2.9em;
-  }
-
-  &.fv-lg {
-    font-size: 1.2em;
-    min-height: 3.4em;
-    line-height: 3.4em;
-  }
-
-  &.fv-xl {
-    font-size: 1.4em;
-    min-height: 3.5em;
-    line-height: 3.5em;
   }
 }
 
