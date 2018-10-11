@@ -61,5 +61,6 @@ export default {
   flex-direction: column;
   height: inherit;
   overflow: hidden;
+  position: relative;
 }
 </style>
