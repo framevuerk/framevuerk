@@ -12,6 +12,9 @@
   @include shadow(bottom);
 
   z-index: 2;
+  height: fit-content;
+  min-height: min-content;
+  max-height: max-content;
 
   & > header {
     width: 100%;
@@ -28,7 +31,7 @@
 
       align-items: center;
       display: flex;
-      height: auto;
+      // height: 100%;
       // justify-content: center;
       max-height: 100%;
       max-width: 100%;
