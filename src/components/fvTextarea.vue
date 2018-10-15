@@ -16,10 +16,6 @@ export default {
       type: [Boolean, Function],
       default: false
     },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
     autoHeight: {
       type: Boolean,
       default: false
