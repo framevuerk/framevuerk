@@ -4,8 +4,9 @@ span.fv-switch(:class="{ on: onValue === pValue }",
   :invalid="!fvValidate",
   @click="toggle",
   :tabindex="disabled? '': 0",
-  @keydown="onKeydown")
-  span.fv-handler
+  @keydown.space.prevent="toggle")
+  .container
+    span.handler
 </template>
 
 <script>
@@ -56,33 +57,24 @@ export default {
   methods: {
     toggle () {
       if (!this.disabled) {
-        this.pValue = this.pValue === this.onValue ? this.offValue : this.onValue
-        this.$emit('input', this.pValue)
+        if (this.pValue === this.onValue) {
+          this.off()
+        } else {
+          this.on()
+        }
       }
     },
     on () {
-      if (!this.disabled) {
-        this.pValue = this.onValue
-        this.$emit('input', this.pValue)
-      }
+      this.pValue = this.onValue
+      this.$emit('input', this.pValue)
     },
     off () {
-      if (!this.disabled) {
-        this.pValue = this.offValue
-        this.$emit('input', this.pValue)
-      }
+      this.pValue = this.offValue
+      this.$emit('input', this.pValue)
     },
     setStructure () {
-      if ([this.offValue, this.onValue].indexOf(this.value) === -1) {
+      if ([this.offValue, this.onValue].indexOf(this.value) === -1 && !this.disabled) {
         this.off()
-      }
-    },
-    onKeydown (event) {
-      switch (event.which) {
-        case 13: case 32: // enter, space
-          event.preventDefault()
-          this.toggle()
-          break
       }
     }
   }
@@ -95,26 +87,32 @@ export default {
 @import '../styles/mixins';
 
 .fv-switch {
-  @include shadow(bottom);
-
-  background: contrast($bg-color, 1, force-dark);
-  border: solid 1px contrast($bg-color, 2, hard-dark);
-  border-radius: 25px;
-  cursor: pointer;
-  direction: $direction;
   display: inline-block;
-  height: 2.2em;
-  padding: 0.2em;
-  vertical-align: middle;
+  min-height: heightSize(md);
   width: 3.8em;
-  text-align: $block-start;
+  position: relative;
 
-  & > .fv-handler {
+  & .container {
+    @include shadow(bottom);
+
+    background: contrast($bg-color, 1, force-dark);
+    border: solid 1px contrast($bg-color, 2, hard-dark);
+    border-radius: $border-radius;
+    cursor: pointer;
+    direction: $direction;
+    padding: 0.2em;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    text-align: $block-start;
+  }
+
+  & .handler {
     @include shadow(bottom);
 
     background: contrast($bg-color, 2, force-light);
     border: solid 1px contrast($bg-color, 2);
-    border-radius: 25px;
+    border-radius: $border-radius;
     display: inline-block;
     height: 100%;
     width: calc(1.8em - 2px);
@@ -125,14 +123,16 @@ export default {
   }
 
   &.on {
-    background: contrast($primary-color, 2, hard-light);
+    & .container {
+      background: contrast($primary-color, 2, hard-light);
+    }
 
-    & > .fv-handler {
-      margin-#{$block-start}: 1.7em;
+    & .handler {
+      margin-#{$block-start}: 1.6em;
     }
   }
 
-  &:focus {
+  &:focus .container{
     @include outline;
 
     &:invalid,
@@ -141,15 +141,15 @@ export default {
     }
   }
 
-  &:active > .fv-handler {
+  &:active .handler {
     @include shadow(inset-bottom);
   }
 
-  &:hover:not(:focus):not([disabled]) {
+  &:hover:not(:focus):not([disabled]) .container{
     border: solid 1px contrast($bg-color, 3, hard-dark);
   }
 
-  &[disabled] {
+  &[disabled] .container{
     @include disabled;
   }
 }
