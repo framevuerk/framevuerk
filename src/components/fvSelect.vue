@@ -11,7 +11,8 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
   @value-delete="deleteValue",
   @blur="searchQuery = ''",
   :delete-button="deleteButton",
-  :caret-icon="require('../icons/feather/chevron-down.svg')",
+  @open="setHighlight"
+  :caret-icon="require('../icons/ARR.svg')",
   ref="inputBox")
   template(slot="value",
     slot-scope="scope")
@@ -26,32 +27,25 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
       ref="list")
       fv-list-item(v-for="(option, i) in filteredOptions",
         :class="{selected: isSelectedOption(option)}",
+        :disabled="optionProp(option, 'disabled')",
         :key="i",
         @click="clickOption(option)")
           slot(v-if="$scopedSlots.option || $slots.option", name="option", :option="option")
           span(v-else, v-text="optionProp(option, 'text')")
       fv-list-item(v-if="allowInsert && searchQuery",
         @click="onInsert(searchQuery)")
-        span(v-text="locale.add(searchQuery)")
+        slot(v-if="$scopedSlots.insert || $slots.insert", name="insert", :value="searchQuery")
+        span(v-else, v-text="locale.add(searchQuery)")
       fv-list-item.unclickable(v-else-if="filteredOptions.length === 0")
-        span(v-text="locale.notFound()")
+        slot(v-if="$scopedSlots.empty || $slots.empty", name="empty", :value="searchQuery")
+        span(v-else, v-text="locale.notFound()")
 </template>
 
 <script>
 import locale from 'locale'
 import utility from '../utility'
-import fvInputbox from './fvInputbox.vue'
-import fvList from './fvList.vue'
-import fvListItem from './fvListItem.vue'
-import fvLoading from './fvLoading.vue'
 
 export default {
-  components: {
-    fvInputbox,
-    fvList,
-    fvListItem,
-    fvLoading
-  },
   props: {
     value: {
       default: undefined
@@ -147,6 +141,11 @@ export default {
       if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
         this.$emit('input', [])
       }
+    },
+    setHighlight () {
+      this.$nextTick(() => {
+        this.$refs.list.moveHighlight(null)
+      })
     },
     onBlur () {
       setTimeout(() => {

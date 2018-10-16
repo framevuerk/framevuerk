@@ -3,13 +3,16 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
   :placeholder="placeholder",
   :disabled="disabled",
   :value="value",
-  :input="false",
+  :input="true",
+  :search-query.sync="searchQuery",
+  @typing="onTyping",
   @input-keydown="onKeydown",
   @value-delete="deleteValue",
   :delete-button="deleteButton",
+  @blur="searchQuery = ''",
   tabindex="",
   @open="onOpen",
-  :caret-icon="require('../icons/feather/calendar.svg')",
+  :caret-icon="icons.icon",
   ref="inputBox")
   template(slot="value", slot-scope="scope")
     slot(v-if="$scopedSlots.value || $slots.value", name="value", :value="scope.value")
@@ -17,18 +20,19 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
   .fv-datepicker-box(slot="out")
     fv-header.fv-default.header(tabindex="-1")
       .fv-input-group.header-buttons
-        fv-button(@click.prevent="moveValue('year', -1)", tabindex="-1")
-          .icon(v-html="icons.prevYear")
-        fv-button(@click.prevent="moveValue('month', -1)", tabindex="-1")
-          .icon(v-html="icons.prevMonth")
+        fv-button.fv-no-border.fv-no-shadow.fv-size-sm(@click.prevent="moveValue('year', -1)", tabindex="-1")
+          .icon(:style="{ transform: icons.prevYear }", v-html="icons.iconY")
+        fv-button.fv-no-border.fv-no-shadow.fv-size-sm(@click.prevent="moveValue('month', -1)", tabindex="-1")
+          .icon(:style="{ transform: icons.prevMonth }", v-html="icons.icon")
       .fv-grow.fv-text-center
-        h3(v-text="monthNames[visualProps.month - 1]")
-        p(v-text="visualProps.year")
+        b(v-text="monthNames[visualProps.month - 1]")
+        =" "
+        span(v-text="visualProps.year")
       .fv-input-group.header-buttons
-        fv-button(@click.prevent="moveValue('month', 1)", tabindex="-1")
-          .icon(v-html="icons.nextMonth")
-        fv-button(@click.prevent="moveValue('year', 1)", tabindex="-1")
-          .icon(v-html="icons.nextYear")
+        fv-button.fv-no-border.fv-no-shadow.fv-size-sm(@click.prevent="moveValue('month', 1)", tabindex="-1")
+          .icon(:style="{ transform: icons.nextMonth }", v-html="icons.icon")
+        fv-button.fv-no-border.fv-no-shadow.fv-size-sm(@click.prevent="moveValue('year', 1)", tabindex="-1")
+          .icon(:style="{ transform: icons.nextYear }", v-html="icons.iconY")
     fv-content.content(tabindex="-1")
       table.days-table
         thead
@@ -46,18 +50,7 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
 </template>
 
 <script>
-import fvButton from './fvButton.vue'
-import fvHeader from './fvHeader.vue'
-import fvContent from './fvContent.vue'
-import fvInputbox from './fvInputbox.vue'
-
 export default {
-  components: {
-    fvButton,
-    fvContent,
-    fvHeader,
-    fvInputbox
-  },
   props: {
     value: {
       default: undefined
@@ -91,7 +84,8 @@ export default {
       editingValue: undefined,
       visualProps: {},
       weekDayNames: [],
-      monthNames: []
+      monthNames: [],
+      searchQuery: undefined
     }
   },
   created () {
@@ -125,28 +119,43 @@ export default {
     defaultFormattedValue () {
       if (this.value) {
         const value = new this.Date(this.value)
-        return `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`
+        return `${value.getDate()} / ${value.getMonth() + 1} / ${value.getFullYear()}`
       }
       return ''
     },
     icons () {
-      const chevronLeft = require('../icons/feather/chevron-left.svg')
-      const chevronRight = require('../icons/feather/chevron-right.svg')
-      const chevronsLeft = require('../icons/feather/chevrons-left.svg')
-      const chevronsRight = require('../icons/feather/chevrons-right.svg')
       return {
-        nextMonth: process.env.direction === 'ltr' ? chevronRight : chevronLeft,
-        prevMonth: process.env.direction === 'ltr' ? chevronLeft : chevronRight,
-        nextYear: process.env.direction === 'ltr' ? chevronsRight : chevronsLeft,
-        prevYear: process.env.direction === 'ltr' ? chevronsLeft : chevronsRight
+        icon: require('../icons/ARR.svg'),
+        iconY: require('../icons/WRR.svg'),
+        nextMonth: process.env.direction === 'ltr' ? 'rotate(-90deg)' : 'rotate(90deg)',
+        prevMonth: process.env.direction === 'ltr' ? 'rotate(90deg)' : 'rotate(-90deg)',
+        nextYear: process.env.direction === 'ltr' ? 'rotate(-90deg)' : 'rotate(90deg)',
+        prevYear: process.env.direction === 'ltr' ? 'rotate(90deg)' : 'rotate(-90deg)'
       }
     }
   },
   methods: {
+    onTyping (text) {
+      // if its seprator
+      if (!/^\d+$/.test(text)) {
+        this.searchQuery = ''
+        const editingValue = new this.Date(this.editingValue)
+        const number = parseInt(text)
+        if (number.toString().length === 4) {
+          editingValue.setFullYear(number)
+        } else if (number.toString().length <= 2 && number <= 12) {
+          editingValue.setMonth(number - 1)
+        }
+        this.$set(this, 'editingValue', editingValue)
+        this.calcVisualProps()
+      }
+    },
     onOpen () {
+      this.searchQuery = ''
       this.setEditingValue(true)
     },
     deleteValue () {
+      this.searchQuery = ''
       this.$emit('input', undefined)
     },
     setEditingValue (force = false) {
@@ -239,6 +248,7 @@ export default {
       if (event.target.getAttribute('disabled')) {
         return
       }
+      this.searchQuery = ''
       const ret = new this.Date(this.editingValue)
       this.$emit('input', ret)
       this.$nextTick(() => {
@@ -273,7 +283,12 @@ export default {
           this.selectDate(null, event)
           break
         case 8: // backspace
+          if (this.searchQuery.length === 0 && this.deleteButton) {
+            this.deleteValue()
+          }
+          break
         case 46: // delete
+          this.searchQuery = ''
           if (this.deleteButton) {
             this.deleteValue()
           }
@@ -299,8 +314,8 @@ export default {
 
 .fv-datepicker {
   & .out-container {
-    max-width: 380px;
-    min-width: 380px;
+    max-width: 32em;
+    min-width: 28em;
   }
 }
 
@@ -310,13 +325,13 @@ export default {
       overflow: visible;
 
       & > .fv-button {
-        padding: 0 7px;
+        padding: 0 #{$padding / 2};
       }
     }
   }
 
   & .content {
-    padding: $padding-small;
+    padding: #{$padding / 2};
     width: 100%;
     text-align: center;
 
@@ -336,7 +351,7 @@ export default {
         max-width: 14.2%;
         min-width: 14.2%;
         overflow: hidden;
-        height: 40px;
+        height: 3em;
         vertical-align: middle;
         border-radius: $border-radius;
         cursor: pointer;
