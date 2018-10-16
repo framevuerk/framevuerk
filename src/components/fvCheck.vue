@@ -8,9 +8,7 @@
   :tabindex="disabled ? '' : 0")
   .box(:class="{square: multiple, circle: !multiple}")
   span.label
-    template(v-if="!label")
-      slot
-    template(v-else) {{label}}
+    slot
 </template>
 
 <script>
@@ -23,9 +21,6 @@ export default {
       default: undefined,
       required: true
     },
-    label: {
-      default: undefined
-    },
     multiple: {
       type: Boolean,
       default: false
@@ -37,17 +32,6 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    }
-  },
-  data () {
-    return {
-      isValid: true,
-      icons: {
-        square: require('../icons/feather/square.svg'),
-        circle: require('../icons/feather/circle.svg'),
-        checkSquare: require('../icons/feather/check-square.svg'),
-        checkCircle: require('../icons/feather/check-circle.svg')
-      }
     }
   },
   computed: {
@@ -63,14 +47,20 @@ export default {
       }
       return true
     },
+    multipleButNotArray () {
+      return this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))
+    },
+    pValue () {
+      return this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array)) ? [] : this.value
+    },
     isChecked () {
       const content = JSON.stringify(this.content)
       if (this.multiple) {
-        if (this.value.findIndex(v => JSON.stringify(v) === content) > -1) {
+        if (this.pValue.findIndex(v => JSON.stringify(v) === content) > -1) {
           return true
         }
       } else {
-        return JSON.stringify(this.value) === content
+        return JSON.stringify(this.pValue) === content
       }
       return false
     }
@@ -81,35 +71,29 @@ export default {
         this.$el.focus()
       }
     },
-    setStructure () {
-      if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
-        this.$emit('input', [])
-      }
-    },
     onClick () {
       if (this.disabled) {
         return
       }
-      let value = typeof this.value === 'undefined' ? undefined : JSON.parse(JSON.stringify(this.value))
       if (this.multiple) {
+        let value = JSON.parse(JSON.stringify(this.pValue))
         const content = JSON.stringify(this.content)
         if (this.isChecked) {
           value.splice(value.findIndex(v => JSON.stringify(v) === content), 1)
         } else {
           value.push(this.content)
         }
+        this.$emit('input', value)
       } else {
+        let value
         if (this.isChecked) {
           value = undefined
         } else {
           value = JSON.parse(JSON.stringify(this.content))
         }
+        this.$emit('input', value)
       }
-      this.$emit('input', value)
     }
-  },
-  created () {
-    this.setStructure()
   }
 }
 </script>
@@ -119,7 +103,10 @@ export default {
 @import '../styles/mixins';
 
 .fv-check {
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   margin: 0;
   margin-#{$block-end}: #{$padding};
   cursor: pointer;
