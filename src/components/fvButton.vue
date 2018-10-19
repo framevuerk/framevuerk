@@ -1,33 +1,16 @@
 <template lang="pug">
 button.fv-button(:class="{'loading': loading}", @click="onClick", :disabled="disabled || loading")
   template(v-if="!loading")
-    template(v-if="!text && !icon")
-      slot
-    template(v-else)
-      i.icon(v-if="icon", :class="icon")
-      =" "
-      span.text(v-if="text", v-text="text")
-      slot
+    slot
   fv-loading(v-else)
 </template>
 
 <script>
-import fvLoading from './fvLoading.vue'
-
 export default {
-  components: {
-    fvLoading
-  },
   props: {
     loading: {
       type: Boolean,
       default: false
-    },
-    icon: {
-      default: undefined
-    },
-    text: {
-      default: undefined
     },
     disabled: {
       type: Boolean,
@@ -51,6 +34,7 @@ export default {
 
 .fv-button {
   font-size: fontSize(md);
+  height: heightSize(md);
   min-height: heightSize(md);
   line-height: heightSize(md);
   border-radius: $border-radius;
@@ -84,8 +68,7 @@ export default {
     @include fvButton($bg-color, yiq($bg-color));
   }
 
-  &.fv-primary,
-  &.fv-ok {
+  &.fv-primary {
     @include fvButton($primary-color, yiq($primary-color));
   }
 
