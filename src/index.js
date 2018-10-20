@@ -15,7 +15,6 @@ import fvMenu from './components/fvMenu.vue'
 import fvInput from './components/fvInput.vue'
 import fvInputbox from './components/fvInputbox.vue'
 import fvButton from './components/fvButton.vue'
-import fvFilepicker from './components/fvFilepicker.vue'
 import fvSwitch from './components/fvSwitch.vue'
 import fvDialog from './components/fvDialog.vue'
 import fvTable from './components/fvTable.vue'
@@ -45,7 +44,6 @@ module.exports = {
   fvInput,
   fvInputbox,
   fvButton,
-  fvFilepicker,
   fvSwitch,
   fvDialog,
   fvTable,
@@ -79,7 +77,6 @@ module.exports = {
     Vue.component('fvInput', fvInput)
     Vue.component('fvInputbox', fvInputbox)
     Vue.component('fvButton', fvButton)
-    Vue.component('fvFilepicker', fvFilepicker)
     Vue.component('fvSwitch', fvSwitch)
     Vue.component('fvDialog', fvDialog)
     Vue.component('fvTable', fvTable)
