@@ -15,7 +15,6 @@ export default {
   },
   data () {
     return {
-      locks: 0,
       offset: {
         left: 0,
         right: 0
@@ -23,26 +22,24 @@ export default {
     }
   },
   methods: {
-    setOffset (position = 'left', size = '0px') {
-      this.offset[position] = size
+    getSize () {
+      return utility.viewportSize(this.$el)
     },
-    onRequest (emitterComponent, eventName, eventData) {
-      if (eventName === 'setOffset') {
-        this.offset[eventData.position] = eventData.size
-        return true
-      } else if (eventName === 'appendChild') {
-        this.$el.appendChild(eventData.el)
-        return true
-      } else if (eventName === 'appendOverlay') {
-        const overlayElement = document.createElement('div')
-        overlayElement.classList.add('fv-overlay')
-        overlayElement.addEventListener('click', eventData.onClick)
-        this.$el.insertBefore(overlayElement, eventData.before)
-        return overlayElement
-      } else if (eventName === 'getSize') {
-        return utility.viewportSize(this.$el)
-      } else if (eventName === 'getElement') {
-        return this.$el
+    appendChild (el) {
+      this.$el.appendChild(el)
+    },
+    appendOverlay (beforeEl, onClick) {
+      const overlayElement = document.createElement('div')
+      overlayElement.classList.add('fv-overlay')
+      overlayElement.addEventListener('click', onClick)
+      this.$el.insertBefore(overlayElement, beforeEl)
+      return overlayElement
+    }
+  },
+  created () {
+    if (this.parent) {
+      this._provided = {
+        fvMain: this
       }
     }
   }
@@ -60,6 +57,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: inherit;
+  max-height: 100%;
   overflow: hidden;
   position: relative;
 }
