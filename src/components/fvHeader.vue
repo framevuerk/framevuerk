@@ -6,6 +6,7 @@
 
 <style lang="scss">
 @import '../styles/variables';
+@import '../styles/functions';
 @import '../styles/mixins';
 
 .fv-header {
@@ -18,23 +19,22 @@
 
   & > header {
     width: 100%;
-    padding: #{$padding/1.2} $padding;
+    padding: padding(sm) 0;
     display: flex;
     justify-content: space-between;
     overflow: hidden;
 
-    & > .fv-button,
-    & > .fv-title,
-    & > .title,
     & > * {
       @include nowrap;
 
-      align-items: center;
-      display: flex;
-      // height: 100%;
-      // justify-content: center;
+      align-self: center;
       max-height: 100%;
       max-width: 100%;
+      margin-#{$block-end}: padding(md);
+
+      &:first-child {
+        margin-#{$block-start}: padding(md);
+      }
     }
   }
 
