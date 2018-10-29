@@ -23,6 +23,11 @@ export default {
           child.$el.focus()
         }
       }
+      function warn (child) {
+        if (typeof child.warn === 'function') {
+          child.warn()
+        }
+      }
       function getChilds (parent, force = false) {
         let ret = []
         if (
@@ -40,22 +45,72 @@ export default {
       }
 
       const childs = getChilds(this, true)
-      let firstInvalidChild
-      childs.every(child => {
-        if (fvValidate(child)) {
-          return true
-        } else {
-          focus(child)
-          firstInvalidChild = child
-          return false
+
+      const invalids = []
+
+      childs.forEach(child => {
+        if (!fvValidate(child)) {
+          invalids.push(child)
+          warn(child)
         }
       })
-      if (!firstInvalidChild) {
-        this.$emit('submit')
+      if (invalids.length) {
+        focus(invalids[0])
+        this.$emit('reject', invalids)
       } else {
-        this.$emit('reject', firstInvalidChild)
+        this.$emit('submit')
       }
     }
   }
 }
 </script>
+
+<style lang="scss">
+@import '../styles/variables';
+@import '../styles/mixins';
+@import '../styles/functions';
+
+.fv-control-label {
+  @include nowrap;
+
+  color: $color-light;
+  display: block;
+  max-width: 100%;
+  min-height: 1px;
+}
+
+.fv-form-control-group {
+  @include shadow(bottom);
+
+  border: border(md);
+  border-radius: radius(md);
+  clear: both;
+  padding: padding(sm);
+
+  & > legend {
+    padding: inherit;
+  }
+}
+
+.fv-form-control {
+  font-family: inherit;
+  max-width: 100%;
+  width: 100%;
+}
+
+.fv-input-group {
+  display: inline-block;
+
+  & > * {
+    margin: 0 #{padding(sm) / 2};
+  }
+
+  & > *:first-child {
+    margin-#{$block-start}: 0;
+  }
+
+  & > *:last-child {
+    margin-#{$block-end}: 0;
+  }
+}
+</style>
