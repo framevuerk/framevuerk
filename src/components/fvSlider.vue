@@ -1,46 +1,38 @@
 <template lang="pug">
 fv-main.fv-slider
   .tabs-container(v-if="showTabs")
-    fv-button.fv-size-sm.fv-grow(v-for="(i, slot) in $slots",
-      :key="'button' + slot + i",
-      :class="{'fv-selected': value === slot}",
-      @click.prevent="setValue(slot)")
-      slot(v-if="$scopedSlots.button || $slots.button", :value="slot", name="button")
-      span(v-else) {{slot}}
+    fv-button.fv-grow(v-for="(slide, i) in slides",
+      :key="'tab-' + slide + i",
+      :class="{'fv-selected': value === slide}",
+      @click.prevent="setValue(slide)")
+      slot(v-if="allSlots['tab-' + slide]", :selected="value === slide", :name="'tab-' + slide")
+      slot(v-else-if="allSlots.tab", :slide="slide", :selected="value === slide", name="tab")
+      span(v-else) {{slide}}
   fv-content.slider-page(@mousedown.native="moveStart($event)",
     @touchstart.native="moveStart($event)",
     ref="sliderContainer")
     transition-group(:name="animationName")
-      fv-content.slider-page(v-for="(i, slot) in $slots",
-        :key="'content' + slot + i",
-        v-show="slot === value")
-        slot(:name="slot")
+      fv-content.slider-page(v-for="(slide, i) in slides",
+        :key="'slide-' + slide + i",
+        v-show="slide === value")
+        slot(:name="'slide-' + slide", :selected="value === slide")
   fv-button.fv-size-xl.next(v-if="showButtons",
     @click.prevent="moveSlide(true)")
-    .icon(v-html="icons.next")
+    .icon(:style="{ transform: icons.next }", v-html="icons.icon")
   fv-button.fv-size-xl.prev(v-if="showButtons",
     @click.prevent="moveSlide(false)")
-    .icon(v-html="icons.prev")
+    .icon(:style="{ transform: icons.prev }", v-html="icons.icon")
   ul.nav(v-if="showNavs")
-    li(v-for="(i, slot) in $slots",
-      :key="'nav' + slot + i",
-      @click.prevent="setValue(slot)",
-      :class="{selected: value === slot}")
+    li(v-for="(slide, i) in slides",
+      :key="'nav-' + slide + i",
+      @click.prevent="setValue(slide)",
+      :class="{selected: value === slide}")
 </template>
 
 <script>
-import fvMain from './fvMain.vue'
-import fvHeader from './fvHeader.vue'
-import fvContent from './fvContent.vue'
-import fvButton from './fvButton.vue'
+import icon from '../icons/ARR.svg'
 
 export default {
-  components: {
-    fvMain,
-    fvHeader,
-    fvContent,
-    fvButton
-  },
   props: {
     value: {
       default: undefined
@@ -72,18 +64,26 @@ export default {
     }
   },
   computed: {
+    allSlots () {
+      return Object.assign(this.$slots, this.$scopedSlots)
+    },
+    allSlotsList () {
+      return Object.keys(this.allSlots)
+    },
+    slides () {
+      return this.allSlotsList.filter(key => key.indexOf('slide-') === 0).map(key => key.replace('slide-', ''))
+    },
     items () {
       return Object.keys(this.$slots)
     },
     currentIndex () {
-      return this.items.findIndex(slide => slide === this.value)
+      return this.slides.findIndex(slide => slide === this.value)
     },
     icons () {
-      const chevronLeft = require('../icons/feather/chevron-left.svg')
-      const chevronRight = require('../icons/feather/chevron-right.svg')
       return {
-        next: this.blockStart === 'left' ? chevronRight : chevronLeft,
-        prev: this.blockStart === 'left' ? chevronLeft : chevronRight
+        icon,
+        next: process.env.direction === 'ltr' ? 'rotate(-90deg)' : 'rotate(90deg)',
+        prev: process.env.direction === 'ltr' ? 'rotate(90deg)' : 'rotate(-90deg)'
       }
     }
   },
@@ -120,7 +120,7 @@ export default {
       document.body.removeEventListener('touchend', this.moveEnd)
     },
     setValue (value, next = null) {
-      const newIndex = this.items.findIndex(slide => slide === value)
+      const newIndex = this.slides.findIndex(slide => slide === value)
       if (!this.value) {
         this.animationName = ''
       } else if (next === null) {
@@ -135,16 +135,16 @@ export default {
     },
     moveSlide (next = true) {
       let newIndex = this.currentIndex + (next ? 1 : -1)
-      if (newIndex >= this.items.length) {
+      if (newIndex >= this.slides.length) {
         newIndex = 0
       } else if (newIndex < 0) {
-        newIndex = this.items.length - 1
+        newIndex = this.slides.length - 1
       }
-      this.setValue(this.items[newIndex], next)
+      this.setValue(this.slides[newIndex], next)
     },
     initerval () {
       clearTimeout(this.timer)
-      if (this.interval > 0 && this.items.length > 1) {
+      if (this.interval > 0 && this.slides.length > 1) {
         this.timer = setTimeout(() => {
           this.moveSlide(true)
         }, this.interval)
@@ -154,7 +154,7 @@ export default {
   mounted () {
     this.initerval()
     if (!this.value) {
-      this.setValue(this.items[0])
+      this.setValue(this.slides[0])
     }
   }
 }
@@ -182,6 +182,7 @@ export default {
     display: flex;
     height: 3.5em;
     flex-direction: row;
+    font-size: 0.9em;
 
     & > .fv-button {
       height: 100%;
@@ -191,9 +192,6 @@ export default {
       box-shadow: none;
       border-bottom: solid 0.4em transparent;
       border-top: solid 0.4em transparent;
-      font-weight: bold;
-      transition-duration: $transition-speed-fast;
-      transition-property: color, border;
 
       &.fv-selected {
         border-bottom: solid 0.4em $primary-color;
@@ -234,12 +232,12 @@ export default {
 
     & li {
       background: rgba($color, 0.5);
-      border-radius: 5px;
+      border-radius: 0.4em;
       cursor: pointer;
       display: inline-block;
-      height: 10px;
+      height: 0.8em;
       margin: 0.8em 0.2em;
-      width: 10px;
+      width: 0.8em;
 
       &.selected {
         background: $primary-color;
