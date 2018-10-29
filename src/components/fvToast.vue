@@ -19,6 +19,7 @@ export default {
       default: 3000
     }
   },
+  inject: ['fvMain'],
   data () {
     return {
       timer: null
@@ -27,9 +28,7 @@ export default {
   methods: {
     onOpen () {
       this.$emit('open')
-      utility.requestParent(this, 'appendChild', {
-        el: this.$el
-      })
+      this.fvMain.appendChild(this.$el)
       if (this.timeout > 0) {
         this.timer = setTimeout(this.close, this.timeout)
       }
@@ -48,6 +47,11 @@ export default {
       return this.onClose()
     }
   },
+  created () {
+    if (!this.fvMain) {
+      throw utility.error('no_fvmain_parent')
+    }
+  },
   watch: {
     value (value) {
       this.valueHandler(value)
@@ -58,6 +62,7 @@ export default {
 
 <style lang="scss">
 @import '../styles/variables';
+@import '../styles/functions';
 @import '../styles/mixins';
 
 .fv-toast {
@@ -66,7 +71,7 @@ export default {
   backface-visibility: hidden;
   border-radius: $border-radius $border-radius 0 0;
   bottom: 0;
-  font-size: 1.1em;
+  font-size: fontSize(lg);
   left: 50%;
   max-width: 100%;
   min-width: 100px;

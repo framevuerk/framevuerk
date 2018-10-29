@@ -1,18 +1,21 @@
 <template lang="pug">
-  .fv-range(:disabled="disabled",
+  .fv-range(v-if="!isBadStructure",
+    :disabled="disabled",
     :invalid="!fvValidate",
     @wheel="wheel",
     @click.left="onClick")
-    .filler(ref="filler")
-    .handler(v-for="i in filteredValue.length",
-      :tabindex="disabled? '' : 0",
-      ref="handler",
-      :key="i",
-      @focus="onHandlerFocus(i - 1)",
-      @mousedown="moveStart($event, i - 1)",
-      @touchstart="moveStart($event, i - 1)",
-      @keydown="onKeydown($event, i - 1)",
-      @click="onHandlerFocus(i - 1)")
+    .container
+      .filler(ref="filler")
+      .handler(v-for="i in filteredValue.length",
+        :tabindex="disabled? '' : 0",
+        ref="handler",
+        :key="i",
+        @focus="onHandlerFocus(i - 1)",
+        @blur="onHandlerBlur",
+        @mousedown="moveStart($event, i - 1)",
+        @touchstart="moveStart($event, i - 1)",
+        @keydown="onKeydown($event, i - 1)",
+        @click="onHandlerFocus(i - 1)")
 </template>
 
 <script>
@@ -58,6 +61,11 @@ export default {
       selectedHandler: -1
     }
   },
+  inject: {
+    fvFormElement: {
+      default: false
+    }
+  },
   computed: {
     fvValidate () {
       if (this.required === true) {
@@ -66,6 +74,19 @@ export default {
         return this.required(this.value)
       }
       return true
+    },
+    isBadStructure () {
+      if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
+        return true
+      }
+      // check if value is inside data
+      for (let i = 0; i < this.filteredValue.length; i++) {
+        const val = this.filteredValue[i]
+        if (this.filteredData.findIndex(item => item.value === val) === -1) {
+          return true
+        }
+      }
+      return false
     },
     filteredValue () {
       if (this.multiple) {
@@ -90,10 +111,13 @@ export default {
     filteredData () {
       let ret = []
       if (this.data instanceof Array) {
+        let sorted = [...this.data]
+        sorted.sort()
+
         for (let index = 0; index < this.dataLength; index++) {
           ret.push({
             x: this.stepWidth * index,
-            value: this.data[index]
+            value: sorted[index]
           })
           ret = ret.filter((item, i, arr) => arr.indexOf(item) === i)
         }
@@ -122,20 +146,11 @@ export default {
   },
   methods: {
     setStructure () {
-      const set = () => {
+      if (this.isBadStructure) {
         if (this.multiple) {
           this.$emit('input', [this.filteredData[0].value, this.filteredData[this.dataLength - 1].value])
         } else {
           this.$emit('input', this.filteredData[0].value)
-        }
-      }
-      if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
-        set()
-      }
-      for (let val of this.filteredValue) {
-        if (this.filteredData.findIndex(item => item.value === val) === -1) {
-          set()
-          break
         }
       }
     },
@@ -169,6 +184,14 @@ export default {
         return
       }
       this.selectedHandler = handlerIndex
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(true)
+      }
+    },
+    onHandlerBlur (event) {
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(false)
+      }
     },
     moveStart (event, handlerIndex) {
       if (this.disabled) {
@@ -191,14 +214,17 @@ export default {
       this.unbindEvents()
     },
     onClick (event) {
-      if (this.disabled) {
+      if (this.disabled || event.target === this.$refs.handler[0] || event.target === this.$refs.handler[1]) {
         return
       }
-      const x = this.calcXByEvent(event)
-      const value = this.calcValueByX(x)
-      const handlerIndex = this.multiple && value >= this.filteredValue[1] ? 1 : 0
-      this.focus(handlerIndex)
-      this.setValue(this.calcValueByX(x), handlerIndex)
+      if (!this.multiple) {
+        const x = this.calcXByEvent(event)
+        const value = this.calcValueByX(x)
+        this.focus(0)
+        this.setValue(value, 0)
+      } else {
+        this.focus(0)
+      }
     },
     handlerFocus (handlerIndex) {
       if (this.disabled || this.selectedHandler === handlerIndex) {
@@ -217,6 +243,9 @@ export default {
       this.setValue(this.calcValueByX(x), this.selectedHandler)
     },
     wheel (event) {
+      if (this.disabled || this.multiple) {
+        return
+      }
       event.preventDefault()
       if (this.selectedHandler < 0) {
         this.handlerFocus(0)
@@ -241,10 +270,20 @@ export default {
       document.body.removeEventListener('mouseup', this.moveEnd)
       document.body.removeEventListener('touchend', this.moveEnd)
     },
+    valueIndex (value) {
+      return this.filteredData.findIndex(v => JSON.stringify(v.value) === JSON.stringify(value))
+    },
     setValue (value, handlerIndex) {
       let ret = this.filteredValue
       ret[handlerIndex] = value
-      ret.sort((a, b) => a >= b ? 1 : -1)
+      const valueIndex = this.valueIndex(value)
+      const minPosibleIndex = handlerIndex === 0 ? 0 : this.valueIndex(this.filteredValue[0]) + 1
+      const maxPosibleIndex = handlerIndex === 1 ? this.dataLength - 1 : (this.multiple ? this.valueIndex(this.filteredValue[1]) - 1 : this.dataLength - 1)
+
+      if (valueIndex < minPosibleIndex || valueIndex > maxPosibleIndex) {
+        return
+      }
+
       const handlerPosition = []
       if (ret.length > 1) {
         handlerPosition.push(this.calcXByValue(ret[0]))
@@ -287,6 +326,31 @@ export default {
     calcXByValue (value) {
       return this.filteredData.find(fd => JSON.stringify(fd.value) === JSON.stringify(value)).x
     }
+  },
+  watch: {
+    value () {
+      if (!this.$refs.filler || !this.$refs.handler) {
+        return false
+      }
+      const ret = this.filteredValue
+      const handlerPosition = []
+      if (ret.length > 1) {
+        handlerPosition.push(this.calcXByValue(ret[0]))
+        handlerPosition.push(this.calcXByValue(ret[1]))
+        this.$refs.filler.style[this.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.filler.style[this.blockEnd] = `${100 - handlerPosition[1]}%`
+        this.$refs.handler[0].style[this.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
+        this.$refs.handler[1].style[this.blockStart] = `${handlerPosition[1]}%`
+        this.$refs.handler[1].style.transform = `translateX(-${handlerPosition[1]}%)`
+      } else {
+        handlerPosition.push(this.calcXByValue(ret[0]))
+        this.$refs.filler.style[this.blockStart] = `0%`
+        this.$refs.filler.style[this.blockEnd] = `${100 - this.calcXByValue(ret[0])}%`
+        this.$refs.handler[0].style[this.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
+      }
+    }
   }
 }
 
@@ -297,15 +361,21 @@ export default {
 @import '../styles/mixins';
 
 .fv-range {
-  @include shadow(inset-bottom);
-
-  background: contrast($bg-color, 1, force-light);
-  border: solid 1px contrast($bg-color, 2, hard-dark);
-  padding: 0;
   position: relative;
-  height: 0.8em;
-  border-radius: $border-radius;
-  margin: 1em 0;
+  min-height: heightSize(md);
+  width: 100%;
+
+  & .container {
+    @include shadow(inset-bottom);
+
+    top: 35%;
+    height: 30%;
+    width: 100%;
+    position: absolute;
+    background: contrast($bg-color, 1, force-light);
+    border: solid 1px contrast($bg-color, 2, hard-dark);
+    border-radius: $border-radius;
+  }
 
   & .filler {
     margin: 0;
@@ -315,16 +385,16 @@ export default {
     background: contrast($primary-color, 2, hard-light);
   }
 
-  & > .handler {
+  & .handler {
     @include shadow(bottom);
 
     padding: 0;
     height: 2em;
+    top: -0.5rem;
     width: 2em;
-    top: -0.6em;
     display: inline-block;
     position: absolute;
-    border-radius: 1em;
+    border-radius: $border-radius;
     background: contrast($bg-color, 1, force-light);
     border: solid 1px contrast($bg-color, 2, hard-dark);
     cursor: move;
@@ -334,7 +404,7 @@ export default {
     }
   }
 
-  &:not([disabled]) > .handler {
+  &:not([disabled]) .handler {
     &:active {
       @include shadow(inset-bottom);
     }
@@ -350,7 +420,7 @@ export default {
   }
 
   &[invalid] {
-    & > .handler:focus {
+    & .handler:focus {
       @include outline($danger-color);
     }
   }

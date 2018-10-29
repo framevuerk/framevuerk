@@ -28,6 +28,7 @@ export default {
       default: process.env.direction === 'ltr' ? 'left' : 'right'
     }
   },
+  inject: ['fvMain'],
   data () {
     return {
       isRendered: false
@@ -52,10 +53,7 @@ export default {
   methods: {
     fixSize () {
       this.$nextTick(() => {
-        utility.requestParent(this, 'setOffset', {
-          position: this.position,
-          size: this.value && this.pin ? `${this.$el.offsetWidth}px` : 0
-        })
+        this.fvMain.offset[this.position] = this.value && this.pin ? `${this.$el.offsetWidth}px` : 0
       })
     },
     onToggle (value) {
@@ -64,7 +62,7 @@ export default {
       this.fixSize()
     },
     onResize (event) {
-      const parentSize = utility.requestParent(this, 'getSize')
+      const parentSize = this.fvMain.getSize()
       if (parentSize.indexOf('lg') === -1) {
         if (this.pin !== false) {
           this.$emit('update:pin', false)
@@ -98,7 +96,13 @@ export default {
     })
   },
   beforeDestroy () {
+    this.fixSize()
     window.removeEventListener('resize', this.onResize)
+  },
+  created () {
+    if (!this.fvMain) {
+      throw utility.error('no_fvmain_parent')
+    }
   }
 }
 </script>
@@ -144,8 +148,7 @@ export default {
       border-top: solid 1px contrast($sidebar-bg-color, 1);
     }
 
-    &.highlighted > .content,
-    &:not(.unclickable) > .content:hover {
+    &.highlighted > .content {
       @include yiq(contrast($sidebar-bg-color, 1));
     }
   }
