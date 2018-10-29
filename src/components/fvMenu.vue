@@ -6,8 +6,8 @@ fv-dialog.fv-menu(ref="dialog",
   @input="$emit('input', $event)",
   @close="$emit('close')",
   @open="onOpen")
-  fv-content.fv-no-padding
-    fv-list.fv-no-border(ref="list",
+  fv-content
+    fv-list(ref="list",
       parent)
       fv-list-item(v-for="item in items",
         :key="itemProp(item, 'value')",
@@ -19,24 +19,15 @@ fv-dialog.fv-menu(ref="dialog",
 
 <script>
 import utility from '../utility'
-import fvDialog from './fvDialog.vue'
-import fvContent from './fvContent.vue'
-import fvList from './fvList.vue'
 
 export default {
-  components: {
-    fvDialog,
-    fvContent,
-    fvList
-  },
   props: {
     value: {
       type: Boolean,
       default: false
     },
     sourceElement: {
-      type: HTMLElement,
-      default: null
+      type: HTMLElement
     },
     items: {
       type: Array,
@@ -51,6 +42,7 @@ export default {
       default: 'disabled'
     }
   },
+  inject: ['fvMain'],
   data () {
     return {
       dialogStyle: {},
@@ -60,18 +52,18 @@ export default {
   methods: {
     onOpen () {
       this.$emit('open')
-      const isSmall = utility.requestParent(this, 'getSize').indexOf('md') === -1
+      const isSmall = this.fvMain.getSize().indexOf('md') === -1
       if (isSmall) {
         this.dialogStyle = {
-          width: `calc(100% - ${parseInt(process.env.padding) * 2}px)`,
-          maxHeight: `calc(100% - ${parseInt(process.env.padding) * 8}px)`,
-          bottom: process.env.padding,
-          left: process.env.padding,
-          right: process.env.padding
+          width: `calc(100% - 30px)`,
+          maxHeight: `calc(100% - 60px)`,
+          bottom: '15px',
+          left: '15px',
+          right: '15px'
         }
         this.dialogClass = ['not-center']
       } else if (this.sourceElement) {
-        const offset = utility.offsetTo(this.sourceElement, utility.requestParent(this, 'getElement'))
+        const offset = utility.offsetTo(this.sourceElement, this.fvMain.$el)
         this.dialogStyle = {
           left: `${offset.left}px`,
           top: `${offset.top}px`
@@ -93,6 +85,11 @@ export default {
     onItemClick (item) {
       this.$emit('click', item)
       this.$emit('input', false)
+    }
+  },
+  created () {
+    if (!this.fvMain) {
+      throw utility.error('no_fvmain_parent')
     }
   }
 }
