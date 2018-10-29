@@ -1,16 +1,17 @@
 <template lang="pug">
-.fv-input-group.fv-pagination
-  fv-button.fv-size-sm(v-if="navigation",
-    :disabled="value === 1 || !prev",
-    @click="$emit('input', value - 1)")
-    .icon(v-html="icons.firstPage")
+.fv-pagination
+  span.page
+    fv-button(v-if="navigation",
+      :disabled="value === 1 || !prev",
+      @click="$emit('input', value - 1)")
+      .icon(:style="{ transform: icons.prev }", v-html="icons.icon")
   span.page(v-for="page in pages")
-    b.fv-padding-small.fv-text-gray(v-if="page.type === 'dots'") …
-    fv-button.fv-size-sm(v-else-if="page.number !== value",
+    b.other(v-if="page.type === 'dots'") …
+    fv-button(v-else-if="page.number !== value",
       @click="$emit('input', page.number)") {{page.text || page.number}}
-    fv-button.fv-size-sm.fv-primary(v-else-if="!inputMode",
+    fv-button.fv-primary(v-else-if="!inputMode",
       @click="turnInputMode") {{page.number}}
-    fv-input.fv-size-sm.fv-text-primary.input(v-else,
+    fv-input.input(v-else,
       ref="input",
       :value="page.number",
       type="number",
@@ -18,26 +19,33 @@
       :max="total || undefined",
       @blur.native="inputMode = false",
       @keyup.native.enter="onEnterPage")
-  fv-button.fv-size-sm(v-if="navigation",
-    :disabled="value === total || !next",
-    @click="$emit('input', value + 1)")
-    .icon(v-html="icons.lastPage")
+  span.page
+    fv-button(v-if="navigation",
+      :disabled="value === total || !next",
+      @click="$emit('input', value + 1)")
+      .icon(:style="{ transform: icons.next }", v-html="icons.icon")
 </template>
 
 <script>
+import icon from '../icons/ARR.svg'
+
 export default {
   props: {
     value: {
-      type: Number
+      type: Number,
+      default: 1
     },
     total: {
-      type: Number
+      type: Number,
+      default: 0
     },
     size: {
-      type: Number
+      type: Number,
+      default: 5
     },
     navigation: {
-      type: Boolean
+      type: Boolean,
+      default: true
     },
     next: {
       type: Boolean,
@@ -55,11 +63,10 @@ export default {
   },
   computed: {
     icons () {
-      const chevronLeft = require('../icons/feather/chevron-left.svg')
-      const chevronRight = require('../icons/feather/chevron-right.svg')
       return {
-        lastPage: process.env.direction === 'ltr' ? chevronRight : chevronLeft,
-        firstPage: process.env.direction === 'ltr' ? chevronLeft : chevronRight
+        icon,
+        next: process.env.direction === 'ltr' ? 'rotate(-90deg)' : 'rotate(90deg)',
+        prev: process.env.direction === 'ltr' ? 'rotate(90deg)' : 'rotate(-90deg)'
       }
     },
     pages () {
@@ -128,10 +135,25 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../styles/variables';
+@import '../styles/functions';
+
 .fv-pagination {
-  & .page > .input {
-    width: 6em;
-    text-align: center;
+  & > * {
+    &:not(:first-child) {
+      margin-#{$block-start}: padding(sm);
+    }
+  }
+
+  & .page {
+    & > .input {
+      width: 6em;
+      text-align: center;
+    }
+
+    & > .other {
+      padding: padding(sm);
+    }
   }
 }
 </style>
