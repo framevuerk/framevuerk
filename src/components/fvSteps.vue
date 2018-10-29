@@ -1,25 +1,29 @@
 <template lang="pug">
 .fv-row.fv-steps
   .step.fv-col.fv-col-lower-sm-12(v-for="(step, i) in steps",
-    :class="{highlighted: i <= value, completed: i < value}")
+    :class="{highlighted: i <= value, completed: i < value}",
+    @click="$emit('input', i)")
     .top
       .line.before
-      h2.circle
-        slot(v-if="$scopedSlots.circle || $slots.circle", name="circle", :step="step", :highlighted="i <= value", :completed="i < value", :index="i")
+      h2.box
+        slot(v-if="$scopedSlots.box || $slots.box", name="box", :step="step", :index="i")
         span(v-else, v-text="i + 1")
       .line.after
     h3.text
-      slot(v-if="$scopedSlots.text || $slots.text", name="text", :step="step", :highlighted="i <= value", :completed="i < value", :index="i")
+      slot(v-if="$scopedSlots.text || $slots.text", name="text", :step="step", :index="i")
       span(v-else, v-text="step")
 </template>
 
 <script>
 export default {
   props: {
-    steps: Array,
     value: {
       type: Number,
       default: 0
+    },
+    steps: {
+      type: Array,
+      required: true
     }
   },
   data () {
@@ -35,11 +39,16 @@ export default {
 <style lang="scss">
 @import '../styles/variables';
 @import '../styles/mixins';
-$circle-size: 50px;
-$line-height: 10px;
+$box-size: 2em;
+$line-height: 0.8em;
 
 .fv-steps {
   padding: 0;
+  user-select: none;
+  overflow: hidden;
+  font-size: fontSize(md);
+  min-height: heightSize(md);
+  // line-height: heightSize(md);
 
   & > .step {
     text-align: center;
@@ -48,14 +57,14 @@ $line-height: 10px;
     & > .top {
       position: relative;
 
-      & .circle {
-        width: $circle-size;
-        height: $circle-size;
+      & .box {
+        width: $box-size;
+        height: $box-size;
         background: darken($bg-color-light, $shadow-percent);
         color: #fff;
-        border-radius: $circle-size / 2;
+        border-radius: $border-radius;
         text-align: center;
-        line-height: $circle-size;
+        line-height: $box-size;
         display: inline-block;
       }
 
@@ -63,17 +72,17 @@ $line-height: 10px;
         position: absolute;
         height: $line-height;
         background: darken($bg-color-light, $shadow-percent);
-        top: #{($circle-size - $line-height) / 2};
-        width: calc(50% - #{$circle-size - $line-height});
+        top: $box-size / 2;
+        width: calc(51% - #{$box-size - $line-height});
 
         &.before {
-          width: calc(50% - #{$circle-size - $line-height});
+          width: calc(51% - #{$box-size - $line-height});
           #{$block-start}: 0;
         }
 
         &.after {
-          width: calc(50% - #{$circle-size - $line-height});
-          #{$block-start}: calc(50% + #{$circle-size - $line-height});
+          width: calc(51% - #{$box-size - $line-height});
+          #{$block-start}: calc(50% + #{$box-size - $line-height});
         }
       }
     }
@@ -86,11 +95,7 @@ $line-height: 10px;
 
     &.highlighted {
       & > .top {
-        & > .circle {
-          box-shadow: 0 0 0 2px $bg-color, 0 0 0 4px $primary-color;
-        }
-
-        & > .circle,
+        & > .box,
         & > .line.before {
           background: $primary-color;
         }
@@ -110,7 +115,7 @@ $line-height: 10px;
             background: $primary-color;
           }
 
-          & > .circle {
+          & > .box {
             box-shadow: none;
           }
         }
