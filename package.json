@@ -1,6 +1,6 @@
 {
   "name": "framevuerk",
-  "version": "2.0.0",
+  "version": "2.0.0-rc1",
   "description": "Fast, Responsive, Without Dependencies, Both Direction Support and Configurable UI Framework based on Vue.js.",
   "main": "dist/framevuerk.min.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.2.0",
-    "framevuerk-builder": "file:../framevuerk-builder/framevuerk-builder-2.0.0.tgz",
+    "framevuerk-builder": "^2.0.0-rc1",
     "rimraf": "^2.6.2",
     "stylelint": "^8.4.0",
     "stylelint-config-recommended-scss": "^3.0.0",
