@@ -2,8 +2,10 @@
 textarea.fv-textarea.fv-input(:class="{'auto-height': autoHeight}",
   :invalid="!fvValidate",
   :value="value",
-  :style="{ height: height }"
-  @input="$emit('input', $event.target.value)")
+  :style="{ height: height }",
+  @focus="onFocus",
+  @blur="onBlur",
+  @input="onInput")
 </template>
 
 <script>
@@ -18,6 +20,11 @@ export default {
     },
     autoHeight: {
       type: Boolean,
+      default: false
+    }
+  },
+  inject: {
+    fvFormElement: {
       default: false
     }
   },
@@ -45,6 +52,24 @@ export default {
         return `${height * 1.3}em`
       }
     }
+  },
+  methods: {
+    focus () {
+      this.$el.focus()
+    },
+    onFocus () {
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(true)
+      }
+    },
+    onBlur () {
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(false)
+      }
+    },
+    onInput (event) {
+      this.$emit('input', event.target.value)
+    }
   }
 }
 </script>
@@ -57,6 +82,9 @@ export default {
   @include scrollbar($bg-color);
 
   line-height: 1.3em;
+  font-size: fontSize(md);
+  min-height: heightSize(md);
+  resize: vertical;
   padding: $padding-small;
 
   &.auto-height {

@@ -4,6 +4,8 @@ span.fv-switch(:class="{ on: onValue === pValue }",
   :invalid="!fvValidate",
   @click="toggle",
   :tabindex="disabled? '': 0",
+  @focus="onFocus",
+  @blur="onBlur",
   @keydown.space.prevent="toggle")
   .container
     span.handler
@@ -33,6 +35,11 @@ export default {
   data () {
     return {
       pValue: this.value
+    }
+  },
+  inject: {
+    fvFormElement: {
+      default: false
     }
   },
   computed: {
@@ -72,6 +79,21 @@ export default {
       this.pValue = this.offValue
       this.$emit('input', this.pValue)
     },
+    focus () {
+      if (!this.disabled) {
+        this.$el.focus()
+      }
+    },
+    onFocus () {
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(true)
+      }
+    },
+    onBlur () {
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(false)
+      }
+    },
     setStructure () {
       if ([this.offValue, this.onValue].indexOf(this.value) === -1 && !this.disabled) {
         this.off()
@@ -91,6 +113,7 @@ export default {
   min-height: heightSize(md);
   width: 3.8em;
   position: relative;
+  vertical-align: middle;
 
   & .container {
     @include shadow(bottom);
@@ -101,7 +124,8 @@ export default {
     cursor: pointer;
     direction: $direction;
     padding: 0.2em;
-    height: 100%;
+    top: 10%;
+    height: 80%;
     width: 100%;
     position: absolute;
     text-align: $block-start;
@@ -132,7 +156,11 @@ export default {
     }
   }
 
-  &:focus .container{
+  &[disabled] .container {
+    @include disabled;
+  }
+
+  &:focus .container {
     @include outline;
 
     &:invalid,
@@ -145,12 +173,8 @@ export default {
     @include shadow(inset-bottom);
   }
 
-  &:hover:not(:focus):not([disabled]) .container{
+  &:hover:not(:focus):not([disabled]) .container {
     border: solid 1px contrast($bg-color, 3, hard-dark);
-  }
-
-  &[disabled] .container{
-    @include disabled;
   }
 }
 </style>
