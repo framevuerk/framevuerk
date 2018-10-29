@@ -1,5 +1,6 @@
 <template lang="pug">
 .fv-loading
+  .spinner
 </template>
 
 <style lang="scss">
@@ -9,16 +10,22 @@
 
 .fv-loading {
   display: inline-block;
-  width: 1.3em;
-  height: 1.3em;
-  clear: both;
-  border: 2px solid;
+  min-height: heightSize(md);
   vertical-align: middle;
-  border-left-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: transparent;
-  border-radius: 0.7em;
-  animation: fv-loading $transition-speed-slow infinite linear;
+
+  & .spinner {
+    display: inline-block;
+    height: 2.5em;
+    width: 2.5em;
+    clear: both;
+    vertical-align: middle;
+    border: 0.4em solid;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 1.5em;
+    animation: fv-loading $transition-speed-slow infinite linear;
+  }
 }
 
 @keyframes fv-loading {
