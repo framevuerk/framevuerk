@@ -2,9 +2,6 @@ module.exports = {
   contains (text = '', search = '') {
     return text.toString().toUpperCase().indexOf(search.toString().toUpperCase()) !== -1
   },
-  capitalizeFirstLetter (str = '') {
-    return str.charAt(0).toUpperCase() + str.slice(1)
-  },
   viewportSize (el = document.body) {
     const breakXs = 480
     const breakSm = 768
@@ -28,15 +25,6 @@ module.exports = {
       ret.push('xl')
     }
     return ret
-  },
-  fvParent (vueComponent, vueElName = 'fvMain') {
-    let ret = vueComponent.$parent
-    while (ret) {
-      if (ret.$el !== vueComponent.$el && (typeof ret.parent !== 'undefined' ? !!ret.parent : true) && ret.$vnode && ret.$vnode.tag.indexOf(vueElName) > -1) {
-        return ret
-      }
-      ret = ret.$parent
-    }
   },
   isChildOf (el, parent) {
     let eli = el
@@ -67,22 +55,9 @@ module.exports = {
     }
     return ret
   },
-  requestParent (vueComponent, request, data, parentComponent = 'fvMain', level = 999) {
-    let parent = vueComponent.$parent
-    while (parent) {
-      if (level === 0) {
-        parent = undefined
-        break
-      }
-      if (parent.$el !== vueComponent.$el && (parent.parent === true || typeof parent.parent === 'undefined') && parent.$vnode.tag.indexOf(parentComponent) > -1) {
-        break
-      }
-      parent = parent.$parent
-      level--
+  error (code) {
+    if (code === 'no_fvmain_parent') {
+      return `you should put your component under a fvMain component with parent prop seted.`
     }
-    if (parent) {
-      return parent.onRequest(vueComponent, request, data)
-    }
-  },
-  _dependencies: {}
+  }
 }
