@@ -1,13 +1,12 @@
 <template lang="pug">
-li.fv-list-item(:class="{highlighted: isHighlighted, selected: selected}",
-  :disabled="disabled")
-  .content(@click="onClick", @mousemove="onHover")
-    .fv-no-wrap.text
+li.fv-list-item(:disabled="disabled")
+  .content(@click="onClick")
+    .text
       slot(name="default")
     .expand(v-if="hasSubList",
-      @click="toggle()",
+      @click="toggle",
       tabindex="-1",
-      v-html="require('../icons/feather/chevron-down.svg')",
+      v-html="icon",
       :class="{rotate: isExpanded}")
   transition(name="sub-list")
     .sub-list(v-if="hasSubList",
@@ -17,35 +16,28 @@ li.fv-list-item(:class="{highlighted: isHighlighted, selected: selected}",
 </template>
 
 <script>
+import icon from '../icons/ARR.svg'
+
 export default {
   props: {
     disabled: {
       type: Boolean,
       default: false
     },
-    selected: {
-      type: Boolean,
-      default: false
-    },
     expanded: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data () {
     return {
-      isExpanded: this.expanded || false
+      isExpanded: this.expanded,
+      icon
     }
   },
   computed: {
     hasSubList () {
       return this.$slots.hasOwnProperty('sub-list') || this.$scopedSlots.hasOwnProperty('sub-list')
-    },
-    isHighlighted () {
-      const bigParent = this.bigParent()
-      const normalHighlighted = bigParent !== false && bigParent.highlighted === this.$el
-      const shouldHighlight = normalHighlighted && (bigParent.isFocused || bigParent.tabindex < 0)
-      return normalHighlighted && shouldHighlight
     }
   },
   methods: {
@@ -57,37 +49,21 @@ export default {
       this.isExpanded = false
       this.$emit('collapse')
     },
-    toggle () {
+    toggle (event) {
+      event.stopPropagation()
       if (this.isExpanded) {
         this.collapse()
       } else {
         this.expand()
       }
     },
-    bigParent () {
-      let ret = this
-      while (ret) {
-        if (ret.parent) {
-          return ret
-        }
-        ret = ret.$parent
-      }
-      return false
-    },
-    onHover () {
-      if (!this.disabled) {
-        this.bigParent().highlighted = this.$el
-      }
-    },
     onClick (event) {
-      const parent = this.bigParent()
       if (!this.disabled) {
-        if (!parent.isFocused) {
-          parent.$el.focus()
-        }
-        parent.highlighted = this.$el
         this.$emit('click', event)
       }
+    },
+    onHover () { // called by parent
+      this.$emit('hover')
     }
   }
 }
@@ -101,6 +77,7 @@ export default {
   clear: both;
   overflow: hidden;
   border: 0;
+  min-height: heightSize(md);
 
   & .content {
     align-items: center;
@@ -108,24 +85,30 @@ export default {
     position: relative;
     flex-direction: row;
     justify-content: space-between;
-    min-height: 3em;
+    min-height: inherit;
 
     & > .text {
+      @include nowrap;
+
       flex-grow: 1;
       padding: 0 $padding;
     }
 
     & .expand {
-      padding: 0 $padding-small;
+      padding: 0 ($padding / 2);
       cursor: pointer;
-      transition: transform $transition-speed;
 
       & > svg {
         vertical-align: middle;
+        width: 1.4em;
+        height: auto;
+        transition: transform $transition-speed;
       }
 
       &.rotate {
-        transform: rotateX(180deg);
+        & > svg {
+          transform: rotateX(180deg);
+        }
       }
     }
   }
@@ -141,11 +124,8 @@ export default {
     }
   }
 
-  &.highlighted > .content,
-  &:not(.unclickable):not([disabled]) > .content:hover {
+  &.highlighted > .content {
     @include yiq(contrast($bg-color, 1));
-
-    cursor: pointer;
   }
 
   &.selected {
@@ -164,6 +144,7 @@ export default {
       transition-property: opacity, max-height;
       will-change: opacity, max-height;
       max-height: 100vh;
+      backface-visibility: hidden;
     }
 
     &.sub-list-enter,
