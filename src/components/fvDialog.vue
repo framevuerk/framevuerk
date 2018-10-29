@@ -8,20 +8,8 @@ transition(:name="animation")
 
 <script>
 import utility from '../utility'
-import fvMain from './fvMain.vue'
-import fvHeader from './fvHeader.vue'
-import fvContent from './fvContent.vue'
-import fvFooter from './fvFooter.vue'
-import fvButton from './fvButton.vue'
 
 export default {
-  components: {
-    fvMain,
-    fvHeader,
-    fvContent,
-    fvFooter,
-    fvButton
-  },
   props: {
     value: {
       type: Boolean,
@@ -36,6 +24,7 @@ export default {
       default: 'fv-fade'
     }
   },
+  inject: ['fvMain'],
   data () {
     return {
       focusBackElement: null,
@@ -75,10 +64,7 @@ export default {
       }
     },
     addOverlay () {
-      this.overlayElement = utility.requestParent(this, 'appendOverlay', {
-        before: this.$el,
-        onClick: this.close
-      })
+      this.overlayElement = this.fvMain.appendOverlay(this.$el, this.close)
     },
     removeOverlay () {
       if (this.overlayElement) {
@@ -92,9 +78,7 @@ export default {
     onOpen () {
       this.$emit('open')
       this.$nextTick(() => {
-        utility.requestParent(this, 'appendChild', {
-          el: this.$el
-        })
+        this.fvMain.appendChild(this.$el)
         if (this.overlay) {
           this.addOverlay()
           this.focus()
@@ -163,6 +147,11 @@ export default {
     this.removeHash()
     this.removeOverlay()
     this.$el.remove()
+  },
+  created () {
+    if (!this.fvMain) {
+      throw utility.error('no_fvmain_parent')
+    }
   },
   mounted () {
     this.valueHandler(this.value)
