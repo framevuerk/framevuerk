@@ -8,14 +8,13 @@
     .placeholder(v-if="showPlaceholder", v-text="placeholder")
     .value-container
       .item(v-for="singleValue in values")
-        slot(v-if="$scopedSlots.value || $slots.value",
-          name="value",
-          :value="singleValue")
+        span(v-if="$scopedSlots.value || $slots.value")
+          slot(name="value", :value="singleValue")
         span(v-else) {{singleValue}}
-        .button(v-if="deleteButton", v-html="require('../icons/feather/x.svg')", fv-inputbox-cancel-enter, @click="onValueDelete(singleValue)")
+        span.button(v-if="deleteButton", v-html="deleteIcon", fv-inputbox-cancel-enter, @click="onValueDelete(singleValue)")
       .item.transparent
         input.input(:value="searchQuery",
-          v-if="input && !isBreaked",
+          v-if="input && !breaked",
           @focus="onFocus",
           @blur="onBlur",
           :disabled="disabled"
@@ -32,11 +31,11 @@
     .caret-icon(v-if="caretIcon",
       v-html="caretIcon")
     transition(name="fv-fade")
-      fv-main.out-container(v-if="showOut && !isBreaked", :class="{top: !outOnBottom, bottom: outOnBottom}", :style="{maxHeight: outMaxHeight}")
-        fv-content.fv-no-padding
+      fv-main.out-container(v-if="showOut && !breaked", :class="{top: !outOnBottom, bottom: outOnBottom}", :style="{maxHeight: outMaxHeight}")
+        fv-content
           slot(name="out")
     fv-dialog.not-center(ref="outDialog",
-      v-if="isBreaked",
+      v-if="breaked",
       :value="showOut",
       @input="showOut = $event",
       :style="dialogStyle")
@@ -54,13 +53,13 @@
           tabindex="0",
           @keydown="onInputKeydown")
           h4.fv-control-label {{placeholder}}
-      fv-content.fv-no-padding
+      fv-content
         slot(name="out")
 </template>
 
 <script>
 import utility from '../utility'
-import locale from 'locale'
+import deleteIcon from '../icons/CLS.svg'
 
 export default {
   props: {
@@ -92,13 +91,12 @@ export default {
     input: {
       type: Boolean,
       default: true
-    },
-    breaked: {
-      type: [Boolean, Object],
-      validator: (value) => {
-        return [true, false, null].indexOf(value) > -1
-      },
-      default: null
+    }
+  },
+  inject: {
+    fvMain: {},
+    fvFormElement: {
+      default: false
     }
   },
   data () {
@@ -107,8 +105,8 @@ export default {
       showOut: false,
       outOnBottom: true,
       outMaxHeight: 'auto',
-      isRendered: false,
-      locale
+      breaked: false,
+      deleteIcon
     }
   },
   computed: {
@@ -118,19 +116,13 @@ export default {
     values () {
       return this.multiple ? this.value : (typeof this.value === 'undefined' ? [] : [this.value])
     },
-    isBreaked () {
-      if (this.isRendered && this.breaked === null) {
-        return utility.requestParent(this, 'getSize').indexOf('md') === -1
-      }
-      return this.breaked
-    },
     dialogStyle () {
       return {
-        width: `calc(100% - ${parseInt(process.env.padding) * 2}px)`,
-        maxHeight: `calc(100% - ${parseInt(process.env.padding) * 8}px)`,
-        top: process.env.padding,
-        left: process.env.padding,
-        right: process.env.padding
+        width: `calc(100% - 30px)`,
+        maxHeight: `calc(100% - 60px)`,
+        top: '15px',
+        left: '15px',
+        right: '15px'
       }
     }
   },
@@ -138,8 +130,11 @@ export default {
     focus () {
       this.$refs.input.focus()
     },
+    calcBreaked () {
+      this.breaked = this.fvMain.getSize().indexOf('md') === -1
+    },
     focusInput () {
-      if (this.isBreaked && this.showOut) {
+      if (this.breaked && this.showOut) {
         this.$refs.dialogInput.focus()
         this.isFocused = true
       } else {
@@ -148,20 +143,28 @@ export default {
     },
     onFocus () {
       this.isFocused = true
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(true)
+      }
     },
     onBlur () {
+      const action = () => {
+        this.isFocused = false
+        this.$emit('blur')
+        if (this.fvFormElement) {
+          this.fvFormElement.turn(false)
+        }
+      }
       this.$nextTick(() => {
         const elem = document.querySelector(':focus')
-        if (this.isBreaked) {
+        if (this.breaked) {
           if (!this.showOut && (!elem || !utility.isChildOf(elem, this.$el))) {
-            this.isFocused = false
-            this.$emit('blur')
+            action()
           }
         } else {
           if ((!elem || !utility.isChildOf(elem, this.$el))) {
-            this.isFocused = false
             this.close()
-            this.$emit('blur')
+            action()
           }
         }
       })
@@ -187,20 +190,20 @@ export default {
       this.open()
     },
     calcOutPosition () {
-      const parentEl = utility.requestParent(this, 'getElement')
+      const parentEl = this.fvMain.$el
       const parentHeight = parentEl.offsetHeight
       const elHeight = this.$el.offsetHeight
       const top = utility.offsetTo(this.$el, parentEl).top
       this.outOnBottom = !(top > (parentHeight / 2))
       const bottom = parentHeight - top - elHeight
-      const padding = parseInt(process.env.padding)
-      this.outMaxHeight = `${(parentHeight - (this.outOnBottom ? top : bottom) - elHeight) - (padding * 2)}px`
+      const padding = 30
+      this.outMaxHeight = `${(parentHeight - (this.outOnBottom ? top : bottom) - elHeight) - padding}px`
     },
     open () {
       if (!this.showOut) {
         this.$emit('open')
       }
-      if (this.isBreaked) {
+      if (this.breaked) {
         this.showOut = true
         this.focus()
       } else {
@@ -223,10 +226,19 @@ export default {
       }
     }
   },
+  created () {
+    if (!this.fvMain) {
+      throw utility.error('no_fvmain_parent')
+    }
+  },
   mounted () {
+    window.addEventListener('resize', this.calcBreaked)
     this.$nextTick(() => {
-      this.isRendered = true
+      this.calcBreaked()
     })
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.calcBreaked)
   }
 }
 </script>
@@ -238,34 +250,38 @@ export default {
 
 .fv-inputbox {
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
+  width: 17em;
+  max-width: 100%;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 
   & > .caret-icon {
     #{$block-end}: 0;
-    padding-#{$block-start}: $padding;
-    height: 100%;
+    padding-#{$block-start}: $padding / 2;
 
     & > svg {
-      height: 100%;
+      height: 1.5em;
       vertical-align: middle;
     }
   }
 
   & > .value-container {
-    width: 100%;
+    width: 80%;
+    max-width: 80%;
 
     & > .item {
-      @include shadow(bottom);
+      padding: 0 0.25em;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      vertical-align: middle;
 
-      float: $block-start;
-      margin: $padding / 3;
-      margin-#{$block-start}: 0;
-      border: solid 1px contrast($bg-color, 2);
-      padding: 0 $padding-small;
-      border-radius: $border-radius;
+      & > span {
+        vertical-align: middle;
+      }
 
       &.transparent {
         background: transparent;
@@ -278,19 +294,19 @@ export default {
           border: none;
           background: transparent;
           width: auto;
+          font-size: 1em;
           color: inherit;
         }
       }
 
       & .button {
-        margin-#{$block-start}: $padding;
+        margin-#{$block-start}: $padding / 2;
         cursor: pointer;
         color: $color;
         height: 1.2em;
-        float: $block-end;
 
         & > svg {
-          height: 100%;
+          height: 1em;
           vertical-align: middle;
         }
 
