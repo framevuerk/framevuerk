@@ -51,8 +51,7 @@ $width-1: 8.33%;
     }
     $i: 0;
 
-    .fv-col-#{$media}-#{$i},
-    .fv-hide-on-#{$media} {
+    .fv-col-#{$media}-#{$i} {
       display: none;
     }
   }
@@ -72,8 +71,7 @@ $width-1: 8.33%;
     }
     $i: 0;
 
-    .fv-col-only-#{$media}-#{$i},
-    .fv-hide-on-only-#{$media} {
+    .fv-col-only-#{$media}-#{$i} {
       display: none;
     }
   }
@@ -93,8 +91,7 @@ $width-1: 8.33%;
     }
     $i: 0;
 
-    .fv-col-lower-#{$media}-#{$i},
-    .fv-hide-on-lower-#{$media} {
+    .fv-col-lower-#{$media}-#{$i} {
       display: none;
     }
   }
