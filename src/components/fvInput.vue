@@ -2,7 +2,8 @@
 input.fv-input(:invalid="!fvValidate",
   :value="value",
   @focus="onFocus",
-  @input="$emit('input', $event.target.value)")
+  @blur="onBlur",
+  @input="onInput")
 </template>
 
 <script>
@@ -13,6 +14,11 @@ export default {
     },
     required: {
       type: [Boolean, Function],
+      default: false
+    }
+  },
+  inject: {
+    fvFormElement: {
       default: false
     }
   },
@@ -30,8 +36,19 @@ export default {
     focus () {
       this.$el.focus()
     },
-    onFocus (event) {
+    onFocus () {
       this.$el.select()
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(true)
+      }
+    },
+    onBlur () {
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(false)
+      }
+    },
+    onInput (event) {
+      this.$emit('input', event.target.value)
     }
   }
 }
@@ -47,6 +64,6 @@ export default {
 
   font-size: fontSize(md);
   min-height: heightSize(md);
-  line-height: heightSize(md);
+  vertical-align: middle;
 }
 </style>
