@@ -1,3 +1,7 @@
+@import './variables';
+@import './functions';
+@import './mixins';
+
 [class*='fv-size'] {
   height: auto;
 }
@@ -6,7 +10,14 @@
   .fv-size-#{$media} {
     font-size: fontSize($media) !important;
     min-height: heightSize($media) !important;
-    line-height: heightSize($media) !important;
+  }
+
+  button,
+  input {
+    &.fv-size-#{$media} {
+      height: heightSize($media) !important;
+      line-height: heightSize($media) !important;
+    }
   }
 
   .fv-font-#{$media} {
