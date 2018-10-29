@@ -1,5 +1,5 @@
 <template lang="pug">
-ul.fv-list(@keydown.self="onKeydown", @focus="onFocus", @blur="onBlur", :tabindex="tabindex")
+ul.fv-list(:tabindex="tabindex", :data-parent="parent")
   slot(v-if="$scopedSlots.default || $slots.default")
 </template>
 
@@ -19,18 +19,39 @@ export default {
   },
   computed: {
     tabindex () {
-      return this.$attrs && this.$attrs.tabindex ? parseInt(this.$attrs.tabindex) : (this.parent ? 0 : -1)
+      return this.$attrs && this.$attrs.tabindex ? parseInt(this.$attrs.tabindex) : (this.parent ? 0 : undefined)
     }
   },
   methods: {
     onFocus () {
-      if (!this.highlighted) {
+      this.isFocused = true
+      if (this.highlighted === null) {
         this.moveHighlight(null)
       }
-      this.isFocused = true
     },
     onBlur () {
       this.isFocused = false
+      if (this.tabindex >= 0) {
+        this.setHighlight(null)
+      }
+    },
+    onLeave () {
+      if (!this.isFocused) {
+        this.setHighlight(null)
+      }
+    },
+    setHighlight (el) {
+      const allItems = [...this.$el.querySelectorAll('.fv-list-item')]
+      allItems.forEach(li => {
+        if (li !== el) {
+          li.classList.remove('highlighted')
+        }
+      })
+      if (el) {
+        el.classList.add('highlighted')
+        el.__vue__.onHover()
+      }
+      this.highlighted = el
     },
     moveHighlight (next = null) {
       const allItems = [...this.$el.querySelectorAll('.fv-list-item')].filter(el => el.offsetHeight)
@@ -50,7 +71,7 @@ export default {
           shouldHighlightIndex = 0
         }
       } while (allItems[shouldHighlightIndex].__vue__ && allItems[shouldHighlightIndex].__vue__.disabled)
-      this.highlighted = allItems[shouldHighlightIndex]
+      this.setHighlight(allItems[shouldHighlightIndex])
       if (typeof this.highlighted.scrollIntoViewIfNeeded === 'function') {
         this.highlighted.scrollIntoViewIfNeeded()
       }
@@ -82,15 +103,48 @@ export default {
           }
           break
       }
-      if ((event.which < 38 || event.which > 40) && event.which !== 13) {
-        setTimeout(() => {
-          this.moveHighlight(null)
-        })
+    },
+    onHover (event) {
+      let el = event.target
+      while (el) {
+        if (el && el.tagName === 'LI' && el.classList.contains('fv-list-item')) {
+          break
+        }
+        if (el.tagName === 'UL' && el.classList.contains('fv-list')) {
+          return
+        }
+        el = el.parentNode
       }
+      if (this.highlighted === el || el.getAttribute('disabled')) {
+        return
+      }
+      this.setHighlight(el)
+    },
+    bindEvents () {
+      if (this.parent) {
+        this.$el.addEventListener('mousemove', this.onHover)
+        this.$el.addEventListener('mouseleave', this.onLeave)
+        this.$el.addEventListener('keydown', this.onKeydown)
+      }
+      if (this.tabindex >= 0) {
+        this.$el.addEventListener('focus', this.onFocus)
+        this.$el.addEventListener('blur', this.onBlur)
+      }
+    },
+    unbindEvents () {
+      this.$el.removeEventListener('mouseleave', this.onLeave)
+      this.$el.removeEventListener('mousemove', this.onHover)
+      this.$el.removeEventListener('keydown', this.onKeydown)
+      this.$el.removeEventListener('focus', this.onFocus)
+      this.$el.removeEventListener('blur', this.onBlur)
     }
   },
   mounted () {
-    this.moveHighlight(null)
+    this.bindEvents()
+    // this.setHighlight(null)
+  },
+  beforeDestroy () {
+    this.unbindEvents()
   }
 }
 </script>
@@ -99,17 +153,10 @@ export default {
 @import '../styles/variables';
 
 .fv-list {
-  border: solid 1px contrast($bg-color, 2);
   clear: both;
 
   & > .fv-list-item:first-child > .content {
     border-top: none;
-  }
-
-  &:hover {
-    & .fv-list-item.highlighted > .content:not(:hover) {
-      background: inherit;
-    }
   }
 }
 </style>
