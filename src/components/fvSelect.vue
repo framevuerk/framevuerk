@@ -12,7 +12,7 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
   @blur="searchQuery = ''",
   :delete-button="deleteButton",
   @open="setHighlight"
-  :caret-icon="require('../icons/ARR.svg')",
+  :caret-icon="caretIcon",
   ref="inputBox")
   template(slot="value",
     slot-scope="scope")
@@ -21,7 +21,7 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
   template(slot="out")
     .fv-padding.fv-text-center(v-if="loading")
       fv-loading
-    fv-list.fv-no-border(v-else,
+    fv-list(v-else,
       :tabindex="-1",
       parent,
       ref="list")
@@ -35,15 +35,19 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
       fv-list-item(v-if="allowInsert && searchQuery",
         @click="onInsert(searchQuery)")
         slot(v-if="$scopedSlots.insert || $slots.insert", name="insert", :value="searchQuery")
-        span(v-else, v-text="locale.add(searchQuery)")
+        span(v-else)
+          span.insert-icon(v-html="insertIcon")
+          =" "
+          u(v-text="searchQuery")
       fv-list-item.unclickable(v-else-if="filteredOptions.length === 0")
         slot(v-if="$scopedSlots.empty || $slots.empty", name="empty", :value="searchQuery")
-        span(v-else, v-text="locale.notFound()")
+        span(v-else) ---
 </template>
 
 <script>
-import locale from 'locale'
 import utility from '../utility'
+import caretIcon from '../icons/ARR.svg'
+import insertIcon from '../icons/CLS.svg'
 
 export default {
   props: {
@@ -104,9 +108,10 @@ export default {
   },
   data () {
     return {
-      locale,
       isFocused: false,
-      searchQuery: ''
+      searchQuery: '',
+      caretIcon,
+      insertIcon
     }
   },
   computed: {
@@ -290,6 +295,12 @@ export default {
     border: none;
     background: transparent;
     width: auto;
+  }
+
+  & .insert-icon > svg {
+    transform: rotateZ(45deg);
+    vertical-align: middle;
+    width: 1em;
   }
 }
 </style>
