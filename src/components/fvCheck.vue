@@ -5,6 +5,8 @@
   @click="onClick",
   @keydown.space.prevent="onClick",
   :invalid="!fvValidate",
+  @focus="onFocus",
+  @blur="onBlur",
   :tabindex="disabled ? '' : 0")
   .box(:class="{square: multiple, circle: !multiple}")
   span.label
@@ -34,13 +36,18 @@ export default {
       default: false
     }
   },
+  inject: {
+    fvFormElement: {
+      default: false
+    }
+  },
   computed: {
     fvValidate () {
       if (this.required === true) {
         if (this.multiple) {
           return this.value && this.value.constructor === Array && this.value.length
         } else {
-          return !!this.value
+          return typeof this.value !== 'undefined'
         }
       } else if (typeof this.required === 'function') {
         return this.required(this.value)
@@ -93,6 +100,16 @@ export default {
         }
         this.$emit('input', value)
       }
+    },
+    onFocus () {
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(true)
+      }
+    },
+    onBlur () {
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(false)
+      }
     }
   }
 }
@@ -109,6 +126,7 @@ export default {
   align-items: center;
   margin: 0;
   margin-#{$block-end}: #{$padding};
+  min-height: heightSize(md);
   cursor: pointer;
 
   & > .box {
