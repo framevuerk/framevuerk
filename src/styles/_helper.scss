@@ -2,24 +2,13 @@
 @import './functions';
 @import './mixins';
 
-// T .fv-hidden
-// T .fv-hidden-${xs/sm/md/lg/xl/all}
-// T .fv-padding
-// T .fv-padding-${start/end/top/bottom}
-// T .fv-margin
-// T .fv-margin-${start/end/top/bottom}
-// T .fv-border
-// T .fv-border-${start/end/top/bottom}
-// T .fv-shadow
-// T .fv-radius
-
-
 // --------------
 // Hidden Classes
 // --------------
 .fv-hidden {
   display: none !important;
 }
+
 @each $media in 'xs', 'sm', 'md', 'lg', 'xl' {
   @include respond-to($media) {
     .fv-hidden-#{$media} {
@@ -28,24 +17,23 @@
   }
 }
 
-
 // --------------------------
 // Margin and Padding Classes
 // --------------------------
 @each $property in 'margin', 'padding' {
-
   .fv-#{$property} {
     #{$property}: padding(md) !important;
   }
+
   .fv-#{$property}-sm {
     #{$property}: padding(sm) !important;
   }
+
   .fv-no-#{$property} {
     #{$property}: 0 !important;
   }
 
   @each $direction in 'start', 'end', 'top', 'bottom' {
-
     .fv-#{$property}-#{$direction} {
       @if $direction == 'start' {
         #{$property}-#{$block-start}: padding(md) !important;
@@ -82,11 +70,12 @@
 .fv-border {
   border: border(md) !important;
 }
+
 .fv-no-border {
   border: 0 !important;
 }
-@each $direction in 'start', 'end', 'top', 'bottom' {
 
+@each $direction in 'start', 'end', 'top', 'bottom' {
   .fv-border-#{$direction} {
     @if $direction == 'start' {
       border-#{$block-start}: border(md) !important;
@@ -111,27 +100,27 @@
   @if $key == 'bg' {
     $prop: 'background';
   }
-  
+
   .fv-#{$key}-primary {
     #{$prop}: $primary-color !important;
   }
-  
+
   .fv-#{$key}-secondary {
     #{$prop}: $secondary-color !important;
   }
-  
+
   .fv-#{$key}-info {
     #{$prop}: $info-color !important;
   }
-  
+
   .fv-#{$key}-danger {
     #{$prop}: $danger-color !important;
   }
-  
+
   .fv-#{$key}-warning {
     #{$prop}: $warning-color !important;
   }
-  
+
   .fv-#{$key}-light {
     #{$prop}: $color-light !important;
   }
@@ -251,7 +240,6 @@
   height: 0;
   width: 100%;
 }
-
 
 .fv-block {
   display: block !important;

@@ -30,6 +30,7 @@ $width-1: 8.33%;
     width: #{$width-1 * $j};
     max-width: #{$width-1 * $j};
   }
+
   .fv-col-offset-#{$j} {
     margin-#{$block-start}: #{$width-1 * $j};
   }

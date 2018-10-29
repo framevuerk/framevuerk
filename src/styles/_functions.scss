@@ -101,9 +101,7 @@
   }
 }
 
-
 @function padding($size: sm) {
-
   @if $size == no {
     @return 0;
   }
@@ -119,11 +117,9 @@
   @else if $size == lg {
     @return $padding * 2;
   }
-
 }
 
 @function border($size: md, $color: $bg-color) {
-
   @if $size == no {
     @return 0;
   }
@@ -131,11 +127,9 @@
   @else if $size == md {
     @return solid 1px contrast($color, 2, hard-dark);
   }
-
 }
 
 @function radius($size: md) {
-
   @if $size == no {
     @return 0;
   }
@@ -147,11 +141,9 @@
   @else if $size == full {
     @return 100%;
   }
-
 }
 
 @function shadow($to: bottom, $color: $shadow-color-light) {
-
   @if $to == no {
     @return none;
   }
