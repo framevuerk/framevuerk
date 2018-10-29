@@ -1,7 +1,7 @@
 <div align="center">
   <a href="http://framevuerk.com" target="_blank"> <img src="http://framevuerk.com/logo.svg" height="200"/> </a>
   <h1><b> Framevuerk </b></h1>
-  <p><b>Fast</b>, <b>Responsive</b>, <b>Multi Language</b>, <b>Both Direction Support</b> and <b>Configurable</b> UI Framework based on <a href="http://vuejs.org" target="_blank">Vue.js</a>.</p>
+  <p><b>Fast</b>, <b>Responsive</b>, <b>Without Dependencies</b>, <b>Both Direction Support</b> and <b>Configurable</b> UI Framework based on <a href="http://vuejs.org" target="_blank">Vue.js</a>.</p>
   <img src="https://img.shields.io/github/license/framevuerk/framevuerk.svg?style=for-the-badge" /> <img src="https://img.shields.io/github/stars/framevuerk/framevuerk.svg?style=for-the-badge" /> <img src="https://img.shields.io/github/issues/framevuerk/framevuerk.svg?style=for-the-badge" /> <img src="https://img.shields.io/github/forks/framevuerk/framevuerk.svg?style=for-the-badge" /> <img src="https://img.shields.io/npm/dm/framevuerk.svg?style=for-the-badge"> <img src="https://img.shields.io/npm/v/framevuerk.svg?style=for-the-badge">
   <br>
 </div>
@@ -67,7 +67,6 @@ And your config or list of configs array in `.json` file. (Also you can deliver 
 ```json
 {
     "config-name": "foobar",
-    "locale": "en",
     "direction": "ltr",
     "primary-color": "#41b883",
     "secondary-color": "#35485d",
