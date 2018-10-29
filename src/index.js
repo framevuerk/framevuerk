@@ -28,8 +28,9 @@ import fvSteps from './components/fvSteps.vue'
 import fvRange from './components/fvRange.vue'
 import fvLoading from './components/fvLoading.vue'
 import fvPagination from './components/fvPagination.vue'
+import fvFormElement from './components/fvFormElement.vue'
 
-module.exports = {
+const Framevuerk = {
   fvMain,
   fvContent,
   fvHeader,
@@ -57,10 +58,7 @@ module.exports = {
   fvRange,
   fvLoading,
   fvPagination,
-  use (libName, lib) {
-    this.dependencies[libName] = lib
-  },
-  dependencies: {},
+  fvFormElement,
   install (Vue) {
     // Components
     Vue.component('fvMain', fvMain)
@@ -90,8 +88,14 @@ module.exports = {
     Vue.component('fvLoading', fvLoading)
     Vue.component('fvToast', fvToast)
     Vue.component('fvPagination', fvPagination)
+    Vue.component('fvFormElement', fvFormElement)
   },
   name: process.env.name,
-  version: process.env.version,
-  locale: process.env.locale
+  version: process.env.version
 }
+
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(Framevuerk)
+}
+
+export default Framevuerk
