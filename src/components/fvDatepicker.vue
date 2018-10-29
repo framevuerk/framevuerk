@@ -20,18 +20,18 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
   .fv-datepicker-box(slot="out")
     fv-header.fv-default.header(tabindex="-1")
       .fv-input-group.header-buttons
-        fv-button.fv-no-border.fv-no-shadow.fv-size-sm(@click.prevent="moveValue('year', -1)", tabindex="-1")
+        fv-button.fv-size-sm(@click.prevent="moveValue('year', -1)", tabindex="-1")
           .icon(:style="{ transform: icons.prevYear }", v-html="icons.iconY")
-        fv-button.fv-no-border.fv-no-shadow.fv-size-sm(@click.prevent="moveValue('month', -1)", tabindex="-1")
+        fv-button.fv-size-sm(@click.prevent="moveValue('month', -1)", tabindex="-1")
           .icon(:style="{ transform: icons.prevMonth }", v-html="icons.icon")
       .fv-grow.fv-text-center
         b(v-text="monthNames[visualProps.month - 1]")
         =" "
         span(v-text="visualProps.year")
       .fv-input-group.header-buttons
-        fv-button.fv-no-border.fv-no-shadow.fv-size-sm(@click.prevent="moveValue('month', 1)", tabindex="-1")
+        fv-button.fv-size-sm(@click.prevent="moveValue('month', 1)", tabindex="-1")
           .icon(:style="{ transform: icons.nextMonth }", v-html="icons.icon")
-        fv-button.fv-no-border.fv-no-shadow.fv-size-sm(@click.prevent="moveValue('year', 1)", tabindex="-1")
+        fv-button.fv-size-sm(@click.prevent="moveValue('year', 1)", tabindex="-1")
           .icon(:style="{ transform: icons.nextYear }", v-html="icons.iconY")
     fv-content.content(tabindex="-1")
       table.days-table
@@ -50,6 +50,9 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
 </template>
 
 <script>
+import icon from '../icons/ARR.svg'
+import iconY from '../icons/WRR.svg'
+
 export default {
   props: {
     value: {
@@ -80,7 +83,7 @@ export default {
   },
   data () {
     return {
-      Date: this.dateLibrary || require('../').dependencies['date'] || Date,
+      Date: this.dateLibrary || Date,
       editingValue: undefined,
       visualProps: {},
       weekDayNames: [],
@@ -119,14 +122,14 @@ export default {
     defaultFormattedValue () {
       if (this.value) {
         const value = new this.Date(this.value)
-        return `${value.getDate()} / ${value.getMonth() + 1} / ${value.getFullYear()}`
+        return `${value.getDate()}/${value.getMonth() + 1}/${value.getFullYear()}`
       }
       return ''
     },
     icons () {
       return {
-        icon: require('../icons/ARR.svg'),
-        iconY: require('../icons/WRR.svg'),
+        icon,
+        iconY,
         nextMonth: process.env.direction === 'ltr' ? 'rotate(-90deg)' : 'rotate(90deg)',
         prevMonth: process.env.direction === 'ltr' ? 'rotate(90deg)' : 'rotate(-90deg)',
         nextYear: process.env.direction === 'ltr' ? 'rotate(-90deg)' : 'rotate(90deg)',
@@ -136,7 +139,7 @@ export default {
   },
   methods: {
     onTyping (text) {
-      // if its seprator
+      // if use type a seprator
       if (!/^\d+$/.test(text)) {
         this.searchQuery = ''
         const editingValue = new this.Date(this.editingValue)
@@ -326,6 +329,8 @@ export default {
 
       & > .fv-button {
         padding: 0 #{$padding / 2};
+        border: 0;
+        box-shadow: none;
       }
     }
   }
