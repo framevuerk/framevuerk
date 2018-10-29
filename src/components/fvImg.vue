@@ -2,30 +2,29 @@
 fv-slider.fv-img(v-model="value",
   :interval="interval",
   :show-tabs="false",
-  :show-buttons="showButtons && images.length > 1",
-  :show-navs="images.length > 1")
-  img.img(v-for="image in images",
+  :show-buttons="showButtons && imgs.length > 1",
+  :show-navs="imgs.length > 1")
+  img.img(v-for="(img, i) in imgs",
     draggable="false",
-    :src="image",
-    alt="fv-img",
-    :slot="image")
+    :src="img",
+    :alt="altOf(i)",
+    :slot="'slide-' + img")
 </template>
 
 <script>
-import fvSlider from './fvSlider.vue'
-
 export default {
-  components: {
-    fvSlider
-  },
   props: {
     src: {
       type: [Array, String],
       default: () => []
     },
+    alt: {
+      type: [Array, String],
+      default: () => []
+    },
     showButtons: {
       type: Boolean,
-      default: false
+      default: true
     },
     interval: {
       type: Number,
@@ -38,19 +37,37 @@ export default {
     }
   },
   computed: {
-    images () {
+    imgs () {
       return typeof this.src === 'string' ? [this.src] : this.src
+    }
+  },
+  methods: {
+    altOf (index) {
+      if (typeof this.alt === 'undefined') {
+        return this.imgs[index]
+      } else {
+        if (this.alt instanceof Array) {
+          if (typeof this.alt[index] !== 'undefined') {
+            return this.alt[index]
+          } else {
+            return this.alt.length > 0 ? this.alt[0] : this.imgs
+          }
+        } else {
+          return this.alt
+        }
+      }
     }
   }
 }
 </script>
 
 <style lang="scss">
-@import '../styles/variables';
+@import '../styles/functions';
 
 .fv-img {
   & .slider-page {
     margin-bottom: -6px;
+    min-height: heightSize(md);
   }
 
   & .img {
