@@ -9,6 +9,7 @@
   ],
   "rules": {
     "no-empty-source": null,
-    "at-rule-no-unknown": null
+    "at-rule-no-unknown": null,
+    "function-name-case": null
   }
 }
