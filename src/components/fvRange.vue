@@ -56,8 +56,6 @@ export default {
     return {
       width: 0,
       height: 0,
-      blockStart: process.env.direction === 'ltr' ? 'left' : 'right',
-      blockEnd: process.env.direction === 'ltr' ? 'right' : 'left',
       selectedHandler: -1
     }
   },
@@ -204,7 +202,7 @@ export default {
     moveEnd (event) {
       event.preventDefault()
       this.focus(this.selectedHandler)
-      const x = parseInt(this.$refs.handler[this.selectedHandler].style[this.blockStart])
+      const x = parseInt(this.$refs.handler[this.selectedHandler].style[process.env.blockStart])
       const value = this.calcValueByX(x)
       if (typeof value === 'undefined') {
         this.unbindEvents()
@@ -288,18 +286,18 @@ export default {
       if (ret.length > 1) {
         handlerPosition.push(this.calcXByValue(ret[0]))
         handlerPosition.push(this.calcXByValue(ret[1]))
-        this.$refs.filler.style[this.blockStart] = `${handlerPosition[0]}%`
-        this.$refs.filler.style[this.blockEnd] = `${100 - handlerPosition[1]}%`
-        this.$refs.handler[0].style[this.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.filler.style[process.env.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.filler.style[process.env.blockEnd] = `${100 - handlerPosition[1]}%`
+        this.$refs.handler[0].style[process.env.blockStart] = `${handlerPosition[0]}%`
         this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
-        this.$refs.handler[1].style[this.blockStart] = `${handlerPosition[1]}%`
+        this.$refs.handler[1].style[process.env.blockStart] = `${handlerPosition[1]}%`
         this.$refs.handler[1].style.transform = `translateX(-${handlerPosition[1]}%)`
         this.$emit('input', ret)
       } else {
         handlerPosition.push(this.calcXByValue(value))
-        this.$refs.filler.style[this.blockStart] = `0%`
-        this.$refs.filler.style[this.blockEnd] = `${100 - this.calcXByValue(ret[0])}%`
-        this.$refs.handler[0].style[this.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.filler.style[process.env.blockStart] = `0%`
+        this.$refs.filler.style[process.env.blockEnd] = `${100 - this.calcXByValue(ret[0])}%`
+        this.$refs.handler[0].style[process.env.blockStart] = `${handlerPosition[0]}%`
         this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
         this.$emit('input', ret[0])
       }
@@ -309,7 +307,7 @@ export default {
       x -= this.$el.getBoundingClientRect().x
       const width = this.$el.offsetWidth
       x *= (100 / width) // convert to percetange
-      x = this.blockStart === 'right' ? 100 - x : x
+      x = process.env.blockStart === 'right' ? 100 - x : x
       return x
     },
     calcValueByX (x) {
@@ -337,17 +335,17 @@ export default {
       if (ret.length > 1) {
         handlerPosition.push(this.calcXByValue(ret[0]))
         handlerPosition.push(this.calcXByValue(ret[1]))
-        this.$refs.filler.style[this.blockStart] = `${handlerPosition[0]}%`
-        this.$refs.filler.style[this.blockEnd] = `${100 - handlerPosition[1]}%`
-        this.$refs.handler[0].style[this.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.filler.style[process.env.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.filler.style[process.env.blockEnd] = `${100 - handlerPosition[1]}%`
+        this.$refs.handler[0].style[process.env.blockStart] = `${handlerPosition[0]}%`
         this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
-        this.$refs.handler[1].style[this.blockStart] = `${handlerPosition[1]}%`
+        this.$refs.handler[1].style[process.env.blockStart] = `${handlerPosition[1]}%`
         this.$refs.handler[1].style.transform = `translateX(-${handlerPosition[1]}%)`
       } else {
         handlerPosition.push(this.calcXByValue(ret[0]))
-        this.$refs.filler.style[this.blockStart] = `0%`
-        this.$refs.filler.style[this.blockEnd] = `${100 - this.calcXByValue(ret[0])}%`
-        this.$refs.handler[0].style[this.blockStart] = `${handlerPosition[0]}%`
+        this.$refs.filler.style[process.env.blockStart] = `0%`
+        this.$refs.filler.style[process.env.blockEnd] = `${100 - this.calcXByValue(ret[0])}%`
+        this.$refs.handler[0].style[process.env.blockStart] = `${handlerPosition[0]}%`
         this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
       }
     }
@@ -368,13 +366,15 @@ export default {
   & .container {
     @include shadow(inset-bottom);
 
-    top: 35%;
-    height: 30%;
+    top: 40%;
+    height: 20%;
     width: 100%;
     position: absolute;
     background: contrast($bg-color, 1, force-light);
     border: solid 1px contrast($bg-color, 2, hard-dark);
     border-radius: $border-radius;
+    display: flex;
+    align-items: center;
   }
 
   & .filler {
@@ -390,11 +390,10 @@ export default {
 
     padding: 0;
     height: 2em;
-    top: -0.5rem;
     width: 2em;
     display: inline-block;
     position: absolute;
-    border-radius: $border-radius;
+    border-radius: 2em;
     background: contrast($bg-color, 1, force-light);
     border: solid 1px contrast($bg-color, 2, hard-dark);
     cursor: move;
@@ -404,25 +403,17 @@ export default {
     }
   }
 
-  &:not([disabled]) .handler {
-    &:active {
-      @include shadow(inset-bottom);
-    }
+  &:invalid .handler:focus,
+  &[invalid] .handler:focus {
+    @include outline($danger-color);
+  }
 
-    &:active,
-    &:hover {
-      border: solid 1px contrast($bg-color, 3, hard-dark);
-    }
+  &:not([disabled]) .handler:hover:not(:focus) {
+    border: solid 1px contrast($bg-color, 3, hard-dark);
   }
 
   &[disabled] {
     @include disabled;
-  }
-
-  &[invalid] {
-    & .handler:focus {
-      @include outline($danger-color);
-    }
   }
 }
 </style>
