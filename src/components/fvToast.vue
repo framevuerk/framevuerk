@@ -6,7 +6,7 @@ transition(name="fv-toast")
 </template>
 
 <script>
-import utility from '../utility'
+import parent from '../utility/parent.js'
 
 export default {
   props: {
@@ -19,7 +19,6 @@ export default {
       default: 3000
     }
   },
-  inject: ['fvMain'],
   data () {
     return {
       timer: null
@@ -28,7 +27,7 @@ export default {
   methods: {
     onOpen () {
       this.$emit('open')
-      this.fvMain.appendChild(this.$el)
+      parent.$el.appendChild(this.$el)
       if (this.timeout > 0) {
         this.timer = setTimeout(this.close, this.timeout)
       }
@@ -45,11 +44,6 @@ export default {
         return this.onOpen()
       }
       return this.onClose()
-    }
-  },
-  created () {
-    if (!this.fvMain) {
-      throw utility.error('no_fvmain_parent')
     }
   },
   watch: {
@@ -76,7 +70,7 @@ export default {
   max-width: 100%;
   min-width: 100px;
   padding: ($padding / 2) $padding;
-  position: absolute;
+  position: fixed;
   text-align: center;
   transform: translate3d(-50%, 0, 0);
   width: auto;
