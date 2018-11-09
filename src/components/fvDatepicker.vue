@@ -4,6 +4,7 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
   :disabled="disabled",
   :value="value",
   :input="true",
+  input-type="tel",
   :search-query.sync="searchQuery",
   @typing="onTyping",
   @input-keydown="onKeydown",
@@ -18,7 +19,7 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
     slot(v-if="$scopedSlots.value || $slots.value", name="value", :value="scope.value")
     span(v-else, v-text="defaultFormattedValue")
   .fv-datepicker-box(slot="out")
-    fv-header.fv-default.header(tabindex="-1")
+    .header
       .fv-input-group.header-buttons
         fv-button.fv-size-sm(@click.prevent="moveValue('year', -1)", tabindex="-1")
           .icon(:style="{ transform: icons.prevYear }", v-html="icons.iconY")
@@ -33,8 +34,8 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
           .icon(:style="{ transform: icons.nextMonth }", v-html="icons.icon")
         fv-button.fv-size-sm(@click.prevent="moveValue('year', 1)", tabindex="-1")
           .icon(:style="{ transform: icons.nextYear }", v-html="icons.iconY")
-    fv-content.content(tabindex="-1")
-      table.days-table
+    .content
+      table
         thead
           tr
             td(v-for="weekDay in weekDayNames",
@@ -138,15 +139,17 @@ export default {
     }
   },
   methods: {
-    onTyping (text) {
+    onTyping (value) {
+      const text = value.toString()
+      const digits = value.replace(/[^0-9]/g, '')
       // if use type a seprator
-      if (!/^\d+$/.test(text)) {
+      if (digits.length !== text.length) {
         this.searchQuery = ''
         const editingValue = new this.Date(this.editingValue)
-        const number = parseInt(text)
+        const number = parseInt(digits)
         if (number.toString().length === 4) {
           editingValue.setFullYear(number)
-        } else if (number.toString().length <= 2 && number <= 12) {
+        } else if (number.toString().length <= 2 && number <= 12 && this.searchQuery !== ' ') {
           editingValue.setMonth(number - 1)
         }
         this.$set(this, 'editingValue', editingValue)
@@ -246,7 +249,7 @@ export default {
       this.$set(this, 'editingValue', editingValue)
       this.calcVisualProps()
     },
-    selectDate (value = null, event = null) {
+    selectDate (value, event) {
       this.setDate(value)
       if (event.target.getAttribute('disabled')) {
         return
@@ -283,7 +286,7 @@ export default {
           break
         case 13: // enter
           event.preventDefault()
-          this.selectDate(null, event)
+          this.selectDate(parseInt(this.searchQuery) || null, event)
           break
         case 8: // backspace
           if (this.searchQuery.length === 0 && this.deleteButton) {
@@ -313,22 +316,27 @@ export default {
 
 <style lang="scss">
 @import '../styles/variables';
+@import '../styles/functions';
 @import '../styles/mixins';
 
-.fv-datepicker {
+.fv-datepicker.fv-inputbox {
   & .out-container {
-    max-width: 32em;
-    min-width: 28em;
+    width: 22em;
   }
 }
 
 .fv-datepicker-box {
   & .header {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    padding: padding(sm);
+
     & .header-buttons {
       overflow: visible;
 
       & > .fv-button {
-        padding: 0 #{$padding / 2};
+        padding: 0 padding(sm);
         border: 0;
         box-shadow: none;
       }
@@ -356,7 +364,7 @@ export default {
         max-width: 14.2%;
         min-width: 14.2%;
         overflow: hidden;
-        height: 3em;
+        height: heightSize(sm);
         vertical-align: middle;
         border-radius: $border-radius;
         cursor: pointer;
