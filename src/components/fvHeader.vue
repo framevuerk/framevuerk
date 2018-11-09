@@ -12,14 +12,13 @@
 .fv-header {
   @include shadow(bottom);
 
-  z-index: 2;
   height: fit-content;
   min-height: min-content;
   max-height: max-content;
 
   & > header {
     width: 100%;
-    padding: padding(sm) 0;
+    padding: padding(md);
     display: flex;
     justify-content: space-between;
     overflow: hidden;
@@ -30,15 +29,10 @@
       align-self: center;
       max-height: 100%;
       max-width: 100%;
-      margin-#{$block-end}: padding(md);
-
-      &:first-child {
-        margin-#{$block-start}: padding(md);
-      }
     }
   }
 
-  &:not(.fv-default) {
+  &:not(.transparent) {
     @include yiq($header-bg-color);
 
     border-bottom: solid 1px contrast($header-bg-color, 2, hard-dark);
@@ -52,7 +46,7 @@
     }
   }
 
-  &.fv-default {
+  &.transparent {
     background: transparent;
     border-bottom: solid 1px contrast($bg-color, 2, hard-dark);
   }

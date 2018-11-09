@@ -4,11 +4,6 @@
     slot
 </template>
 
-<script>
-export default {
-}
-</script>
-
 <style lang="scss">
 @import '../styles/variables';
 @import '../styles/mixins';
@@ -25,13 +20,13 @@ export default {
     padding: #{$padding/1.2} $padding;
   }
 
-  &:not(.fv-default) {
+  &:not(.transparent) {
     @include yiq($footer-bg-color);
 
     border-top: solid 1px contrast($footer-bg-color, 2, hard-dark);
   }
 
-  &.fv-default {
+  &.transparent {
     background: transparent;
     border-top: solid 1px contrast($bg-color, 2, hard-dark);
   }
