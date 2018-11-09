@@ -1,13 +1,14 @@
 <template lang="pug">
-transition(:name="animation")
-  fv-main.fv-dialog(:parent="false",
-    v-show="value",
-    @keydown.native="onKeydown($event)")
+transition(:name="animation", afterEnter="onOpen(2)", @beforeLeave="onClose(1)", @afterLeave="onClose(2)")
+  .fv-dialog(v-show="value",
+    @click.stop="return true")
     slot
 </template>
 
 <script>
-import utility from '../utility'
+import parent from '../utility/parent.js'
+import CancelDetector from '../utility/CancelDetector.js'
+import FocusStoler from '../utility/FocusStoler.js'
 
 export default {
   props: {
@@ -15,126 +16,57 @@ export default {
       type: Boolean,
       default: false
     },
-    overlay: {
-      type: Boolean,
-      default: true
-    },
     animation: {
       type: String,
       default: 'fv-fade'
     }
   },
-  inject: ['fvMain'],
   data () {
     return {
-      focusBackElement: null,
-      focusableItems: [],
-      overlayElement: null
-    }
-  },
-  computed: {
-    hash () {
-      return `fv-${this._uid}`
+      cancelDetector: new CancelDetector(),
+      focusStoler: new FocusStoler(),
+      outer: null
     }
   },
   methods: {
-    addHash (addEvent = true) {
-      if (window.location.hash.indexOf(this.hash) === -1) {
-        const seperator = window.location.hash.indexOf('?') !== -1 ? '&' : '?'
-        window.location.hash += seperator + this.hash
-      }
-      if (addEvent) {
-        setTimeout(() => {
-          window.addEventListener('hashchange', this.onHashChange)
-        })
-      }
-    },
-    removeHash () {
-      let hash = window.location.hash
-      hash = hash.replace(this.hash, '')
-      if (hash.lastIndexOf('&') === hash.length - 1 || hash.lastIndexOf('?') === hash.length - 1) {
-        hash = hash.slice(0, hash.length - 1)
-      }
-      window.location.hash = hash
-      window.removeEventListener('hashchange', this.onHashChange)
-    },
-    onHashChange () {
-      if (window.location.hash.indexOf(this.hash) === -1) {
-        this.close()
-      }
-    },
-    addOverlay () {
-      this.overlayElement = this.fvMain.appendOverlay(this.$el, this.close)
-    },
-    removeOverlay () {
-      if (this.overlayElement) {
-        this.overlayElement.removeEventListener('click', this.close)
-        this.overlayElement.remove()
-      }
-    },
-    close () {
-      this.$emit('input', false)
-    },
-    onOpen () {
-      this.$emit('open')
-      this.$nextTick(() => {
-        this.fvMain.appendChild(this.$el)
-        if (this.overlay) {
-          this.addOverlay()
-          this.focus()
-          this.addHash()
-        }
-      })
-    },
     valueHandler (value) {
       if (value) {
-        return this.onOpen()
-      }
-      return this.onClose()
-    },
-    onCancel () {
-      if (this.value && this.overlay) {
-        this.close()
+        this.onOpen(1)
+      } else {
+        this.onClose()
       }
     },
-    onClose () {
-      this.$emit('close')
-      this.$nextTick(() => {
-        if (this.overlay && !this.value) {
-          this.removeOverlay()
-          this.focusBack()
-          this.removeHash()
-        }
-      })
-    },
-    focus () {
-      this.focusBackElement = document.querySelector(':focus')
-      this.focusableItems = this.$el.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
-      const autoFocus = this.$el.querySelector('[autofocus]')
-      if (autoFocus) {
-        autoFocus.focus()
-      } else if (this.focusableItems.length) {
-        this.focusableItems[this.focusableItems.length - 1].focus()
+    onOpen (step) {
+      if (step === 1) {
+        this.$emit('open')
+        this.cancelDetector.start(this.onCancel)
+        this.outer = parent.newEl('div', 'fv-dialog-outer')
+        this.outer.onclick = this.onCancel
+        this.outer.appendChild(this.$el)
+        parent.lock(this._uid)
+        this.focusStoler.stole(this.outer)
+      } else if (step === 2) {
+        this.outer.scrollTo(0, 0)
       }
     },
-    focusBack () {
-      if (this.focusBackElement) {
-        this.focusBackElement.focus()
+    onCancel (event) {
+      if (this.value) {
+        this.$emit('input', false)
       }
     },
-    onKeydown (event) {
-      switch (event.which) {
-        case 9: // tab
-          if (event.target === this.focusableItems[0] && event.shiftKey) { // when first item is focused and user press shift + tab
-            event.preventDefault()
-            this.focus(false)
-          } else if (event.target === this.focusableItems[this.focusableItems.length - 1] && !event.shiftKey) { // when last item is focused and user press tab
-            event.preventDefault()
-            this.focus(true)
+    onClose (step) {
+      if (step === 1) {
+        this.$emit('close')
+        this.cancelDetector.stop()
+        parent.unlock(this._uid)
+      } else if (step === 2) {
+        parent.$el.appendChild(this.$el)
+        this.$nextTick(() => {
+          this.focusStoler.restore()
+          if (this.outer) {
+            this.outer.remove()
           }
-          break
-        case 27: // esc
-          this.onCancel()
+        })
       }
     }
   },
@@ -144,14 +76,7 @@ export default {
     }
   },
   beforeDestroy () {
-    this.removeHash()
-    this.removeOverlay()
-    this.$el.remove()
-  },
-  created () {
-    if (!this.fvMain) {
-      throw utility.error('no_fvmain_parent')
-    }
+    this.onClose()
   },
   mounted () {
     this.valueHandler(this.value)
@@ -162,31 +87,42 @@ export default {
 
 <style lang="scss">
 @import '../styles/variables';
+@import '../styles/functions';
 @import '../styles/mixins';
 
+.fv-dialog-outer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  background: $shadow-color-light;
+  padding: padding(lg);
+}
+
 .fv-dialog {
-  @include shadow(bottom, $shadow-color-light);
+  @include yiq($bg-color);
+  @include shadow(bottom);
 
   backface-visibility: hidden;
   height: auto;
-  min-width: 200px;
-  overflow: auto;
-  position: absolute;
+  border: solid 1px contrast($bg-color, 2, hard-dark);
+  overflow: visible;
   border-radius: $border-radius;
-  max-height: 100%;
+  min-width: 200px;
   max-width: 100%;
-  padding: 0;
+  min-height: auto;
+  max-height: auto;
+  margin: auto;
   z-index: 3;
 
   & > .header,
   & > .footer {
     padding: $padding;
-  }
-
-  &:not(.not-center) {
-    transform: translate3d(-50%, -50%, 0);
-    left: 50%;
-    top: 50%;
   }
 
   & > .footer {
