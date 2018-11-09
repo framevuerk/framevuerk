@@ -79,8 +79,6 @@ export default {
 @import '../styles/mixins';
 
 .fv-textarea {
-  @include scrollbar($bg-color);
-
   line-height: 1.3em;
   font-size: fontSize(md);
   min-height: heightSize(md);

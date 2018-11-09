@@ -1,32 +1,32 @@
 <template lang="pug">
-.fv-table(:class="{breaked: breaked, title: showTitle}")
+.fv-table(:class="{breaked: isBreaked, title: showTitle}")
   table
     thead(v-if="showTitle")
       tr
         th(v-for="field in fields",
           :key="fieldProp(field, 'title')")
-          slot(v-if="$scopedSlots['title-'+fieldProp(field, 'value')] || $slots['title-'+fieldProp(field, 'value')]", :name="'title-'+fieldProp(field, 'value')", :field="field", :index="index", :breaked="breaked")
-          slot(v-else-if="$scopedSlots.title || $slots.title", name="title", :field="field", :index="index", :breaked="breaked")
+          slot(v-if="$scopedSlots['title-'+fieldProp(field, 'value')] || $slots['title-'+fieldProp(field, 'value')]", :name="'title-'+fieldProp(field, 'value')", :field="field", :index="index", :breaked="isBreaked")
+          slot(v-else-if="$scopedSlots.title || $slots.title", name="title", :field="field", :index="index", :breaked="isBreaked")
           span(v-else) {{fieldProp(field, 'title')}}
     tbody
       tr(v-for="(row, index) in rows",
         :key="index")
         td(v-for="(field, index2) in fields",
           :key="fieldProp(field, 'title')")
-          .field-name(v-if="breaked && showTitle")
-            slot(v-if="$scopedSlots['title-'+fieldProp(field, 'value')] || $slots['title-'+fieldProp(field, 'value')]", :name="'title-'+fieldProp(field, 'value')", :field="field", :index="index", :breaked="breaked")
-            slot(v-else-if="$scopedSlots.title || $slots.title", name="title", :field="field", :index="index", :breaked="breaked")
+          .field-name(v-if="isBreaked && showTitle")
+            slot(v-if="$scopedSlots['title-'+fieldProp(field, 'value')] || $slots['title-'+fieldProp(field, 'value')]", :name="'title-'+fieldProp(field, 'value')", :field="field", :index="index", :breaked="isBreaked")
+            slot(v-else-if="$scopedSlots.title || $slots.title", name="title", :field="field", :index="index", :breaked="isBreaked")
             span(v-else) {{fieldProp(field, 'title')}}
           .field-value
-            slot(v-if="$scopedSlots['field-'+fieldProp(field, 'value')] || $slots['field-'+fieldProp(field, 'value')]", :name="'field-'+fieldProp(field, 'value')", :row="row", :field="field", :index="index", :breaked="breaked")
-            slot(v-else-if="$scopedSlots.field || $slots.field", name="field", :field="field", :row="row", :index="index", :breaked="breaked")
+            slot(v-if="$scopedSlots['field-'+fieldProp(field, 'value')] || $slots['field-'+fieldProp(field, 'value')]", :name="'field-'+fieldProp(field, 'value')", :row="row", :field="field", :index="index", :breaked="isBreaked")
+            slot(v-else-if="$scopedSlots.field || $slots.field", name="field", :field="field", :row="row", :index="index", :breaked="isBreaked")
             span(v-else) {{defaultFieldValueInRow(field, row)}}
     tfoot(v-if="$scopedSlots.footer || $slots.default")
       slot(name="footer")
 </template>
 
 <script>
-import utility from '../utility'
+import parent from '../utility/parent.js'
 
 export default {
   props: {
@@ -51,11 +51,18 @@ export default {
       default: true
     },
     breaked: {
-      type: Boolean,
-      default: false
+      type: [Boolean, Object],
+      validator: (value) => {
+        return [true, false, null].indexOf(value) > -1
+      },
+      default: null
     }
   },
-  inject: ['fvMain'],
+  data () {
+    return {
+      isBreaked: this.breaked || false
+    }
+  },
   methods: {
     fieldProp (field, prop) {
       if (!prop) {
@@ -79,26 +86,20 @@ export default {
       return row
     },
     onResize () {
-      const parentSize = this.fvMain.getSize()
-
-      if (parentSize.indexOf('lg') === -1) {
-        this.$emit('update:breaked', true)
-      } else {
-        this.$emit('update:breaked', false)
+      if (this.pin !== null) {
+        return
       }
+      const isBreaked = parent.getSize().indexOf('lg') === -1
+      this.isBreaked = isBreaked
+      this.$emit('breakedChange', isBreaked)
     }
   },
   mounted () {
-    window.addEventListener('resize', this.onResize)
+    parent.on('sizechange', this.onResize)
     this.onResize()
   },
   beforeDestroy () {
-    window.removeEventListener('resize', this.onResize)
-  },
-  created () {
-    if (!this.fvMain) {
-      throw utility.error('no_fvmain_parent')
-    }
+    parent.off('sizechange', this.onResize)
   }
 }
 </script>

@@ -111,7 +111,7 @@ export default {
 .fv-switch {
   display: inline-block;
   min-height: heightSize(md);
-  width: 3.8em;
+  width: 4.2em;
   position: relative;
   vertical-align: middle;
 
@@ -120,15 +120,17 @@ export default {
 
     background: contrast($bg-color, 1, force-dark);
     border: solid 1px contrast($bg-color, 2, hard-dark);
-    border-radius: $border-radius;
     cursor: pointer;
     direction: $direction;
     padding: 0.2em;
-    top: 10%;
-    height: 80%;
-    width: 100%;
+    top: 0.2em;
+    height: 2.2em;
+    width: 4.2em;
+    border-radius: 2em;
     position: absolute;
     text-align: $block-start;
+    display: flex;
+    align-items: center;
   }
 
   & .handler {
@@ -136,10 +138,10 @@ export default {
 
     background: contrast($bg-color, 2, force-light);
     border: solid 1px contrast($bg-color, 2);
-    border-radius: $border-radius;
-    display: inline-block;
-    height: 100%;
-    width: calc(1.8em - 2px);
+    border-radius: 2em;
+    display: block;
+    height: 1.8em;
+    width: 1.8em;
     transition-duration: $transition-speed-fast;
     transition-property: margin;
     transition-timing-function: ease;
@@ -152,7 +154,7 @@ export default {
     }
 
     & .handler {
-      margin-#{$block-start}: 1.6em;
+      margin-#{$block-start}: 1.9em;
     }
   }
 
@@ -160,20 +162,16 @@ export default {
     @include disabled;
   }
 
-  &:focus .container {
+  &:focus .handler {
     @include outline;
-
-    &:invalid,
-    &[invalid] {
-      @include outline($danger-color);
-    }
   }
 
-  &:active .handler {
-    @include shadow(inset-bottom);
+  &:focus:invalid .handler,
+  &:focus[invalid] .handler {
+    @include outline($danger-color);
   }
 
-  &:hover:not(:focus):not([disabled]) .container {
+  &:hover:not(:focus):not([disabled]) .handler {
     border: solid 1px contrast($bg-color, 3, hard-dark);
   }
 }
