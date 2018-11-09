@@ -6,7 +6,6 @@
 <style lang="scss">
 @import '../styles/variables';
 @import '../styles/functions';
-@import '../styles/mixins';
 
 .fv-loading {
   display: inline-block;
@@ -19,7 +18,7 @@
     width: 2.5em;
     clear: both;
     vertical-align: middle;
-    border: 0.4em solid;
+    border: 0.2em solid;
     border-left-color: transparent;
     border-right-color: transparent;
     border-bottom-color: transparent;
