@@ -1,5 +1,6 @@
 <template lang="pug">
-fv-main.fv-slider
+.fv-slider(@mousedown="moveStart($event)",
+  @touchstart="moveStart($event)")
   .tabs-container(v-if="showTabs")
     fv-button.fv-grow(v-for="(slide, i) in slides",
       :key="'tab-' + slide + i",
@@ -8,14 +9,12 @@ fv-main.fv-slider
       slot(v-if="allSlots['tab-' + slide]", :selected="value === slide", :name="'tab-' + slide")
       slot(v-else-if="allSlots.tab", :slide="slide", :selected="value === slide", name="tab")
       span(v-else) {{slide}}
-  fv-content.slider-page(@mousedown.native="moveStart($event)",
-    @touchstart.native="moveStart($event)",
-    ref="sliderContainer")
-    transition-group(:name="animationName")
-      fv-content.slider-page(v-for="(slide, i) in slides",
-        :key="'slide-' + slide + i",
-        v-show="slide === value")
-        slot(:name="'slide-' + slide", :selected="value === slide")
+  transition-group(:name="animationName")
+    .slider-page(v-for="(slide, i) in slides",
+      :key="'slide-' + slide + i",
+      v-show="slide === value")
+      slot(:name="'slide-' + slide",
+        :selected="value === slide")
   fv-button.fv-size-xl.next(v-if="showButtons",
     @click.prevent="moveSlide(true)")
     .icon(:style="{ transform: icons.next }", v-html="icons.icon")
@@ -58,9 +57,7 @@ export default {
     return {
       timer: null,
       animationName: 'fv-slider-prev',
-      startX: 0,
-      blockStart: process.env.direction === 'ltr' ? 'left' : 'right',
-      blockEnd: process.env.direction === 'ltr' ? 'right' : 'left'
+      startX: 0
     }
   },
   computed: {
@@ -94,7 +91,7 @@ export default {
     calcDirection (startX, endX) {
       const calced = startX - endX
       return {
-        moveNext: this.blockStart === 'left' ? calced > 0 : calced < 0,
+        moveNext: process.env.blockStart === 'left' ? calced > 0 : calced < 0,
         x: calced
       }
     },
@@ -124,11 +121,11 @@ export default {
       if (!this.value) {
         this.animationName = ''
       } else if (next === null) {
-        this.animationName = `fv-slider-${newIndex >= this.currentIndex ? this.blockStart : this.blockEnd}`
+        this.animationName = `fv-slider-${newIndex >= this.currentIndex ? process.env.blockStart : process.env.blockEnd}`
       } else if (next) {
-        this.animationName = `fv-slider-${this.blockStart}`
+        this.animationName = `fv-slider-${process.env.blockStart}`
       } else {
-        this.animationName = `fv-slider-${this.blockEnd}`
+        this.animationName = `fv-slider-${process.env.blockEnd}`
       }
       this.initerval()
       this.$emit('input', value)
@@ -166,11 +163,15 @@ export default {
 
 .fv-slider {
   overflow: hidden;
+  position: relative;
+  width: 100%;
   backface-visibility: hidden;
 
   & .slider-page {
     padding: 0;
     overflow-x: hidden;
+    width: 100%;
+    user-select: none;
     float: $block-start;
   }
 
@@ -248,8 +249,6 @@ export default {
   }
 }
 
-.fv-slider-fade-enter-active,
-.fv-slider-fade-leave-active,
 .fv-slider-right-enter-active,
 .fv-slider-right-leave-active,
 .fv-slider-left-enter-active,
@@ -260,42 +259,29 @@ export default {
   will-change: transform, opacity;
 }
 
-.fv-slider-left-enter {
-  transform: translateX(100%) !important;
-  z-index: 1;
-}
-
+.fv-slider-left-enter,
 .fv-slider-right-enter {
-  transform: translateX(-100%) !important;
   z-index: 1;
 }
 
-.fv-slider-fade-leave-active,
-.fv-slider-fade-leave-to,
 .fv-slider-right-leave-active,
 .fv-slider-right-leave-to,
 .fv-slider-left-leave-active,
 .fv-slider-left-leave-to {
   opacity: 1;
   position: absolute;
+  z-index: 2;
 }
 
-.fv-slider-fade-leave-active,
-.fv-slider-fade-leave-to {
-  opacity: 0;
-}
-
+.fv-slider-left-enter,
 .fv-slider-right-leave-active,
 .fv-slider-right-leave-to {
   transform: translateX(100%) !important;
-  opacity: 0;
-  z-index: 2;
 }
 
+.fv-slider-right-enter,
 .fv-slider-left-leave-active,
 .fv-slider-left-leave-to {
   transform: translateX(-100%) !important;
-  opacity: 0;
-  z-index: 2;
 }
 </style>
