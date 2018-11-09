@@ -1,5 +1,3 @@
-import './style.scss'
-
 // Components
 import fvMain from './components/fvMain.vue'
 import fvContent from './components/fvContent.vue'
@@ -91,7 +89,8 @@ const Framevuerk = {
     Vue.component('fvFormElement', fvFormElement)
   },
   name: process.env.name,
-  version: process.env.version
+  version: process.env.version,
+  smallDetected: null
 }
 
 if (typeof window !== 'undefined' && window.Vue) {
