@@ -254,8 +254,15 @@
   display: inline !important;
 }
 
-.fv-flex {
+.fv-flex,
+.fv-flex-row {
   display: flex !important;
+  flex-direction: row;
+}
+
+.fv-flex-col {
+  display: flex !important;
+  flex-direction: column;
 }
 
 .fv-grow {
