@@ -1,6 +1,6 @@
 {
   "name": "framevuerk",
-  "version": "2.0.0-rc1",
+  "version": "2.0.0-rc2",
   "description": "Fast, Responsive, Without Dependencies, Both Direction Support and Configurable UI Framework based on Vue.js.",
   "main": "dist/framevuerk.min.js",
   "scripts": {
@@ -12,13 +12,13 @@
     "lint:fix": "npm run lint:js:fix && npm run lint:scss:fix",
     "test": "npm run lint",
     "clean": "rimraf ./dist",
-    "build": "framevuerk build -d ./",
-    "dev": "framevuerk build -d ./ -o ../framevuerk-docs/node_modules/framevuerk/dist -w",
-    "prepublishOnly": "./prepublish.sh",
-    "start": "echo \"Use 'npm run dev' instead.\""
+    "build": "framevuerk-builder -d ./ -o ./dist",
+    "serve-to-docs": "framevuerk-builder -d ./ -o ../framevuerk-docs/node_modules/framevuerk/dist -c ../framevuerk-docs/framevuerk-config.json -w",
+    "prepublishOnly": "./prepublish.sh"
   },
   "dependencies": {},
   "devDependencies": {
+    "babel-eslint": "^10.0.1",
     "eslint": "^4.16.0",
     "eslint-config-standard": "^11.0.0-beta.0",
     "eslint-friendly-formatter": "^3.0.0",
@@ -28,7 +28,7 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.2.0",
-    "framevuerk-builder": "^2.0.0-rc1",
+    "framevuerk-builder": "^2.0.0-rc6",
     "rimraf": "^2.6.2",
     "stylelint": "^8.4.0",
     "stylelint-config-recommended-scss": "^3.0.0",
@@ -56,7 +56,8 @@
     "ltr"
   ],
   "engines": {
-    "node": ">= 4.x"
+    "node": ">=6.0.0",
+    "npm": ">=5.0.0"
   },
   "author": "nainemom <nainemom@gmail.com>",
   "license": "MIT",
