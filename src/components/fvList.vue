@@ -25,9 +25,6 @@ export default {
   methods: {
     onFocus () {
       this.isFocused = true
-      if (this.highlighted === null) {
-        this.moveHighlight(null)
-      }
     },
     onBlur () {
       this.isFocused = false
