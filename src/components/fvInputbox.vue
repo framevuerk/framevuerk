@@ -1,6 +1,7 @@
 <template lang="pug">
   .fv-inputbox.fv-input(ref="inputEl",
     :focus="isFocused || showOut",
+    :opened="showOut",
     :disabled="disabled",
     @click="onEnter",
     @keydown.enter="onEnter",
@@ -11,16 +12,17 @@
         span(v-if="$scopedSlots.value || $slots.value")
           slot(name="value", :value="singleValue")
         span(v-else) {{singleValue}}
-        span.button(v-if="deleteButton", v-html="deleteIcon", fv-inputbox-cancel-enter, @click="onValueDelete(singleValue)")
+        span.button(v-if="deleteButton", v-html="deleteIcon", fv-inputbox-cancel-enter, @click.stop="onValueDelete(singleValue)")
       .item.transparent
         input.input(:value="searchQuery",
-          v-if="input && !breaked",
+          v-if="input",
           @focus="onFocus",
           @blur="onBlur",
           :disabled="disabled"
           @keydown="onInputKeydown",
           @input="onTyping",
-          :size="searchQuery.length || 1",
+          :size="searchQuery.length + 1 || 1",
+          :type="inputType",
           ref="input")
         .input(v-else,
           tabindex="0",
@@ -30,35 +32,13 @@
           ref="input")
     .caret-icon(v-if="caretIcon",
       v-html="caretIcon")
-    transition(name="fv-fade")
-      fv-main.out-container(v-if="showOut && !breaked", :class="{top: !outOnBottom, bottom: outOnBottom}", :style="{maxHeight: outMaxHeight}")
-        fv-content
-          slot(name="out")
-    fv-dialog.not-center(ref="outDialog",
-      v-if="breaked",
-      :value="showOut",
-      @input="showOut = $event",
-      :style="dialogStyle")
-      fv-header.fv-default
-        fv-input.fv-block(v-if="input",
-          autofocus,
-          ref="dialogInput",
-          :value="searchQuery",
-          :placeholder="placeholder",
-          @keydown.native="onInputKeydown",
-          @input="onTyping")
-        .fv-grow.fv-text-start(v-else,
-          ref="dialogInput",
-          autofocus,
-          tabindex="0",
-          @keydown="onInputKeydown")
-          h4.fv-control-label {{placeholder}}
-      fv-content
+    transition(name="fv-inputbox")
+      .out-container(v-show="showOut", :class="outClass")
         slot(name="out")
 </template>
 
 <script>
-import utility from '../utility'
+import parent from '../utility/parent.js'
 import deleteIcon from '../icons/CLS.svg'
 
 export default {
@@ -67,19 +47,15 @@ export default {
       default: undefined
     },
     multiple: {
-      type: Boolean,
       default: false
     },
     deleteButton: {
-      type: Boolean,
       default: true
     },
     disabled: {
-      type: Boolean,
       default: false
     },
     placeholder: {
-      type: String,
       default: ''
     },
     caretIcon: {
@@ -89,12 +65,13 @@ export default {
       default: ''
     },
     input: {
-      type: Boolean,
       default: true
+    },
+    inputType: {
+      default: 'text'
     }
   },
   inject: {
-    fvMain: {},
     fvFormElement: {
       default: false
     }
@@ -103,9 +80,7 @@ export default {
     return {
       isFocused: false,
       showOut: false,
-      outOnBottom: true,
-      outMaxHeight: 'auto',
-      breaked: false,
+      outClass: {},
       deleteIcon
     }
   },
@@ -115,31 +90,14 @@ export default {
     },
     values () {
       return this.multiple ? this.value : (typeof this.value === 'undefined' ? [] : [this.value])
-    },
-    dialogStyle () {
-      return {
-        width: `calc(100% - 30px)`,
-        maxHeight: `calc(100% - 60px)`,
-        top: '15px',
-        left: '15px',
-        right: '15px'
-      }
     }
   },
   methods: {
     focus () {
       this.$refs.input.focus()
     },
-    calcBreaked () {
-      this.breaked = this.fvMain.getSize().indexOf('md') === -1
-    },
     focusInput () {
-      if (this.breaked && this.showOut) {
-        this.$refs.dialogInput.focus()
-        this.isFocused = true
-      } else {
-        this.$refs.input.focus()
-      }
+      this.$refs.input.focus()
     },
     onFocus () {
       this.isFocused = true
@@ -148,69 +106,49 @@ export default {
       }
     },
     onBlur () {
-      const action = () => {
-        this.isFocused = false
-        this.$emit('blur')
-        if (this.fvFormElement) {
-          this.fvFormElement.turn(false)
-        }
+      this.isFocused = false
+      this.$emit('blur')
+      if (this.fvFormElement) {
+        this.fvFormElement.turn(false)
       }
-      this.$nextTick(() => {
-        const elem = document.querySelector(':focus')
-        if (this.breaked) {
-          if (!this.showOut && (!elem || !utility.isChildOf(elem, this.$el))) {
-            action()
-          }
-        } else {
-          if ((!elem || !utility.isChildOf(elem, this.$el))) {
-            this.close()
-            action()
-          }
-        }
-      })
     },
     onTyping (event) {
-      const searchQuery = typeof event === 'object' ? event.target.value : event
       this.showOut = true
-      this.$emit('update:searchQuery', searchQuery)
-      this.$emit('typing', searchQuery)
+      this.$emit('update:searchQuery', event.target.value)
+      this.$emit('typing', event.target.value)
     },
     onEnter (event) {
       if (this.disabled) {
         return
       }
-      let target = event.target
-      while (target && target !== this.$el) {
-        if (target.getAttribute('fv-inputbox-cancel-enter')) {
-          return
-        }
-        target = target.parentElement || null
-      }
       this.focus()
       this.open()
     },
-    calcOutPosition () {
-      const parentEl = this.fvMain.$el
-      const parentHeight = parentEl.offsetHeight
-      const elHeight = this.$el.offsetHeight
-      const top = utility.offsetTo(this.$el, parentEl).top
-      this.outOnBottom = !(top > (parentHeight / 2))
-      const bottom = parentHeight - top - elHeight
-      const padding = 30
-      this.outMaxHeight = `${(parentHeight - (this.outOnBottom ? top : bottom) - elHeight) - padding}px`
+    getOutPosition () {
+      const offset = this.$el.getBoundingClientRect()
+      const parentViewport = parent.getViewport()
+      // it will be one of [0, 1, 2]. lowest number is nearest to top
+      const verticalPosition = offset.top / parentViewport.height
+      // a number between 0 and 1. lowest number is nearest to start direction of block
+      let horizontalPosition = offset[process.env.blockStart] / parentViewport.width
+      if (process.env.direction === 'rtl') {
+        horizontalPosition = 1 - horizontalPosition
+      }
+      const isBottom = verticalPosition < 0.5
+      const isStart = horizontalPosition < 0.45
+      return [
+        isBottom ? 'bottom' : 'top',
+        isStart ? 'start' : 'end'
+      ]
     },
     open () {
       if (!this.showOut) {
         this.$emit('open')
       }
-      if (this.breaked) {
-        this.showOut = true
-        this.focus()
-      } else {
-        this.calcOutPosition()
-        this.showOut = true
-        this.focus()
-      }
+      this.outClass = this.getOutPosition()
+      this.showOut = true
+      this.focus()
+      parent.on('outsideclick', this.$el, this.close)
     },
     onValueDelete (value) {
       this.$emit('value-delete', value)
@@ -218,6 +156,7 @@ export default {
     close () {
       this.$emit('close')
       this.showOut = false
+      parent.off('outsideclick', this.$el, this.close)
       this.$emit('searchQuery:update', '')
     },
     onInputKeydown (event) {
@@ -225,20 +164,6 @@ export default {
         this.$emit('input-keydown', event)
       }
     }
-  },
-  created () {
-    if (!this.fvMain) {
-      throw utility.error('no_fvmain_parent')
-    }
-  },
-  mounted () {
-    window.addEventListener('resize', this.calcBreaked)
-    this.$nextTick(() => {
-      this.calcBreaked()
-    })
-  },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.calcBreaked)
   }
 }
 </script>
@@ -264,6 +189,13 @@ export default {
     & > svg {
       height: 1.5em;
       vertical-align: middle;
+      transition: transform $transition-speed;
+    }
+  }
+
+  &[opened] > .caret-icon {
+    & > svg {
+      transform: rotateX(180deg);
     }
   }
 
@@ -323,13 +255,13 @@ export default {
 
   & > .out-container {
     @include yiq($bg-color);
-    @include shadow(bottom);
+    @include outline($shadow-color);
 
     position: absolute;
-    #{$block-start}: 0;
     overflow: auto;
+    height: auto;
     width: 100%;
-    border: solid 1px contrast($bg-color, 2);
+    // border: solid 1px contrast($bg-color, 2);
     margin: $padding 0;
     cursor: default;
     border-radius: $border-radius;
@@ -341,6 +273,39 @@ export default {
 
     &.top {
       bottom: 100%;
+    }
+
+    &.end {
+      #{$block-start}: auto;
+      #{$block-end}: 0;
+    }
+
+    &.start {
+      #{$block-end}: auto;
+      #{$block-start}: 0;
+    }
+
+    &.fv-inputbox-enter-active,
+    &.fv-inputbox-leave-active {
+      transform: translate3d(0, 0, 0);
+      transition-property: transform, opacity;
+      transition-timing-function: ease;
+      transition-duration: $transition-speed-fast;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+    }
+
+    &.fv-inputbox-enter,
+    &.fv-inputbox-leave-active {
+      opacity: 0;
+
+      &.top {
+        transform: translate3d(0, 1em, 0);
+      }
+
+      &.bottom {
+        transform: translate3d(0, -1em, 0);
+      }
     }
   }
 
