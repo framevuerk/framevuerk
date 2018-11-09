@@ -2,40 +2,22 @@
 @import './functions';
 @import './mixins';
 
-html,
 body {
-  height: 100%;
-  max-height: 100%;
-  min-height: 100%;
   direction: $direction;
-  font-family: sans-serif;
-  width: 100%;
-  overflow: hidden;
+  position: relative;
 }
 
-.fv-overlay {
-  background: $shadow-color-dark;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  text-align: center;
+.fv-safe-box {
+  position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
-  z-index: 2;
-  animation-name: fv-overlay;
-  animation-duration: $transition-speed;
-  will-change: opacity;
-  animation-iteration-count: 1;
+  height: 100%;
 }
 
-@keyframes fv-overlay {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+body.fv-lock {
+  overflow: hidden;
+  // recently i added overlay via ::before. but it is break outsideclick events in ../utility/parent.js
 }
 
 .fv-fade-enter-active,
