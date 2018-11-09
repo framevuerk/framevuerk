@@ -86,6 +86,7 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     min-height: inherit;
+    cursor: default;
 
     & > .text {
       @include nowrap;
