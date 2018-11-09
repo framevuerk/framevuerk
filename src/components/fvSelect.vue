@@ -11,7 +11,6 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
   @value-delete="deleteValue",
   @blur="searchQuery = ''",
   :delete-button="deleteButton",
-  @open="setHighlight"
   :caret-icon="caretIcon",
   ref="inputBox")
   template(slot="value",
@@ -45,7 +44,6 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
 </template>
 
 <script>
-import utility from '../utility'
 import caretIcon from '../icons/ARR.svg'
 import insertIcon from '../icons/CLS.svg'
 
@@ -118,7 +116,7 @@ export default {
     filteredOptions () {
       return this.options.filter(option => {
         if (this.search === true) {
-          if (utility.contains(JSON.stringify(option), this.searchQuery)) {
+          if (JSON.stringify(option).toUpperCase().indexOf(this.searchQuery.toUpperCase()) !== -1) {
             return true
           }
           return false
@@ -147,27 +145,13 @@ export default {
         this.$emit('input', [])
       }
     },
-    setHighlight () {
-      this.$nextTick(() => {
-        this.$refs.list.moveHighlight(null)
-      })
-    },
-    onBlur () {
-      setTimeout(() => {
-        const elem = document.querySelector(':focus')
-        if (!elem || !utility.isChildOf(elem, this.$el)) {
-          this.isFocused = false
-          this.searchQuery = ''
-        }
-      }, 50)
-    },
     onInsert (userString) {
       this.$emit('insert', userString)
       this.searchQuery = ''
     },
     onSearch () {
-      if (this.$refs.inputBox) {
-        this.$refs.inputBox.calcOutPosition()
+      if (this.$refs.list) {
+        this.$refs.list.moveHighlight(null)
       }
       this.$emit('search', this.searchQuery)
     },
