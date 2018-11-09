@@ -1,16 +1,15 @@
 <template lang="pug">
-  fv-dialog.fv-sidebar.not-center(:class="classList",
-    :animation="animation",
-    :value="value",
-    @open="onToggle('open')",
-    @close="onToggle('close')",
+transition(name="fv-sidebar")
+  .fv-sidebar(:class="classList",
+    v-show="value",
     @input="$emit('input', $event)",
-    :overlay="!pin")
-    slot
+    :overlay="!isPinned")
+    .content
+      slot
 </template>
 
 <script>
-import utility from '../utility'
+import parent from '../utility/parent.js'
 
 export default {
   props: {
@@ -18,91 +17,89 @@ export default {
       type: Boolean
     },
     pin: {
-      type: Boolean
-    },
-    position: {
-      type: String,
+      type: [Boolean, Object],
       validator: (value) => {
-        return ['right', 'left'].indexOf(value) > -1
+        return [true, false, null].indexOf(value) > -1
       },
-      default: process.env.direction === 'ltr' ? 'left' : 'right'
+      default: null
     }
   },
-  inject: ['fvMain'],
   data () {
     return {
-      isRendered: false
+      isPinned: this.pin || false
     }
   },
   computed: {
-    animation () {
-      if (this.isRendered === true) {
-        return `fv-sidebar-${this.position}`
-      }
-      return ''
-    },
     classList () {
+      const position = this.getPosition()
       return {
-        'left': this.position === 'left',
-        'right-border': this.position === 'left' && this.pin,
-        'right': this.position === 'right',
-        'left-border': this.position === 'right' && this.pin
+        left: position === 'left',
+        right: position === 'right',
+        pin: this.isPinned,
+        unpin: !this.isPinned
+      }
+    }
+  },
+  watch: {
+    value (value) {
+      if (!this.isPinned) {
+        if (value) {
+          parent.lock(this._uid)
+          parent.on('outsideclick', this.$el, this.close)
+        } else {
+          parent.unlock(this._uid)
+          parent.off('outsideclick', this.$el, this.close)
+        }
       }
     }
   },
   methods: {
-    fixSize () {
-      this.$nextTick(() => {
-        this.fvMain.offset[this.position] = this.value && this.pin ? `${this.$el.offsetWidth}px` : 0
-      })
+    close () {
+      this.$emit('input', false)
+    },
+    openRequest () {
+      this.$emit('input', true)
+    },
+    getPosition () {
+      if (!this.$el) {
+        return process.env.blockStart
+      }
+      if (this.$el.nextSibling) {
+        return process.env.blockStart
+      }
+      return process.env.blockEnd
     },
     onToggle (value) {
       this.$emit('input', value === 'open')
       this.$emit(value)
-      this.fixSize()
     },
     onResize (event) {
-      const parentSize = this.fvMain.getSize()
-      if (parentSize.indexOf('lg') === -1) {
-        if (this.pin !== false) {
-          this.$emit('update:pin', false)
-          setTimeout(() => {
-            if (this.pin === false) {
-              this.$emit('input', false)
-            }
-          })
-        }
-      } else {
-        if (this.pin !== true) {
-          this.$emit('update:pin', true)
-          setTimeout(() => {
-            if (this.pin === true) {
-              this.$emit('input', true)
-            }
-          })
-        }
+      if (this.pin !== null) {
+        return
       }
-      this.fixSize()
+      const isSmall = parent.getSize().indexOf('lg') === -1
+      if (this.isPinned === false) {
+        this.close()
+      }
+      if (isSmall) {
+        this.isPinned = false
+        this.$emit('pinChange', false)
+        this.close()
+      } else {
+        this.isPinned = true
+        this.$emit('pinChange', true)
+        this.openRequest()
+      }
     }
   },
   mounted () {
-    window.addEventListener('resize', this.onResize)
+    parent.on('sizechange', this.onResize)
     this.onResize()
-    this.$nextTick(() => {
-      // wait until start position calculated and then active animation
-      setTimeout(() => {
-        this.isRendered = true
-      }, 100)
-    })
   },
   beforeDestroy () {
-    this.fixSize()
-    window.removeEventListener('resize', this.onResize)
-  },
-  created () {
-    if (!this.fvMain) {
-      throw utility.error('no_fvmain_parent')
-    }
+    parent.off('sizechange', this.onResize)
+    parent.unlock(this._uid)
+    parent.off('outsideclick', this.$el, this.close)
   }
 }
 </script>
@@ -111,35 +108,28 @@ export default {
 @import '../styles/variables';
 @import '../styles/mixins';
 
-.fv-main.fv-sidebar {
+.fv-sidebar {
   @include yiq($sidebar-bg-color);
 
   border-radius: 0;
-  z-index: 2;
-  height: 100%;
+  min-height: 100%;
+  top: 0;
+  position: static;
+  min-width: 15%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  border: none;
+  overflow: auto;
 
-  &.right {
-    @include shadow(left);
-
-    right: 0;
+  &.unpin {
+    position: fixed;
+    z-index: 2;
+    height: 100%;
   }
 
-  &.right-border {
-    border-right: solid 1px contrast($sidebar-bg-color, 1, hard-dark);
-  }
-
-  &.left {
-    @include shadow(right);
-
-    left: 0;
-  }
-
-  &.left-border {
-    border-left: solid 1px contrast($sidebar-bg-color, 1, hard-dark);
-  }
-
-  & .fv-content {
-    @include scrollbar($sidebar-bg-color);
+  &.pin {
+    box-shadow: none;
   }
 
   & .fv-list > .fv-list-item {
@@ -153,25 +143,28 @@ export default {
     }
   }
 
-  &.fv-sidebar-left-enter-active,
-  &.fv-sidebar-left-leave-active,
-  &.fv-sidebar-right-enter-active,
-  &.fv-sidebar-right-leave-active {
+  &.fv-sidebar-enter-active,
+  &.fv-sidebar-leave-active {
     transform: translate3d(0, 0, 0);
-    transition-duration: $transition-speed;
-    transition-property: transform;
+    transition-property: transform, opacity;
     transition-timing-function: ease;
-    will-change: transform;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+
+    &.unpin {
+      transition-duration: $transition-speed;
+    }
   }
 
-  &.fv-sidebar-left-enter,
-  &.fv-sidebar-left-leave-active {
-    transform: translate3d(-100%, 0, 0);
-  }
+  &.fv-sidebar-enter,
+  &.fv-sidebar-leave-active {
+    &.left {
+      transform: translate3d(-100%, 0, 0);
+    }
 
-  &.fv-sidebar-right-enter,
-  &.fv-sidebar-right-leave-active {
-    transform: translate3d(100%, 0, 0);
+    &.right {
+      transform: translate3d(100%, 0, 0);
+    }
   }
 }
 </style>
