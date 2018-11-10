@@ -1,5 +1,3 @@
-- fix fvRange in rtl mode
-- support ssr
 - make configs available in json and scss and less
 - fvDatepicker from-to
 - fvDatepicker time
