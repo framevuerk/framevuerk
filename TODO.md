@@ -1,5 +1,4 @@
-- add vue to peerdeps
-- compire it to v1
+- support ssr
 - make configs available in json and scss and less
 - fvDatepicker from-to
 - fvDatepicker time
