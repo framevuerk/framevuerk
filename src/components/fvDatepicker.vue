@@ -2,7 +2,7 @@
 fv-inputbox.fv-datepicker(:focus="isFocused",
   @enter="onFocus(true)",
   :invalid="!fvValidate",
-  :placeholder="typeof value !== 'undefined' ? '' : placeholder",
+  :placeholder="(typeof value !== 'undefined' ? '' : placeholder)",
   :disabled="disabled",
   :value="typeof value !== 'undefined' ? [value] : []",
   @value-delete="deleteValue",
@@ -22,6 +22,7 @@ fv-inputbox.fv-datepicker(:focus="isFocused",
       ref="input")
   .box(slot="out",
     @close="$emit('close')")
+    .fv-padding-small(v-if="searchQuery") {{searchQuery}}
     fv-header.header(height="4em", tabindex="-1")
       .fv-input-group.header-buttons
         fv-button.fv-sm(@click.prevent="moveValue('year', -1)", :icon="icons.prevYear", tabindex="-1")
@@ -34,7 +35,14 @@ fv-inputbox.fv-datepicker(:focus="isFocused",
     fv-content.content(tabindex="-1")
       table.days-table
         tbody
-          tr(v-for="dp in [0, 7, 14, 21, 28]")
+          tr(v-for="dp in 6")
+            td(v-for="d in dpRow(dp, editingValue.getMonth(), editingValue.getFullYear())",
+              :disabled="d.disabled",
+              @click="selectDate(d.date, $event)",
+              :class="{highlighted: d.highlighted, selected: d.selected, hidden: d.hidden}",
+              v-html="d.realDate")
+
+          // tr(v-for="dp in [0, 7, 14, 21, 28]")
             td(v-for="d in 7",
               @click="setDate((d + dp) - visualProps.monthFirstDay, true)",
               :disabled="isDateDisabled((d + dp) - visualProps.monthFirstDay, editingValue.getMonth(), editingValue.getFullYear())",
@@ -88,7 +96,8 @@ export default {
       editingValue: undefined,
       visualProps: {},
       highlightedDate: null,
-      isFocused: false
+      isFocused: false,
+      searchQuery: ''
     }
   },
   created () {
@@ -116,9 +125,54 @@ export default {
     }
   },
   methods: {
+    selectDate (value, event) {
+      this.setDate(value)
+      if (event.target.getAttribute('disabled')) {
+        return
+      }
+      // this.searchQuery = ''
+      const ret = new this.Date(this.editingValue)
+      this.$emit('input', ret)
+      // this.$nextTick(() => {
+      //   this.$refs.inputBox.close()
+      // })
+    },
+    dpRow (dp, month, year) {
+      const calc = (d, dp) => {
+        const date = (d + ((dp - 1) * 7)) - this.visualProps.monthFirstDay
+        const hidden = !(date > 0 && date <= this.visualProps.daysInMonth)
+        let realDate = date
+        let realMonth = month
+        let realYear = year
+        if (date < 1 || date > this.visualProps.daysInMonth) {
+          const dt = new this.Date(year, month, date)
+          realDate = dt.getDate()
+          realMonth = dt.getMonth()
+          realYear = dt.getFullYear()
+        }
+        return {
+          date,
+          realDate,
+          realMonth,
+          realYear,
+          hidden,
+          highlighted: this.isHighlighted(realDate, realMonth, realYear),
+          selected: this.isSelected(realDate, realMonth, realYear),
+          disabled: this.isDateDisabled(realDate, realMonth, realYear)
+        }
+      }
+      const ret = []
+      for (let d = 1; d <= 7; d++) {
+        ret.push(calc(d, dp))
+      }
+      return ret
+    },
     onFocus (inputFocus) {
       if (!this.disabled) {
-        this.setEditingValue()
+        this.setEditingValue(!this.isFocused)
+        if (!this.isFocused) {
+          this.searchQuery = ''
+        }
         this.calcVisualProps()
         this.isFocused = true
         if (inputFocus && this.$refs.input) {
@@ -140,8 +194,8 @@ export default {
     deleteValue () {
       this.$emit('input', undefined)
     },
-    setEditingValue () {
-      if (!this.editingValue) {
+    setEditingValue (force = false) {
+      if (!this.editingValue || force) {
         this.editingValue = new this.Date(this.value || this.defaultValue)
       }
     },
@@ -225,13 +279,28 @@ export default {
           break
         case 13: // enter
           event.preventDefault()
+          if (this.searchQuery) {
+            const userInputDate = new this.Date(this.searchQuery)
+            if (userInputDate && userInputDate.getTime()) {
+              this.editingValue = userInputDate
+              if (!this.isDateDisabled(this.editingValue.getDate(), this.editingValue.getMonth(), this.editingValue.getFullYear())) {
+                return this.$emit('input', userInputDate)
+              }
+            } else {
+              this.searchQuery = ''
+            }
+          }
           this.setDate(null, true)
           break
         case 8: // backspace
         case 46: // delete
+          this.searchQuery = ''
           if (this.deleteButton) {
             this.deleteValue()
           }
+          break
+        default:
+          this.searchQuery += event.key
       }
       this.calcVisualProps()
     },
@@ -290,6 +359,16 @@ export default {
 
           &[disabled] {
             @include disabled;
+          }
+
+          &.hidden {
+            @include disabled;
+
+            cursor: not-allowed;
+
+            &.selected {
+              @include yiq($bg-color);
+            }
           }
 
           &.highlighted {
