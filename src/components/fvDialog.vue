@@ -60,7 +60,7 @@ export default {
         this.cancelDetector.stop()
         parent.unlock(this._uid)
       } else if (step === 2) {
-        parent.$el.appendChild(this.$el)
+        parent.appendChild(this.$el)
         this.$nextTick(() => {
           this.focusStoler.restore()
           if (this.outer) {

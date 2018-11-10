@@ -27,7 +27,7 @@ export default {
   methods: {
     onOpen () {
       this.$emit('open')
-      parent.$el.appendChild(this.$el)
+      parent.appendChild(this.$el)
       if (this.timeout > 0) {
         this.timer = setTimeout(this.close, this.timeout)
       }

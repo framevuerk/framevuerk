@@ -27,7 +27,7 @@ export default {
     valueHandler (value) {
       if (value) {
         this.$emit('open')
-        parent.$el.appendChild(this.$el)
+        parent.appendChild(this.$el)
         parent.on('outsideclick', this.$el, this.close)
         this.cancelDetector.start(this.close)
         this.$nextTick(() => {
@@ -76,7 +76,7 @@ export default {
         viewportTop: event.clientY
       }
       offset.right = viewport.width - offset.left
-      offset.bottom = window.document.scrollingElement.offsetHeight - offset.top
+      offset.bottom = scrollPos.height - offset.top
       this.lastClickedPosition = offset
     }
   },
