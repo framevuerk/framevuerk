@@ -2,16 +2,10 @@
 @import './functions';
 @import './mixins';
 
-body {
+html, body {
   direction: $direction;
   position: relative;
-}
-
-.fv-safe-box {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  min-height: 100%;
   height: 100%;
 }
 
