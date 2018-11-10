@@ -33,7 +33,8 @@ export default class CancelDetector {
   }
   addHash () {
     if (window.location.hash.indexOf(this.hash) === -1) {
-      const seperator = window.location.hash.indexOf('?') !== -1 ? '&' : '?'
+      // why '!'? read this https://stackoverflow.com/a/17108603
+      const seperator = window.location.hash.length ? '?' : '!'
       window.location.hash += seperator + this.hash
     }
   }
