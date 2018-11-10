@@ -1,10 +1,12 @@
+import parent from './parent.js'
+
 export default class CancelDetector {
   constructor () {
     this.hash = Math.random().toString(36).substr(2, 9)
     this.onFire = () => 1
     this.isListening = false
     this.onHashChange = () => {
-      if (window.location.hash.indexOf(this.hash) === -1) {
+      if (parent.$window.location.hash.indexOf(this.hash) === -1) {
         if (this.onFire() !== false) {
           this.stop(false)
         } else {
@@ -27,29 +29,29 @@ export default class CancelDetector {
     this.addHash()
     setTimeout(() => {
       this.isListening = true
-      window.addEventListener('hashchange', this.onHashChange)
-      window.addEventListener('keydown', this.onEsc)
+      parent.on('hashchange', this.onHashChange)
+      parent.on('keydown', this.onEsc)
     })
   }
   addHash () {
-    if (window.location.hash.indexOf(this.hash) === -1) {
+    if (parent.$window.location.hash.indexOf(this.hash) === -1) {
       // why '!'? read this https://stackoverflow.com/a/17108603
       const seperator = window.location.hash.length ? '?' : '!'
-      window.location.hash += seperator + this.hash
+      parent.$window.location.hash += seperator + this.hash
     }
   }
   // can manualy called by user or called on hashchange
   stop (removeHashManually = true) {
     if (removeHashManually) {
-      let hash = window.location.hash
+      let hash = parent.$window.location.hash
       hash = hash.replace(this.hash, '')
       if (hash.lastIndexOf('&') === hash.length - 1 || hash.lastIndexOf('?') === hash.length - 1) {
         hash = hash.slice(0, hash.length - 1)
       }
-      window.location.hash = hash
+      parent.$window.location.hash = hash
     }
     this.isListening = false
-    window.removeEventListener('hashchange', this.onHashChange)
-    window.removeEventListener('keydown', this.onEsc)
+    parent.off('hashchange', this.onHashChange)
+    parent.off('keydown', this.onEsc)
   }
 }

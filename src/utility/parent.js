@@ -1,6 +1,12 @@
 class Parent {
   constructor () {
-    this.$el = window.document.body
+    this.$window = typeof window === 'object' ? window : null
+    this.$document = this.$window ? this.$window.document : null
+    this.$body = this.$window ? this.$window.document.body : null
+    this.$documentElement = this.$window ? this.$window.document.documentElement : null
+    this.$scrollingElement = this.$window ? this.$window.document.scrollingElement : null
+
+    // this.$el = window.document.body
     this.lockRequests = {}
   }
   getSize () {
@@ -8,7 +14,7 @@ class Parent {
     const breakSm = 768
     const breakMd = 992
     const breakLg = 1200
-    const size = this.$el.offsetWidth
+    const size = this.$body ? this.$body.offsetWidth : 768
     const ret = []
     if (size < breakXs) {
       ret.push('xs')
@@ -28,45 +34,62 @@ class Parent {
     return ret
   }
   lock (by = 'x') {
-    this.$el.classList.add('fv-lock')
+    if (!this.$body) {
+      return
+    }
+    this.$body.classList.add('fv-lock')
     this.lockRequests[by] = true
   }
 
   getViewport () {
+    if (!this.$window) {
+      return
+    }
     return {
-      width: window.innerWidth,
-      height: window.innerHeight
+      width: this.$window.innerWidth,
+      height: this.$window.innerHeight
     }
   }
   getScrollPosition () {
+    if (!this.$body || !this.$scrollingElement || !this.$documentElement) {
+      return
+    }
     return {
-      top: window.document.body.scrollTop || window.document.documentElement.scrollTop || 0
+      top: this.$body.scrollTop || this.$documentElement.scrollTop || 0,
+      height: this.$scrollingElement.offsetHeight || 0
     }
   }
 
   unlock (by = 'x') {
-    if (!this.lockRequests[by]) {
+    if (!this.$body || !this.lockRequests[by]) {
       return
     }
     delete this.lockRequests[by]
     if (Object.keys(this.lockRequests).length === 0) {
-      this.$el.classList.remove('fv-lock')
+      this.$body.classList.remove('fv-lock')
     }
   }
   newEl (tag, classList = '') {
-    const el = window.document.createElement(tag)
+    if (!this.$document || !this.$body) {
+      return
+    }
+    const el = this.$document.createElement(tag)
     el.className = classList
-    this.$el.appendChild(el)
+    this.$body.appendChild(el)
     return el
   }
-  offOutsideClick (currentEl, handler) {
-    this.$el.removeEventListener('click', handler)
-    this.$el.removeEventListener('touchstart', handler)
-    currentEl.removeEventListener('click', currentEl.stopPropagationHandler || (() => 1))
-    currentEl.removeEventListener('touchstart', currentEl.stopPropagationHandler || (() => 1))
+  appendChild (tagName) {
+    if (!this.$body) {
+      return
+    }
+    return this.$body.appendChild(tagName)
   }
 
   on (name) {
+    if (!this.$window) {
+      return
+    }
+
     if (name === 'outsideclick') {
       const currentEl = arguments[1]
       const handler = arguments[2]
@@ -83,23 +106,26 @@ class Parent {
         }
       }
 
-      this.$el.addEventListener('click', currentEl.inlineClickHandler)
-      this.$el.addEventListener('touchstart', currentEl.inlineClickHandler)
+      this.$window.addEventListener('click', currentEl.inlineClickHandler)
+      this.$window.addEventListener('touchstart', currentEl.inlineClickHandler)
     } else if (name === 'sizechange') {
-      window.addEventListener('resize', arguments[1])
+      this.$window.addEventListener('resize', arguments[1])
     } else {
-      this.$el.addEventListener(name, arguments[1])
+      this.$window.addEventListener(name, arguments[1])
     }
   }
   off (name) {
+    if (!this.$window) {
+      return
+    }
     if (name === 'outsideclick') {
       const currentEl = arguments[1]
-      this.$el.removeEventListener('click', currentEl.inlineClickHandler)
-      this.$el.removeEventListener('touchstart', currentEl.inlineClickHandler)
+      this.$window.removeEventListener('click', currentEl.inlineClickHandler)
+      this.$window.removeEventListener('touchstart', currentEl.inlineClickHandler)
     } else if (name === 'sizechange') {
-      window.removeEventListener('resize', arguments[1])
+      this.$window('resize', arguments[1])
     } else {
-      this.$el.addEventListener(name, arguments[1])
+      this.$window.addEventListener(name, arguments[1])
     }
   }
 }

@@ -1,3 +1,4 @@
+import parent from './parent.js'
 export default class FocusStoler {
   constructor () {
     this.$src = null
@@ -18,7 +19,7 @@ export default class FocusStoler {
     }
   }
   stole ($dest) {
-    this.$src = window.document.querySelector(':focus')
+    this.$src = parent.$document.querySelector(':focus')
     this.$focusableItems = $dest.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])')
     const $force = $dest.querySelector('[autofocus]')
     if ($force) {
@@ -26,12 +27,12 @@ export default class FocusStoler {
     } else if (this.$focusableItems.length) {
       this.$focusableItems[this.$focusableItems.length - 1].focus()
     }
-    window.addEventListener('keydown', this.onTab)
+    parent.on('keydown', this.onTab)
   }
   restore () {
     if (this.$src) {
       this.$src.focus()
     }
-    window.removeEventListener('keydown', this.onTab)
+    parent.off('keydown', this.onTab)
   }
 }
