@@ -1,4 +1,3 @@
-import parent from '../index.js'
 class Parent {
   constructor () {
     this.$el = window.document.body
@@ -9,16 +8,6 @@ class Parent {
     const breakSm = 768
     const breakMd = 992
     const breakLg = 1200
-    if (!this.$el || this.$el.offsetWidth) {
-      if (parent.smallDetected === null) {
-        // or handle by userAgent maybe
-        return ['xs', 'sm', 'md', 'lg']
-      } else if (parent.smallDetected === true) {
-        return ['xs', 'sm']
-      } else if (parent.smallDetected === false) {
-        return ['xs', 'sm', 'md', 'lg']
-      }
-    }
     const size = this.$el.offsetWidth
     const ret = []
     if (size < breakXs) {

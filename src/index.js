@@ -89,8 +89,7 @@ const Framevuerk = {
     Vue.component('fvFormElement', fvFormElement)
   },
   name: process.env.name,
-  version: process.env.version,
-  smallDetected: null
+  version: process.env.version
 }
 
 if (typeof window !== 'undefined' && window.Vue) {
