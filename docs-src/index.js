@@ -1,4 +1,3 @@
-import './google-analytics.js.none'
 import 'babel-polyfill'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -10,7 +9,6 @@ import 'highlight.js/styles/dark.css'
 import 'font-awesome/css/font-awesome.css'
 
 import './favicon.ico'
-import './CNAME.none'
 import main from './main.vue'
 
 Framevuerk.use('hammer', Hammer)
@@ -39,10 +37,6 @@ new Vue({
       console.log(d1, d2, d3)
     },
     routeChange (path) {
-      const url = `doc.html#${path}`
-      if (global.ga) {
-        global.ga('send', 'pageview', url)
-      }
     }
   },
   created () {
