@@ -2,7 +2,8 @@
 @import './functions';
 @import './mixins';
 
-html, body {
+html,
+body {
   direction: $direction;
   position: relative;
   min-height: 100%;

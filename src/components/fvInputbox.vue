@@ -217,7 +217,7 @@ export default {
       outline-style: solid;
       outline-width: 1px;
       outline-color: contrast($bg-color, 2, hard-dark);
-      outline-offset: 0px;
+      outline-offset: 0;
       margin: $padding / 2;
       margin-#{$block-start}: 0;
       margin-#{$block-end}: $padding;
