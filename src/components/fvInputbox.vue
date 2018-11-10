@@ -176,11 +176,12 @@ export default {
 .fv-inputbox {
   cursor: pointer;
   display: inline-flex;
-  width: 17em;
+  min-width: 17em;
   max-width: 100%;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
 
   & > .caret-icon {
     #{$block-end}: 0;
@@ -204,12 +205,23 @@ export default {
     max-width: 80%;
 
     & > .item {
-      padding: 0 0.25em;
+      @include shadow(bottom);
+
+      padding: 0 #{$padding / 2};
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 100%;
+      background: contrast($bg-color, 1, hard-dark);
       vertical-align: middle;
+      outline-style: solid;
+      outline-width: 1px;
+      outline-color: contrast($bg-color, 2, hard-dark);
+      outline-offset: 0px;
+      margin: $padding / 2;
+      margin-#{$block-start}: 0;
+      margin-#{$block-end}: $padding;
+      border-radius: $border-radius;
 
       & > span {
         vertical-align: middle;
@@ -220,6 +232,7 @@ export default {
         padding: 0;
         border: 0;
         box-shadow: none;
+        outline: none;
 
         & .input {
           display: inline-block;
@@ -261,7 +274,7 @@ export default {
     overflow: auto;
     height: auto;
     width: 100%;
-    // border: solid 1px contrast($bg-color, 2);
+    border: solid 1px contrast($bg-color, 2, hard-dark);
     margin: $padding 0;
     cursor: default;
     border-radius: $border-radius;

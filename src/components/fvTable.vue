@@ -111,7 +111,7 @@ export default {
 .fv-table {
   @include shadow(bottom);
 
-  border: 1px solid contrast($bg-color, 2);
+  border: 1px solid contrast($bg-color, 2, hard-dark);
   border-radius: $border-radius;
   overflow: auto;
 
@@ -124,7 +124,7 @@ export default {
 
     & tr {
       &:not(:last-child) {
-        border-bottom: 1px solid contrast($bg-color, 2);
+        border-bottom: 1px solid contrast($bg-color, 2, hard-dark);
       }
 
       &:nth-child(even) {
@@ -142,13 +142,13 @@ export default {
     & thead {
       @include shadow(bottom);
 
-      border-bottom: 1px solid contrast($bg-color, 2);
+      border-bottom: 1px solid contrast($bg-color, 2, hard-dark);
     }
 
     & tfoot {
       @include shadow(inset-bottom);
 
-      border-top: 1px solid contrast($bg-color, 2);
+      border-top: 1px solid contrast($bg-color, 2, hard-dark);
     }
   }
 

@@ -132,6 +132,18 @@ export default {
     box-shadow: none;
   }
 
+  &.left {
+    @include shadow(right);
+
+    border-right: solid 1px contrast($sidebar-bg-color, 2, hard-dark);
+  }
+
+  &.right {
+    @include shadow(left);
+
+    border-left: solid 1px contrast($sidebar-bg-color, 2, hard-dark);
+  }
+
   & .fv-list > .fv-list-item {
     & > .content,
     & > .sub-list {

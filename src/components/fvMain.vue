@@ -19,6 +19,8 @@
 
   display: flex;
   flex-direction: row;
+  overflow: auto;
+  min-height: 100%;
 
   &.column {
     flex-direction: column;
