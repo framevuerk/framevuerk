@@ -62,6 +62,7 @@ export default {
 
     color: $color-light;
     display: block;
+    min-width: 25%;
 
     &.highlighted {
       color: $color;
@@ -106,6 +107,7 @@ export default {
       font-family: inherit;
       max-width: 100%;
       width: 100%;
+      min-width: 100%;
     }
   }
 }
