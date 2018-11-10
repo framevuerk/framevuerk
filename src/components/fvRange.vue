@@ -289,16 +289,16 @@ export default {
         this.$refs.filler.style[process.env.blockStart] = `${handlerPosition[0]}%`
         this.$refs.filler.style[process.env.blockEnd] = `${100 - handlerPosition[1]}%`
         this.$refs.handler[0].style[process.env.blockStart] = `${handlerPosition[0]}%`
-        this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
+        this.$refs.handler[0].style.transform = `translateX(${process.env.direction === 'ltr' ? '-' : ''}${handlerPosition[0]}%)`
         this.$refs.handler[1].style[process.env.blockStart] = `${handlerPosition[1]}%`
-        this.$refs.handler[1].style.transform = `translateX(-${handlerPosition[1]}%)`
+        this.$refs.handler[1].style.transform = `translateX(${process.env.direction === 'ltr' ? '-' : ''}${handlerPosition[1]}%)`
         this.$emit('input', ret)
       } else {
         handlerPosition.push(this.calcXByValue(value))
         this.$refs.filler.style[process.env.blockStart] = `0%`
         this.$refs.filler.style[process.env.blockEnd] = `${100 - this.calcXByValue(ret[0])}%`
         this.$refs.handler[0].style[process.env.blockStart] = `${handlerPosition[0]}%`
-        this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
+        this.$refs.handler[0].style.transform = `translateX(${process.env.direction === 'ltr' ? '-' : ''}${handlerPosition[0]}%)`
         this.$emit('input', ret[0])
       }
     },
