@@ -1,4 +1,4 @@
-import { smallDetected } from '../index.js'
+import parent from '../index.js'
 class Parent {
   constructor () {
     this.$el = window.document.body
@@ -10,12 +10,12 @@ class Parent {
     const breakMd = 992
     const breakLg = 1200
     if (!this.$el || this.$el.offsetWidth) {
-      if (smallDetected === null) {
+      if (parent.smallDetected === null) {
         // or handle by userAgent maybe
         return ['xs', 'sm', 'md', 'lg']
-      } else if (smallDetected === true) {
+      } else if (parent.smallDetected === true) {
         return ['xs', 'sm']
-      } else if (smallDetected === false) {
+      } else if (parent.smallDetected === false) {
         return ['xs', 'sm', 'md', 'lg']
       }
     }
