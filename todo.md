@@ -1,3 +1,4 @@
+- compire it to v1
 - make configs available in json and scss and less
 - fvDatepicker from-to
 - fvDatepicker time
