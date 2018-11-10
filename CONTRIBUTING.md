@@ -9,7 +9,8 @@
 
 ## How can i see my changes in browser?
 
+
 1. Fork [framevuerk-docs](https://github.com/framevuerk/framevuerk-docs) repo in same directory that you fork **framevuerk**.
 2. Open terminal and `cd` to project folder and install dependencies by `npm i`.
 3. Run command `npm run serve` in the terminal and open [localhost:8080](http://localhost:8080).
-4. Open new terminal and `cd` to **framevuerk** project folder and apply your changes to browser by running `npm run dev`.
+4. Open new terminal and `cd` to **framevuerk** project folder and apply your changes to browser by running `npm run serve-to-docs`.
