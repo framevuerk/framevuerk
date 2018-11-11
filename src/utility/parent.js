@@ -123,7 +123,7 @@ class Parent {
       this.$window.removeEventListener('click', currentEl.inlineClickHandler)
       this.$window.removeEventListener('touchstart', currentEl.inlineClickHandler)
     } else if (name === 'sizechange') {
-      this.$window('resize', arguments[1])
+      this.$window.addEventListener('resize', arguments[1])
     } else {
       this.$window.addEventListener(name, arguments[1])
     }
