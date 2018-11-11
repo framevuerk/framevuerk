@@ -1,6 +1,6 @@
 {
   "name": "framevuerk",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Fast, Responsive, Without Dependencies, Both Direction Support and Configurable UI Framework based on Vue.js.",
   "main": "dist/framevuerk.min.js",
   "scripts": {
