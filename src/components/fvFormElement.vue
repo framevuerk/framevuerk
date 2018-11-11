@@ -74,6 +74,10 @@ export default {
     align-items: center;
     justify-content: space-between;
 
+    & > label {
+      padding-bottom: padding(sm);
+    }
+
     & > * {
       font-family: inherit;
       min-width: 100%;
