@@ -145,6 +145,14 @@
   text-align: $block-start !important;
 }
 
+.fv-text-left {
+  text-align: left !important;
+}
+
+.fv-text-right {
+  text-align: right !important;
+}
+
 .fv-text-justify {
   text-align: justify !important;
 }
@@ -177,6 +185,14 @@
   @else {
     direction: ltr !important;
   }
+}
+
+.fv-ltr {
+  direction: ltr !important;
+}
+
+.fv-rtl {
+  direction: rtl !important;
 }
 
 // --------------
