@@ -1,9 +1,9 @@
 <template lang="pug">
-.fv-form-element(:class="{ 'single-line': singleLine, 'multi-line': !singleLine, inline: isInline, block: !isInline }")
+.fv-form-element(:class="{ 'single-line': singleLine, 'multi-line': !singleLine, inline: inline, block: !inline }")
   label(:class="{ highlighted: isHighlighted, valid: isValid, unvalid: !isValid }")
     slot(v-if="$slots.label || $scopedSlots.label", :label="label", :highlighted="isHighlighted", name="label")
     span(v-else) {{label}}
-  .container(v-if="singleLine || isInline")
+  .container(v-if="singleLine || inline")
     slot
   slot(v-else)
 </template>
@@ -18,6 +18,10 @@ export default {
     singleLine: {
       type: Boolean,
       default: false
+    },
+    inline: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -28,17 +32,6 @@ export default {
   provide () {
     return {
       fvFormElement: this
-    }
-  },
-  computed: {
-    isInline () {
-      const cName = slot => slot.componentOptions ? slot.componentOptions.tag : ''
-      for (let i of this.$slots.default) {
-        if (['fvInput', 'fvInputbox', 'fvDatepicker', 'fvSelect', 'fvRange', 'fvTextarea'].indexOf(cName(i)) > -1) {
-          return false
-        }
-      }
-      return true
     }
   },
   methods: {
