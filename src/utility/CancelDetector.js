@@ -43,12 +43,7 @@ export default class CancelDetector {
   // can manualy called by user or called on hashchange
   stop (removeHashManually = true) {
     if (removeHashManually) {
-      let hash = parent.$window.location.hash
-      hash = hash.replace(this.hash, '')
-      if (hash.lastIndexOf('&') === hash.length - 1 || hash.lastIndexOf('?') === hash.length - 1) {
-        hash = hash.slice(0, hash.length - 1)
-      }
-      parent.$window.location.hash = hash
+      parent.$window.history.go(-1)
     }
     this.isListening = false
     parent.off('hashchange', this.onHashChange)
