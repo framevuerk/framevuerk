@@ -67,7 +67,6 @@ export default {
       this.$emit('input', false)
     },
     lastClickPositionHandler (event) {
-      console.log('lclick handler')
       const viewport = parent.getViewport()
       const scrollPos = parent.getScrollPosition()
       const offset = {
