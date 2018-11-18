@@ -276,6 +276,7 @@ export default {
     position: absolute;
     overflow: auto;
     height: auto;
+    max-height: 50vh;
     width: 100%;
     border: solid 1px contrast($bg-color, 2, hard-dark);
     margin: $padding 0;
