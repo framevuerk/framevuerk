@@ -74,7 +74,8 @@ export default {
         top: event.clientY + scrollPos.top,
         viewportTop: event.clientY
       }
-      offset.right = viewport.width - offset.left
+      const scrollBarSize = 15 // not big deal if it's wrong on other browsers
+      offset.right = viewport.width - offset.left - scrollBarSize
       offset.bottom = scrollPos.height - offset.top
       this.lastClickedPosition = offset
     }
