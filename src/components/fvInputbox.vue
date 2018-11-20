@@ -21,7 +21,7 @@
           :disabled="disabled"
           @keydown="onInputKeydown",
           @input="onTyping",
-          :size="searchQuery.length + 3 || 1",
+          :size="searchQuery ? searchQuery.length + 1 : 1",
           :type="inputType",
           ref="input")
         .input(v-else,
@@ -107,8 +107,9 @@ export default {
     },
     onBlur (event) {
       const target = event.relatedTarget
-      if (!target || !parent.$body.contains(target)) {
+      if (!target || !this.$el.contains(target)) {
         this.isFocused = false
+        this.close()
         this.$emit('blur')
         if (this.fvFormElement) {
           this.fvFormElement.turn(false)
@@ -204,8 +205,7 @@ export default {
   }
 
   & > .value-container {
-    width: 80%;
-    max-width: 80%;
+    width: calc(100% - 2em);
 
     & > .item {
       @include shadow(bottom);
