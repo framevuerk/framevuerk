@@ -1,4 +1,4 @@
-- change cancel detector actions. if we change url, vue detect route change event and it will be break app in nuxtjs.
+- add number formatter for datepicker?
 - make configs available in json and scss and less
 - fvDatepicker from-to
 - fvDatepicker time
