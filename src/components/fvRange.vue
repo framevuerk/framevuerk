@@ -110,7 +110,7 @@ export default {
       let ret = []
       if (this.data instanceof Array) {
         let sorted = [...this.data]
-        sorted.sort()
+        sorted
 
         for (let index = 0; index < this.dataLength; index++) {
           ret.push({
