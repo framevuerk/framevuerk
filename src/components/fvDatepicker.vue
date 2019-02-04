@@ -34,7 +34,7 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
           .icon(:style="{ transform: icons.nextMonth }", v-html="icons.icon")
         fv-button.fv-size-sm(@click.prevent="moveValue('year', 1)", tabindex="-1")
           .icon(:style="{ transform: icons.nextYear }", v-html="icons.iconY")
-    .content
+    .content(tabindex="-1")
       table
         thead
           tr
