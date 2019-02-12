@@ -1,10 +1,11 @@
 <template lang="pug">
-
+div
+  div value: {{value}}, dataLength: {{dataLength}}, data: {{data}}
   .fv-range(vif="!iszBadStructure",
     :disabled="disabled",
     :invalid="!fvValidate",
     zwheel="wheel",
-    zclick.left="onClick")
+    @click.left="onClick")
     .container
       .filler(ref="filler")
       .handler(v-for="i in (multiple ? 2 : 1)",
@@ -15,7 +16,7 @@
         @blur="onHandlerBlur",
         @mousedown="moveStart($event, i - 1)",
         @touchstart="moveStart($event, i - 1)",
-        @zkeydown="onKeydown($event, i - 1)",
+        @keydown="onKeydown($event, i - 1)",
         @click="onHandlerFocus(i - 1)")
 </template>
 
@@ -115,26 +116,23 @@ export default {
       if (this.multiple) {
         for (let i = 0; i < 2; i++) {
           try {
-            if (this.isTrustyValue(this.value[i])) {
-              throw 'x' // go to catch
+            if (!this.setLocalValue(JSON.parse(JSON.stringify(this.value[i])), i)) {
+              throw new Error()
             }
-            this.localValue[i] = JSON.parse(JSON.stringify(this.value[i]))
           } catch (e) {
             this.localValue[i] = i === 0 ? this.firstAvailableData : this.lastAvailableData
           }
         }
       } else {
         try {
-          if (this.isTrustyValue(this.value[i])) {
-            throw 'x' // go to catch
+          if (!this.setLocalValue(JSON.parse(JSON.stringify(this.value)), 0)) {
+            throw new Error()
           }
-          this.localValue[0] = this.value
         } catch (e) {
           this.localValue[0] = this.lastAvailableData
         }
         this.localValue[1] = null
       }
-      console.log('syncLocalValue', this.localValue)
     },
     // fire input event to set value based on localValue
     syncValue () {
@@ -145,6 +143,27 @@ export default {
         this.$emit('input', freshLocalValue[0])
       }
     },
+    // set localValue
+    setLocalValue (value, index) {
+      if (!this.isTrustyValue(value)) {
+        return
+      }
+      if (this.multiple) {
+        if (index === 1) {
+          if (value <= this.localValue[0]) {
+            return
+          }
+        } else if (index === 0) {
+          if (value >= this.localValue[1]) {
+            return
+          }
+        }
+        this.localValue[index] = value
+      } else {
+        this.localValue[0] = value
+      }
+      return true
+    },
     focus (handlerIndex = -1) {
       if (this.disabled) {
         return
@@ -152,24 +171,17 @@ export default {
       this.selectedHandler = handlerIndex < 0 ? 0 : handlerIndex
       this.$refs.handler[this.selectedHandler].focus()
     },
-    // onKeydown (event, handlerIndex) {
-    //   const currentValue = this.filteredValue[handlerIndex]
-    //   const index = this.filteredData.findIndex(fd => JSON.stringify(fd.value) === JSON.stringify(currentValue))
-    //   switch (event.which) {
-    //     case process.env.direction === 'ltr' ? 37 : 39: // 37: left, 39: right,
-    //       if (index === 0) {
-    //         return
-    //       }
-    //       this.setValue(this.filteredData[index - 1].value, handlerIndex)
-    //       break
-    //     case process.env.direction === 'ltr' ? 39 : 37: // 37: left, 39: right,
-    //       if (index === this.dataLength - 1) {
-    //         return
-    //       }
-    //       this.setValue(this.filteredData[index + 1].value, handlerIndex)
-    //       break
-    //   }
-    // },
+    onKeydown (event, handlerIndex) {
+      if ([37, 39].indexOf(event.which) === -1) {
+        return
+      }
+      const currentValue = this.localValue[handlerIndex]
+      const increase = process.env.direction === 'ltr' ? 39 : 37 // 39: right, 37: left
+      const newValue = this.getNeightboorValue(currentValue, event.which === increase ? 1 : -1)
+      this.setLocalValue(newValue, handlerIndex)
+      this.redraw()
+      this.syncValue()
+    },
     onHandlerFocus (handlerIndex) {
       if (this.disabled) {
         return
@@ -194,7 +206,7 @@ export default {
     },
     moveEnd (event) {
       event.preventDefault()
-      this.focus(this.selectedHandler)
+      // this.focus(this.selectedHandler)
       // const x = parseInt(this.$refs.handler[this.selectedHandler].style[process.env.blockStart])
       // const value = this.calcValueByX(x)
       // if (typeof value === 'undefined') {
@@ -202,23 +214,25 @@ export default {
       //   return
       // }
       // this.localValue[this.selectedHandler] = value
-      this.redraw()
-      this.syncValue()
+      // this.redraw()
+      // this.syncValue()
       this.unbindEvents()
     },
-    // onClick (event) {
-    //   if (this.disabled || event.target === this.$refs.handler[0] || event.target === this.$refs.handler[1]) {
-    //     return
-    //   }
-    //   if (!this.multiple) {
-    //     const x = this.calcXByEvent(event)
-    //     const value = this.calcValueByX(x)
-    //     this.focus(0)
-    //     this.setValue(value, 0)
-    //   } else {
-    //     this.focus(0)
-    //   }
-    // },
+    onClick (event) {
+      if (this.disabled || event.target === this.$refs.handler[0] || event.target === this.$refs.handler[1]) {
+        return
+      }
+      if (!this.multiple) {
+        const x = this.calcXByEvent(event)
+        const value = this.calcValueByX(x)
+        this.focus(0)
+        this.setLocalValue(value, 0)
+        this.redraw()
+        this.syncValue()
+      } else {
+        this.focus(0)
+      }
+    },
     handlerFocus (handlerIndex) {
       if (this.disabled || this.selectedHandler === handlerIndex) {
         return
@@ -234,11 +248,10 @@ export default {
       this.focus(this.selectedHandler)
       const x = this.calcXByEvent(event)
       const value = this.calcValueByX(x)
-      this.localValue[this.selectedHandler] = value
+      this.setLocalValue(value, this.selectedHandler)
       this.redraw()
       this.syncValue()
       // console.log('i m movin calcs', this.selectedHandler, this.localValue, this.value)
-
     },
     // wheel (event) {
     //   if (this.disabled || this.multiple) {
@@ -269,7 +282,7 @@ export default {
       document.body.removeEventListener('touchend', this.moveEnd)
     },
     // private function to set handler and filler positions used by .redraw method
-    setHandlerPosition(x, handlerIndex) {
+    setHandlerPosition (x, handlerIndex) {
       const filler = [null, null]
       const fillerDirs = [process.env.blockStart, process.env.blockEnd]
       const movingFiller = this.multiple ? handlerIndex : 1
@@ -280,10 +293,9 @@ export default {
 
       // for (let i = 0; i < 2; i++) {
       //   if (filler[i] !== null) {
-          
       //   }
       // }
-      const blockDir = handlerIndex === 0 ? process.env.blockStart : process.env.blockEnd
+      // const blockDir = handlerIndex === 0 ? process.env.blockStart : process.env.blockEnd
       const translateX = (process.env.direction === 'ltr' ? -1 : 1) * x
       this.$refs.handler[handlerIndex].style[process.env.blockStart] = `${(process.env.direction === 'ltr' ? 1 : -1) * x}%`
       this.$refs.handler[handlerIndex].style.transform = `translateX(${translateX}%)`
@@ -305,7 +317,7 @@ export default {
     },
     calcValueByX (x) {
       let value
-      const inBorderX = x > 100 ? 100 : (x < 0 ? 0 : x) 
+      const inBorderX = x > 100 ? 100 : (x < 0 ? 0 : x)
       const index = Math.floor((inBorderX / 100) * (this.dataLength - 1))
       if (this.dataType === 'array') {
         value = this.data[index]
@@ -314,8 +326,25 @@ export default {
       }
       return value
     },
+    getNeightboorValue (value, sum = 1) {
+      if (this.dataType === 'array') {
+        const valueIndex = this.data.indexOf(value)
+        try {
+          return this.data[valueIndex + sum]
+        } catch (e) {
+          return value
+        }
+      } else if (this.dataType === 'object') {
+        return value + sum
+      }
+    },
     calcXByValue (value) {
-      const valueIndex = value - this.firstAvailableData
+      let valueIndex
+      if (this.dataType === 'array') {
+        valueIndex = this.data.indexOf(value)
+      } else if (this.dataType === 'object') {
+        valueIndex = value - this.firstAvailableData
+      }
       const x = (valueIndex / (this.dataLength - 1)) * 100
       return x
     }
@@ -355,6 +384,8 @@ export default {
     position: absolute;
     width: auto;
     height: 100%;
+    left: 0;
+    right: 0;
     background: contrast($primary-color, 2, hard-light);
   }
 
@@ -362,21 +393,21 @@ export default {
     @include shadow(bottom);
 
     padding: 0;
-    height: 1.2em;
-    width: 1.2em;
+    height: 1.1em;
+    width: 1.1em;
     display: inline-block;
     position: absolute;
-    border-radius: 1.2em;
+    border-radius: $border-radius;
     background: contrast($bg-color, 1, force-light);
     border: solid 1px contrast($bg-color, 2, hard-dark);
     cursor: move;
-    opacity: 0;
+    // opacity: 0;
     transition-property: opacity;
     transition-duration: $transition-speed;
 
     &:focus {
       @include outline;
-      opacity: 1;
+      // opacity: 1;
     }
   }
 
