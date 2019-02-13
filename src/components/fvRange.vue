@@ -1,12 +1,10 @@
 <template lang="pug">
-  .fv-range(v-if="!isBadStructure",
-    :disabled="disabled",
+  .fv-range(:disabled="disabled",
     :invalid="!fvValidate",
-    @wheel="wheel",
     @click.left="onClick")
     .container
       .filler(ref="filler")
-      .handler(v-for="i in filteredValue.length",
+      .handler(v-for="i in (multiple ? 2 : 1)",
         :tabindex="disabled? '' : 0",
         ref="handler",
         :key="i",
@@ -54,9 +52,8 @@ export default {
   },
   data () {
     return {
-      width: 0,
-      height: 0,
-      selectedHandler: -1
+      selectedHandler: -1,
+      localValue: [null, null]
     }
   },
   inject: {
@@ -73,84 +70,95 @@ export default {
       }
       return true
     },
-    isBadStructure () {
-      if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
-        return true
-      }
-      // check if value is inside data
-      for (let i = 0; i < this.filteredValue.length; i++) {
-        const val = this.filteredValue[i]
-        if (this.filteredData.findIndex(item => item.value === val) === -1) {
-          return true
-        }
-      }
-      return false
-    },
-    filteredValue () {
-      if (this.multiple) {
-        return this.value
-      } else {
-        return [this.value]
-      }
-    },
-    middleValue () {
-      return this.filteredData[parseInt(this.dataLength / 2)].value
+    dataType () {
+      return this.data instanceof Array ? 'array' : 'object'
     },
     dataLength () {
       if (this.data instanceof Array) {
-        return this.data.filter((item, i, arr) => arr.indexOf(item) === i).length
+        return this.data.length
       } else if (this.data === Object(this.data)) {
         return (this.data.to - this.data.from) + 1
       }
     },
-    stepWidth () {
-      return 100 / (this.dataLength - 1)
+    firstAvailableData () {
+      return this.data[this.dataType === 'array' ? 0 : 'from']
     },
-    filteredData () {
-      let ret = []
-      if (this.data instanceof Array) {
-        let sorted = [...this.data]
-        sorted
-
-        for (let index = 0; index < this.dataLength; index++) {
-          ret.push({
-            x: this.stepWidth * index,
-            value: sorted[index]
-          })
-          ret = ret.filter((item, i, arr) => arr.indexOf(item) === i)
-        }
-      } else if (this.data === Object(this.data)) {
-        let index = 0
-        for (let value = this.data.from; value <= this.data.to; value++ && index++) {
-          ret.push({
-            x: this.stepWidth * index,
-            value
-          })
-        }
-      }
-      return ret
+    lastAvailableData () {
+      return this.data[this.dataType === 'array' ? (this.data.length - 1) : 'to']
     }
   },
   created () {
-    this.setStructure()
+    this.syncLocalValue()
+    this.syncValue()
   },
   mounted () {
-    this.$nextTick(() => {
-      this.setValue(this.filteredValue[0], 0)
-      if (this.multiple) {
-        this.setValue(this.filteredValue[1], 1)
-      }
-    })
+    this.$nextTick(this.redraw)
   },
   methods: {
-    setStructure () {
-      if (this.isBadStructure) {
-        if (this.multiple) {
-          this.$emit('input', [this.filteredData[0].value, this.filteredData[this.dataLength - 1].value])
-        } else {
-          this.$emit('input', this.filteredData[0].value)
-        }
+    // check if value is inside data or not
+    isTrustyValue (v) {
+      if (this.dataType === 'array') {
+        return this.data.indexOf(v) !== -1
+      } else {
+        return v === parseInt(v) && v >= this.data.from && v <= this.data.to
       }
+    },
+    // force calc trusty localValue based on value. normally called at startup and when value changes by parent
+    syncLocalValue () {
+      if (this.multiple) {
+        for (let i = 0; i < 2; i++) {
+          try {
+            if (!this.setLocalValue(JSON.parse(JSON.stringify(this.value[i])), i)) {
+              throw new Error()
+            }
+          } catch (e) {
+            this.setLocalValue(i === 0 ? this.firstAvailableData : this.lastAvailableData, i, true)
+          }
+        }
+      } else {
+        try {
+          if (!this.setLocalValue(JSON.parse(JSON.stringify(this.value)), 0)) {
+            throw new Error()
+          }
+        } catch (e) {
+          this.setLocalValue(this.firstAvailableData, 0, true)
+        }
+        this.setLocalValue(null, 1, true)
+      }
+    },
+    // fire input event to set value based on localValue
+    syncValue () {
+      const freshLocalValue = JSON.parse(JSON.stringify(this.localValue))
+      if (this.multiple) {
+        this.$emit('input', freshLocalValue)
+      } else {
+        this.$emit('input', freshLocalValue[0])
+      }
+    },
+    // set localValue
+    setLocalValue (value, index, force = false) {
+      if (force) {
+        this.localValue[index] = value
+        return true
+      }
+      if (!this.isTrustyValue(value)) {
+        return
+      }
+      if (this.multiple) {
+        if (index === 1) {
+          if (value <= this.localValue[0]) {
+            return
+          }
+        } else if (index === 0) {
+          if (value >= this.localValue[1]) {
+            return
+          }
+        }
+        this.localValue[index] = value
+      } else {
+        this.localValue[0] = value
+      }
+      return true
     },
     focus (handlerIndex = -1) {
       if (this.disabled) {
@@ -160,22 +168,15 @@ export default {
       this.$refs.handler[this.selectedHandler].focus()
     },
     onKeydown (event, handlerIndex) {
-      const currentValue = this.filteredValue[handlerIndex]
-      const index = this.filteredData.findIndex(fd => JSON.stringify(fd.value) === JSON.stringify(currentValue))
-      switch (event.which) {
-        case process.env.direction === 'ltr' ? 37 : 39: // 37: left, 39: right,
-          if (index === 0) {
-            return
-          }
-          this.setValue(this.filteredData[index - 1].value, handlerIndex)
-          break
-        case process.env.direction === 'ltr' ? 39 : 37: // 37: left, 39: right,
-          if (index === this.dataLength - 1) {
-            return
-          }
-          this.setValue(this.filteredData[index + 1].value, handlerIndex)
-          break
+      if ([37, 39].indexOf(event.which) === -1) {
+        return
       }
+      const currentValue = this.localValue[handlerIndex]
+      const increase = process.env.direction === 'ltr' ? 39 : 37 // 39: right, 37: left
+      const newValue = this.getNeightboorValue(currentValue, event.which === increase ? 1 : -1)
+      this.setLocalValue(newValue, handlerIndex)
+      this.redraw()
+      this.syncValue()
     },
     onHandlerFocus (handlerIndex) {
       if (this.disabled) {
@@ -201,14 +202,6 @@ export default {
     },
     moveEnd (event) {
       event.preventDefault()
-      this.focus(this.selectedHandler)
-      const x = parseInt(this.$refs.handler[this.selectedHandler].style[process.env.blockStart])
-      const value = this.calcValueByX(x)
-      if (typeof value === 'undefined') {
-        this.unbindEvents()
-        return
-      }
-      this.setValue(value, this.selectedHandler)
       this.unbindEvents()
     },
     onClick (event) {
@@ -219,7 +212,9 @@ export default {
         const x = this.calcXByEvent(event)
         const value = this.calcValueByX(x)
         this.focus(0)
-        this.setValue(value, 0)
+        this.setLocalValue(value, 0)
+        this.redraw()
+        this.syncValue()
       } else {
         this.focus(0)
       }
@@ -238,23 +233,10 @@ export default {
       event.stopPropagation()
       this.focus(this.selectedHandler)
       const x = this.calcXByEvent(event)
-      this.setValue(this.calcValueByX(x), this.selectedHandler)
-    },
-    wheel (event) {
-      if (this.disabled || this.multiple) {
-        return
-      }
-      event.preventDefault()
-      if (this.selectedHandler < 0) {
-        this.handlerFocus(0)
-      }
-      const currentValue = this.filteredValue[this.selectedHandler]
-      const index = this.filteredData.findIndex(fd => JSON.stringify(fd.value) === JSON.stringify(currentValue))
-      if ((event.deltaX < 0 || event.deltaY < 0) && index > 0) {
-        this.setValue(this.filteredData[index - 1].value, this.selectedHandler)
-      } else if (index < this.filteredData.length - 1) {
-        this.setValue(this.filteredData[index + 1].value, this.selectedHandler)
-      }
+      const value = this.calcValueByX(x)
+      this.setLocalValue(value, this.selectedHandler)
+      this.redraw()
+      this.syncValue()
     },
     bindEvents () {
       document.body.addEventListener('mousemove', this.moving)
@@ -268,38 +250,22 @@ export default {
       document.body.removeEventListener('mouseup', this.moveEnd)
       document.body.removeEventListener('touchend', this.moveEnd)
     },
-    valueIndex (value) {
-      return this.filteredData.findIndex(v => JSON.stringify(v.value) === JSON.stringify(value))
+    // private function to set handler and filler positions used by .redraw method
+    setHandlerPosition (x, handlerIndex) {
+      const filler = [null, null]
+      const fillerDirs = [process.env.blockStart, process.env.blockEnd]
+      const movingFiller = this.multiple ? handlerIndex : 1
+      filler[movingFiller] = movingFiller === 0 ? x : (100 - x)
+      this.$refs.filler.style[fillerDirs[movingFiller]] = `${filler[movingFiller]}%`
+      const translateX = (process.env.direction === 'ltr' ? -1 : 1) * x
+      this.$refs.handler[handlerIndex].style[process.env.blockStart] = `${(process.env.direction === 'ltr' ? 1 : -1) * x}%`
+      this.$refs.handler[handlerIndex].style.transform = `translateX(${translateX}%)`
     },
-    setValue (value, handlerIndex) {
-      let ret = this.filteredValue
-      ret[handlerIndex] = value
-      const valueIndex = this.valueIndex(value)
-      const minPosibleIndex = handlerIndex === 0 ? 0 : this.valueIndex(this.filteredValue[0]) + 1
-      const maxPosibleIndex = handlerIndex === 1 ? this.dataLength - 1 : (this.multiple ? this.valueIndex(this.filteredValue[1]) - 1 : this.dataLength - 1)
-
-      if (valueIndex < minPosibleIndex || valueIndex > maxPosibleIndex) {
-        return
-      }
-
-      const handlerPosition = []
-      if (ret.length > 1) {
-        handlerPosition.push(this.calcXByValue(ret[0]))
-        handlerPosition.push(this.calcXByValue(ret[1]))
-        this.$refs.filler.style[process.env.blockStart] = `${handlerPosition[0]}%`
-        this.$refs.filler.style[process.env.blockEnd] = `${100 - handlerPosition[1]}%`
-        this.$refs.handler[0].style[process.env.blockStart] = `${handlerPosition[0]}%`
-        this.$refs.handler[0].style.transform = `translateX(${process.env.direction === 'ltr' ? '-' : ''}${handlerPosition[0]}%)`
-        this.$refs.handler[1].style[process.env.blockStart] = `${handlerPosition[1]}%`
-        this.$refs.handler[1].style.transform = `translateX(${process.env.direction === 'ltr' ? '-' : ''}${handlerPosition[1]}%)`
-        this.$emit('input', ret)
-      } else {
-        handlerPosition.push(this.calcXByValue(value))
-        this.$refs.filler.style[process.env.blockStart] = `0%`
-        this.$refs.filler.style[process.env.blockEnd] = `${100 - this.calcXByValue(ret[0])}%`
-        this.$refs.handler[0].style[process.env.blockStart] = `${handlerPosition[0]}%`
-        this.$refs.handler[0].style.transform = `translateX(${process.env.direction === 'ltr' ? '-' : ''}${handlerPosition[0]}%)`
-        this.$emit('input', ret[0])
+    // set handler and filler positions based on localValue
+    redraw () {
+      this.setHandlerPosition(this.calcXByValue(this.localValue[0]), 0)
+      if (this.multiple) {
+        this.setHandlerPosition(this.calcXByValue(this.localValue[1]), 1)
       }
     },
     calcXByEvent (event) {
@@ -308,46 +274,46 @@ export default {
       const width = this.$el.offsetWidth
       x *= (100 / width) // convert to percetange
       x = process.env.blockStart === 'right' ? 100 - x : x
-      return x
+      return x > 100 ? 100 : (x < 0 ? 0 : x)
     },
     calcValueByX (x) {
-      for (let i = 0; i < this.dataLength; i++) {
-        if (x >= 100) {
-          return this.filteredData[this.filteredData.length - 1].value
-        } else if (x <= 0) {
-          return this.filteredData[0].value
-        } else if (x >= this.filteredData[i].x - (this.stepWidth / 2) && x < this.filteredData[i].x + (this.stepWidth / 2)) {
-          return this.filteredData[i].value
+      let value
+      const inBorderX = x > 100 ? 100 : (x < 0 ? 0 : x)
+      const index = Math.floor((inBorderX / 100) * (this.dataLength - 1))
+      if (this.dataType === 'array') {
+        value = this.data[index]
+      } else if (this.dataType === 'object') {
+        value = index + this.data.from
+      }
+      return value
+    },
+    getNeightboorValue (value, sum = 1) {
+      if (this.dataType === 'array') {
+        const valueIndex = this.data.indexOf(value)
+        try {
+          return this.data[valueIndex + sum]
+        } catch (e) {
+          return value
         }
+      } else if (this.dataType === 'object') {
+        return value + sum
       }
     },
     calcXByValue (value) {
-      return this.filteredData.find(fd => JSON.stringify(fd.value) === JSON.stringify(value)).x
+      let valueIndex
+      if (this.dataType === 'array') {
+        valueIndex = this.data.indexOf(value)
+      } else if (this.dataType === 'object') {
+        valueIndex = value - this.firstAvailableData
+      }
+      const x = (valueIndex / (this.dataLength - 1)) * 100
+      return x
     }
   },
   watch: {
     value () {
-      if (!this.$refs.filler || !this.$refs.handler) {
-        return false
-      }
-      const ret = this.filteredValue
-      const handlerPosition = []
-      if (ret.length > 1) {
-        handlerPosition.push(this.calcXByValue(ret[0]))
-        handlerPosition.push(this.calcXByValue(ret[1]))
-        this.$refs.filler.style[process.env.blockStart] = `${handlerPosition[0]}%`
-        this.$refs.filler.style[process.env.blockEnd] = `${100 - handlerPosition[1]}%`
-        this.$refs.handler[0].style[process.env.blockStart] = `${handlerPosition[0]}%`
-        this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
-        this.$refs.handler[1].style[process.env.blockStart] = `${handlerPosition[1]}%`
-        this.$refs.handler[1].style.transform = `translateX(-${handlerPosition[1]}%)`
-      } else {
-        handlerPosition.push(this.calcXByValue(ret[0]))
-        this.$refs.filler.style[process.env.blockStart] = `0%`
-        this.$refs.filler.style[process.env.blockEnd] = `${100 - this.calcXByValue(ret[0])}%`
-        this.$refs.handler[0].style[process.env.blockStart] = `${handlerPosition[0]}%`
-        this.$refs.handler[0].style.transform = `translateX(-${handlerPosition[0]}%)`
-      }
+      this.syncLocalValue()
+      this.redraw()
     }
   }
 }
@@ -382,6 +348,8 @@ export default {
     position: absolute;
     width: auto;
     height: 100%;
+    left: 0;
+    right: 0;
     background: contrast($primary-color, 2, hard-light);
   }
 
@@ -389,11 +357,11 @@ export default {
     @include shadow(bottom);
 
     padding: 0;
-    height: 2em;
-    width: 2em;
+    height: 1.2em;
+    width: 1.2em;
     display: inline-block;
     position: absolute;
-    border-radius: 2em;
+    border-radius: $border-radius;
     background: contrast($bg-color, 1, force-light);
     border: solid 1px contrast($bg-color, 2, hard-dark);
     cursor: move;
@@ -414,6 +382,12 @@ export default {
 
   &[disabled] {
     @include disabled;
+  }
+
+  &:hover {
+    & .handler {
+      opacity: 1;
+    }
   }
 }
 </style>
