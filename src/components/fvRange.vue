@@ -1,10 +1,6 @@
 <template lang="pug">
-div
-  div value: {{value}}, dataLength: {{dataLength}}, data: {{data}}
-  .fv-range(vif="!iszBadStructure",
-    :disabled="disabled",
+  .fv-range(:disabled="disabled",
     :invalid="!fvValidate",
-    zwheel="wheel",
     @click.left="onClick")
     .container
       .filler(ref="filler")
@@ -56,8 +52,6 @@ export default {
   },
   data () {
     return {
-      width: 0,
-      height: 0,
       selectedHandler: -1,
       localValue: [null, null]
     }
@@ -96,10 +90,8 @@ export default {
   created () {
     this.syncLocalValue()
     this.syncValue()
-    // this.setStructure()
   },
   mounted () {
-    // this.setValue
     this.$nextTick(this.redraw)
   },
   methods: {
@@ -120,7 +112,7 @@ export default {
               throw new Error()
             }
           } catch (e) {
-            this.localValue[i] = i === 0 ? this.firstAvailableData : this.lastAvailableData
+            this.setLocalValue(i === 0 ? this.firstAvailableData : this.lastAvailableData, i, true)
           }
         }
       } else {
@@ -129,9 +121,9 @@ export default {
             throw new Error()
           }
         } catch (e) {
-          this.localValue[0] = this.lastAvailableData
+          this.setLocalValue(this.firstAvailableData, 0, true)
         }
-        this.localValue[1] = null
+        this.setLocalValue(null, 1, true)
       }
     },
     // fire input event to set value based on localValue
@@ -144,7 +136,11 @@ export default {
       }
     },
     // set localValue
-    setLocalValue (value, index) {
+    setLocalValue (value, index, force = false) {
+      if (force) {
+        this.localValue[index] = value
+        return true
+      }
       if (!this.isTrustyValue(value)) {
         return
       }
@@ -206,16 +202,6 @@ export default {
     },
     moveEnd (event) {
       event.preventDefault()
-      // this.focus(this.selectedHandler)
-      // const x = parseInt(this.$refs.handler[this.selectedHandler].style[process.env.blockStart])
-      // const value = this.calcValueByX(x)
-      // if (typeof value === 'undefined') {
-      //   this.unbindEvents()
-      //   return
-      // }
-      // this.localValue[this.selectedHandler] = value
-      // this.redraw()
-      // this.syncValue()
       this.unbindEvents()
     },
     onClick (event) {
@@ -251,24 +237,7 @@ export default {
       this.setLocalValue(value, this.selectedHandler)
       this.redraw()
       this.syncValue()
-      // console.log('i m movin calcs', this.selectedHandler, this.localValue, this.value)
     },
-    // wheel (event) {
-    //   if (this.disabled || this.multiple) {
-    //     return
-    //   }
-    //   event.preventDefault()
-    //   if (this.selectedHandler < 0) {
-    //     this.handlerFocus(0)
-    //   }
-    //   const currentValue = this.filteredValue[this.selectedHandler]
-    //   const index = this.filteredData.findIndex(fd => JSON.stringify(fd.value) === JSON.stringify(currentValue))
-    //   if ((event.deltaX < 0 || event.deltaY < 0) && index > 0) {
-    //     this.setValue(this.filteredData[index - 1].value, this.selectedHandler)
-    //   } else if (index < this.filteredData.length - 1) {
-    //     this.setValue(this.filteredData[index + 1].value, this.selectedHandler)
-    //   }
-    // },
     bindEvents () {
       document.body.addEventListener('mousemove', this.moving)
       document.body.addEventListener('touchmove', this.moving)
@@ -286,16 +255,8 @@ export default {
       const filler = [null, null]
       const fillerDirs = [process.env.blockStart, process.env.blockEnd]
       const movingFiller = this.multiple ? handlerIndex : 1
-      // console.log('setHandlerPosition', 'movingFiller', movingFiller)
       filler[movingFiller] = movingFiller === 0 ? x : (100 - x)
-
       this.$refs.filler.style[fillerDirs[movingFiller]] = `${filler[movingFiller]}%`
-
-      // for (let i = 0; i < 2; i++) {
-      //   if (filler[i] !== null) {
-      //   }
-      // }
-      // const blockDir = handlerIndex === 0 ? process.env.blockStart : process.env.blockEnd
       const translateX = (process.env.direction === 'ltr' ? -1 : 1) * x
       this.$refs.handler[handlerIndex].style[process.env.blockStart] = `${(process.env.direction === 'ltr' ? 1 : -1) * x}%`
       this.$refs.handler[handlerIndex].style.transform = `translateX(${translateX}%)`
@@ -350,7 +311,10 @@ export default {
     }
   },
   watch: {
-    value () {}
+    value () {
+      this.syncLocalValue()
+      this.redraw()
+    }
   }
 }
 
@@ -393,21 +357,17 @@ export default {
     @include shadow(bottom);
 
     padding: 0;
-    height: 1.1em;
-    width: 1.1em;
+    height: 1.2em;
+    width: 1.2em;
     display: inline-block;
     position: absolute;
     border-radius: $border-radius;
     background: contrast($bg-color, 1, force-light);
     border: solid 1px contrast($bg-color, 2, hard-dark);
     cursor: move;
-    // opacity: 0;
-    transition-property: opacity;
-    transition-duration: $transition-speed;
 
     &:focus {
       @include outline;
-      // opacity: 1;
     }
   }
 
