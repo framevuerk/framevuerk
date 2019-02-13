@@ -258,7 +258,7 @@ export default {
       filler[movingFiller] = movingFiller === 0 ? x : (100 - x)
       this.$refs.filler.style[fillerDirs[movingFiller]] = `${filler[movingFiller]}%`
       const translateX = (process.env.direction === 'ltr' ? -1 : 1) * x
-      this.$refs.handler[handlerIndex].style[process.env.blockStart] = `${(process.env.direction === 'ltr' ? 1 : -1) * x}%`
+      this.$refs.handler[handlerIndex].style[process.env.blockStart] = `${x}%`
       this.$refs.handler[handlerIndex].style.transform = `translateX(${translateX}%)`
     },
     // set handler and filler positions based on localValue
