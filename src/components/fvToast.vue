@@ -76,6 +76,11 @@ export default {
   width: auto;
   z-index: 3;
 
+  @include respond-to(lower-sm) {
+    width: 100%;
+    border-radius: 0;
+  }
+
   &.fv-toast-enter-active,
   &.fv-toast-leave-active {
     transform: translate3d(-50%, 0 0);
