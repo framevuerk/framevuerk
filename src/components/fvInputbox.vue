@@ -271,7 +271,7 @@ export default {
 
   & > .out-container {
     @include yiq($bg-color);
-    @include outline($shadow-color);
+    @include shadow(bottom);
 
     position: absolute;
     overflow: auto;
