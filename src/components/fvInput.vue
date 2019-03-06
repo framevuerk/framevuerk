@@ -25,7 +25,7 @@ export default {
   computed: {
     fvValidate () {
       if (this.required === true) {
-        return !!this.value
+        return !!(this.value === 0 ? '0' : this.value)
       } else if (typeof this.required === 'function') {
         return this.required(this.value)
       }
