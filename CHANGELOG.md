@@ -55,4 +55,6 @@
 - fix fvInputbox outerbox outline style
 - fix fvToast style in small devices
 
+#### 2.1.3
+- fix fvInputbox outerbox unhandled hidding
 
