@@ -33,7 +33,7 @@
     .caret-icon(v-if="caretIcon",
       v-html="caretIcon")
     transition(name="fv-inputbox")
-      .out-container(v-show="showOut", :class="outClass")
+      .out-container(v-show="showOut", :class="outClass", tabindex="-1")
         slot(name="out")
 </template>
 
