@@ -45,7 +45,9 @@ export default {
       if (!this.isPinned) {
         if (value) {
           parent.lock(this._uid)
-          parent.on('outsideclick', this.$el, this.close)
+          setTimeout(() => {
+            parent.on('outsideclick', this.$el, this.close)
+          })
         } else {
           parent.unlock(this._uid)
           parent.off('outsideclick', this.$el, this.close)
