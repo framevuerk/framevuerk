@@ -32,9 +32,8 @@ export default {
     valueHandler (value) {
       if (value) {
         this.onOpen(1)
-      } else {
-        this.onClose()
       }
+      // onClose handled by transition
     },
     onOpen (step) {
       if (step === 1) {
