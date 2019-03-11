@@ -58,3 +58,6 @@
 #### 2.1.3
 - fix fvInputbox outerbox unhandled hidding
 
+#### 2.1.4
+- fix dom calcs in parent class
+- fix sidebar unpin mode in browser when using framevuerk from window object (#45)
