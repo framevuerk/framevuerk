@@ -65,5 +65,8 @@
 ### 2.2.0
 - add rowClick event for fvTable
 
-### 2.2.1
+#### 2.2.1
 - fix window object handler in parent class
+
+##### 2.1.2
+- fix dom calcs in parent class (back to 2.1.3)
