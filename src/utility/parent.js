@@ -2,7 +2,7 @@ class Parent {
   constructor () {
     // too hacky
     if (typeof window !== 'object') {
-      window = {
+      global.window = {
         document: {
           body: {}
         }
