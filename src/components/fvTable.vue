@@ -10,7 +10,8 @@
           span(v-else) {{fieldProp(field, 'title')}}
     tbody
       tr(v-for="(row, index) in rows",
-        :key="index")
+        :key="index",
+        @click="$emit('rowClick', row, index)")
         td(v-for="(field, index2) in fields",
           :key="fieldProp(field, 'title')")
           .field-name(v-if="isBreaked && showTitle")
