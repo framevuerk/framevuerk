@@ -61,3 +61,6 @@
 #### 2.1.4
 - fix dom calcs in parent class
 - fix sidebar unpin mode in browser when using framevuerk from window object (#45)
+
+### 2.2.0
+- add rowClick event for fvTable
