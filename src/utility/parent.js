@@ -1,14 +1,12 @@
 class Parent {
   constructor () {
-    // too hacky
-    if (typeof window !== 'object') {
-      global.window = {
-        document: {
-          body: {}
-        }
-      }
-    }
+    this.$window = typeof window === 'object' ? window : null
+    this.$document = this.$window ? this.$window.document : null
+    this.$body = this.$window ? this.$window.document.body : null
+    this.$documentElement = this.$window ? this.$window.document.documentElement : null
+    this.$scrollingElement = this.$window ? this.$window.document.scrollingElement : null
 
+    // this.$el = window.document.body
     this.lockRequests = {}
   }
   getSize () {
@@ -16,7 +14,7 @@ class Parent {
     const breakSm = 768
     const breakMd = 992
     const breakLg = 1200
-    const size = window.document.body ? window.document.body.offsetWidth : 768
+    const size = this.$body ? this.$body.offsetWidth : 768
     const ret = []
     if (size < breakXs) {
       ret.push('xs')
@@ -36,59 +34,59 @@ class Parent {
     return ret
   }
   lock (by = 'x') {
-    if (!window.document.body) {
+    if (!this.$body) {
       return
     }
-    window.document.body.classList.add('fv-lock')
+    this.$body.classList.add('fv-lock')
     this.lockRequests[by] = true
   }
 
   getViewport () {
-    if (!window) {
+    if (!this.$window) {
       return
     }
     return {
-      width: window.innerWidth,
-      height: window.innerHeight
+      width: this.$window.innerWidth,
+      height: this.$window.innerHeight
     }
   }
   getScrollPosition () {
-    if (!window.document.body || !window.document.scrollingElement || !window.documentElement) {
+    if (!this.$body || !this.$scrollingElement || !this.$documentElement) {
       return
     }
     return {
-      top: window.document.body.scrollTop || window.documentElement.scrollTop || 0,
-      height: window.document.scrollingElement.offsetHeight || 0
+      top: this.$body.scrollTop || this.$documentElement.scrollTop || 0,
+      height: this.$scrollingElement.offsetHeight || 0
     }
   }
 
   unlock (by = 'x') {
-    if (!window.document.body || !this.lockRequests[by]) {
+    if (!this.$body || !this.lockRequests[by]) {
       return
     }
     delete this.lockRequests[by]
     if (Object.keys(this.lockRequests).length === 0) {
-      window.document.body.classList.remove('fv-lock')
+      this.$body.classList.remove('fv-lock')
     }
   }
   newEl (tag, classList = '') {
-    if (!window.document || !window.document.body) {
+    if (!this.$document || !this.$body) {
       return
     }
-    const el = window.document.createElement(tag)
+    const el = this.$document.createElement(tag)
     el.className = classList
-    window.document.body.appendChild(el)
+    this.$body.appendChild(el)
     return el
   }
   appendChild (tagName) {
-    if (!window.document.body) {
+    if (!this.$body) {
       return
     }
-    return window.document.body.appendChild(tagName)
+    return this.$body.appendChild(tagName)
   }
 
   on (name) {
-    if (!window) {
+    if (!this.$window) {
       return
     }
 
@@ -108,26 +106,26 @@ class Parent {
         }
       }
 
-      window.addEventListener('click', currentEl.inlineClickHandler)
-      window.addEventListener('touchstart', currentEl.inlineClickHandler)
+      this.$window.addEventListener('click', currentEl.inlineClickHandler)
+      this.$window.addEventListener('touchstart', currentEl.inlineClickHandler)
     } else if (name === 'sizechange') {
-      window.addEventListener('resize', arguments[1])
+      this.$window.addEventListener('resize', arguments[1])
     } else {
-      window.addEventListener(name, arguments[1])
+      this.$window.addEventListener(name, arguments[1])
     }
   }
   off (name) {
-    if (!window) {
+    if (!this.$window) {
       return
     }
     if (name === 'outsideclick') {
       const currentEl = arguments[1]
-      window.removeEventListener('click', currentEl.inlineClickHandler)
-      window.removeEventListener('touchstart', currentEl.inlineClickHandler)
+      this.$window.removeEventListener('click', currentEl.inlineClickHandler)
+      this.$window.removeEventListener('touchstart', currentEl.inlineClickHandler)
     } else if (name === 'sizechange') {
-      window.addEventListener('resize', arguments[1])
+      this.$window.addEventListener('resize', arguments[1])
     } else {
-      window.addEventListener(name, arguments[1])
+      this.$window.addEventListener(name, arguments[1])
     }
   }
 }
