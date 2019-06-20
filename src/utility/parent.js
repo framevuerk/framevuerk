@@ -1,15 +1,20 @@
 class Parent {
   constructor () {
+    this.calcWindow()
+
+    // this.$el = window.document.body
+    this.lockRequests = {}
+  }
+  calcWindow () {
     this.$window = typeof window === 'object' ? window : null
     this.$document = this.$window ? this.$window.document : null
     this.$body = this.$window ? this.$window.document.body : null
     this.$documentElement = this.$window ? this.$window.document.documentElement : null
     this.$scrollingElement = this.$window ? this.$window.document.scrollingElement : null
-
-    // this.$el = window.document.body
-    this.lockRequests = {}
   }
+
   getSize () {
+    this.calcWindow()
     const breakXs = 480
     const breakSm = 768
     const breakMd = 992
@@ -34,6 +39,7 @@ class Parent {
     return ret
   }
   lock (by = 'x') {
+    this.calcWindow()
     if (!this.$body) {
       return
     }
@@ -42,6 +48,7 @@ class Parent {
   }
 
   getViewport () {
+    this.calcWindow()
     if (!this.$window) {
       return
     }
@@ -51,6 +58,7 @@ class Parent {
     }
   }
   getScrollPosition () {
+    this.calcWindow()
     if (!this.$body || !this.$scrollingElement || !this.$documentElement) {
       return
     }
@@ -61,6 +69,7 @@ class Parent {
   }
 
   unlock (by = 'x') {
+    this.calcWindow()
     if (!this.$body || !this.lockRequests[by]) {
       return
     }
@@ -70,6 +79,7 @@ class Parent {
     }
   }
   newEl (tag, classList = '') {
+    this.calcWindow()
     if (!this.$document || !this.$body) {
       return
     }
@@ -79,6 +89,7 @@ class Parent {
     return el
   }
   appendChild (tagName) {
+    this.calcWindow()
     if (!this.$body) {
       return
     }
@@ -86,6 +97,7 @@ class Parent {
   }
 
   on (name) {
+    this.calcWindow()
     if (!this.$window) {
       return
     }
@@ -115,6 +127,7 @@ class Parent {
     }
   }
   off (name) {
+    this.calcWindow()
     if (!this.$window) {
       return
     }
