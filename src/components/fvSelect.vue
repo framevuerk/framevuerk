@@ -185,13 +185,6 @@ export default {
       } else {
         this.selectOption(option)
       }
-      this.$nextTick(() => {
-        if (!this.multiple) {
-          this.$refs.inputBox.close()
-        } else {
-          this.$refs.inputBox.focusInput()
-        }
-      })
       this.searchQuery = ''
     },
     selectOption (option) {
@@ -265,6 +258,17 @@ export default {
   },
   created () {
     this.setStructure()
+  },
+  watch: {
+    value() {
+      this.$nextTick(() => {
+        if (!this.multiple) {
+          this.$refs.inputBox.close()
+        } else {
+          this.$refs.inputBox.focusInput()
+        }
+      })
+    }
   }
 }
 </script>

@@ -257,9 +257,6 @@ export default {
       this.searchQuery = ''
       const ret = new this.Date(this.editingValue)
       this.$emit('input', ret)
-      this.$nextTick(() => {
-        this.$refs.inputBox.close()
-      })
     },
     setDate (value) {
       if (value !== null) {
@@ -309,6 +306,13 @@ export default {
     },
     isDateDisabled (day, month, year) {
       return !this.checkFvValidity(day, month, year)
+    }
+  },
+  watch: {
+    value() {
+      this.$nextTick(() => {
+        this.$refs.inputBox.close()
+      })
     }
   }
 }
