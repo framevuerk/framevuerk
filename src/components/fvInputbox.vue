@@ -81,7 +81,8 @@ export default {
       isFocused: false,
       showOut: false,
       outClass: {},
-      deleteIcon
+      deleteIcon,
+      lastValueChanges: 0
     }
   },
   computed: {
@@ -122,11 +123,15 @@ export default {
       this.$emit('typing', event.target.value)
     },
     onEnter (event) {
+      event.preventDefault()
       if (this.disabled) {
         return
       }
       this.focus()
-      this.open()
+      // this if fix unhandled box opens after selecting value
+      if (Date.now() - this.lastValueChanges > 500) {
+        this.open()
+      }
     },
     getOutPosition () {
       const offset = this.$el.getBoundingClientRect()
@@ -167,6 +172,11 @@ export default {
       if (this.showOut) {
         this.$emit('input-keydown', event)
       }
+    }
+  },
+  watch: {
+    value() {
+      this.lastValueChanges = Date.now()
     }
   }
 }
