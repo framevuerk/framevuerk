@@ -1,5 +1,5 @@
 <template lang="pug">
-.fv-slider(@mousedown="moveStart($event)",
+.fv-slider(@mousedown.left="moveStart($event)",
   @touchstart="moveStart($event)")
   .tabs-container(v-if="showTabs")
     fv-button.fv-grow(v-for="(slide, i) in slides",
@@ -9,12 +9,14 @@
       slot(v-if="allSlots['tab-' + slide]", :selected="value === slide", :name="'tab-' + slide")
       slot(v-else-if="allSlots.tab", :slide="slide", :selected="value === slide", name="tab")
       span(v-else) {{slide}}
-  transition-group(:name="animationName")
-    .slider-page(v-for="(slide, i) in slides",
-      :key="'slide-' + slide + i",
-      v-show="slide === value")
-      slot(:name="'slide-' + slide",
-        :selected="value === slide")
+  .outer-container(ref="outerContainer")
+    .inner-container(ref="innerContainer")
+      .slider-page(v-for="(slide, i) in slides",
+        ref="slide"
+        :key="'slide-' + slide + i",
+        vshow="slide === value")
+        slot(:name="'slide-' + slide",
+          :selected="value === slide")
   fv-button.fv-size-xl.next(v-if="showButtons",
     @click.prevent="moveSlide(true)")
     .icon(:style="{ transform: icons.next }", v-html="icons.icon")
@@ -30,6 +32,7 @@
 
 <script>
 import icon from '../icons/ARR.svg'
+import parent from '../utility/parent.js'
 
 export default {
   props: {
@@ -47,6 +50,10 @@ export default {
     showButtons: {
       type: Boolean,
       default: false
+    },
+    swipeSupport: {
+      type: Boolean,
+      default: true // should be true
     },
     interval: {
       type: Number,
@@ -70,8 +77,8 @@ export default {
     slides () {
       return this.allSlotsList.filter(key => key.indexOf('slide-') === 0).map(key => key.replace('slide-', ''))
     },
-    items () {
-      return Object.keys(this.$slots)
+    eachSlideWidth () {
+      return 100 / this.slides.length
     },
     currentIndex () {
       return this.slides.findIndex(slide => slide === this.value)
@@ -85,6 +92,13 @@ export default {
     }
   },
   methods: {
+    slidesChangesEffect () {
+      const eachSlideWidth = this.$el.offsetWidth
+      this.$refs.innerContainer.style.width = `${this.slides.length * (eachSlideWidth + 10)}px`
+      for (let i = 0; i < this.slides.length; i++) {
+        this.$refs.slide[i].style.width = `${eachSlideWidth}px`
+      }
+    },
     calcXByEvent (event) {
       return event.changedTouches && event.changedTouches.length ? event.changedTouches[0].clientX : (event.pageX - 0)
     },
@@ -96,23 +110,51 @@ export default {
       }
     },
     moveStart (event) {
+      if (!this.swipeSupport || this.slides.length < 2) {
+        return
+      }
+      console.log('move start')
+      // const el = this.$refs.slide[this.currentIndex]
+      // el.style.transform = `translateX(${0}px)`
       this.startX = this.calcXByEvent(event)
+
       this.bindEvents()
+    },
+    moving (event) {
+      const x = this.calcXByEvent(event)
+      // const direction = this.calcDirection(this.startX, x)
+      // const el = this.$refs.slide[this.currentIndex]
+      const movingX = x - this.startX
+
+      const eachSlideWidth = this.$el.offsetWidth + 1
+      const currentX = -1 * (this.currentIndex * eachSlideWidth)
+      // console.log(`translateX(calc(${currentX + movingX}px))`, movingX, currentX)
+      this.$refs.innerContainer.style.transitionDuration = '0s'
+      this.$refs.innerContainer.style.transform = `translateX(${currentX + movingX}px)`
     },
     moveEnd (event) {
       this.unbindEvents()
+      this.$refs.innerContainer.style.transitionDuration = null
+      console.log('move enddd')
       const endX = this.calcXByEvent(event)
       const direction = this.calcDirection(this.startX, endX)
+      // const el = this.$refs.slide[this.currentIndex]
       if (Math.abs(direction.x) < 70) {
+        // el.style.transform = `translateX(${0}px)`
         return
       }
       this.moveSlide(direction.moveNext)
+      // el.style.transform = `translateX(${0}px)`
     },
     bindEvents () {
+      document.body.addEventListener('mousemove', this.moving)
+      document.body.addEventListener('touchmove', this.moving)
       document.body.addEventListener('mouseup', this.moveEnd)
       document.body.addEventListener('touchend', this.moveEnd)
     },
     unbindEvents () {
+      document.body.removeEventListener('mousemove', this.moving)
+      document.body.removeEventListener('touchmove', this.moving)
       document.body.removeEventListener('mouseup', this.moveEnd)
       document.body.removeEventListener('touchend', this.moveEnd)
     },
@@ -146,12 +188,53 @@ export default {
           this.moveSlide(true)
         }, this.interval)
       }
+    },
+
+    bindInitialEvents () {
+      parent.on('sizechange', this.changesEffect)
+    },
+    unbindInitialEvents () {
+      parent.off('sizechange', this.changesEffect)
+    },
+    changesEffect () {
+      this.$nextTick(() => {
+        const slideWidth = this.$refs.outerContainer.offsetWidth
+
+        this.$refs.innerContainer.style.width = `${this.slides.length * (slideWidth + 1)}px`
+        this.$refs.innerContainer.style.transform = `translateX(-${this.currentIndex * slideWidth}px)`
+        for (let i = 0; i < this.slides.length; i++) {
+          this.$refs.slide[i].style.width = `${slideWidth}px`
+        }
+        const currentSlide = this.$refs.slide[this.currentIndex]
+        console.log(currentSlide ? currentSlide.offsetHeight : 'mam')
+        if (currentSlide) {
+          this.$refs.outerContainer.style.height = `${currentSlide ? currentSlide.offsetHeight : '0'}px`
+          this.$refs.innerContainer.style.height = `${currentSlide ? currentSlide.offsetHeight : '0'}px`
+          currentSlide.style.width = `${slideWidth}px`
+        }
+
+        // const currentSlideHeight = this.$refs.slide[this.currentIndex]
+      })
     }
   },
   mounted () {
-    this.initerval()
-    if (!this.value) {
+    // this.initerval()
+    if (this.currentIndex === -1) {
       this.setValue(this.slides[0])
+    }
+    this.changesEffect()
+    this.bindInitialEvents()
+  },
+  watch: {
+    value (value) {
+      if (this.currentIndex > -1) {
+        this.changesEffect()
+      }
+      // this.$refs.innerContainer.style.transitionDuration = 'auto'
+      // console.log('here')
+      // const eachSlideWidth = this.$el.offsetWidth
+      // this.$refs.innerContainer.style.transform = `translateX(-${this.currentIndex * eachSlideWidth}px)`
+      // this.$refs.outerContainer.style.minHeight = `${this.$refs.innerContainer.offsetHeight}px`
     }
   }
 }
@@ -167,12 +250,35 @@ export default {
   width: 100%;
   backface-visibility: hidden;
 
+  & .outer-container {
+    height: 100%;
+    width: 100%;
+    min-width: 100%;
+    // overflow: hidden;
+    position: relative;
+  }
+
+  & .inner-container {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    height: auto;
+    width: auto;
+    min-width: 100%;
+    overflow: visible;
+    transition-duration: $transition-speed;
+    transition-property: transform;
+    will-change: transform;
+  }
+
   & .slider-page {
+    display: block;
     padding: 0;
     overflow-x: hidden;
     width: 100%;
     user-select: none;
-    float: $block-start;
+    // float: $block-start;
   }
 
   & > .tabs-container {
