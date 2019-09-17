@@ -309,7 +309,7 @@ export default {
     }
   },
   watch: {
-    value() {
+    value () {
       this.$nextTick(() => {
         this.$refs.inputBox.close()
       })

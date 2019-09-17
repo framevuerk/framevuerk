@@ -260,7 +260,7 @@ export default {
     this.setStructure()
   },
   watch: {
-    value() {
+    value () {
       this.$nextTick(() => {
         if (!this.multiple) {
           this.$refs.inputBox.close()

@@ -175,7 +175,7 @@ export default {
     }
   },
   watch: {
-    value() {
+    value () {
       this.lastValueChanges = Date.now()
     }
   }
