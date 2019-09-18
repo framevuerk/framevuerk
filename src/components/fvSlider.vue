@@ -13,8 +13,7 @@
     .inner-container(ref="innerContainer")
       .slider-page(v-for="(slide, i) in slides",
         ref="slide"
-        :key="'slide-' + slide + i",
-        :class="{hidden: slide !== value && startX === null}")
+        :key="'slide-' + slide + i")
         slot(:name="'slide-' + slide",
           :selected="value === slide")
   fv-button.fv-size-xl.next(v-if="showButtons",
@@ -63,22 +62,16 @@ export default {
   data () {
     return {
       timer: null,
-      animationName: 'fv-slider-prev',
-      startX: 0
+      startX: 0,
+      slidesX: []
     }
   },
   computed: {
     allSlots () {
       return Object.assign(this.$slots, this.$scopedSlots)
     },
-    allSlotsList () {
-      return Object.keys(this.allSlots)
-    },
     slides () {
-      return this.allSlotsList.filter(key => key.indexOf('slide-') === 0).map(key => key.replace('slide-', ''))
-    },
-    eachSlideWidth () {
-      return 100 / this.slides.length
+      return Object.keys(this.allSlots).filter(key => key.indexOf('slide-') === 0).map(key => key.replace('slide-', ''))
     },
     currentIndex () {
       return this.slides.findIndex(slide => slide === this.value)
@@ -93,11 +86,15 @@ export default {
   },
   methods: {
     slidesChangesEffect () {
-      const eachSlideWidth = this.$el.offsetWidth
-      this.$refs.innerContainer.style.width = `${this.slides.length * (eachSlideWidth + 10)}px`
+      const eachSlideWidth = this.$refs.outerContainer.offsetWidth
+      // we make a free room inside innerContainer just for make sure that overflow problem will not happens
+      this.$refs.innerContainer.style.width = `${(this.slides.length + 1) * 100}%`
       for (let i = 0; i < this.slides.length; i++) {
         this.$refs.slide[i].style.width = `${eachSlideWidth}px`
       }
+      this.slides.forEach((v, index) => {
+        this.slidesX[index] = -1 * (eachSlideWidth * index)
+      })
     },
     calcXByEvent (event) {
       return event.changedTouches && event.changedTouches.length ? event.changedTouches[0].clientX : (event.pageX - 0)
@@ -113,66 +110,48 @@ export default {
       if (!this.swipeSupport || this.slides.length < 2) {
         return
       }
-      // event.preventDefault()
-      console.log('move start')
-      // const el = this.$refs.slide[this.currentIndex]
-      // el.style.transform = `translateX(${0}px)`
       this.startX = this.calcXByEvent(event)
       this.$refs.outerContainer.style.height = `${this.$refs.innerContainer.offsetHeight}px`
       this.beforeMove()
-
       this.bindEvents()
     },
     moving (event) {
       event.preventDefault()
-      console.log('moving')
-      const x = this.calcXByEvent(event)
-      // const direction = this.calcDirection(this.startX, x)
-      // const el = this.$refs.slide[this.currentIndex]
-      const movingX = x - this.startX
-
-      const eachSlideWidth = this.$refs.outerContainer.offsetWidth
-      const currentX = -1 * (this.currentIndex * eachSlideWidth)
-      // console.log(`translateX(calc(${currentX + movingX}px))`, movingX, currentX)
-      this.$refs.innerContainer.style.transform = `translateX(${currentX + movingX}px)`
+      const translateX = this.slidesX[this.currentIndex] + (this.calcXByEvent(event) - this.startX)
+      this.$refs.innerContainer.style.transform = `translateX(${translateX}px)`
     },
     moveEnd (event) {
       this.unbindEvents()
       event.preventDefault()
-      console.log('move enddd')
       const endX = this.calcXByEvent(event)
       const direction = this.calcDirection(this.startX, endX)
-      // const el = this.$refs.slide[this.currentIndex]
-      this.startX = null
       if (Math.abs(direction.x) < 75) {
-        this.changesEffect(true)
+        this.afterMove()
+        this.changesEffect(false)
       } else {
         this.moveValue(direction.moveNext)
       }
-      // el.style.transform = `translateX(${0}px)`
     },
     bindEvents () {
-      document.body.addEventListener('mousemove', this.moving)
-      document.body.addEventListener('touchmove', this.moving)
-      document.body.addEventListener('mouseup', this.moveEnd)
-      document.body.addEventListener('touchend', this.moveEnd)
+      parent.on('mousemove', this.moving, true)
+      parent.on('touchmove', this.moving, true)
+      parent.on('mouseup', this.moveEnd, true)
+      parent.on('touchend', this.moveEnd, true)
     },
     unbindEvents () {
-      document.body.removeEventListener('mousemove', this.moving)
-      document.body.removeEventListener('touchmove', this.moving)
-      document.body.removeEventListener('mouseup', this.moveEnd)
-      document.body.removeEventListener('touchend', this.moveEnd)
+      parent.off('mousemove', this.moving, true)
+      parent.off('touchmove', this.moving, true)
+      parent.off('mouseup', this.moveEnd, true)
+      parent.off('touchend', this.moveEnd, true)
     },
     setValue (value) {
-      const newIndex = this.slides.findIndex(slide => slide === value)
       this.initerval()
       this.$emit('input', value)
     },
     moveValue (next = true) {
       let newIndex = (this.currentIndex + (next ? 1 : -1)) % this.slides.length
       newIndex = newIndex < 0 ? this.slides.length - 1 : newIndex
-
-      this.setValue(this.slides[newIndex], next)
+      this.setValue(this.slides[newIndex])
     },
     initerval () {
       clearTimeout(this.timer)
@@ -183,15 +162,12 @@ export default {
       }
     },
     beforeMove() {
-      console.warn('beforeMove: go to absolute')
       this.$refs.innerContainer.style.position = 'absolute'
       this.$refs.innerContainer.style.transitionDuration = '0s'
     },
     afterMove() {
-      console.warn('afterMove')
       this.$refs.innerContainer.style.transitionDuration = null // 0.3s
       setTimeout(() => {
-        console.warn('afterMove: back to relative')
         this.$refs.innerContainer.style.position = null // relative
       }, 500)
     },
@@ -202,32 +178,17 @@ export default {
       parent.off('sizechange', this.changesEffect)
     },
     changesEffect (valueChanges = true) {
-      console.log('changesEffect')
-      
-      this.$nextTick(() => {
-        const slideWidth = this.$refs.outerContainer.offsetWidth
-        if (valueChanges) {
-          // we make a free room inside innerContainer just for make sure that overflow problem will not happens
-          this.$refs.innerContainer.style.width = `${(this.slides.length + 1) * 100}%`
-          this.$refs.innerContainer.style.transform = `translateX(-${this.currentIndex * slideWidth}px)`
-        }
-        for (let i = 0; i < this.slides.length; i++) {
-          this.$refs.slide[i].style.width = `${slideWidth}px`
-        }
-        // setTimeout(() => {
-        //   this.afterMove()
-          
-        // }, 500)
-      })
+      this.slidesChangesEffect()
+      if (valueChanges) {
+        this.$refs.innerContainer.style.transform = `translateX(${this.slidesX[this.currentIndex]}px)`
+      }
     }
   },
   beforeDestroy () {
     this.unbindInitialEvents()
   },
   updated () {
-    console.log('updated')
     this.changesEffect()
-    
   },
   watch: {
     value() {
@@ -240,7 +201,7 @@ export default {
       this.setValue(this.slides[0])
     }
     this.bindInitialEvents()
-    this.changesEffect()
+    this.$nextTick(this.changesEffect)
   }
 }
 </script>
@@ -250,26 +211,18 @@ export default {
 @import '../styles/mixins';
 
 .fv-slider {
-  overflow: hidden;
   position: relative;
   width: 100%;
   backface-visibility: hidden;
+  overflow: hidden;
 
   & .outer-container {
-    height: 100%;
     width: 100%;
     min-width: 100%;
-    // overflow: hidden;
-    position: relative;
+    overflow: hidden;
   }
 
   & .inner-container {
-    position: relative;
-    // display: flex;
-    // flex-direction: row;
-    // align-items: start;
-    height: auto;
-    width: auto;
     min-width: 100%;
     overflow: visible;
     transition-timing-function: ease;
@@ -284,8 +237,6 @@ export default {
     display: inline-block;
     vertical-align: top;
     user-select: none;
-
-    // float: $block-start;
   }
 
   & > .tabs-container {
@@ -360,41 +311,5 @@ export default {
       }
     }
   }
-}
-
-.fv-slider-right-enter-active,
-.fv-slider-right-leave-active,
-.fv-slider-left-enter-active,
-.fv-slider-left-leave-active {
-  transform: translateX(0);
-  transition-duration: $transition-speed-slow;
-  transition-property: transform, opacity;
-  will-change: transform, opacity;
-}
-
-.fv-slider-left-enter,
-.fv-slider-right-enter {
-  z-index: 1;
-}
-
-.fv-slider-right-leave-active,
-.fv-slider-right-leave-to,
-.fv-slider-left-leave-active,
-.fv-slider-left-leave-to {
-  opacity: 1;
-  position: absolute;
-  z-index: 2;
-}
-
-.fv-slider-left-enter,
-.fv-slider-right-leave-active,
-.fv-slider-right-leave-to {
-  transform: translateX(100%) !important;
-}
-
-.fv-slider-right-enter,
-.fv-slider-left-leave-active,
-.fv-slider-left-leave-to {
-  transform: translateX(-100%) !important;
 }
 </style>
