@@ -52,7 +52,7 @@ export default {
     },
     swipeSupport: {
       type: Boolean,
-      default: true // should be true
+      default: true
     },
     interval: {
       type: Number,
