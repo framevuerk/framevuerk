@@ -123,7 +123,8 @@ class Parent {
     } else if (name === 'sizechange') {
       this.$window.addEventListener('resize', arguments[1])
     } else {
-      this.$window.addEventListener(name, arguments[1])
+      const obj = arguments[2] ? this.$body : this.$window
+      obj.addEventListener(name, arguments[1])
     }
   }
   off (name) {
@@ -138,7 +139,8 @@ class Parent {
     } else if (name === 'sizechange') {
       this.$window.addEventListener('resize', arguments[1])
     } else {
-      this.$window.addEventListener(name, arguments[1])
+      const obj = arguments[2] ? this.$body : this.$window
+      obj.addEventListener(name, arguments[1])
     }
   }
 }
