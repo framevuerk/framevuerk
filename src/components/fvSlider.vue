@@ -206,6 +206,8 @@ export default {
       this.$nextTick(() => {
         const slideWidth = this.$refs.outerContainer.offsetWidth
         if (valueChanges) {
+          // sometimes browser elements offsetWidth is will overflow on parent with (length * 100%) size.
+          // so we make a free room inside innerContainer just for that :D
           this.$refs.innerContainer.style.width = `${(this.slides.length + 1) * 100}%`
           this.$refs.innerContainer.style.transform = `translateX(-${this.currentIndex * slideWidth}px)`
         }
