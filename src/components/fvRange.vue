@@ -371,6 +371,10 @@ export default {
     }
   }
 
+  &:hover .handler {
+    opacity: 1;
+  }
+
   &:invalid .handler:focus,
   &[invalid] .handler:focus {
     @include outline($danger-color);
@@ -382,12 +386,6 @@ export default {
 
   &[disabled] {
     @include disabled;
-  }
-
-  &:hover {
-    & .handler {
-      opacity: 1;
-    }
   }
 }
 </style>
