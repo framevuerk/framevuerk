@@ -161,11 +161,11 @@ export default {
         }, this.interval)
       }
     },
-    beforeMove() {
+    beforeMove () {
       this.$refs.innerContainer.style.position = 'absolute'
       this.$refs.innerContainer.style.transitionDuration = '0s'
     },
-    afterMove() {
+    afterMove () {
       this.$refs.innerContainer.style.transitionDuration = null // 0.3s
       setTimeout(() => {
         this.$refs.innerContainer.style.position = null // relative
@@ -191,8 +191,8 @@ export default {
     this.changesEffect()
   },
   watch: {
-    value() {
-      this.afterMove()  
+    value () {
+      this.afterMove()
     }
   },
   mounted () {
