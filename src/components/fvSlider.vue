@@ -14,7 +14,7 @@
       .slider-page(v-for="(slide, i) in slides",
         ref="slide"
         :key="'slide-' + slide + i",
-        vshow="slide === value")
+        :class="{hidden: slide !== value && startX === null}")
         slot(:name="'slide-' + slide",
           :selected="value === slide")
   fv-button.fv-size-xl.next(v-if="showButtons",
@@ -117,10 +117,13 @@ export default {
       // const el = this.$refs.slide[this.currentIndex]
       // el.style.transform = `translateX(${0}px)`
       this.startX = this.calcXByEvent(event)
+      this.$refs.outerContainer.style.height = `${this.$refs.innerContainer.offsetHeight}px`
+      this.$refs.innerContainer.style.position = 'absolute'
 
       this.bindEvents()
     },
     moving (event) {
+      console.log('moving called')
       const x = this.calcXByEvent(event)
       // const direction = this.calcDirection(this.startX, x)
       // const el = this.$refs.slide[this.currentIndex]
@@ -135,12 +138,14 @@ export default {
     moveEnd (event) {
       this.unbindEvents()
       this.$refs.innerContainer.style.transitionDuration = null
+      
       console.log('move enddd')
       const endX = this.calcXByEvent(event)
       const direction = this.calcDirection(this.startX, endX)
       // const el = this.$refs.slide[this.currentIndex]
-      if (Math.abs(direction.x) < 70) {
-        // el.style.transform = `translateX(${0}px)`
+      this.startX = null
+      if (Math.abs(direction.x) < 75) {
+        this.changesEffect(true)
         return
       }
       this.moveSlide(direction.moveNext)
@@ -196,46 +201,35 @@ export default {
     unbindInitialEvents () {
       parent.off('sizechange', this.changesEffect)
     },
-    changesEffect () {
+    changesEffect (valueChanges = true) {
+      console.log('changesEffect called')
       this.$nextTick(() => {
         const slideWidth = this.$refs.outerContainer.offsetWidth
-
-        this.$refs.innerContainer.style.width = `${this.slides.length * (slideWidth + 1)}px`
-        this.$refs.innerContainer.style.transform = `translateX(-${this.currentIndex * slideWidth}px)`
+        if (valueChanges) {
+          this.$refs.innerContainer.style.width = `${(this.slides.length + 1) * 100}%`
+          this.$refs.innerContainer.style.transform = `translateX(-${this.currentIndex * slideWidth}px)`
+        }
         for (let i = 0; i < this.slides.length; i++) {
           this.$refs.slide[i].style.width = `${slideWidth}px`
         }
-        const currentSlide = this.$refs.slide[this.currentIndex]
-        console.log(currentSlide ? currentSlide.offsetHeight : 'mam')
-        if (currentSlide) {
-          this.$refs.outerContainer.style.height = `${currentSlide ? currentSlide.offsetHeight : '0'}px`
-          this.$refs.innerContainer.style.height = `${currentSlide ? currentSlide.offsetHeight : '0'}px`
-          currentSlide.style.width = `${slideWidth}px`
-        }
-
-        // const currentSlideHeight = this.$refs.slide[this.currentIndex]
+        this.$refs.innerContainer.style.position = null
       })
     }
   },
+  beforeDestroy () {
+    this.unbindInitialEvents()
+  },
+  updated () {
+    this.changesEffect()
+    
+  },
   mounted () {
-    // this.initerval()
+    this.initerval()
     if (this.currentIndex === -1) {
       this.setValue(this.slides[0])
     }
-    this.changesEffect()
     this.bindInitialEvents()
-  },
-  watch: {
-    value (value) {
-      if (this.currentIndex > -1) {
-        this.changesEffect()
-      }
-      // this.$refs.innerContainer.style.transitionDuration = 'auto'
-      // console.log('here')
-      // const eachSlideWidth = this.$el.offsetWidth
-      // this.$refs.innerContainer.style.transform = `translateX(-${this.currentIndex * eachSlideWidth}px)`
-      // this.$refs.outerContainer.style.minHeight = `${this.$refs.innerContainer.offsetHeight}px`
-    }
+    this.changesEffect()
   }
 }
 </script>
@@ -259,10 +253,10 @@ export default {
   }
 
   & .inner-container {
-    position: absolute;
-    display: flex;
-    flex-direction: row;
-    align-items: start;
+    position: relative;
+    // display: flex;
+    // flex-direction: row;
+    // align-items: start;
     height: auto;
     width: auto;
     min-width: 100%;
@@ -273,11 +267,12 @@ export default {
   }
 
   & .slider-page {
-    display: block;
     padding: 0;
     overflow-x: hidden;
-    width: 100%;
+    display: inline-block;
+    vertical-align: top;
     user-select: none;
+
     // float: $block-start;
   }
 
