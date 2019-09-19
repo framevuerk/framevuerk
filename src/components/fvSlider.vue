@@ -1,7 +1,6 @@
 <template lang="pug">
 .fv-slider(@mousedown.left="moveStart($event)",
   @touchstart="moveStart($event)")
-  div {{value}}
   .tabs-container(v-if="showTabs")
     fv-button.fv-grow(v-for="(slide, i) in slides",
       :key="'tab-' + slide + i",
@@ -70,24 +69,21 @@ export default {
   data () {
     return {
       timer: null,
+      updateTimer: null,
       startX: 0,
       slidesX: []
     }
   },
   computed: {
-    // used
     allSlots () {
       return Object.assign(this.$slots, this.$scopedSlots)
     },
-    // used
     slides () {
       return Object.keys(this.allSlots).filter(key => key.indexOf('slide-') === 0).map(key => key.replace('slide-', ''))
     },
-    // used
     currentIndex () {
       return this.slides.findIndex(slide => slide === this.value)
     },
-    // used
     icons () {
       return {
         icon,
@@ -118,7 +114,6 @@ export default {
         x: calced
       }
     },
-    // used
     moveStart (event) {
       if (!this.swipeSupport || this.slides.length < 2) {
         return
@@ -128,15 +123,12 @@ export default {
       this.beforeMove()
       this.bindEvents()
     },
-    // used
     moving (event) {
       event.preventDefault()
       const translateX = this.slidesX[this.value] + (this.calcXByEvent(event) - this.startX)
       this.$refs.innerContainer.style.transform = `translateX(${translateX}px)`
     },
-    // used
     moveEnd (event) {
-      console.log('moveEnd')
       this.unbindEvents()
       event.preventDefault()
       const endX = this.calcXByEvent(event)
@@ -155,22 +147,19 @@ export default {
       parent.off('mouseup', this.moveEnd, true)
       parent.off('touchend', this.moveEnd, true)
     },
-    // used
     setValue (value) {
-      // this.initerval()
       if (this.value === value) {
         this.onValueChanges()
       } else {
         const lastPosibleIndex = this.slides.length - this.slidesPerPage
         this.$emit('input', value > lastPosibleIndex ? lastPosibleIndex : value)
-        // this.onValueChanges() will automaticly called
+        this.initerval()
+        // this.onValueChanges() will automaticly called after value changes
       }
     },
-    // used
     isSlideInView (index) {
       return index < (this.value + this.slidesPerPage) && index >= this.value
     },
-    // used
     moveValue (next = true) {
       let newIndex = this.value
       if (next !== null) {
@@ -179,85 +168,65 @@ export default {
         newIndex = newIndex > lastPosibleIndex ? 0 : newIndex
         newIndex = newIndex < 0 ? (this.slides.length - 1) : newIndex
       }
-      console.log('setting value to', this.slides[newIndex])
       this.setValue(newIndex)
     },
     initerval () {
-      clearTimeout(this.timer)
-      if (this.interval > 0 && this.slides.length > 1) {
-        this.timer = setTimeout(() => {
-          this.moveValue(true)
-        }, this.interval)
-      }
+      // console.log()
+      // clearTimeout(this.timer)
+      // if (this.interval > 0 && this.slides.length > 1) {
+      //   this.timer = setTimeout(() => {
+      //     this.moveValue(true)
+      //   }, this.interval)
+      // }
     },
     beforeMove () {
+      this.$refs.outerContainer.style.paddingBottom = `${this.$refs.outerContainer.offsetHeight}px`
       this.$refs.innerContainer.style.position = 'absolute'
       this.$refs.innerContainer.style.transitionDuration = '0s'
     },
-    // used
     afterMove () {
       this.$refs.innerContainer.style.transitionDuration = null // 0.3s
       setTimeout(() => {
         this.$refs.innerContainer.style.position = null // relative
+        this.$refs.outerContainer.style.paddingBottom = null // auto
       }, 500)
     },
-    // used
     bindInitialEvents () {
-      this.$nextTick(this.calcPositions)
-      parent.on('sizechange', this.calcPositions)
+      this.$nextTick(this.onValueChanges)
+      parent.on('sizechange', this.onValueChanges)
     },
-    // used
     unbindInitialEvents () {
-      parent.off('sizechange', this.calcPositions)
+      clearTimeout(this.timer)
+      parent.off('sizechange', this.onValueChanges)
     },
-    changesEffect (valueChanges = true) {
-      this.slidesChangesEffect()
-      if (valueChanges) {
-        this.$refs.innerContainer.style.transform = `translateX(${this.slidesX[this.value]}px)`
-      }
-    },
-    // used
-    calcPositions () {
+    onValueChanges () {
       this.beforeMove()
-      const eachSlideWidth = this.$refs.outerContainer.offsetWidth / this.slidesPerPage
-      // we make a free room inside innerContainer just for make sure that overflow problem will not happens
-      this.$refs.innerContainer.style.width = `${(this.slides.length + 1) * 100}%`
-      for (let i = 0; i < this.slides.length; i++) {
-        this.$refs.slide[i].style.width = `${eachSlideWidth}px`
-      }
-      this.slides.forEach((v, index) => {
-        this.slidesX[index] = -1 * (eachSlideWidth * index)
+      this.$nextTick(() => {
+        const eachSlideWidth = this.$refs.outerContainer.offsetWidth / this.slidesPerPage
+        // we make a free room inside innerContainer just for make sure that overflow problem will not happens
+        this.$refs.innerContainer.style.width = `${(this.slides.length + 1) * 100}%`
+        for (let i = 0; i < this.slides.length; i++) {
+          this.$refs.slide[i].style.width = `${eachSlideWidth}px`
+        }
+        this.slides.forEach((v, index) => {
+          this.slidesX[index] = -1 * (eachSlideWidth * index)
+        })
+
+        this.$refs.innerContainer.style.transform = `translateX(${this.slidesX[this.value]}px)`
+        this.afterMove()
       })
-
-      this.$refs.innerContainer.style.transform = `translateX(${this.slidesX[this.value]}px)`
-
-      this.afterMove()
-    },
-    onValueChanges() {
-      console.log('value changed')
-      this.calcPositions()
     }
   },
-  // beforeDestroy () {
-  //   this.unbindInitialEvents()
-  // },
-  // updated () {
-  //   this.changesEffect()
-  // },
-  watch: {
-    value () {
-      this.onValueChanges()
-    }
+  beforeDestroy () {
+    this.unbindInitialEvents()
+  },
+  updated () {
+    this.onValueChanges()
   },
   mounted () {
-    // this.initerval()
-    
+    this.initerval()
     // check if value is not presented
     this.setValue(this.value)
-    // if (this.currentIndex === -1) {
-    //   this.setValue(this.slides[0])
-    // }
-
     // bind initial events to recalc positions
     this.bindInitialEvents()
   }
@@ -278,15 +247,16 @@ export default {
     width: 100%;
     min-width: 100%;
     overflow: hidden;
+    position: relative;
   }
 
   & .inner-container {
-    min-width: 100%;
     overflow: visible;
     transition-timing-function: ease;
     transition-duration: $transition-speed;
     transition-property: transform;
     will-change: transform;
+    text-align: left;
   }
 
   & .slider-page {
@@ -295,6 +265,7 @@ export default {
     display: inline-block;
     vertical-align: top;
     user-select: none;
+    margin: 0;
   }
 
   & > .tabs-container {
@@ -345,26 +316,23 @@ export default {
 
   & .nav {
     bottom: 0;
-    left: 50%;
-    line-height: 1;
+    left: 0;
     margin: 0 auto;
     position: absolute;
-    text-align: center;
-    transform: translateX(-50%);
-    width: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 
     & li {
-      background: rgba($color, 0.5);
-      border-radius: 0.4em;
+      background: rgba($color, 0.2);
       cursor: pointer;
-      display: inline-block;
-      height: 0.8em;
-      margin: 0.8em 0.2em;
-      width: 0.8em;
+      height: 0.23em;
+      flex-grow: 1;
 
       &.selected {
         background: $primary-color;
-        box-shadow: 0 0 15px $primary-color-light;
         cursor: default;
       }
     }
