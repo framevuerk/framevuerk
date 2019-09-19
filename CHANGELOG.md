@@ -71,6 +71,8 @@
 ##### 2.2.2
 - fix dom calcs in parent class (back to 2.1.3)
 
+##### 2.3.0 (Unpublished)
+
 ##### 2.3.1
 - fix removing document event listeners bug
 - refactor fvSlider component functionality
