@@ -1,21 +1,22 @@
 <template lang="pug">
 .fv-slider(@mousedown.left="moveStart($event)",
   @touchstart="moveStart($event)")
+  div {{value}}
   .tabs-container(v-if="showTabs")
     fv-button.fv-grow(v-for="(slide, i) in slides",
       :key="'tab-' + slide + i",
-      :class="{'fv-selected': value === slide}",
-      @click.prevent="setValue(slide)")
-      slot(v-if="allSlots['tab-' + slide]", :selected="value === slide", :name="'tab-' + slide")
-      slot(v-else-if="allSlots.tab", :slide="slide", :selected="value === slide", name="tab")
-      span(v-else) {{slide}}
+      :class="{'fv-selected': isSlideInView(i)}",
+      @click.prevent="setValue(i)")
+      slot(v-if="allSlots['tab-' + slide]", :selected="isSlideInView(i)", :name="'tab-' + slide")
+      slot(v-else-if="allSlots.tab", :slide="slide", :selected="isSlideInView(i)", name="tab")
+      span(v-else) {{ slide }}
   .outer-container(ref="outerContainer")
     .inner-container(ref="innerContainer")
       .slider-page(v-for="(slide, i) in slides",
         ref="slide"
         :key="'slide-' + slide + i")
         slot(:name="'slide-' + slide",
-          :selected="value === slide")
+          :selected="isSlideInView(i)")
   fv-button.fv-size-xl.next(v-if="showButtons",
     @click.prevent="moveValue(true)")
     .icon(:style="{ transform: icons.next }", v-html="icons.icon")
@@ -25,8 +26,8 @@
   ul.nav(v-if="showNavs")
     li(v-for="(slide, i) in slides",
       :key="'nav-' + slide + i",
-      @click.prevent="setValue(slide)",
-      :class="{selected: value === slide}")
+      @click.prevent="setValue(i)",
+      :class="{selected: isSlideInView(i)}")
 </template>
 
 <script>
@@ -36,7 +37,9 @@ import parent from '../utility/parent.js'
 export default {
   props: {
     value: {
-      default: undefined
+      type: Number,
+      default: 0,
+      required: true
     },
     showTabs: {
       type: Boolean,
@@ -54,6 +57,11 @@ export default {
       type: Boolean,
       default: true
     },
+    slidesPerPage: {
+      type: Number,
+      default: 1,
+      validator: x => x > 0
+    },
     interval: {
       type: Number,
       default: 0
@@ -67,15 +75,19 @@ export default {
     }
   },
   computed: {
+    // used
     allSlots () {
       return Object.assign(this.$slots, this.$scopedSlots)
     },
+    // used
     slides () {
       return Object.keys(this.allSlots).filter(key => key.indexOf('slide-') === 0).map(key => key.replace('slide-', ''))
     },
+    // used
     currentIndex () {
       return this.slides.findIndex(slide => slide === this.value)
     },
+    // used
     icons () {
       return {
         icon,
@@ -106,6 +118,7 @@ export default {
         x: calced
       }
     },
+    // used
     moveStart (event) {
       if (!this.swipeSupport || this.slides.length < 2) {
         return
@@ -115,22 +128,20 @@ export default {
       this.beforeMove()
       this.bindEvents()
     },
+    // used
     moving (event) {
       event.preventDefault()
-      const translateX = this.slidesX[this.currentIndex] + (this.calcXByEvent(event) - this.startX)
+      const translateX = this.slidesX[this.value] + (this.calcXByEvent(event) - this.startX)
       this.$refs.innerContainer.style.transform = `translateX(${translateX}px)`
     },
+    // used
     moveEnd (event) {
+      console.log('moveEnd')
       this.unbindEvents()
       event.preventDefault()
       const endX = this.calcXByEvent(event)
       const direction = this.calcDirection(this.startX, endX)
-      if (Math.abs(direction.x) < 75) {
-        this.afterMove()
-        this.changesEffect(false)
-      } else {
-        this.moveValue(direction.moveNext)
-      }
+      this.moveValue(Math.abs(direction.x) > 40 ? direction.moveNext : null)
     },
     bindEvents () {
       parent.on('mousemove', this.moving, true)
@@ -144,14 +155,32 @@ export default {
       parent.off('mouseup', this.moveEnd, true)
       parent.off('touchend', this.moveEnd, true)
     },
+    // used
     setValue (value) {
-      this.initerval()
-      this.$emit('input', value)
+      // this.initerval()
+      if (this.value === value) {
+        this.onValueChanges()
+      } else {
+        const lastPosibleIndex = this.slides.length - this.slidesPerPage
+        this.$emit('input', value > lastPosibleIndex ? lastPosibleIndex : value)
+        // this.onValueChanges() will automaticly called
+      }
     },
+    // used
+    isSlideInView (index) {
+      return index < (this.value + this.slidesPerPage) && index >= this.value
+    },
+    // used
     moveValue (next = true) {
-      let newIndex = (this.currentIndex + (next ? 1 : -1)) % this.slides.length
-      newIndex = newIndex < 0 ? this.slides.length - 1 : newIndex
-      this.setValue(this.slides[newIndex])
+      let newIndex = this.value
+      if (next !== null) {
+        const lastPosibleIndex = this.slides.length - this.slidesPerPage
+        newIndex += next ? 1 : -1
+        newIndex = newIndex > lastPosibleIndex ? 0 : newIndex
+        newIndex = newIndex < 0 ? (this.slides.length - 1) : newIndex
+      }
+      console.log('setting value to', this.slides[newIndex])
+      this.setValue(newIndex)
     },
     initerval () {
       clearTimeout(this.timer)
@@ -165,43 +194,72 @@ export default {
       this.$refs.innerContainer.style.position = 'absolute'
       this.$refs.innerContainer.style.transitionDuration = '0s'
     },
+    // used
     afterMove () {
       this.$refs.innerContainer.style.transitionDuration = null // 0.3s
       setTimeout(() => {
         this.$refs.innerContainer.style.position = null // relative
       }, 500)
     },
+    // used
     bindInitialEvents () {
-      parent.on('sizechange', this.changesEffect)
+      this.$nextTick(this.calcPositions)
+      parent.on('sizechange', this.calcPositions)
     },
+    // used
     unbindInitialEvents () {
-      parent.off('sizechange', this.changesEffect)
+      parent.off('sizechange', this.calcPositions)
     },
     changesEffect (valueChanges = true) {
       this.slidesChangesEffect()
       if (valueChanges) {
-        this.$refs.innerContainer.style.transform = `translateX(${this.slidesX[this.currentIndex]}px)`
+        this.$refs.innerContainer.style.transform = `translateX(${this.slidesX[this.value]}px)`
       }
+    },
+    // used
+    calcPositions () {
+      this.beforeMove()
+      const eachSlideWidth = this.$refs.outerContainer.offsetWidth / this.slidesPerPage
+      // we make a free room inside innerContainer just for make sure that overflow problem will not happens
+      this.$refs.innerContainer.style.width = `${(this.slides.length + 1) * 100}%`
+      for (let i = 0; i < this.slides.length; i++) {
+        this.$refs.slide[i].style.width = `${eachSlideWidth}px`
+      }
+      this.slides.forEach((v, index) => {
+        this.slidesX[index] = -1 * (eachSlideWidth * index)
+      })
+
+      this.$refs.innerContainer.style.transform = `translateX(${this.slidesX[this.value]}px)`
+
+      this.afterMove()
+    },
+    onValueChanges() {
+      console.log('value changed')
+      this.calcPositions()
     }
   },
-  beforeDestroy () {
-    this.unbindInitialEvents()
-  },
-  updated () {
-    this.changesEffect()
-  },
+  // beforeDestroy () {
+  //   this.unbindInitialEvents()
+  // },
+  // updated () {
+  //   this.changesEffect()
+  // },
   watch: {
     value () {
-      this.afterMove()
+      this.onValueChanges()
     }
   },
   mounted () {
-    this.initerval()
-    if (this.currentIndex === -1) {
-      this.setValue(this.slides[0])
-    }
+    // this.initerval()
+    
+    // check if value is not presented
+    this.setValue(this.value)
+    // if (this.currentIndex === -1) {
+    //   this.setValue(this.slides[0])
+    // }
+
+    // bind initial events to recalc positions
     this.bindInitialEvents()
-    this.$nextTick(this.changesEffect)
   }
 }
 </script>
