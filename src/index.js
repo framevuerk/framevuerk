@@ -20,6 +20,7 @@ import fvCheck from './components/fvCheck.vue'
 import fvTextarea from './components/fvTextarea.vue'
 import fvImg from './components/fvImg.vue'
 import fvSlider from './components/fvSlider.vue'
+import fvSlide from './components/fvSlide.vue'
 import fvToast from './components/fvToast.vue'
 import fvAvatar from './components/fvAvatar.vue'
 import fvSteps from './components/fvSteps.vue'
@@ -50,6 +51,7 @@ const Framevuerk = {
   fvTextarea,
   fvImg,
   fvSlider,
+  fvSlide,
   fvToast,
   fvAvatar,
   fvSteps,
@@ -80,6 +82,7 @@ const Framevuerk = {
     Vue.component('fvTextarea', fvTextarea)
     Vue.component('fvImg', fvImg)
     Vue.component('fvSlider', fvSlider)
+    Vue.component('fvSlide', fvSlide)
     Vue.component('fvAvatar', fvAvatar)
     Vue.component('fvSteps', fvSteps)
     Vue.component('fvRange', fvRange)
