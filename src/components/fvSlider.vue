@@ -1,21 +1,23 @@
 <template lang="pug">
 .fv-slider(@mousedown.left="moveStart($event)",
   @touchstart="moveStart($event)")
-  .tabs-container(v-if="showTabs")
-    fv-button.fv-grow(v-for="(slide, i) in slides",
-      :key="'tab-' + slide + i",
-      :class="{'fv-selected': isSlideInView(i)}",
-      @click.prevent="setValue(i)")
-      slot(v-if="allSlots['tab-' + slide]", :selected="isSlideInView(i)", :name="'tab-' + slide")
-      slot(v-else-if="allSlots.tab", :slide="slide", :selected="isSlideInView(i)", name="tab")
-      span(v-else) {{ slide }}
+  div {{ slidesLength }}
+  //- .tabs-container(v-if="showTabs")
+  //-   fv-button.fv-grow(v-for="(slide, i) in slides",
+  //-     :key="'tab-' + slide + i",
+  //-     :class="{'fv-selected': isSlideInView(i)}",
+  //-     @click.prevent="setValue(i)")
+  //-     slot(v-if="allSlots['tab-' + slide]", :selected="isSlideInView(i)", :name="'tab-' + slide")
+  //-     slot(v-else-if="allSlots.tab", :slide="slide", :selected="isSlideInView(i)", name="tab")
+  //-     span(v-else) {{ slide }}
   .outer-container(ref="outerContainer")
     .inner-container(ref="innerContainer")
-      .slider-page(v-for="(slide, i) in slides",
-        ref="slide"
-        :key="'slide-' + slide + i")
-        slot(:name="'slide-' + slide",
-          :selected="isSlideInView(i)")
+      slot
+      //- .slider-page(v-for="(slide, i) in slides",
+      //-   ref="slide"
+      //-   :key="'slide-' + slide + i")
+      //-   slot(:name="'slide-' + slide",
+      //-     :selected="isSlideInView(i)")
   fv-button.fv-size-xl.next(v-if="showButtons",
     @click.prevent="moveValue(true)")
     .icon(:style="{ transform: icons.next }", v-html="icons.icon")
@@ -23,10 +25,10 @@
     @click.prevent="moveValue(false)")
     .icon(:style="{ transform: icons.prev }", v-html="icons.icon")
   ul.nav(v-if="showNavs")
-    li(v-for="(slide, i) in slides",
-      :key="'nav-' + slide + i",
-      @click.prevent="setValue(i)",
-      :class="{selected: isSlideInView(i)}")
+    li(v-for="slide in slidesIndex",
+      :key="'nav-' + slide",
+      @click.prevent="setValue(slide)",
+      :class="{selected: isSlideInView(slide)}")
 </template>
 
 <script>
@@ -71,19 +73,44 @@ export default {
       timer: null,
       updateTimer: null,
       startX: 0,
-      slidesX: []
+      slidesX: [],
+      slidesLength: 0 // number of slides, calculated durring runtime
+    }
+  },
+  provide () {
+    return {
+      fvSlider: this
     }
   },
   computed: {
     allSlots () {
       return Object.assign(this.$slots, this.$scopedSlots)
     },
-    slides () {
-      return Object.keys(this.allSlots).filter(key => key.indexOf('slide-') === 0).map(key => key.replace('slide-', ''))
+    slidesIndex() {
+      return new Array(this.slidesLength).fill(undefined).map((x, i) => i)
     },
-    currentIndex () {
-      return this.slides.findIndex(slide => slide === this.value)
+    slidesStops() {
+      const ret = []
+      // slidesLength 10
+      // slidesPerPage 6
+
+      // i is 0, ret = [0]
+      // i is 6, ret = [0]
+      for(let i = 0; i < this.slidesLength; i+=this.slidesPerPage) {
+        if (i + this.slidesPerPage > this.slidesLength) {
+          ret.push(this.slidesLength - this.slidesPerPage)
+        } else {
+          ret.push(i)
+        }
+      }
+      return ret
     },
+    // slides () {
+    //   return Object.keys(this.allSlots).filter(key => key.indexOf('slide-') === 0).map(key => key.replace('slide-', ''))
+    // },
+    // currentIndex () {
+    //   return this.slides.findIndex(slide => slide === this.value)
+    // },
     icons () {
       return {
         icon,
@@ -93,17 +120,17 @@ export default {
     }
   },
   methods: {
-    slidesChangesEffect () {
-      const eachSlideWidth = this.$refs.outerContainer.offsetWidth
-      // we make a free room inside innerContainer just for make sure that overflow problem will not happens
-      this.$refs.innerContainer.style.width = `${(this.slides.length + 1) * 100}%`
-      for (let i = 0; i < this.slides.length; i++) {
-        this.$refs.slide[i].style.width = `${eachSlideWidth}px`
-      }
-      this.slides.forEach((v, index) => {
-        this.slidesX[index] = -1 * (eachSlideWidth * index)
-      })
-    },
+    // slidesChangesEffect () {
+    //   const eachSlideWidth = this.$refs.outerContainer.offsetWidth
+    //   // we make a free room inside innerContainer just for make sure that overflow problem will not happens
+    //   this.$refs.innerContainer.style.width = `${(this.slidesLength + 1) * 100}%`
+    //   for (let i = 0; i < this.slidesLength; i++) {
+    //     this.$refs.slide[i].style.width = `${eachSlideWidth}px`
+    //   }
+    //   this.slides.forEach((v, index) => {
+    //     this.slidesX[index] = -1 * (eachSlideWidth * index)
+    //   })
+    // },
     calcXByEvent (event) {
       return event.changedTouches && event.changedTouches.length ? event.changedTouches[0].clientX : (event.pageX - 0)
     },
@@ -115,9 +142,10 @@ export default {
       }
     },
     moveStart (event) {
-      if (!this.swipeSupport || this.slides.length < 2) {
+      if (!this.swipeSupport /* || this.slidesLength < 2 TODO fix this */) {
         return
       }
+      console.log('move start')
       this.startX = this.calcXByEvent(event)
       this.$refs.outerContainer.style.height = `${this.$refs.innerContainer.offsetHeight}px`
       this.beforeMove()
@@ -125,7 +153,8 @@ export default {
     },
     moving (event) {
       event.preventDefault()
-      const translateX = this.slidesX[this.value] + (this.calcXByEvent(event) - this.startX)
+      const currentX = parseInt(this.$refs.innerContainer.getAttribute('data-x'))
+      const translateX = currentX + (this.calcXByEvent(event) - this.startX)
       this.$refs.innerContainer.style.transform = `translateX(${translateX}px)`
     },
     moveEnd (event) {
@@ -151,8 +180,11 @@ export default {
       if (this.value === value) {
         this.onValueChanges()
       } else {
-        const lastPosibleIndex = this.slides.length - this.slidesPerPage
-        this.$emit('input', value > lastPosibleIndex ? lastPosibleIndex : value)
+        let newValue = value
+        while (this.slidesStops.indexOf(newValue) === -1 && newValue > 0) {
+          newValue--
+        }
+        this.$emit('input', newValue)
         this.initerval()
         // this.onValueChanges() will automaticly called after value changes
       }
@@ -162,18 +194,19 @@ export default {
     },
     moveValue (next = true) {
       let newIndex = this.value
+      let stopIndex = this.slidesStops.indexOf(newIndex) || 0
       if (next !== null) {
-        const lastPosibleIndex = this.slides.length - this.slidesPerPage
-        newIndex += next ? 1 : -1
-        newIndex = newIndex > lastPosibleIndex ? 0 : newIndex
-        newIndex = newIndex < 0 ? (this.slides.length - 1) : newIndex
+        stopIndex += next ? 1 : -1
+        stopIndex = stopIndex % this.slidesStops.length
+        stopIndex = stopIndex < 0 ? this.slidesStops.length - 1 : stopIndex
       }
+      newIndex = this.slidesStops[stopIndex]
       this.setValue(newIndex)
     },
     initerval () {
       // console.log()
       // clearTimeout(this.timer)
-      // if (this.interval > 0 && this.slides.length > 1) {
+      // if (this.interval > 0 && this.slidesLength > 1) {
       //   this.timer = setTimeout(() => {
       //     this.moveValue(true)
       //   }, this.interval)
@@ -200,19 +233,33 @@ export default {
       parent.off('sizechange', this.onValueChanges)
     },
     onValueChanges () {
+      const slidesDom = [...this.$el.querySelectorAll('.fv-slide')]
+      this.slidesLength = slidesDom.length
       this.beforeMove()
       this.$nextTick(() => {
         const eachSlideWidth = this.$refs.outerContainer.offsetWidth / this.slidesPerPage
+        // this.slideWidth = eachSlideWidth // really important
         // we make a free room inside innerContainer just for make sure that overflow problem will not happens
-        this.$refs.innerContainer.style.width = `${(this.slides.length + 1) * 100}%`
-        for (let i = 0; i < this.slides.length; i++) {
-          this.$refs.slide[i].style.width = `${eachSlideWidth}px`
-        }
-        this.slides.forEach((v, index) => {
-          this.slidesX[index] = -1 * (eachSlideWidth * index)
+        
+
+        this.$refs.innerContainer.style.width = `${(this.slidesLength + 1) * 100}%`
+        // for (let i = 0; i < this.slidesLength; i++) {
+        //   this.$refs.slide[i].style.width = `${eachSlideWidth}px`
+        // }
+         slidesDom.forEach((slide, index) => {
+          
+          // slide.setAttribute('data-index', index)
+          slide.style.width = `${eachSlideWidth}px`
+          slide.classList[this.isSlideInView(index) ? 'add' : 'remove']('fv-selected')
+          // slide.setAttribute('data-x', x)
+          if (this.value === index) {
+            const x = -1 * (eachSlideWidth * index)
+            this.$refs.innerContainer.setAttribute('data-x', x)
+            this.$refs.innerContainer.style.transform = `translateX(${x}px)`
+          }
         })
 
-        this.$refs.innerContainer.style.transform = `translateX(${this.slidesX[this.value]}px)`
+        
         this.afterMove()
       })
     }
@@ -225,7 +272,6 @@ export default {
   },
   mounted () {
     this.initerval()
-    // check if value is not presented
     this.setValue(this.value)
     // bind initial events to recalc positions
     this.bindInitialEvents()
@@ -257,15 +303,7 @@ export default {
     transition-property: transform;
     will-change: transform;
     text-align: left;
-  }
-
-  & .slider-page {
-    padding: 0;
-    overflow-x: hidden;
-    display: inline-block;
-    vertical-align: top;
-    user-select: none;
-    margin: 0;
+    /* .fv-slide's are into this section */
   }
 
   & > .tabs-container {
