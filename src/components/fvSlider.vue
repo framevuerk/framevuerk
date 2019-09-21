@@ -1,23 +1,18 @@
 <template lang="pug">
 .fv-slider(@mousedown.left="moveStart($event)",
   @touchstart="moveStart($event)")
-  div {{ slidesLength }}
-  //- .tabs-container(v-if="showTabs")
-  //-   fv-button.fv-grow(v-for="(slide, i) in slides",
-  //-     :key="'tab-' + slide + i",
-  //-     :class="{'fv-selected': isSlideInView(i)}",
-  //-     @click.prevent="setValue(i)")
-  //-     slot(v-if="allSlots['tab-' + slide]", :selected="isSlideInView(i)", :name="'tab-' + slide")
-  //-     slot(v-else-if="allSlots.tab", :slide="slide", :selected="isSlideInView(i)", name="tab")
-  //-     span(v-else) {{ slide }}
+  //- div {{ slidesLength }}
+  .tabs-container(v-if="showTabs")
+    fv-button.fv-grow(v-for="slide in slidesIndex",
+      :key="'tab-' + slide + i",
+      :class="{'fv-selected': isSlideInView(slide)}",
+      @click.prevent="setValue(slide)")
+      slot(v-if="allSlots['tab-' + slide]", :selected="isSlideInView(slide)", :name="'tab-' + slide")
+      slot(v-else-if="allSlots.tab", :index="slide", :selected="isSlideInView(slide)", name="tab")
+      span(v-else) {{ slide }}
   .outer-container(ref="outerContainer")
     .inner-container(ref="innerContainer")
       slot
-      //- .slider-page(v-for="(slide, i) in slides",
-      //-   ref="slide"
-      //-   :key="'slide-' + slide + i")
-      //-   slot(:name="'slide-' + slide",
-      //-     :selected="isSlideInView(i)")
   fv-button.fv-size-xl.next(v-if="showButtons",
     @click.prevent="moveValue(true)")
     .icon(:style="{ transform: icons.next }", v-html="icons.icon")
@@ -25,10 +20,10 @@
     @click.prevent="moveValue(false)")
     .icon(:style="{ transform: icons.prev }", v-html="icons.icon")
   ul.nav(v-if="showNavs")
-    li(v-for="slide in slidesIndex",
+    li(v-for="slide in slidesStops",
       :key="'nav-' + slide",
       @click.prevent="setValue(slide)",
-      :class="{selected: isSlideInView(slide)}")
+      :class="{selected: value === slide}")
 </template>
 
 <script>
@@ -73,7 +68,6 @@ export default {
       timer: null,
       updateTimer: null,
       startX: 0,
-      slidesX: [],
       slidesLength: 0 // number of slides, calculated durring runtime
     }
   },
@@ -91,11 +85,6 @@ export default {
     },
     slidesStops() {
       const ret = []
-      // slidesLength 10
-      // slidesPerPage 6
-
-      // i is 0, ret = [0]
-      // i is 6, ret = [0]
       for(let i = 0; i < this.slidesLength; i+=this.slidesPerPage) {
         if (i + this.slidesPerPage > this.slidesLength) {
           ret.push(this.slidesLength - this.slidesPerPage)
@@ -105,12 +94,6 @@ export default {
       }
       return ret
     },
-    // slides () {
-    //   return Object.keys(this.allSlots).filter(key => key.indexOf('slide-') === 0).map(key => key.replace('slide-', ''))
-    // },
-    // currentIndex () {
-    //   return this.slides.findIndex(slide => slide === this.value)
-    // },
     icons () {
       return {
         icon,
@@ -120,17 +103,12 @@ export default {
     }
   },
   methods: {
-    // slidesChangesEffect () {
-    //   const eachSlideWidth = this.$refs.outerContainer.offsetWidth
-    //   // we make a free room inside innerContainer just for make sure that overflow problem will not happens
-    //   this.$refs.innerContainer.style.width = `${(this.slidesLength + 1) * 100}%`
-    //   for (let i = 0; i < this.slidesLength; i++) {
-    //     this.$refs.slide[i].style.width = `${eachSlideWidth}px`
-    //   }
-    //   this.slides.forEach((v, index) => {
-    //     this.slidesX[index] = -1 * (eachSlideWidth * index)
-    //   })
-    // },
+    addSlide (slideComponent) {
+      this.slides.push(slideComponent)
+    },
+    removeSlide (slideComponent) {
+      this.slides.splice(slideComponent)
+    },
     calcXByEvent (event) {
       return event.changedTouches && event.changedTouches.length ? event.changedTouches[0].clientX : (event.pageX - 0)
     },
@@ -232,8 +210,16 @@ export default {
       clearTimeout(this.timer)
       parent.off('sizechange', this.onValueChanges)
     },
+    // used of methods, because we dont want to keep this in memory
+    getSlidesDom () {
+      try {
+        return [...this.$el.querySelectorAll('.fv-slide')]
+      } catch (e) {
+        return []
+      }
+    },
     onValueChanges () {
-      const slidesDom = [...this.$el.querySelectorAll('.fv-slide')]
+      const slidesDom = this.getSlidesDom()
       this.slidesLength = slidesDom.length
       this.beforeMove()
       this.$nextTick(() => {
@@ -353,23 +339,24 @@ export default {
   }
 
   & .nav {
-    bottom: 0;
+    bottom: $padding / 2;
     left: 0;
-    margin: 0 auto;
     position: absolute;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
+    text-align: center;
     width: 100%;
 
+    $size: 0.9em;
     & li {
       background: rgba($color, 0.2);
       cursor: pointer;
-      height: 0.23em;
-      flex-grow: 1;
+      height: $size;
+      width: $size;
+      margin: 0 #{$size / 3};
+      display: inline-block;
+      border-radius: $size;
 
       &.selected {
+        @include shadow(all, $primary-color-light);
         background: $primary-color;
         cursor: default;
       }
