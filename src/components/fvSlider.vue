@@ -24,6 +24,7 @@
       :key="'nav-' + slide",
       @click.prevent="setValue(slide)",
       :class="{selected: value === slide}")
+  div.interval
 </template>
 
 <script>
@@ -175,7 +176,6 @@ export default {
       this.setValue(newIndex)
     },
     initerval () {
-      // console.log()
       clearTimeout(this.timer)
       if (this.interval > 0 && this.slidesLength > 1) {
         this.timer = setTimeout(() => {
@@ -194,7 +194,7 @@ export default {
         this.$refs.innerContainer.style.position = null // relative
         this.$refs.outerContainer.style.paddingBottom = null // auto
         this.initerval()
-      }, 500)
+      }, 1500) // TODO this should be calculated from transition duration of global config
     },
     bindInitialEvents () {
       this.$nextTick(this.onValueChanges)
@@ -215,31 +215,18 @@ export default {
     onValueChanges () {
       const slidesDom = this.getSlidesDom()
       this.slidesLength = slidesDom.length
-      this.beforeMove()
       this.$nextTick(() => {
         const eachSlideWidth = this.$refs.outerContainer.offsetWidth / this.slidesPerPage
-        // this.slideWidth = eachSlideWidth // really important
-        // we make a free room inside innerContainer just for make sure that overflow problem will not happens
-        
-
         this.$refs.innerContainer.style.width = `${(this.slidesLength + 1) * 100}%`
-        // for (let i = 0; i < this.slidesLength; i++) {
-        //   this.$refs.slide[i].style.width = `${eachSlideWidth}px`
-        // }
          slidesDom.forEach((slide, index) => {
-          
-          // slide.setAttribute('data-index', index)
           slide.style.width = `${eachSlideWidth}px`
           slide.classList[this.isSlideInView(index) ? 'add' : 'remove']('fv-selected')
-          // slide.setAttribute('data-x', x)
           if (this.value === index) {
             const x = -1 * (eachSlideWidth * index)
             this.$refs.innerContainer.setAttribute('data-x', x)
             this.$refs.innerContainer.style.transform = `translateX(${x}px)`
           }
         })
-
-        
         this.afterMove()
       })
     }
