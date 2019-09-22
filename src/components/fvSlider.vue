@@ -123,7 +123,6 @@ export default {
       if (!this.swipeSupport /* || this.slidesLength < 2 TODO fix this */) {
         return
       }
-      console.log('move start')
       this.startX = this.calcXByEvent(event)
       this.$refs.outerContainer.style.height = `${this.$refs.innerContainer.offsetHeight}px`
       this.beforeMove()
@@ -163,7 +162,6 @@ export default {
           newValue--
         }
         this.$emit('input', newValue)
-        this.initerval()
         // this.onValueChanges() will automaticly called after value changes
       }
     },
@@ -183,12 +181,12 @@ export default {
     },
     initerval () {
       // console.log()
-      // clearTimeout(this.timer)
-      // if (this.interval > 0 && this.slidesLength > 1) {
-      //   this.timer = setTimeout(() => {
-      //     this.moveValue(true)
-      //   }, this.interval)
-      // }
+      clearTimeout(this.timer)
+      if (this.interval > 0 && this.slidesLength > 1) {
+        this.timer = setTimeout(() => {
+          this.moveValue(true)
+        }, this.interval)
+      }
     },
     beforeMove () {
       this.$refs.outerContainer.style.paddingBottom = `${this.$refs.outerContainer.offsetHeight}px`
@@ -200,6 +198,7 @@ export default {
       setTimeout(() => {
         this.$refs.innerContainer.style.position = null // relative
         this.$refs.outerContainer.style.paddingBottom = null // auto
+        this.initerval()
       }, 500)
     },
     bindInitialEvents () {
@@ -257,7 +256,6 @@ export default {
     this.onValueChanges()
   },
   mounted () {
-    this.initerval()
     this.setValue(this.value)
     // bind initial events to recalc positions
     this.bindInitialEvents()
