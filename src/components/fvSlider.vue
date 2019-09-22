@@ -116,7 +116,7 @@ export default {
       }
     },
     moveStart (event) {
-      if (!this.swipeSupport /* || this.slidesLength < 2 TODO fix this */) {
+      if (!this.swipeSupport || this.slidesLength < 2) {
         return
       }
       this.startX = this.calcXByEvent(event)
