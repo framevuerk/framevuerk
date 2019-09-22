@@ -12,11 +12,6 @@ export default {
     value: {
       required: true
     }
-  },
-  inject: {
-    fvSlider: {
-      default: false
-    }
   }
 }
 </script>
