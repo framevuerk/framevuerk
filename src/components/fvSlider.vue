@@ -71,11 +71,6 @@ export default {
       slidesLength: 0 // number of slides, calculated durring runtime
     }
   },
-  provide () {
-    return {
-      fvSlider: this
-    }
-  },
   computed: {
     allSlots () {
       return Object.assign(this.$slots, this.$scopedSlots)
