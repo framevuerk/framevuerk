@@ -4,7 +4,7 @@
   //- div {{ slidesLength }}
   .tabs-container(v-if="showTabs")
     fv-button.fv-grow(v-for="slide in slidesIndex",
-      :key="'tab-' + slide + i",
+      :key="'tab-' + slide",
       :class="{'fv-selected': isSlideInView(slide)}",
       @click.prevent="setValue(slide)")
       slot(v-if="allSlots['tab-' + slide]", :selected="isSlideInView(slide)", :name="'tab-' + slide")
