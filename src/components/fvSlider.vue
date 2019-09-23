@@ -75,12 +75,12 @@ export default {
     allSlots () {
       return Object.assign(this.$slots, this.$scopedSlots)
     },
-    slidesIndex() {
+    slidesIndex () {
       return new Array(this.slidesLength).fill(undefined).map((x, i) => i)
     },
-    slidesStops() {
+    slidesStops () {
       const ret = []
-      for(let i = 0; i < this.slidesLength; i+=this.slidesPerPage) {
+      for (let i = 0; i < this.slidesLength; i += this.slidesPerPage) {
         if (i + this.slidesPerPage > this.slidesLength) {
           ret.push(this.slidesLength - this.slidesPerPage)
         } else {
@@ -217,7 +217,7 @@ export default {
       this.$nextTick(() => {
         const eachSlideWidth = this.$refs.outerContainer.offsetWidth / this.slidesPerPage
         this.$refs.innerContainer.style.width = `${(this.slidesLength + 1) * 100}%`
-         slidesDom.forEach((slide, index) => {
+        slidesDom.forEach((slide, index) => {
           slide.style.width = `${eachSlideWidth}px`
           slide.classList[this.isSlideInView(index) ? 'add' : 'remove']('fv-selected')
           if (this.value === index) {
@@ -237,7 +237,7 @@ export default {
     this.onValueChanges()
   },
   watch: {
-    slidesPerPage() {
+    slidesPerPage () {
       this.setValue(0)
     }
   },
