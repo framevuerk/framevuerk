@@ -4,7 +4,8 @@
     thead(v-if="showTitle")
       tr
         th(v-for="field in fields",
-          :key="fieldProp(field, 'title')")
+          :key="fieldProp(field, 'title')",
+          @click="$emit('titleClick', field, index)")
           slot(v-if="$scopedSlots['title-'+fieldProp(field, 'value')] || $slots['title-'+fieldProp(field, 'value')]", :name="'title-'+fieldProp(field, 'value')", :field="field", :index="index", :breaked="isBreaked")
           slot(v-else-if="$scopedSlots.title || $slots.title", name="title", :field="field", :index="index", :breaked="isBreaked")
           span(v-else) {{fieldProp(field, 'title')}}
@@ -14,7 +15,7 @@
         @click="$emit('rowClick', row, index)")
         td(v-for="(field, index2) in fields",
           :key="fieldProp(field, 'title')")
-          .field-name(v-if="isBreaked && showTitle")
+          .field-name(v-if="isBreaked && showTitle", @click="$emit('titleClick', field, index2)")
             slot(v-if="$scopedSlots['title-'+fieldProp(field, 'value')] || $slots['title-'+fieldProp(field, 'value')]", :name="'title-'+fieldProp(field, 'value')", :field="field", :index="index", :breaked="isBreaked")
             slot(v-else-if="$scopedSlots.title || $slots.title", name="title", :field="field", :index="index", :breaked="isBreaked")
             span(v-else) {{fieldProp(field, 'title')}}
