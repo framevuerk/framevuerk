@@ -77,3 +77,8 @@
 - fix removing document event listeners bug
 - refactor fvSlider component functionality
 - add new prop swipeSupport prop to fvSlider
+
+##### 2.4.0
+- add titleClick event to fvTable component
+- add new prop slidesPerPage prop to fvSlider component
+- improve fvSlider component functionality
