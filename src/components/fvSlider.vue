@@ -13,17 +13,17 @@
   .outer-container(ref="outerContainer")
     .inner-container(ref="innerContainer")
       slot
-  fv-button.fv-size-xl.next(v-if="showButtons",
-    @click.prevent="moveValue(true)")
-    .icon(:style="{ transform: icons.next }", v-html="icons.icon")
-  fv-button.fv-size-xl.prev(v-if="showButtons",
-    @click.prevent="moveValue(false)")
-    .icon(:style="{ transform: icons.prev }", v-html="icons.icon")
-  ul.nav(v-if="showNavs")
-    li(v-for="slide in slidesStops",
-      :key="'nav-' + slide",
-      @click.prevent="setValue(slide)",
-      :class="{selected: value === slide}")
+    fv-button.fv-size-xl.next(v-if="showButtons",
+      @click.prevent="moveValue(true)")
+      .icon(:style="{ transform: icons.next }", v-html="icons.icon")
+    fv-button.fv-size-xl.prev(v-if="showButtons",
+      @click.prevent="moveValue(false)")
+      .icon(:style="{ transform: icons.prev }", v-html="icons.icon")
+    ul.nav(v-if="showNavs")
+      li(v-for="slide in slidesStops",
+        :key="'nav-' + slide",
+        @click.prevent="setValue(slide)",
+        :class="{selected: value === slide}")
   div.interval
 </template>
 
@@ -278,9 +278,11 @@ export default {
     padding: 0;
     border-bottom: solid 1px contrast($bg-color, 2);
     display: flex;
-    height: 3.5em;
+    flex-wrap: wrap;
     flex-direction: row;
     font-size: 0.9em;
+    max-width: 100%;
+    overflow: hidden;
 
     & > .fv-button {
       height: 100%;
