@@ -237,6 +237,11 @@ export default {
   updated () {
     this.onValueChanges()
   },
+  watch: {
+    slidesPerPage() {
+      this.setValue(0)
+    }
+  },
   mounted () {
     this.setValue(this.value)
     // bind initial events to recalc positions
