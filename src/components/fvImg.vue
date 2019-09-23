@@ -4,11 +4,12 @@ fv-slider.fv-img(v-model="value",
   :show-tabs="false",
   :show-buttons="showButtons && imgs.length > 1",
   :show-navs="imgs.length > 1")
-  img.img(v-for="(img, i) in imgs",
-    draggable="false",
-    :src="img",
-    :alt="altOf(i)",
-    :slot="'slide-' + img")
+  fv-slide(v-for="(img, i) in imgs",
+    :key="'slide-' + img")
+    img.img(
+      draggable="false",
+      :src="img",
+      :alt="altOf(i)")
 </template>
 
 <script>
@@ -65,18 +66,13 @@ export default {
 @import '../styles/functions';
 
 .fv-img {
-  & .slider-page {
-    margin-bottom: -6px;
+  & .fv-slide {
     min-height: heightSize(md);
+    margin-bottom: -8px;
   }
 
   & .img {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    margin: 0 auto;
     pointer-events: none;
-    user-select: none;
     width: 100%;
   }
 }
