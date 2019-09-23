@@ -1,7 +1,6 @@
 <template lang="pug">
 .fv-slider(@mousedown.left="moveStart($event)",
   @touchstart="moveStart($event)")
-  //- div {{ slidesLength }}
   .tabs-container(v-if="showTabs")
     fv-button.fv-grow(v-for="slide in slidesIndex",
       :key="'tab-' + slide",
