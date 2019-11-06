@@ -1,7 +1,7 @@
 class Parent {
   constructor () {
     this.calcWindow()
-
+    this.config = {}
     // this.$el = window.document.body
     this.lockRequests = {}
   }
@@ -9,6 +9,7 @@ class Parent {
     this.$window = typeof window === 'object' ? window : null
     this.$document = this.$window ? this.$window.document : null
     this.$body = this.$window ? this.$window.document.body : null
+    this.$head = this.$window ? this.$window.document.head : null
     this.$documentElement = this.$window ? this.$window.document.documentElement : null
     this.$scrollingElement = this.$window ? this.$window.document.scrollingElement : null
   }
