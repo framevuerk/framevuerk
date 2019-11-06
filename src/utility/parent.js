@@ -1,7 +1,6 @@
 class Parent {
   constructor () {
     this.calcWindow()
-    this.config = {}
     // this.$el = window.document.body
     this.lockRequests = {}
   }
