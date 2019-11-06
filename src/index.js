@@ -28,6 +28,7 @@ import fvRange from './components/fvRange.vue'
 import fvLoading from './components/fvLoading.vue'
 import fvPagination from './components/fvPagination.vue'
 import fvFormElement from './components/fvFormElement.vue'
+import config from './utility/config.js'
 
 const Framevuerk = {
   fvMain,
@@ -59,7 +60,9 @@ const Framevuerk = {
   fvLoading,
   fvPagination,
   fvFormElement,
-  install (Vue) {
+  config,
+  install (Vue, userConfig = {}) {
+    config.applyConfig(userConfig)
     // Components
     Vue.component('fvMain', fvMain)
     Vue.component('fvContent', fvContent)
