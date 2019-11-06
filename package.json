@@ -13,7 +13,7 @@
     "test": "npm run lint",
     "clean": "rimraf ./dist",
     "build": "framevuerk-builder -d ./ -o ./dist",
-    "serve-to-docs": "framevuerk-builder -d ./ -o ../framevuerk-docs/node_modules/framevuerk/dist -c ../framevuerk-docs/framevuerk-config.json -w",
+    "serve-to-docs": "framevuerk-builder -d ./ -o ../framevuerk-docs/node_modules/framevuerk/dist -w",
     "build-to-docs": "framevuerk-builder -d ./ -o ../framevuerk-docs/node_modules/framevuerk/dist -c ../framevuerk-docs/framevuerk-config.json",
     "prepublishOnly": "./prepublish.sh"
   },
