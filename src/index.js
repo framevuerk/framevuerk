@@ -62,7 +62,7 @@ const Framevuerk = {
   fvFormElement,
   config,
   install (Vue, userConfig = {}) {
-    config.applyConfig(userConfig)
+    config.setConfig(userConfig)
     // Components
     Vue.component('fvMain', fvMain)
     Vue.component('fvContent', fvContent)
