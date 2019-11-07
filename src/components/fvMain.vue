@@ -15,7 +15,8 @@
 @import '../styles/mixins';
 
 .fv-main {
-  @include yiq($bg-color);
+  background: var(--color-background-normal);
+  color: var(--color-background-text);
 
   display: flex;
   flex-direction: row;

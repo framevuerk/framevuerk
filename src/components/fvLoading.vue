@@ -9,20 +9,21 @@
 
 .fv-loading {
   display: inline-block;
-  min-height: heightSize(md);
+  height: 1.6em;
+  width: 1.6em;
   vertical-align: middle;
 
   & .spinner {
     display: inline-block;
-    height: 2.5em;
-    width: 2.5em;
+    height: 1.6em;
+    width: 1.6em;
     clear: both;
     vertical-align: middle;
-    border: 0.2em solid;
+    border: 0.15em solid;
     border-left-color: transparent;
     border-right-color: transparent;
     border-bottom-color: transparent;
-    border-radius: 1.5em;
+    border-radius: 0.9em;
     animation: fv-loading $transition-speed-slow infinite linear;
   }
 }
