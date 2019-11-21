@@ -12,6 +12,7 @@
     "lint:fix": "npm run lint:js:fix && npm run lint:scss:fix",
     "test": "npm run lint",
     "clean": "rimraf ./dist",
+    "dev": "framevuerk-builder -d ./ -o ./dist -w",
     "build": "framevuerk-builder -d ./ -o ./dist",
     "serve-to-docs": "framevuerk-builder -d ./ -o ../framevuerk-docs/node_modules/framevuerk/dist -w",
     "build-to-docs": "framevuerk-builder -d ./ -o ../framevuerk-docs/node_modules/framevuerk/dist -c ../framevuerk-docs/framevuerk-config.json",
@@ -19,7 +20,11 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@babel/cli": "^7.7.0",
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
     "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.6",
     "eslint": "^4.16.0",
     "eslint-config-standard": "^11.0.0-beta.0",
     "eslint-friendly-formatter": "^3.0.0",
@@ -29,13 +34,17 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.2.0",
-    "framevuerk-builder": "^2.0.0",
     "rimraf": "^2.6.2",
     "stylelint": "^8.4.0",
     "stylelint-config-recommended-scss": "^3.0.0",
     "stylelint-config-standard": "^18.0.0",
     "stylelint-processor-html": "^1.0.0",
-    "stylelint-scss": "^2.2.0"
+    "stylelint-scss": "^2.2.0",
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.2",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   },
   "peerDependencies": {
     "vue": ">= 2.2.0 < 3"
