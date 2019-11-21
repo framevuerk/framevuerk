@@ -50,7 +50,7 @@ class Config {
     return color[2] < 50
   }
   yiq (color, percetange) {
-    return this.lighten(color, color[2] < 60 ? percetange : -1 * percetange)
+    return this.lighten(color, color[2] < 70 ? percetange : -1 * percetange)
   }
   nearColors (color) {
     const isTooLight = color[2] > 80
@@ -58,15 +58,26 @@ class Config {
     // const hsl = this.toHsl(color)
     return {
       hover: this.lighten(color, isTooLight ? -6 : 6),
-      active: this.lighten(color, isTooDark ? 12 : -12),
+      active: this.lighten(color, isTooDark ? 8 : -8),
       border: this.lighten(color, isTooDark ? 10 : -10),
-      borderhover: this.lighten(color, isTooDark ? 30 : -30),
+      borderhover: this.lighten(color, isTooDark ? 35 : -35),
       light: this.lighten(color, 8),
       dark: this.lighten(color, -8),
       placeholder: this.yiq(color, 30),
       text: this.yiq(color, 90),
       normal: color
     }
+  }
+  get (configAddress) {
+    const [type, name] = configAddress
+    return this.value.find(item => item.type === type && item.name === name)
+  }
+  bind (elem, configAddress, asName = 'b') {
+    // const cssvar = `var(--${configAddress.join('-')})`
+    const config = this.get(configAddress)
+    Object.keys(config.value).forEach(key => {
+      elem.style.setProperty(`--${asName}-${key}`, `var(--${config.type}-${config.name}-${key})`)
+    })
   }
   applyConfig (config) {
     this.value = config
@@ -78,12 +89,12 @@ class Config {
         })
       } else if (data.type === 'size' || data.type === 'speed') {
         Object.keys(data.value).forEach(amt => {
-          cssContent += `--${data.type}-${data.name}-${amt}: ${data.value[amt]}${data.unit};`
+          cssContent += `--${data.type}-${data.name}-${amt}: ${data.value[amt]};`
         })
       } else if (data.type === 'direction') {
-        cssContent += `--direction: ${data.value.direction};`
-        cssContent += `--block-start: ${data.value.blockStart};`
-        cssContent += `--block-end: ${data.value.blockEnd};`
+        cssContent += `--${data.type}-${data.name}-dir: ${data.value.direction};`
+        cssContent += `--${data.type}-${data.name}-start: ${data.value.blockStart};`
+        cssContent += `--${data.type}-${data.name}-end: ${data.value.blockEnd};`
       }
     })
     cssContent += '}'
@@ -196,14 +207,14 @@ class Config {
         })
       } else if (item.type === 'size') {
         const value = parseFloat(item.value)
+        const unit = item.value.toString().replace(/\d+/g, '').replace('.', '') || 'em'
         ret.push({
           name: item.name,
           type: 'size',
-          unit: item.value.toString().replace(/\d+/g, '').replace('.', '') || 'em',
           value: {
-            small: value / 2,
-            normal: value,
-            large: value * 1.5
+            small: `${value / 2}${unit}`,
+            normal: `${value}${unit}`,
+            large: `${value * 1.5}${unit}`
           }
         })
       } else if (item.type === 'direction') {
@@ -217,14 +228,14 @@ class Config {
         })
       } else if (item.type === 'speed') {
         const value = parseFloat(item.value)
+        const unit = item.value.toString().replace(/\d+/g, '').replace('.', '') || 'em'
         ret.push({
           name: item.name,
           type: 'speed',
-          unit: item.value.toString().replace(/\d+/g, '').replace('.', '') || 'em',
           value: {
-            fast: value / 2,
-            normal: value,
-            slow: value * 2
+            fast: `${value / 2}${unit}`,
+            normal: `${value}${unit}`,
+            slow: `${value * 2}${unit}`
           }
         })
       }
