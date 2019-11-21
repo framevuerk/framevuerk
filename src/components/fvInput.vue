@@ -7,6 +7,8 @@ input.fv-input(:invalid="!fvValidate",
 </template>
 
 <script>
+import config from '../utility/config.js'
+
 export default {
   props: {
     color: {
@@ -56,11 +58,7 @@ export default {
     }
   },
   mounted() {
-    this.$el.style.setProperty('--pl', `var(--color-${this.color}-placeholder)`)
-    this.$el.style.setProperty('--fg', `var(--color-${this.color}-text)`)
-    this.$el.style.setProperty('--bg', `var(--color-${this.color}-light)`)
-    this.$el.style.setProperty('--border', `var(--color-${this.color}-border)`)
-    this.$el.style.setProperty('--border-active', `var(--color-${this.color}-borderhover)`)
+    config.bind(this.$el, ['color', this.color])
   }
 }
 </script>
@@ -72,18 +70,20 @@ export default {
 
 .fv-input {
   @include shadow(bottom);
-  background: var(--bg);
-  color: var(--fg);
-
-  border: solid 1px var(--border);
+  background: var(--b-light);
+  color: var(--b-text);
+  border: solid 1px var(--b-border);
   border-radius: var(--size-border-radius-normal);
   font-family: inherit;
   position: relative;
   padding: 0 var(--size-padding-small);
+  font-size: fontSize(md);
+  min-height: heightSize(md);
+  vertical-align: middle;
 
   &:not([disabled]) {
     &:hover {
-      border: solid 1px var(--border-active);
+      border: solid 1px var(--b-borderhover);
     }
 
     &:focus,
@@ -103,11 +103,7 @@ export default {
 
   &::placeholder,
   & > .placeholder {
-    color: var(--pl);
+    color: var(--b-placeholder);
   }
-
-  font-size: fontSize(md);
-  min-height: heightSize(md);
-  vertical-align: middle;
 }
 </style>

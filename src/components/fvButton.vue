@@ -6,6 +6,8 @@ component.fv-button(:is="tag", :class="{'loading': loading}", @click="onClick", 
 </template>
 
 <script>
+import config from '../utility/config.js'
+
 export default {
   props: {
     color: {
@@ -33,11 +35,7 @@ export default {
     }
   },
   mounted() {
-    this.$el.style.setProperty('--fg', `var(--color-${this.color}-text)`)
-    this.$el.style.setProperty('--bg', `var(--color-${this.color}-normal)`)
-    this.$el.style.setProperty('--bg-hover', `var(--color-${this.color}-hover)`)
-    this.$el.style.setProperty('--bg-active', `var(--color-${this.color}-active)`)
-    this.$el.style.setProperty('--border', `var(--color-${this.color}-border)`)
+    config.bind(this.$el, ['color', this.color])
   }
 }
 </script>
@@ -68,9 +66,9 @@ export default {
   transition-property: background-color, color, box-shadow;
   border: none;
   user-select: none;
-  background-color: var(--bg);
-  color: var(--fg);
-  border: solid 1px var(--border);
+  background-color: var(--b-normal);
+  color: var(--b-text);
+  border: solid 1px var(--b-border);
 
   &,
   & .text,
@@ -95,10 +93,10 @@ export default {
 
     &:hover,
     &:focus {
-      background: var(--bg-hover);
+      background: var(--b-hover);
     }
     &:active {
-      background: var(--bg-active);
+      background: var(--b-active);
     }
   }
   &[disabled] {
@@ -106,14 +104,14 @@ export default {
   }
 
   &.loading {
-    color: var(--bg);
+    color: var(--b-normal);
 
     & > .fv-loading {
-      color: var(--fg);
+      color: var(--b-text);
       position: absolute;
       box-shadow: 0 0 5px white;
-      background: var(--bg);
-      box-shadow: 0 0 0 0.1em var(--bg);
+      background: var(--b-normal);
+      box-shadow: 0 0 0 0.1em var(--b-normal);
       margin: 0;
     }
   }
