@@ -17,7 +17,6 @@ import fvSwitch from './components/fvSwitch.vue'
 import fvDialog from './components/fvDialog.vue'
 import fvTable from './components/fvTable.vue'
 import fvCheck from './components/fvCheck.vue'
-import fvTextarea from './components/fvTextarea.vue'
 import fvImg from './components/fvImg.vue'
 import fvSlider from './components/fvSlider.vue'
 import fvSlide from './components/fvSlide.vue'
@@ -49,7 +48,6 @@ const Framevuerk = {
   fvDialog,
   fvTable,
   fvCheck,
-  fvTextarea,
   fvImg,
   fvSlider,
   fvSlide,
@@ -62,6 +60,7 @@ const Framevuerk = {
   fvFormElement,
   config,
   install (Vue, userConfig = {}) {
+    console.log('here')
     config.setConfig(userConfig)
     // Components
     Vue.component('fvMain', fvMain)
@@ -82,7 +81,6 @@ const Framevuerk = {
     Vue.component('fvDialog', fvDialog)
     Vue.component('fvTable', fvTable)
     Vue.component('fvCheck', fvCheck)
-    Vue.component('fvTextarea', fvTextarea)
     Vue.component('fvImg', fvImg)
     Vue.component('fvSlider', fvSlider)
     Vue.component('fvSlide', fvSlide)
