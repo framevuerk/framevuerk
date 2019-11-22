@@ -4,7 +4,15 @@ ul.fv-list(:tabindex="tabindex", :data-parent="parent")
 </template>
 
 <script>
+import colorMixin from '../mixins/color.js'
+
 export default {
+  mixins: [
+    colorMixin({
+      color: 'background',
+      activeColor: 'primary'
+    })
+  ],
   props: {
     parent: {
       type: Boolean,

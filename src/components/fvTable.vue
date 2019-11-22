@@ -3,7 +3,7 @@
   table
     thead(v-if="showTitle")
       tr
-        th(v-for="field in fields",
+        th(v-for="(field, index) in fields",
           :key="fieldProp(field, 'title')",
           @click="$emit('titleClick', field, index)")
           slot(v-if="$scopedSlots['title-'+fieldProp(field, 'value')] || $slots['title-'+fieldProp(field, 'value')]", :name="'title-'+fieldProp(field, 'value')", :field="field", :index="index", :breaked="isBreaked")
@@ -113,8 +113,8 @@ export default {
 .fv-table {
   @include shadow(bottom);
 
-  border: 1px solid contrast($bg-color, 2, hard-dark);
-  border-radius: $border-radius;
+  border: 1px solid var(--color-background-border);
+  border-radius: var(--size-border-radius-normal);
   overflow: auto;
 
   & > table {
@@ -126,31 +126,31 @@ export default {
 
     & tr {
       &:not(:last-child) {
-        border-bottom: 1px solid contrast($bg-color, 2, hard-dark);
+        border-bottom: 1px solid var(--color-background-border);
       }
 
       &:nth-child(even) {
-        background: contrast($bg-color, 1);
+        background: var(--color-background-hover);
       }
     }
 
     & th,
     & td {
       text-align: center;
-      padding: $padding-small $padding;
+      padding: var(--size-padding-small) var(--size-padding-normal);
       vertical-align: middle;
     }
 
     & thead {
       @include shadow(bottom);
 
-      border-bottom: 1px solid contrast($bg-color, 2, hard-dark);
+      border-bottom: 1px solid var(--color-background-border);
     }
 
     & tfoot {
       @include shadow(inset-bottom);
 
-      border-top: 1px solid contrast($bg-color, 2, hard-dark);
+      border-top: 1px solid var(--color-background-border);
     }
   }
 
@@ -167,7 +167,7 @@ export default {
         & .field-name {
           float: $block-start;
           font-weight: bold;
-          padding-#{$block-end}: $padding-small;
+          padding-#{$block-end}: var(size-padding-small);
         }
 
         & .field-value {

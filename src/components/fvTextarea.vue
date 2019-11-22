@@ -1,4 +1,5 @@
 <template lang="pug">
+//- remove in 3
 textarea.fv-textarea.fv-input(:class="{'auto-height': autoHeight}",
   :invalid="!fvValidate",
   :value="value",
@@ -83,7 +84,7 @@ export default {
   font-size: fontSize(md);
   min-height: heightSize(md);
   resize: vertical;
-  padding: $padding-small;
+  padding: var(size-padding-small);
 
   &.auto-height {
     overflow-x: auto;

@@ -1,8 +1,20 @@
 <template lang="pug">
-.fv-header
+.fv-header(:style="colorsCssVars")
   header
     slot
 </template>
+
+<script>
+import colorMixin from '../mixins/color.js'
+
+export default {
+  mixins: [
+    colorMixin({
+      color: 'background'
+    })
+  ]
+}
+</script>
 
 <style lang="scss">
 @import '../styles/variables';
@@ -18,7 +30,7 @@
 
   & > header {
     width: 100%;
-    padding: padding(md);
+    padding: var(--size-padding-normal);
     display: flex;
     justify-content: space-between;
     overflow: hidden;
@@ -33,22 +45,9 @@
   }
 
   &:not(.transparent) {
-    @include yiq($header-bg-color);
-
-    border-bottom: solid 1px contrast($header-bg-color, 2, hard-dark);
-
-    & .fv-button {
-      @include fvButton($header-bg-color, yiq($header-bg-color), false);
-    }
-
-    & .fv-input {
-      @include fvInput($header-bg-color);
-    }
-  }
-
-  &.transparent {
-    background: transparent;
-    border-bottom: solid 1px contrast($bg-color, 2, hard-dark);
+    background-color: var(--color-normal);
+    color: var(--color-text);
+    border-bottom: solid 1px var(--color-border);
   }
 }
 </style>

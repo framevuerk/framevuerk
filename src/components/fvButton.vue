@@ -1,5 +1,5 @@
 <template lang="pug">
-component.fv-button(:is="tag", :class="{'loading': loading}", @click="onClick", :disabled="disabled")
+component.fv-button(:is="tag", :class="{'loading': loading}", :style="colorsCssVars", @click="onClick", :disabled="disabled")
   template
     slot
   fv-loading(v-if="loading")
@@ -7,13 +7,15 @@ component.fv-button(:is="tag", :class="{'loading': loading}", @click="onClick", 
 
 <script>
 import config from '../utility/config.js'
+import colorMixin from '../mixins/color.js'
 
 export default {
+  mixins: [
+    colorMixin({
+      color: 'background'
+    })
+  ],
   props: {
-    color: {
-      type: String,
-      default: 'background'
-    },
     tag: {
       type: String,
       default: 'button'
@@ -35,7 +37,7 @@ export default {
     }
   },
   mounted() {
-    config.bind(this.$el, ['color', this.color])
+    console.log(this)
   }
 }
 </script>
@@ -66,9 +68,9 @@ export default {
   transition-property: background-color, color, box-shadow;
   border: none;
   user-select: none;
-  background-color: var(--b-normal);
-  color: var(--b-text);
-  border: solid 1px var(--b-border);
+  background-color: var(--color-normal);
+  color: var(--color-text);
+  border: solid 1px var(--color-border);
 
   &,
   & .text,
@@ -93,10 +95,10 @@ export default {
 
     &:hover,
     &:focus {
-      background: var(--b-hover);
+      background: var(--color-hover);
     }
     &:active {
-      background: var(--b-active);
+      background: var(--color-active);
     }
   }
   &[disabled] {
@@ -104,14 +106,14 @@ export default {
   }
 
   &.loading {
-    color: var(--b-normal);
+    color: var(--color-normal);
 
     & > .fv-loading {
-      color: var(--b-text);
+      color: var(--color-text);
       position: absolute;
       box-shadow: 0 0 5px white;
-      background: var(--b-normal);
-      box-shadow: 0 0 0 0.1em var(--b-normal);
+      background: var(--color-normal);
+      box-shadow: 0 0 0 0.1em var(--color-normal);
       margin: 0;
     }
   }

@@ -1,15 +1,20 @@
 <template lang="pug">
 transition(name="fv-toast")
-  .fv-toast(v-if="value",
+  .fv-toast(v-show="value",
     @click="close")
     slot
 </template>
 
 <script>
 import parent from '../utility/parent.js'
+import config from '../utility/config.js'
 
 export default {
   props: {
+    color: {
+      type: String,
+      default: 'sidebar'
+    },
     value: {
       type: Boolean,
       default: false
@@ -50,6 +55,9 @@ export default {
     value (value) {
       this.valueHandler(value)
     }
+  },
+  mounted() {
+    config.bind(this.$el, ['color', this.color])
   }
 }
 </script>
@@ -57,26 +65,26 @@ export default {
 <style lang="scss">
 @import '../styles/variables';
 @import '../styles/functions';
-@import '../styles/mixins';
+// @import '../styles/mixins';
 
 .fv-toast {
-  @include yiq($sidebar-bg-color);
-
   backface-visibility: hidden;
-  border-radius: $border-radius $border-radius 0 0;
+  border-radius: var(--size-border-radius) var(--size-border-radius)  0 0;
   bottom: 0;
   font-size: fontSize(lg);
   left: 50%;
   max-width: 100%;
   min-width: 100px;
-  padding: ($padding / 2) $padding;
+  padding: var(--size-padding-small) var(--size-padding-normal);
   position: fixed;
   text-align: center;
   transform: translate3d(-50%, 0, 0);
+  background-color: var(--b-normal);
+  color: var(--b-text);
   width: auto;
   z-index: 3;
 
-  @include respond-to(lower-sm) {
+  @media #{$media-lower-sm} {
     width: 100%;
     border-radius: 0;
   }
@@ -84,7 +92,7 @@ export default {
   &.fv-toast-enter-active,
   &.fv-toast-leave-active {
     transform: translate3d(-50%, 0 0);
-    transition-duration: $transition-speed;
+    transition-duration: var(--speed-transition-normal);
     transition-property: transform;
     will-change: transform;
   }

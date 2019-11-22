@@ -1,6 +1,7 @@
 <template lang="pug">
 transition(name="fv-sidebar")
   .fv-sidebar(:class="classList",
+    :style="colorsCssVars",
     v-show="value",
     @input="$emit('input', $event)",
     :overlay="!isPinned")
@@ -10,8 +11,14 @@ transition(name="fv-sidebar")
 
 <script>
 import parent from '../utility/parent.js'
+import colorMixin from '../mixins/color.js'
 
 export default {
+  mixins: [
+    colorMixin({
+      color: 'background'
+    })
+  ],
   props: {
     value: {
       type: Boolean
@@ -111,7 +118,8 @@ export default {
 @import '../styles/mixins';
 
 .fv-sidebar {
-  @include yiq($sidebar-bg-color);
+  background-color: var(--color-normal);
+  color: var(--color-text);
 
   border-radius: 0;
   min-height: 100%;
@@ -137,25 +145,15 @@ export default {
   &.left {
     @include shadow(right);
 
-    border-right: solid 1px contrast($sidebar-bg-color, 2, hard-dark);
+    border-right: solid 1px var(--color-border);
   }
 
   &.right {
     @include shadow(left);
 
-    border-left: solid 1px contrast($sidebar-bg-color, 2, hard-dark);
+    border-left: solid 1px var(--color-border);
   }
 
-  & .fv-list > .fv-list-item {
-    & > .content,
-    & > .sub-list {
-      border-top: solid 1px contrast($sidebar-bg-color, 1);
-    }
-
-    &.highlighted > .content {
-      @include yiq(contrast($sidebar-bg-color, 1));
-    }
-  }
 
   &.fv-sidebar-enter-active,
   &.fv-sidebar-leave-active {
@@ -166,7 +164,7 @@ export default {
     backface-visibility: hidden;
 
     &.unpin {
-      transition-duration: $transition-speed;
+      transition-duration: var(--speed-transition-normal);
     }
   }
 

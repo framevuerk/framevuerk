@@ -22,11 +22,11 @@
 // --------------------------
 @each $property in 'margin', 'padding' {
   .fv-#{$property} {
-    #{$property}: padding(md) !important;
+    #{$property}: var(--size-padding-normal) !important;
   }
 
   .fv-#{$property}-sm {
-    #{$property}: padding(sm) !important;
+    #{$property}: var(--size-padding-small) !important;
   }
 
   .fv-no-#{$property} {
@@ -36,29 +36,29 @@
   @each $direction in 'start', 'end', 'top', 'bottom' {
     .fv-#{$property}-#{$direction} {
       @if $direction == 'start' {
-        #{$property}-#{$block-start}: padding(md) !important;
+        #{$property}-#{$block-start}: var(--size-padding-normal) !important;
       }
 
       @else if $direction == 'end' {
-        #{$property}-#{$block-end}: padding(md) !important;
+        #{$property}-#{$block-end}: var(--size-padding-normal) !important;
       }
 
       @else {
-        #{$property}-#{$direction}: padding(md) !important;
+        #{$property}-#{$direction}: var(--size-padding-normal) !important;
       }
     }
 
     .fv-#{$property}-#{$direction}-sm {
       @if $direction == 'start' {
-        #{$property}-#{$block-start}: padding(sm) !important;
+        #{$property}-#{$block-start}: var(--size-padding-small) !important;
       }
 
       @else if $direction == 'end' {
-        #{$property}-#{$block-end}: padding(sm) !important;
+        #{$property}-#{$block-end}: var(--size-padding-small) !important;
       }
 
       @else {
-        #{$property}-#{$direction}: padding(sm) !important;
+        #{$property}-#{$direction}: var(--size-padding-small) !important;
       }
     }
   }
@@ -68,7 +68,7 @@
 // Border Classes
 // --------------
 .fv-border {
-  border: border(md) !important;
+  border: solid 1px var(--color-background-border) !important;
 }
 
 .fv-no-border {
@@ -78,15 +78,15 @@
 @each $direction in 'start', 'end', 'top', 'bottom' {
   .fv-border-#{$direction} {
     @if $direction == 'start' {
-      border-#{$block-start}: border(md) !important;
+      border-#{$block-start}: solid 1px var(--color-background-border) !important;
     }
 
     @else if $direction == 'end' {
-      border-#{$block-end}: border(md) !important;
+      border-#{$block-end}: solid 1px var(--color-background-border) !important;
     }
 
     @else {
-      border-#{$direction}: border(md) !important;
+      border-#{$direction}: solid 1px var(--color-background-border) !important;
     }
   }
 }
@@ -212,7 +212,7 @@
 }
 
 .fv-radius {
-  border-radius: radius(md) !important;
+  border-radius: var(--size-border-radius-normal) !important;
 }
 
 .fv-no-wrap {
@@ -243,7 +243,7 @@
   &:active,
   &:focus,
   &:visited {
-    color: $primary-color-light;
+    color: var(--color-primary-light);
     cursor: pointer;
     text-decoration: none;
   }
@@ -252,7 +252,7 @@
 .fv-hr {
   background: transparent;
   border-bottom: 0;
-  border-top: solid 1px $shadow-color;
+  border-top: solid 1px var(--color-background-border);
   height: 0;
   width: 100%;
 }
@@ -286,7 +286,7 @@
 }
 
 .fv-invalid {
-  @include outline($danger-color);
+  @include outline(var(--color-danger-normal));
 }
 
 .fv-disabled {

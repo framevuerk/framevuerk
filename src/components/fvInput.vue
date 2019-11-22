@@ -1,64 +1,56 @@
 <template lang="pug">
-input.fv-input(:invalid="!fvValidate",
+component.fv-input(
+  :is="tag",
+  :class="{ multiline: multiline }",
+  :style="colorsCssVars",
+  :disabled="disabled",
+  :invalid="!fvValidate",
   :value="value",
   @focus="onFocus",
-  @blur="onBlur",
+  @blur="onBlurDefault",
   @input="onInput")
 </template>
 
 <script>
+import parent from '../utility/parent.js'
 import config from '../utility/config.js'
+import colorMixin from '../mixins/color.js'
+import formElementMixin from '../mixins/formElement.js'
 
 export default {
+  mixins: [
+    colorMixin({
+      color: 'background'
+    }),
+    formElementMixin(v => !!v)
+  ],
   props: {
-    color: {
-      type: String,
-      default: 'background'
-    },
-    value: {
-      default: undefined
-    },
-    required: {
-      type: [Boolean, Function],
+    multiline: {
+      type: Boolean,
       default: false
-    }
-  },
-  inject: {
-    fvFormElement: {
-      default: false
+    },
+    autoHeight: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
-    fvValidate () {
-      if (this.required === true) {
-        return !!this.value
-      } else if (typeof this.required === 'function') {
-        return this.required(this.value)
-      }
-      return true
+    tag () {
+      return this.multiline ? 'textarea' : 'input'
     }
   },
   methods: {
-    focus () {
-      this.$el.focus()
-    },
     onFocus () {
       this.$el.select()
-      if (this.fvFormElement) {
-        this.fvFormElement.turn(true)
-      }
-    },
-    onBlur () {
-      if (this.fvFormElement) {
-        this.fvFormElement.turn(false)
-      }
+      this.onFocusDefault()
     },
     onInput (event) {
+      if (this.autoHeight && this.multiline) {
+        this.$el.style.height = '2.8em'
+        this.$el.style.height = `${this.$el.scrollHeight - 2}px`
+      }
       this.$emit('input', event.target.value)
     }
-  },
-  mounted() {
-    config.bind(this.$el, ['color', this.color])
   }
 }
 </script>
@@ -70,20 +62,28 @@ export default {
 
 .fv-input {
   @include shadow(bottom);
-  background: var(--b-light);
-  color: var(--b-text);
-  border: solid 1px var(--b-border);
+  background: var(--color-light);
+  color: var(--color-text);
+  border: solid 1px var(--color-border);
   border-radius: var(--size-border-radius-normal);
   font-family: inherit;
   position: relative;
   padding: 0 var(--size-padding-small);
   font-size: fontSize(md);
   min-height: heightSize(md);
+  line-height: 1.5;
   vertical-align: middle;
+
+  &.multiline {
+    height: 2.8em;
+    overflow: hidden;
+    padding: 0.7em var(--size-padding-small);
+    resize: none;
+  }
 
   &:not([disabled]) {
     &:hover {
-      border: solid 1px var(--b-borderhover);
+      border: solid 1px var(--color-borderhover);
     }
 
     &:focus,
@@ -103,7 +103,7 @@ export default {
 
   &::placeholder,
   & > .placeholder {
-    color: var(--b-placeholder);
+    color: var(--color-placeholder);
   }
 }
 </style>

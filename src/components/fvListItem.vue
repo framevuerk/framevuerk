@@ -92,18 +92,18 @@ export default {
       @include nowrap;
 
       flex-grow: 1;
-      padding: 0 $padding;
+      padding: 0 var(--size-padding-normal);
     }
 
     & .expand {
-      padding: 0 ($padding / 2);
+      padding: 0 var(--size-padding-small);
       cursor: pointer;
 
       & > svg {
         vertical-align: middle;
         width: 1.4em;
         height: auto;
-        transition: transform $transition-speed;
+        transition: transform var(--speed-transition-normal);
       }
 
       &.rotate {
@@ -116,7 +116,7 @@ export default {
 
   & > .content,
   & > .sub-list {
-    border-top: solid 1px contrast($bg-color, 2);
+    border-top: solid 1px var(--color-border);
   }
 
   &[disabled] {
@@ -126,22 +126,25 @@ export default {
   }
 
   &.highlighted > .content {
-    @include yiq(contrast($bg-color, 1));
+    background: var(--color-hover);
+    color: var(--color-text);
   }
 
   &.selected {
-    border-#{$block-start}: solid 4px $primary-color;
+    border-#{$block-start}: solid 4px var(--activeColor-normal);
   }
 
   & .sub-list {
     & > .fv-list {
       border: 0;
-      border-#{$block-start}: solid 1.5em transparent;
+      & > .fv-list-item > .content{
+        padding-#{$block-start}: 2.5em;
+      }
     }
 
     &.sub-list-enter-active,
     &.sub-list-leave-active {
-      transition-duration: $transition-speed;
+      transition-duration: var(--speed-transition-normal);
       transition-property: opacity, max-height;
       will-change: opacity, max-height;
       max-height: 100vh;
@@ -150,7 +153,7 @@ export default {
 
     &.sub-list-enter,
     &.sub-list-leave-to {
-      opacity: 0;
+      // opacity: 0;
       max-height: 0;
     }
   }
