@@ -1,7 +1,7 @@
 <template lang="pug">
 transition(:name="animation", afterEnter="onOpen(2)", @beforeLeave="onClose(1)", @afterLeave="onClose(2)")
   .fv-dialog(v-show="value",
-    @click.stop="return true")
+    @click.stop="cancel")
     slot
 </template>
 
@@ -67,6 +67,9 @@ export default {
           }
         })
       }
+    },
+    cancel () {
+      return
     }
   },
   watch: {
