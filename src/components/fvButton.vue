@@ -35,9 +35,6 @@ export default {
         this.$emit('click', event)
       }
     }
-  },
-  mounted() {
-    console.log(this)
   }
 }
 </script>
