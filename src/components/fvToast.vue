@@ -7,9 +7,14 @@ transition(name="fv-toast")
 
 <script>
 import parent from '../utility/parent.js'
-import config from '../utility/config.js'
+import colorMixin from '../mixins/color.js'
 
 export default {
+  mixins: [
+    colorMixin({
+      color: 'background'
+    })
+  ],
   props: {
     color: {
       type: String,
@@ -55,9 +60,6 @@ export default {
     value (value) {
       this.valueHandler(value)
     }
-  },
-  mounted() {
-    config.bind(this.$el, ['color', this.color])
   }
 }
 </script>
@@ -79,8 +81,8 @@ export default {
   position: fixed;
   text-align: center;
   transform: translate3d(-50%, 0, 0);
-  background-color: var(--b-normal);
-  color: var(--b-text);
+  background-color: var(--color-normal);
+  color: var(--color-text);
   width: auto;
   z-index: 3;
 
