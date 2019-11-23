@@ -20,7 +20,7 @@ export default function (colors = {
       colorsCssVars () {
         const ret = {}
         Object.keys(colors).forEach(color => {
-          const cnf = config.get(['color', this[color]])
+          const cnf = config.get('color', this[color])
           Object.keys(cnf.value).forEach(key => {
             ret[`--${color}-${key}`] = `var(--${cnf.type}-${cnf.name}-${key})`
           })

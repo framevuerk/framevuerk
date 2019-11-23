@@ -2,129 +2,9 @@ import parent from './parent.js'
 
 class Config {
   constructor () {
-    this.value = []
-  }
-  toHsl (hexString) {
-    // https://gist.github.com/mjackson/5311256
-    let hex = hexString.replace('#', '')
-    if (hex.length === 3) {
-      hex = hex[0].repeat(2) + hex[1].repeat(2) + hex[2].repeat(2)
-    }
-    if (hex.length !== 6) {
-      return [0, 0, 100]
-    }
-    hex = hex.match(/.{1,2}/g)
-    let [red, green, blue] = hex.map(part => parseInt(part, 16) / 255)
-    const min = Math.min(red, green, blue)
-    const max = Math.max(red, green, blue)
-    const offset = max - min
-    const sum = max + min
-    let hue = 0
-    let saturation = 0
-    let luminace = Math.floor((sum / 2) * 100)
-    if (min !== max) {
-      saturation = Math.floor(luminace > 50 ? ((offset / (2 - offset)) * 100) : ((offset / sum) * 100))
-      switch (max) {
-        case red:
-          hue = (green - blue) / offset + (green < blue ? 6 : 0)
-          break
-        case green:
-          hue = (blue - red) / offset + 2
-          break
-        case blue:
-          hue = (red - green) / offset + 4
-          break
-      }
-      hue = Math.floor(hue * 60)
-    }
-    return [hue, saturation, luminace]
-  }
-  lighten (color, percetange) {
-    return [
-      color[0],
-      color[1],
-      Math.max(0, Math.min(color[2] + percetange, 100))
-    ]
-  }
-  isDark (color) {
-    return color[2] < 50
-  }
-  yiq (color, percetange) {
-    return this.lighten(color, color[2] < 70 ? percetange : -1 * percetange)
-  }
-  nearColors (color) {
-    const isTooLight = color[2] > 80
-    const isTooDark = color[2] < 20
-    // const hsl = this.toHsl(color)
-    return {
-      hover: this.lighten(color, isTooLight ? -6 : 6),
-      active: this.lighten(color, isTooDark ? 8 : -8),
-      border: this.lighten(color, isTooDark ? 10 : -10),
-      borderhover: this.lighten(color, isTooDark ? 35 : -35),
-      light: this.lighten(color, 8),
-      dark: this.lighten(color, -8),
-      placeholder: this.yiq(color, 30),
-      text: this.yiq(color, 90),
-      normal: color
-    }
-  }
-  get (configAddress) {
-    const [type, name] = configAddress
-    return this.value.find(item => item.type === type && item.name === name)
-  }
-  bind (elem, configAddress, asName = 'b') {
-    // const cssvar = `var(--${configAddress.join('-')})`
-    const config = this.get(configAddress)
-    Object.keys(config.value).forEach(key => {
-      elem.style.setProperty(`--${asName}-${key}`, `var(--${config.type}-${config.name}-${key})`)
-    })
-  }
-  applyConfig (config) {
-    this.value = config
-    let cssContent = ':root{'
-    this.value.forEach(data => {
-      if (data.type === 'color') {
-        Object.keys(data.value).forEach(amt => {
-          cssContent += `--${data.type}-${data.name}-${amt}: hsl(${data.value[amt][0]},${data.value[amt][1]}%,${data.value[amt][2]}%);`
-        })
-      } else if (data.type === 'size' || data.type === 'speed') {
-        Object.keys(data.value).forEach(amt => {
-          cssContent += `--${data.type}-${data.name}-${amt}: ${data.value[amt]};`
-        })
-      } else if (data.type === 'direction') {
-        cssContent += `--${data.type}-${data.name}-dir: ${data.value.direction};`
-        cssContent += `--${data.type}-${data.name}-start: ${data.value.blockStart};`
-        cssContent += `--${data.type}-${data.name}-end: ${data.value.blockEnd};`
-      }
-    })
-    cssContent += '}'
-    return new Promise(resolve => {
-      const tryInject = () => {
-        if (!parent.$head) {
-          parent.calcWindow()
-          setTimeout(tryInject, 100)
-        }
-        const oldStyleElem = parent.$document.getElementById('fv-config')
-        if (oldStyleElem) {
-          oldStyleElem.innerHTML = cssContent
-        } else {
-          const styleElem = parent.$document.createElement('STYLE')
-          styleElem.type = 'text/css'
-          styleElem.innerHTML = cssContent
-          styleElem.id = 'fv-config'
-          console.warn(styleElem)
-          parent.$head.appendChild(styleElem)
-        }
-
-        resolve()
-      }
-      tryInject()
-    })
-  }
-  setConfig (userConfig = []) {
-    const defaultConfig = [
+    this.defaultConfig = [
       {
-        name: 'main',
+        name: 'default',
         type: 'direction',
         value: 'left'
       },
@@ -146,7 +26,7 @@ class Config {
       {
         name: 'transition',
         type: 'speed',
-        value: '0.35s'
+        value: '0.25s'
       },
       {
         name: 'background',
@@ -194,53 +74,161 @@ class Config {
         value: '#3a3a3a'
       },
     ]
-    const config = JSON.parse(JSON.stringify(userConfig))
-    const ret = []
-    defaultConfig.concat(config).forEach(item => {
-      if (item.type === 'color') {
-        const value = this.toHsl(item.value)
-        console.log(item.name, item.value, value, this.nearColors(value))
-        ret.push({
-          name: item.name,
-          type: 'color',
-          value: this.nearColors(value)
-        })
-      } else if (item.type === 'size') {
-        const value = parseFloat(item.value)
-        const unit = item.value.toString().replace(/\d+/g, '').replace('.', '') || 'em'
-        ret.push({
-          name: item.name,
-          type: 'size',
-          value: {
-            small: `${value / 2}${unit}`,
-            normal: `${value}${unit}`,
-            large: `${value * 1.5}${unit}`
-          }
-        })
-      } else if (item.type === 'direction') {
-        ret.push({
-          type: 'direction',
-          value: {
-            direction: item.value === 'left' ? 'ltr' : 'rtl',
-            blockStart: item.value === 'left' ? 'left' : 'right',
-            blockEnd: item.value === 'left' ? 'right' : 'left'
-          }
-        })
-      } else if (item.type === 'speed') {
-        const value = parseFloat(item.value)
-        const unit = item.value.toString().replace(/\d+/g, '').replace('.', '') || 'em'
-        ret.push({
-          name: item.name,
-          type: 'speed',
-          value: {
-            fast: `${value / 2}${unit}`,
-            normal: `${value}${unit}`,
-            slow: `${value * 2}${unit}`
-          }
-        })
+    this.value = []
+
+  }
+  _toHsl (hexString) {
+    // https://gist.github.com/mjackson/5311256
+    let hex = hexString.replace('#', '')
+    if (hex.length === 3) {
+      hex = hex[0].repeat(2) + hex[1].repeat(2) + hex[2].repeat(2)
+    }
+    if (hex.length !== 6) {
+      return [0, 0, 100]
+    }
+    hex = hex.match(/.{1,2}/g)
+    let [red, green, blue] = hex.map(part => parseInt(part, 16) / 255)
+    const min = Math.min(red, green, blue)
+    const max = Math.max(red, green, blue)
+    const offset = max - min
+    const sum = max + min
+    let hue = 0
+    let saturation = 0
+    let luminace = Math.floor((sum / 2) * 100)
+    if (min !== max) {
+      saturation = Math.floor(luminace > 50 ? ((offset / (2 - offset)) * 100) : ((offset / sum) * 100))
+      switch (max) {
+        case red:
+          hue = (green - blue) / offset + (green < blue ? 6 : 0)
+          break
+        case green:
+          hue = (blue - red) / offset + 2
+          break
+        case blue:
+          hue = (red - green) / offset + 4
+          break
       }
+      hue = Math.floor(hue * 60)
+    }
+    return [hue, saturation, luminace]
+  }
+  _lighten (color, percetange) {
+    return [
+      color[0],
+      color[1],
+      Math.max(0, Math.min(color[2] + percetange, 100))
+    ]
+  }
+  _isDark (color) {
+    return color[2] < 50
+  }
+  calcUserConfig (item) {
+    let ret
+    if (item.type === 'color') {
+      const value = this._toHsl(item.value)
+      const isTooLight = value[2] > 80
+      const isTooDark = value[2] < 20
+      ret = {
+        name: item.name,
+        type: 'color',
+        value: {
+          hover: this._lighten(value, isTooLight ? -6 : 6),
+          active: this._lighten(value, isTooDark ? 8 : -8),
+          border: this._lighten(value, isTooDark ? 10 : -10),
+          borderhover: this._lighten(value, isTooDark ? 35 : -35),
+          light: this._lighten(value, 8),
+          dark: this._lighten(value, -8),
+          placeholder: this._lighten(value, value[2] < 60 ? 40 : -40),
+          text: this._lighten(value, value[2] < 70 ? 90 : -90),
+          normal: value
+        }
+      }
+      ret.cssVars = Object.keys(ret.value).map(key => {
+        return `--${item.type}-${item.name}-${key}:hsl(${ret.value[key][0]},${ret.value[key][1]}%,${ret.value[key][2]}%);`
+      }).join('')
+    } else if (item.type === 'size' || item.type === 'speed') {
+      const value = parseFloat(item.value)
+      const unit = item.value.toString().replace(/\d+/g, '').replace('.', '') || 'em'
+      ret = {
+        name: item.name,
+        type: item.type,
+        unit,
+        value: {
+          [item.type === 'size' ? 'small' : 'fast']: value / 2,
+          normal: value,
+          [item.type === 'size' ? 'large' : 'slow']: value * 1.5
+        }
+      }
+      ret.cssVars = Object.keys(ret.value).map(key => {
+        return `--${item.type}-${item.name}-${key}:${ret.value[key]}${ret.unit};`
+      }).join('')
+    } else if (item.type === 'direction') {
+      ret = {
+        name: item.name,
+        type: 'direction',
+        value: {
+          dir: item.value === 'left' ? 'ltr' : 'rtl',
+          start: item.value === 'left' ? 'left' : 'right',
+          end: item.value === 'left' ? 'right' : 'left'
+        }
+      }
+      ret.cssVars = Object.keys(ret.value).map(key => {
+        return `--${item.type}-${ret.name}-${key}:${ret.value[key]};`
+      }).join('')
+    }
+    return ret
+  }
+  set (userConfigItem, autoSync = true) {
+    const item = this.calcUserConfig(userConfigItem)
+    const index = this.value.findIndex(v => v.name === item.name && v.type === item.type)
+    if (index > -1) {
+      this.value[index] = item
+    } else {
+      this.value.push(item)
+    }
+    autoSync && this.sync()
+  }
+  get (type, name) {
+    return this.value.find(item => item.type === type && item.name === name)
+  }
+  del (type, name, autoSync = false) {
+    const index = this.value.findIndex(v => v.name === name && v.type === type)
+    if (index > -1) {
+      this.value.slice(index, 1)
+      autoSync && this.sync()
+    }
+  }
+  sync () {
+    let cssContent = ':root{'
+    this.value.forEach(item => {
+      cssContent += item.cssVars
     })
-    this.applyConfig(ret)
+    cssContent += '}'
+    return new Promise(resolve => {
+      const tryInject = () => {
+        if (!parent.$head) {
+          parent.calcWindow()
+          setTimeout(tryInject, 100)
+        }
+        const oldStyleElem = parent.$document.getElementById('fv-config')
+        if (oldStyleElem) {
+          oldStyleElem.innerHTML = cssContent
+        } else {
+          const styleElem = parent.$document.createElement('STYLE')
+          styleElem.type = 'text/css'
+          styleElem.innerHTML = cssContent
+          styleElem.id = 'fv-config'
+          parent.$head.appendChild(styleElem)
+        }
+
+        resolve()
+      }
+      tryInject()
+    })
+  }
+  init (userConfig = []) {
+    this.defaultConfig.concat(userConfig).forEach(item => this.set(item, false))
+    return this.sync()
   }
 }
 

@@ -59,9 +59,8 @@ const Framevuerk = {
   fvPagination,
   fvFormElement,
   config,
-  install (Vue, userConfig = {}) {
-    console.log('here')
-    config.setConfig(userConfig)
+  install (Vue, userConfig = []) {
+    config.init(userConfig)
     // Components
     Vue.component('fvMain', fvMain)
     Vue.component('fvContent', fvContent)
