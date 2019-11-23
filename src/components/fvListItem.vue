@@ -17,6 +17,7 @@ li.fv-list-item(:disabled="disabled")
 
 <script>
 import icon from '../icons/ARR.svg'
+import parent from '../utility/parent.js'
 
 export default {
   props: {
@@ -41,13 +42,34 @@ export default {
     }
   },
   methods: {
+    subListHeight () {
+      let hopeHeight = '100vh'
+      if (parent.$body) {
+        const tempEl = this.$refs.subList.cloneNode(true)
+        tempEl.style.display = 'block'
+        tempEl.style.visibility = 'hidden'
+        tempEl.style.position = 'absolute'
+        tempEl.style.top = '-200vh'
+        tempEl.style.height = 'auto'
+        parent.$body.appendChild(tempEl)
+        hopeHeight = `${tempEl.scrollHeight + 2}px`
+        tempEl.remove()
+      }
+      return hopeHeight
+    },
     expand () {
-      this.isExpanded = true
-      this.$emit('expand')
+      this.$refs.subList.style.maxHeight = this.subListHeight()
+      setTimeout(() => {
+        this.isExpanded = true
+        this.$emit('expand')
+      })
     },
     collapse () {
-      this.isExpanded = false
-      this.$emit('collapse')
+      this.$refs.subList.style.maxHeight = this.subListHeight()
+      setTimeout(() => {
+        this.isExpanded = false
+        this.$emit('collapse')
+      })
     },
     toggle (event) {
       event.stopPropagation()
@@ -145,16 +167,17 @@ export default {
     &.sub-list-enter-active,
     &.sub-list-leave-active {
       transition-duration: var(--speed-transition-normal);
-      transition-property: opacity, max-height;
-      will-change: opacity, max-height;
-      max-height: 100vh;
+      transition-property: opacity, max-height, transform;
+      will-change: opacity, max-height, transform;
+      // max-height: 100vh;
       backface-visibility: hidden;
     }
 
     &.sub-list-enter,
     &.sub-list-leave-to {
       // opacity: 0;
-      max-height: 0;
+      max-height: 0 !important;
+      // opacity: 0;
     }
   }
 }
