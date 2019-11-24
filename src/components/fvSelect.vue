@@ -1,5 +1,6 @@
 <template lang="pug">
 fv-inputbox.fv-select(:invalid="!fvValidate",
+  :style="colorsCssVars",
   :placeholder="placeholder",
   :disabled="disabled",
   :value="value",
@@ -21,6 +22,7 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
     .fv-padding.fv-text-center(v-if="loading")
       fv-loading
     fv-list(v-else,
+      color="primary"
       :tabindex="-1",
       parent,
       ref="list")
@@ -44,10 +46,17 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
 </template>
 
 <script>
+import colorMixin from '../mixins/color.js'
 import caretIcon from '../icons/ARR.svg'
 import insertIcon from '../icons/CLS.svg'
 
 export default {
+  mixins: [
+    colorMixin({
+      color: 'background',
+      boxColor: 'background'
+    })
+  ],
   props: {
     value: {
       default: undefined
