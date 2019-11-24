@@ -1,4 +1,5 @@
 // Components
+import ThemeProvider from './components/ThemeProvider.vue'
 import fvMain from './components/fvMain.vue'
 import fvContent from './components/fvContent.vue'
 import fvHeader from './components/fvHeader.vue'
@@ -29,6 +30,7 @@ import fvFormElement from './components/fvFormElement.vue'
 import config from './utility/config.js'
 
 const Framevuerk = {
+  ThemeProvider,
   fvMain,
   fvContent,
   fvHeader,
@@ -58,8 +60,8 @@ const Framevuerk = {
   fvFormElement,
   config,
   install (Vue, userConfig = []) {
-    config.init(userConfig)
     // Components
+    Vue.component('ThemeProvider', ThemeProvider)
     Vue.component('fvMain', fvMain)
     Vue.component('fvContent', fvContent)
     Vue.component('fvHeader', fvHeader)
