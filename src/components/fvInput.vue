@@ -65,10 +65,10 @@ export default {
   background: var(--color-light);
   color: var(--color-text);
   border: solid 1px var(--color-border);
-  border-radius: var(--size-border-radius-normal);
+  border-radius: var(--sizes-border-radius-md);
   font-family: inherit;
   position: relative;
-  padding: 0 var(--size-padding-small);
+  padding: 0 var(--sizes-space-sm);
   font-size: fontSize(md);
   min-height: heightSize(md);
   line-height: 1.5;
@@ -77,7 +77,7 @@ export default {
   &.multiline {
     height: 2.8em;
     overflow: hidden;
-    padding: 0.7em var(--size-padding-small);
+    padding: 0.7em var(--sizes-space-sm);
     resize: none;
   }
 
@@ -88,11 +88,12 @@ export default {
 
     &:focus,
     &[focus] {
-      @include outline;
+      @include outline(var(--colors-primary-normal));
 
       &:invalid,
       &[invalid] {
-        border: solid 1px var(--color-danger-normal);
+        @include outline(var(--colors-danger-normal));
+        // border: solid 1px var(--colors-danger-normal);
       }
     }
   }

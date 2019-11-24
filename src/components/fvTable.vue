@@ -113,8 +113,8 @@ export default {
 .fv-table {
   @include shadow(bottom);
 
-  border: 1px solid var(--color-background-border);
-  border-radius: var(--size-border-radius-normal);
+  border: 1px solid var(--colors-background-border);
+  border-radius: var(--sizes-border-radius-md);
   overflow: auto;
 
   & > table {
@@ -126,31 +126,31 @@ export default {
 
     & tr {
       &:not(:last-child) {
-        border-bottom: 1px solid var(--color-background-border);
+        border-bottom: 1px solid var(--colors-background-border);
       }
 
       &:nth-child(even) {
-        background: var(--color-background-hover);
+        background: var(--colors-background-hover);
       }
     }
 
     & th,
     & td {
       text-align: center;
-      padding: var(--size-padding-small) var(--size-padding-normal);
+      padding: var(--sizes-space-sm) var(--sizes-space-md);
       vertical-align: middle;
     }
 
     & thead {
       @include shadow(bottom);
 
-      border-bottom: 1px solid var(--color-background-border);
+      border-bottom: 1px solid var(--colors-background-border);
     }
 
     & tfoot {
       @include shadow(inset-bottom);
 
-      border-top: 1px solid var(--color-background-border);
+      border-top: 1px solid var(--colors-background-border);
     }
   }
 
@@ -167,7 +167,7 @@ export default {
         & .field-name {
           float: $block-start;
           font-weight: bold;
-          padding-#{$block-end}: var(size-padding-small);
+          padding-#{$block-end}: var(sizes-space-sm);
         }
 
         & .field-value {

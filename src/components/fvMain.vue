@@ -15,8 +15,8 @@
 @import '../styles/mixins';
 
 .fv-main {
-  background: var(--color-background-normal);
-  color: var(--color-background-text);
+  background: var(--colors-background-normal);
+  color: var(--colors-background-text);
 
   display: flex;
   flex-direction: row;

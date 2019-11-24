@@ -144,8 +144,8 @@
 }
 
 @function shadow($to: bottom, $color: $shadow-color-light) {
-  $shadow-size: var(--size-shadow-normal);
-  $shadow-size-invert: calc(-1 * var(--size-shadow-normal));
+  $shadow-size: var(--sizes-shadow-md);
+  $shadow-size-invert: calc(-1 * var(--sizes-shadow-md));
 
   @if $to == no {
     @return none;

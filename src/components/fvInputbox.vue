@@ -206,7 +206,7 @@ export default {
 
   & > .caret-icon {
     #{$block-end}: 0;
-    padding-#{$block-start}: var(--size-padding-small);
+    padding-#{$block-start}: var(--sizes-space-sm);
 
     & > svg {
       height: 1.5em;
@@ -227,7 +227,7 @@ export default {
     & > .item {
       @include shadow(bottom);
 
-      padding: 0 var(--size-padding-small);
+      padding: 0 var(--sizes-space-sm);
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -238,10 +238,10 @@ export default {
       outline-width: 1px;
       outline-color: var(--color-border);
       outline-offset: 0;
-      margin: var(--size-padding-small);
+      margin: var(--sizes-space-sm);
       margin-#{$block-start}: 0;
-      margin-#{$block-end}: var(--size-padding-normal);
-      border-radius: var(--size-border-radius-normal);
+      margin-#{$block-end}: var(--sizes-space-md);
+      border-radius: var(--sizes-border-radius-md);
 
       & > span {
         vertical-align: middle;
@@ -265,7 +265,7 @@ export default {
       }
 
       & .button {
-        margin-#{$block-start}: var(--size-padding-small);
+        margin-#{$block-start}: var(--sizes-space-sm);
         cursor: pointer;
         color: var(--color-border);
         height: 1.2em;
@@ -297,9 +297,9 @@ export default {
     max-height: 50vh;
     width: 100%;
     border: solid 1px var(--boxColor-border);
-    margin: var(--size-padding-normal) 0;
+    margin: var(--sizes-space-md) 0;
     cursor: default;
-    border-radius: var(--size-border-radius-normal);
+    border-radius: var(--sizes-border-radius-md);
     z-index: 2;
 
     &.bottom {

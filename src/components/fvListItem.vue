@@ -114,11 +114,11 @@ export default {
       @include nowrap;
 
       flex-grow: 1;
-      padding: 0 var(--size-padding-normal);
+      padding: 0 var(--sizes-space-md);
     }
 
     & .expand {
-      padding: 0 var(--size-padding-small);
+      padding: 0 var(--sizes-space-sm);
       cursor: pointer;
 
       & > svg {

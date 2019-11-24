@@ -84,7 +84,7 @@ export default {
   font-size: fontSize(md);
   min-height: heightSize(md);
   resize: vertical;
-  padding: var(size-padding-small);
+  padding: var(sizes-space-sm);
 
   &.auto-height {
     overflow-x: auto;

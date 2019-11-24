@@ -30,7 +30,7 @@ export default {
 
   & > header {
     width: 100%;
-    padding: var(--size-padding-normal);
+    padding: var(--sizes-space-md);
     display: flex;
     justify-content: space-between;
     overflow: hidden;

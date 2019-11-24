@@ -71,13 +71,13 @@ export default {
 
 .fv-toast {
   backface-visibility: hidden;
-  border-radius: var(--size-border-radius) var(--size-border-radius)  0 0;
+  border-radius: var(--sizes-border-radius) var(--sizes-border-radius)  0 0;
   bottom: 0;
   font-size: fontSize(lg);
   left: 50%;
   max-width: 100%;
   min-width: 100px;
-  padding: var(--size-padding-small) var(--size-padding-normal);
+  padding: var(--sizes-space-sm) var(--sizes-space-md);
   position: fixed;
   text-align: center;
   transform: translate3d(-50%, 0, 0);
