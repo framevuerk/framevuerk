@@ -11,7 +11,6 @@ import fvList from './components/fvList.vue'
 import fvListItem from './components/fvListItem.vue'
 import fvMenu from './components/fvMenu.vue'
 import fvInput from './components/fvInput.vue'
-import fvInputbox from './components/fvInputbox.vue'
 import fvButton from './components/fvButton.vue'
 import fvSwitch from './components/fvSwitch.vue'
 import fvDialog from './components/fvDialog.vue'
@@ -42,7 +41,6 @@ const Framevuerk = {
   fvListItem,
   fvMenu,
   fvInput,
-  fvInputbox,
   fvButton,
   fvSwitch,
   fvDialog,
@@ -74,7 +72,6 @@ const Framevuerk = {
     Vue.component('fvListItem', fvListItem)
     Vue.component('fvMenu', fvMenu)
     Vue.component('fvInput', fvInput)
-    Vue.component('fvInputbox', fvInputbox)
     Vue.component('fvButton', fvButton)
     Vue.component('fvSwitch', fvSwitch)
     Vue.component('fvDialog', fvDialog)
