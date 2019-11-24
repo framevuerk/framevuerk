@@ -42,6 +42,13 @@ import parent from '../utility/parent.js'
 import deleteIcon from '../icons/CLS.svg'
 
 export default {
+  // provided by parrent element
+  // mixins: [
+  //   colorMixin({
+  //     color: 'background',
+  //     boxColor: 'background',
+  //   })
+  // ]
   props: {
     value: {
       default: undefined
@@ -199,12 +206,12 @@ export default {
 
   & > .caret-icon {
     #{$block-end}: 0;
-    padding-#{$block-start}: $padding / 2;
+    padding-#{$block-start}: var(--size-padding-small);
 
     & > svg {
       height: 1.5em;
       vertical-align: middle;
-      transition: transform $transition-speed;
+      transition: transform var(--speed-transition-normal);
     }
   }
 
@@ -220,21 +227,21 @@ export default {
     & > .item {
       @include shadow(bottom);
 
-      padding: 0 #{$padding / 2};
+      padding: 0 var(--size-padding-small);
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 100%;
-      background: contrast($bg-color, 1, hard-dark);
+      background: var(--color-hover);
       vertical-align: middle;
       outline-style: solid;
       outline-width: 1px;
-      outline-color: contrast($bg-color, 2, hard-dark);
+      outline-color: var(--color-border);
       outline-offset: 0;
-      margin: $padding / 2;
+      margin: var(--size-padding-small);
       margin-#{$block-start}: 0;
-      margin-#{$block-end}: $padding;
-      border-radius: $border-radius;
+      margin-#{$block-end}: var(--size-padding-normal);
+      border-radius: var(--size-border-radius-normal);
 
       & > span {
         vertical-align: middle;
@@ -258,9 +265,9 @@ export default {
       }
 
       & .button {
-        margin-#{$block-start}: $padding / 2;
+        margin-#{$block-start}: var(--size-padding-small);
         cursor: pointer;
-        color: $color;
+        color: var(--color-border);
         height: 1.2em;
 
         & > svg {
@@ -269,29 +276,30 @@ export default {
         }
 
         &:hover {
-          color: contrast($color, 2);
+          color: var(--color-borderhover);
         }
 
-        &:active {
-          color: contrast($color, 3);
-        }
+        // &:active {
+        //   color: contrast($color, 3);
+        // }
       }
     }
   }
 
   & > .out-container {
-    @include yiq($bg-color);
     @include shadow(bottom);
 
+    background: var(--boxColor-normal);
+    color: var(--boxColor-text);
     position: absolute;
     overflow: auto;
     height: auto;
     max-height: 50vh;
     width: 100%;
-    border: solid 1px contrast($bg-color, 2, hard-dark);
-    margin: $padding 0;
+    border: solid 1px var(--boxColor-border);
+    margin: var(--size-padding-normal) 0;
     cursor: default;
-    border-radius: $border-radius;
+    border-radius: var(--size-border-radius-normal);
     z-index: 2;
 
     &.bottom {
@@ -317,7 +325,7 @@ export default {
       transform: translate3d(0, 0, 0);
       transition-property: transform, opacity;
       transition-timing-function: ease;
-      transition-duration: $transition-speed-fast;
+      transition-duration: var(--speed-transition-fast);
       will-change: transform, opacity;
       backface-visibility: hidden;
     }
