@@ -16,16 +16,18 @@ export default function (colors = {
 
   return {
     props,
+    inject: ['ThemeProvider'],
     computed: {
       colorsCssVars () {
         const ret = {}
-        Object.keys(colors).forEach(color => {
-          if (this[color] === '') {
+        Object.keys(colors).forEach(colorKey => {
+          const colorName = this[colorKey]
+          if (colorName === '') {
             return
           }
-          const cnf = config.get('color', this[color])
-          Object.keys(cnf.value).forEach(key => {
-            ret[`--${color}-${key}`] = `var(--${cnf.type}-${cnf.name}-${key})`
+          const colorValue = this.ThemeProvider.colors[colorName]
+          Object.keys(colorValue).forEach(state => {
+            ret[`--${colorKey}-${state}`] = `var(--colors-${colorName}-${state})`
           })
         })
         return ret
