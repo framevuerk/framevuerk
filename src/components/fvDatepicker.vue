@@ -51,10 +51,14 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
 </template>
 
 <script>
+import fvInputbox from './fvInputbox.vue'
 import icon from '../icons/ARR.svg'
 import iconY from '../icons/WRR.svg'
 
 export default {
+  components: {
+    fvInputbox
+  },
   props: {
     value: {
       default: undefined

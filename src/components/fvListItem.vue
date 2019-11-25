@@ -125,7 +125,7 @@ export default {
         vertical-align: middle;
         width: 1.4em;
         height: auto;
-        transition: transform var(--speed-transition-normal);
+        transition: transform var(--speed-normal);
       }
 
       &.rotate {
@@ -159,14 +159,17 @@ export default {
   & .sub-list {
     & > .fv-list {
       border: 0;
+      padding-#{$block-start}: 2em;
       & > .fv-list-item > .content{
-        padding-#{$block-start}: 2.5em;
+        // margin-#{$block-start}: 10%;
+        // padding-#{$block-start}: 2.5em;
+
       }
     }
 
     &.sub-list-enter-active,
     &.sub-list-leave-active {
-      transition-duration: var(--speed-transition-normal);
+      transition-duration: var(--speed-normal);
       transition-property: opacity, max-height, transform;
       will-change: opacity, max-height, transform;
       // max-height: 100vh;
@@ -175,7 +178,7 @@ export default {
 
     &.sub-list-enter,
     &.sub-list-leave-to {
-      // opacity: 0;
+      opacity: 0;
       max-height: 0 !important;
       // opacity: 0;
     }

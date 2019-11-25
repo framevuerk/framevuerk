@@ -55,13 +55,13 @@ export default {
   font-size: fontSize(md);
   height: heightSize(md);
   min-height: heightSize(md);
-  border-radius: var(--sizes-border-radius-md);
+  border-radius: var(--sizes-radius-md);
   font-family: inherit;
   max-width: 100%;
   text-align: center;
   font-weight: bold;
   padding: 0 var(--sizes-space-md);
-  transition-duration: var(--speed-transition-fast);
+  transition-duration: var(--speed-fast);
   transition-property: background-color, color, box-shadow;
   border: none;
   user-select: none;

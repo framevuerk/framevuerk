@@ -114,7 +114,7 @@ export default {
   @include shadow(bottom);
 
   border: 1px solid var(--colors-background-border);
-  border-radius: var(--sizes-border-radius-md);
+  border-radius: var(--sizes-radius-md);
   overflow: auto;
 
   & > table {

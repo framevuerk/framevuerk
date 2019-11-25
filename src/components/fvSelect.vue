@@ -46,15 +46,18 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
 </template>
 
 <script>
+import fvInputbox from './fvInputbox.vue'
 import colorMixin from '../mixins/color.js'
 import caretIcon from '../icons/ARR.svg'
 import insertIcon from '../icons/CLS.svg'
 
 export default {
+  components: {
+    fvInputbox
+  },
   mixins: [
     colorMixin({
-      color: 'background',
-      boxColor: 'background'
+      color: 'background'
     })
   ],
   props: {
@@ -274,7 +277,7 @@ export default {
         if (!this.multiple) {
           this.$refs.inputBox.close()
         } else {
-          this.$refs.inputBox.focusInput()
+          this.$refs.inputBox.focus()
         }
       })
     }

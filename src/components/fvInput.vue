@@ -65,7 +65,7 @@ export default {
   background: var(--color-light);
   color: var(--color-text);
   border: solid 1px var(--color-border);
-  border-radius: var(--sizes-border-radius-md);
+  border-radius: var(--sizes-radius-md);
   font-family: inherit;
   position: relative;
   padding: 0 var(--sizes-space-sm);
@@ -88,11 +88,16 @@ export default {
 
     &:focus,
     &[focus] {
-      @include outline(var(--colors-primary-normal));
+      border-color: var(--color-borderhover);
+      
 
       &:invalid,
       &[invalid] {
-        @include outline(var(--colors-danger-normal));
+        border-color: var(--colors-danger-normal);
+        // @include outline(
+        //   var(--colors-danger-shallow),
+        //   var(--colors-danger-normal),
+        // );
         // border: solid 1px var(--colors-danger-normal);
       }
     }

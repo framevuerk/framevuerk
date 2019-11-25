@@ -211,7 +211,7 @@ export default {
     & > svg {
       height: 1.5em;
       vertical-align: middle;
-      transition: transform var(--speed-transition-normal);
+      transition: transform var(--speed-normal);
     }
   }
 
@@ -232,7 +232,7 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 100%;
-      background: var(--color-hover);
+      background: var(--color-shalow);
       vertical-align: middle;
       outline-style: solid;
       outline-width: 1px;
@@ -241,7 +241,7 @@ export default {
       margin: var(--sizes-space-sm);
       margin-#{$block-start}: 0;
       margin-#{$block-end}: var(--sizes-space-md);
-      border-radius: var(--sizes-border-radius-md);
+      border-radius: var(--sizes-radius-md);
 
       & > span {
         vertical-align: middle;
@@ -289,17 +289,17 @@ export default {
   & > .out-container {
     @include shadow(bottom);
 
-    background: var(--boxColor-normal);
-    color: var(--boxColor-text);
+    background: var(--color-normal);
+    color: var(--color-text);
     position: absolute;
     overflow: auto;
     height: auto;
     max-height: 50vh;
     width: 100%;
-    border: solid 1px var(--boxColor-border);
+    border: solid 1px var(--color-border);
     margin: var(--sizes-space-md) 0;
     cursor: default;
-    border-radius: var(--sizes-border-radius-md);
+    border-radius: var(--sizes-radius-md);
     z-index: 2;
 
     &.bottom {
@@ -325,7 +325,7 @@ export default {
       transform: translate3d(0, 0, 0);
       transition-property: transform, opacity;
       transition-timing-function: ease;
-      transition-duration: var(--speed-transition-fast);
+      transition-duration: var(--speed-fast);
       will-change: transform, opacity;
       backface-visibility: hidden;
     }
@@ -335,11 +335,11 @@ export default {
       opacity: 0;
 
       &.top {
-        transform: translate3d(0, 1em, 0);
+        transform: translate3d(0, var(--sizes-space-md), 0);
       }
 
       &.bottom {
-        transform: translate3d(0, -1em, 0);
+        transform: translate3d(0, calc(-1 * var(--sizes-space-md)), 0);
       }
     }
   }
