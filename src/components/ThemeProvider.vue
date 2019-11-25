@@ -129,8 +129,10 @@ export default {
         const isDark = value[2] < 20
 
         const cover = v => `hsl(${v[0]}, ${v[1]}%, ${v[2]}%)`
+        const coverA = (v, a) => `hsla(${v[0]}, ${v[1]}%, ${v[2]}%, ${a})`
         ret[key] = {
           normal:       cover(value),
+          shallow:      coverA(contrast(value, value[2] > 80 ? -20 : 10), 0.7),
           light:        cover(contrast(value, 8)),
           dark:         cover(contrast(value, -8)),
           text:         cover(contrast(value, value[2] < 70 ? 90 : -90)),
@@ -138,16 +140,17 @@ export default {
           hover:        cover(contrast(value, value[2] > 80 ? -6 : 6)),
           active:       cover(contrast(value, value[2] < 20 ? 9 : -9)),
           border:       cover(contrast(value, value[2] < 20 ? 15 : -15)),
-          borderhover:  cover(contrast(value, value[2] < 20 ? 30 : -30)),
+          borderhover:  cover(contrast(value, value[2] < 20 ? 35 : -35)),
         }
       })
       return ret
     },
     _speed () {
+      const cover = v => `${v}ms`
       return {
-        fast: this.speed * 0.4,
-        normal: this.speed,
-        slow: this.speed * 1.7
+        fast:   cover(this.speed * 0.4),
+        normal: cover(this.speed),
+        slow:   cover(this.speed * 1.7)
       }
     },
     _direction () {
