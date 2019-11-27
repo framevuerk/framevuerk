@@ -164,7 +164,7 @@ export default {
     backface-visibility: hidden;
 
     &.unpin {
-      transition-duration: var(--speed-transition-normal);
+      transition-duration: var(--speed-normal);
     }
   }
 

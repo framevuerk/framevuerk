@@ -83,7 +83,8 @@ export default {
         sizes: this._sizes,
         colors: this._colors,
         speed: this._speed,
-        direction: this._direction
+        direction: this._direction,
+        register: this.register
       }
     }
   },
@@ -103,7 +104,7 @@ export default {
           primary: '#41b883',
           secondary: '#35485d',
           info: '#14b0cf',
-          warning: '#warning',
+          warning: '#ffd400',
           danger: '#dd4b39',
         }, this.colors)
     },
@@ -174,6 +175,53 @@ export default {
           ret[`--${type}-${state}`] = value
         })
       })
+      return ret
+    }
+  },
+  methods: {
+    register (values, to = false) {
+      // keys = [
+      //  'speed' // global register
+      //  'colors.primary', // global register
+      //  'x:colors.primary, // local register as x
+      // ]
+      const ret = {}
+      for (let i = 0; i < values.length; keys++) {
+        const localRet = {}
+        const [ name, type, key ] = (x => {
+          const ret = [x, false, false]
+          [':', '.'].forEach((s, i) => {
+            const splited = ret[i].split(s)
+            if (splited.length > 1) {
+              ret[i] = splited[0]
+              ret[i+1] = splited[1]
+            }
+          })
+          if (!ret[1]) {
+            ret[1] = ret[0]
+            ret[0] = ''
+          }
+          return ret
+        })(values[i])
+
+        if (!key) {
+          objToArr(this[`_${type}`], (state, value) => {
+            localRet[`--${name || type}-${state}`] = value
+          })
+        } else {
+          objToArr(this[`_${type}`][key], (state, value) => {
+            localRet[`--${name || `${type}-${key}`}-${state}`] = value
+          })
+        }
+        if (name) {
+          ret = Object.assign(ret, localRet)
+        } else {
+          this.style = Object.assign(this.style, localRet)
+        }
+      }
+      if (to) {
+        to.style = ret
+      }
       return ret
     }
   }

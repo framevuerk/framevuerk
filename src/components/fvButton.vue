@@ -93,6 +93,10 @@ export default {
     &:hover,
     &:focus {
       background: var(--color-hover);
+
+      &:focus {
+        border-color: var(--color-borderhover);
+      }
     }
     &:active {
       background: var(--color-active);
