@@ -1,7 +1,10 @@
 <template>
 <div :class="[$style.layout, global ? 'global' : '']">
-  <header :class="header" ref="header">
+  <header v-if="$slots.header" class="normal" ref="header">
     <slot name="header"/>
+  </header>
+  <header v-if="$slots.autohideHeader" class="autohide" ref="autohideHeader">
+    <slot name="autohideHeader"/>
   </header>
   <main ref="main">
     <aside ref="sidebar" :class="[sc, sc !== 'auto' ? (sv ? 'show' : 'hide') : '']">
@@ -18,7 +21,7 @@
 </template>
 
 <script>
-import { each, shadeColor, colorLightness, hexToRgb, rgbToText } from '@/utility/utils';
+import { each, shadeColor, colorLightness, hexToRgb, rgbToText, getElementPosition } from '@/utility/utils';
 import parent from '@/utility/parent';
   
 export default {
@@ -62,16 +65,17 @@ export default {
   },
   methods: {
     onScroll(event) {
-      if (this.se.scrollTop < this.$refs.header.offsetHeight) {
-        this.$refs.header.classList.remove('hide');
+      if (this.se.scrollTop < this.$refs.autohideHeader.offsetHeight) {
+        this.$refs.autohideHeader.classList.remove('hide');
         return
       }
+      console.log('here')
       this.sd = this.se.scrollTop > this.lsp ? 'down' : 'up';
       this.lsp = this.se.scrollTop;
       if (this.sd === 'down') {
-        this.$refs.header.classList.add('hide');
+        this.$refs.autohideHeader.classList.add('hide');
       } else {
-        this.$refs.header.classList.remove('hide');
+        this.$refs.autohideHeader.classList.remove('hide');
       }
     },
     sidebarAutoState() {
@@ -119,8 +123,7 @@ export default {
   mounted () {
     this.se = this.global ? document.scrollingElement : this.$el;
     this.sl = this.global ? window : this.$el;
-    if (this.header === 'autohide') {
-      this.$refs.main.style.marginTop = `${this.$refs.header.offsetHeight}px`;
+    if (this.$slots.autohideHeader) {
       setTimeout(() => {
         this.sl.addEventListener('scroll', this.onScroll);
       }, 120)
@@ -144,6 +147,8 @@ export default {
   style({ className, mediaQuery }){
     return [
       className('layout', {
+        // overflow: 'hidden',
+        border: 'solid 1px red',
         minHeight: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -154,10 +159,10 @@ export default {
           backgroundColor: this.$theme.colors.primary.normal,
           '&.autohide': {
             width: '100%',
-            position: 'fixed',
+            position: 'sticky',
             top: '0',
             transform: 'translateY(0)',
-            transition: `transform ${this.$theme.speed.multiplyBy(1)} linear`,
+            transition: `transform 200ms linear`,
             willChange: 'transform',
             '&.hide': {
               transform: 'translateY(-100%)',

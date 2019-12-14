@@ -44,4 +44,15 @@ export const colorLightness = (rgb) => {
 export const rgbToText = (rgb, alpha = 1) => {
   const isRgba = alpha !== 1;
   return `rgb${isRgba ? 'a' : ''}(${rgb.join(',')}${isRgba ? `,${alpha}` : ''})`;
-}
+};
+
+export const getElementPosition = (element) => {
+  const ret = {top: 0, left: 0}
+  let el = element;
+  while (el) {
+    ret.top += el.offsetTop;
+    ret.left += el.offsetLeft;
+    el = el.parentElement;
+  }
+  return ret;
+};
