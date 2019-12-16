@@ -2,8 +2,8 @@
 import fvThemeProvider from '@/components/ThemeProvider.vue';
 import fvLayout from '@/components/Layout.vue';
 // import fvMain from './components/fvMain.vue'
-// import fvContent from './components/fvContent.vue'
-// import fvHeader from './components/fvHeader.vue'
+import fvContent from './components/fvContent.vue'
+import fvHeader from './components/Header.vue'
 // import fvFooter from './components/fvFooter.vue'
 // import fvSidebar from './components/fvSidebar.vue'
 // import fvForm from './components/fvForm.vue'
@@ -34,8 +34,8 @@ const Framevuerk = {
   fvThemeProvider,
   fvLayout,
   // fvMain,
-  // fvContent,
-  // fvHeader,
+  fvContent,
+  fvHeader,
   // fvFooter,
   // fvSidebar,
   // fvForm,
@@ -65,9 +65,9 @@ const Framevuerk = {
     // Components
     Vue.component('fvThemeProvider', fvThemeProvider);
     Vue.component('fvLayout', fvLayout);
+    Vue.component('fvHeader', fvHeader);
     // Vue.component('fvMain', fvMain)
-    // Vue.component('fvContent', fvContent)
-    // Vue.component('fvHeader', fvHeader)
+    Vue.component('fvContent', fvContent);
     // Vue.component('fvFooter', fvFooter)
     // Vue.component('fvSidebar', fvSidebar)
     // Vue.component('fvForm', fvForm)

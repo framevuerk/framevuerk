@@ -52,7 +52,7 @@ export default {
       const defaultSizes = {
         base: 8,
         radius: 6,
-        shadow: 2,
+        shadow: 5,
       };
       const sizes = Object.assign(defaultSizes, this.sizes);
       const ret = {}
@@ -67,7 +67,7 @@ export default {
     _colors () {
       const defaultColors = {
         background: '#fff',
-        primary: '#41b883',
+        primary: '#069bd0',
         secondary: '#35485d',
         info: '#14b0cf',
         warning: '#ffd400',
@@ -82,6 +82,7 @@ export default {
           normal: rgbToText(rgb),
           text: rgbToText(shadeColor(rgb, lightness < 70 ? 90 : -90)),
           lightness,
+          contrast: (percent, alpha = 1, breakLine = 30) => rgbToText(shadeColor(rgb, (lightness < breakLine ? 1 : -1) * Math.abs(percent)), alpha),
           shade: (percent, alpha = 1) => rgbToText(shadeColor(rgb, percent), alpha),
         }
       })

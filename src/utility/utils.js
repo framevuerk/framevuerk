@@ -26,7 +26,7 @@ export const hexToRgb = (hexColor) => {
 
 export const shadeColor = (rgb, percent) => {
   const [r, g, b] = rgb;
-  const pp = percent % 100;
+  const pp = percent / 100;
   const t = pp < 0 ? 0 : 255;
   const p = pp < 0 ? pp * -1 : pp;
   return [
@@ -46,13 +46,17 @@ export const rgbToText = (rgb, alpha = 1) => {
   return `rgb${isRgba ? 'a' : ''}(${rgb.join(',')}${isRgba ? `,${alpha}` : ''})`;
 };
 
-export const getElementPosition = (element) => {
-  const ret = {top: 0, left: 0}
-  let el = element;
-  while (el) {
-    ret.top += el.offsetTop;
-    ret.left += el.offsetLeft;
-    el = el.parentElement;
+export const offsetTo = (el, parent) => {
+  let eli = el;
+  const ret = {
+    left: 0,
+    top: 0,
+  };
+  const sibil = parent === null;
+  while (eli && eli !== parent) {
+    ret.left += eli[sibil ? 'offsetWidth' : 'offsetLeft'];
+    ret.top += eli[sibil ? 'offsetHeight' : 'offsetTop'];
+    eli = eli[sibil ? 'previousElementSibling' : 'offsetParent'];
   }
   return ret;
 };
