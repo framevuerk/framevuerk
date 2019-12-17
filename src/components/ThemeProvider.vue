@@ -52,7 +52,7 @@ export default {
       const defaultSizes = {
         base: 8,
         radius: 6,
-        shadow: 5,
+        shadow: 4,
       };
       const sizes = Object.assign(defaultSizes, this.sizes);
       const ret = {}
@@ -72,6 +72,9 @@ export default {
         info: '#14b0cf',
         warning: '#ffd400',
         danger: '#dd4b39',
+        header: '#0B62EA',
+        sidebar: '#101823',
+        footer: '#006CFF',
       };
       const colors = Object.assign(defaultColors, this.colors);
       const ret = {}
