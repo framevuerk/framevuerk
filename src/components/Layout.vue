@@ -139,12 +139,15 @@ export default {
       className('layout', {
         overflow: this.global ? 'visible' : 'auto',
         position: 'relative',
+        background: this.$theme.colors.background.normal,
+        color: this.$theme.colors.background.text,
         '& > main': {
           display: 'flex',
         },
       })
     ]
-  }
+  },
+  inject: ['$theme'],
   // props: {
   //   global: {
   //     type: Boolean,
@@ -166,7 +169,6 @@ export default {
   //     default: 'auto',
   //   }
   // },
-  // inject: ['$theme'],
   // data() {
   //   return {
   //     // scrolling element
