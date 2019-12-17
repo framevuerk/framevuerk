@@ -21,7 +21,6 @@
 </xtemplate>
 
 <script>
-import { each, shadeColor, colorLightness, hexToRgb, rgbToText, getElementPosition } from '@/utility/utils';
 import parent from '@/utility/parent';
   
 export default {
@@ -33,11 +32,7 @@ export default {
   },
   provide() {
     return {
-      $layout: {
-        onScroll: this.onScroll,
-        offScroll: this.offScroll,
-        $el: this.$el,
-      }
+      $layout: this
     }
   },
   render(createElement) {
@@ -47,48 +42,81 @@ export default {
     const content = this.$slots.default.find(vnode => vnode.componentOptions && vnode.componentOptions.tag === 'fvContent');
     return createElement(
       'div',
-      [].concat(
+      {
+        class: this.$style.layout
+      },
+      [
         headers,
-        createElement('main', {
-          ref: 'main',
-        }, [
+        createElement('main', [
           sidebar,
           content,
         ]),
         footer,
-      )
+      ]
     )
   },
   data() {
     return {
       scrollListeners: [],
+      resizeListeners: [],
       lastScrollPosition: 0,
       lastScrollTimeout: null,
+      lockers: 0,
     };
   },
   beforeDestroy () {
     (this.global ? window : this.$el).removeEventListener('scroll', this.localScrollListener);
   },
   methods: {
-    onScroll(listener) {
-      this.scrollListeners.push(listener);
-      if (this.scrollListeners.length === 1) {
+    on(eventType, listener, immediately = false) {
+      const listeners = this[`${eventType}Listeners`];
+      const localListener = this[`${eventType}Listener`];
+      listeners.push(listener);
+      if (listeners.length === 1) {
         this.$nextTick(() => {
           setTimeout(() => {
-            (this.global ? window : this.$el).addEventListener('scroll', this.localScrollListener);
+            (this.global ? window : this.$el).addEventListener(eventType, localListener);
+            if (immediately) {
+              localListener();
+            }
           });
         });
       }
     },
-    offScroll(listener) {
-      this.scrollListeners.splice(this.scrollListeners.find((l) => listener));
-      if (this.scrollListeners.length === 0) {
-        this.$nextTick(() => {
-          (this.global ? window : this.$el).addEventListener('scroll', this.localScrollListener);
-        });
+    off(eventType, listener) {
+      const listeners = this[`${eventType}Listeners`];
+      const localListener = this[`${eventType}Listener`];
+      listeners.splice(listeners.find((l) => listener));
+      if (listeners.length === 0) {
+        (this.global ? window : this.$el).removeEventListener(eventType, localListener);
       }
     },
-    localScrollListener() {
+    neglectTo(element, listener) {
+      const layoutEl = (this.global ? window : this.$el);
+      element.inlineClickHandler = event => {
+        if (!element.contains(event.target)) {
+          listener();
+          layoutEl.removeEventListener('click', element.inlineClickHandler)
+          layoutEl.removeEventListener('touchstart', element.inlineClickHandler)
+        }
+      }
+      setTimeout(() => {
+        layoutEl.addEventListener('click', element.inlineClickHandler);
+        layoutEl.addEventListener('touchstart', element.inlineClickHandler);
+      });
+    },
+    lock() {
+      (this.global ? document.body : this.$el).style.overflow = 'hidden';
+      this.lockers += 1;
+    },
+    unlock() {
+      this.lockers -= 1;
+      if (this.lockers < 1) {
+        this.lockers = 0;
+        (this.global ? document.body : this.$el).style.overflow = null;
+      }
+    },
+    scrollListener() {
       const el = (this.global ? document.scrollingElement : this.$el);
       const scrollTop = el.scrollTop;
       clearTimeout(this.lastScrollPosition);
@@ -96,7 +124,26 @@ export default {
         this.lastScrollPosition = scrollTop;
       });
       this.scrollListeners.forEach(listener => listener(scrollTop, scrollTop > this.lastScrollPosition ? 'down' : 'up'));
+    },
+    resizeListener() {
+      const el = (this.global ? document.scrollingElement : this.$el);
+      const size = {
+        width: el.offsetWidth,
+        height: el.offsetHeight,
+      };
+      this.resizeListeners.forEach(listener => listener(size));
     }
+  },
+  style({ className }) {
+    return [
+      className('layout', {
+        overflow: this.global ? 'visible' : 'auto',
+        position: 'relative',
+        '& > main': {
+          display: 'flex',
+        },
+      })
+    ]
   }
   // props: {
   //   global: {
