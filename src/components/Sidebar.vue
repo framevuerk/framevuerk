@@ -23,7 +23,12 @@ export default {
     visible: {
       type: Boolean,
       default: false
-    }
+    },
+    position: {
+      type: String,
+      validator: (v) => ['start', 'end'].includes(v),
+      default: 'start',
+    },
   },
   data() {
     return {
@@ -77,13 +82,14 @@ export default {
     this.$layout.off('resize', this.handleSmart)
   },
   style({ className, mediaQuery }) {
+    const position = this.$theme.direction[this.position];
     const unattachedPostion = this.$layout.global ? 'fixed' : 'absolute';
     return [
       className('sidebar', {
         background: this.$theme.colors[this.color].normal,
         color: this.$theme.colors[this.color].text,
         boxShadow: `${this.$theme.sizes.shadow.normal} 0 ${this.$theme.sizes.shadow.normal} ${this.$theme.colors.background.shade(-50, 0.2)}`,
-        [`border-${this.$theme.direction.end}`]: `solid 1px ${this.$theme.colors[this.color].shade(-15)}`,
+        [`border-${position}`]: `solid 1px ${this.$theme.colors[this.color].shade(-15)}`,
         minHeight: '100%',
         
         overflowX: 'hidden !important',
@@ -100,11 +106,12 @@ export default {
             maxWidth: '0px !important',
             overflow: 'hidden',
             '& > .content': {
-              transform: `translateX(${this.$theme.direction.leftFactor * -100}%)`
+              transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`
             },
           }
         },
         '&.unattached': {
+          [position]: 0,
           top: '0',
           height: '100%',
           maxHeight: '100%',
@@ -116,7 +123,7 @@ export default {
             transform: `translateX(0) !important`,
           },
           '&.hide': {
-            transform: `translateX(${this.$theme.direction.leftFactor * -100}%)`
+            transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`
           }
         }
       }),
