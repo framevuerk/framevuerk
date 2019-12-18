@@ -36,24 +36,39 @@ export default {
     }
   },
   render(createElement) {
-    const headers = this.$slots.default.filter(vnode => vnode.componentOptions && vnode.componentOptions.tag === 'fvHeader');
-    const footer = this.$slots.default.find(vnode => vnode.componentOptions && vnode.componentOptions.tag === 'fvFooter');
-    const sidebar = this.$slots.default.find(vnode => vnode.componentOptions && vnode.componentOptions.tag === 'fvSidebar');
-    const content = this.$slots.default.find(vnode => vnode.componentOptions && vnode.componentOptions.tag === 'fvContent');
-    return createElement(
-      'div',
-      {
-        class: this.$style.layout
-      },
+    const children = [
+      [],
       [
-        headers,
-        createElement('main', [
-          sidebar,
-          content,
-        ]),
-        footer,
-      ]
-    )
+        [],
+        [],
+        [],
+      ],
+      []
+    ];
+    this.$slots.default.filter(vnode => vnode.componentOptions).forEach((vnode) => {
+      const tag = vnode.componentOptions.tag;
+      if (tag === 'fvHeader') {
+        children[0].push(vnode);
+      } else if (tag === 'fvFooter') {
+        children[2].push(vnode);
+      } else if (tag === 'fvContent') {
+        children[1][1].push(vnode);
+      } else if (tag === 'fvSidebar') {
+        if (vnode.componentOptions.propsData.position === 'end') {
+          children[1][2].push(vnode);
+        } else {
+          children[1][0].push(vnode);
+        }
+      }
+    })
+    
+    return createElement('div', {
+      class: this.$style.layout
+    }, [
+      children[0],
+      createElement('main', children[1]),
+      children[2],
+    ]);
   },
   data() {
     return {
