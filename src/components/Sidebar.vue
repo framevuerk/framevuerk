@@ -33,6 +33,8 @@ export default {
   data() {
     return {
       className: 'smart',
+      cancelDetector: null,
+      focusStoler: null,
     }
   },
   methods: {
@@ -66,14 +68,22 @@ export default {
     visible(newValue) {
       if (this.visible && this.className === 'unattached') {
         this.$layout.lock();
-        this.$layout.neglectTo(this.$el, this.toggle);
+        this.cancelDetector = this.$layout.cancelDetector(this.toggle);
+        this.focusStoler = this.$layout.focusStoler(this.$el);
+        this.outerClickDetector = this.$layout.outerClickDetector(this.$el, this.toggle);
       } else {
         this.$layout.unlock();
+        this.cancelDetector && this.cancelDetector.release();
+        this.focusStoler && this.focusStoler.release();
+        this.outerClickDetector && this.outerClickDetector.release();
       }
     }
   },
   beforeDestroy() {
-    this.$layout.off('resize', this.handleSmart)
+    this.$layout.off('resize', this.handleSmart);
+    this.cancelDetector && this.cancelDetector.release();
+    this.focusStoler && this.focusStoler.release();
+    this.outerClickDetector && this.outerClickDetector.release();
   },
   style({ className, mediaQuery }) {
     const position = this.$theme.direction[this.position];
