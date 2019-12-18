@@ -199,11 +199,14 @@ export default {
     return [
       className('layout', {
         overflow: this.global ? 'visible' : 'auto',
+        width: '100%',
         position: 'relative',
         background: this.$theme.colors.background.normal,
         color: this.$theme.colors.background.text,
         '& > main': {
           display: 'flex',
+          maxWidth: '100%',
+          overflowX: 'hidden',
         },
       })
     ]
@@ -391,7 +394,7 @@ export default {
   //               transform: `translateX(0) !important`
   //             },
   //             '&.hide': {
-  //               transform: `translateX(${this.$theme.direction.leftFactor * -100}%)`
+  //               transform: `translateX(${this.$theme.direction.ltrFactor * -100}%)`
   //             }
   //           }
   //         }
@@ -401,7 +404,7 @@ export default {
   //       className('layout', {
   //         '& > main > aside.auto': {
   //           position: 'fixed',
-  //           transform: `translateX(${this.$theme.direction.leftFactor * -100}%) !important`,
+  //           transform: `translateX(${this.$theme.direction.ltrFactor * -100}%) !important`,
   //         }
   //       })
   //     ]),
