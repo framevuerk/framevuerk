@@ -66,6 +66,7 @@ export default {
         padding: this.$theme.sizes.base.normal,
         transition: `transform 250ms ease-out`,
         willChange: 'transform',
+        zIndex: 1,
         '&.pre-show': {
           transform: 'translateY(-100%)',
         },
