@@ -1,8 +1,6 @@
 <template>
 <aside :class="[$style.sidebar, className, visible ? 'show' : 'hide']">
-  <div class="content" ref="content">
-    <slot />
-  </div>
+  <slot />
 </aside>
 </template>
 
@@ -95,39 +93,27 @@ export default {
         boxShadow: `${this.$theme.sizes.shadow.normal} 0 ${this.$theme.sizes.shadow.normal} ${this.$theme.colors.background.shade(-50, 0.2)}`,
         [`border-${position}`]: `solid 1px ${this.$theme.colors[this.color].shade(-15)}`,
         minHeight: '100%',
-        
+        [position]: 0,
         overflowX: 'hidden !important',
-        '& > .content': {
-          // transition: `transform ${this.$theme.speed.normal} ease-out`,
-        },
         '&.pinned': {
-          transition: `max-width ${this.$theme.speed.normal} ease-out`,
+          transition: `transform ${this.$theme.speed.normal} ease-out`,
           position: 'relative',
-          '& > .content': {
-            width: '100%',
-          },
           '&.show': {
-            width: 'auto',
-            maxWidth: '250px',
+            transform: `translateX(0) !important`,
           },
           '&.hide': {
-            position: 'absolute',
-            maxWidth: '0px !important',
-            overflow: 'hidden',
-            '& > .content': {
-              // transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`
-            },
+            position: unattachedPostion,
+            transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
           }
         },
         '&.unattached': {
-          [position]: 0,
           top: '0',
           height: '100%',
           maxHeight: '100%',
           overflow: 'auto',
           position: unattachedPostion,
           transition: `transform ${this.$theme.speed.normal} ease-out`,
-          zIndex: '2',
+          zIndex: 2,
           '&.show': {
             transform: `translateX(0) !important`,
           },
