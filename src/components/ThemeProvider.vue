@@ -46,6 +46,7 @@ export default {
         end: direction === 'ltr' ? 'right' : 'left',
         value: direction,
         leftFactor: direction === 'ltr' ? 1 : -1,
+        rightFactor: direction === 'ltr' ? -1 : 1,
       }
     },
     _sizes () {
