@@ -1,6 +1,8 @@
 <template>
 <aside :class="[$style.sidebar, className, visible ? 'show' : 'hide']">
-  <slot />
+  <div class="content" ref="content">
+    <slot />
+  </div>
 </aside>
 </template>
 
@@ -32,10 +34,22 @@ export default {
     toggle () {
       this.$emit('update:visible', !this.visible);
     },
+    handleSize() {
+      const width = `${this.$el.offsetWidth || 250}px`;
+      this.$el.style.maxWidth = width;
+      this.$refs.content.style.width = width;
+    },
     handleSmart(size) {
+      this.$el.style.transitionDuration = '0s';
       this.$layout.unlock();
       this.$emit('update:visible', size.width > 960);
       this.className = size.width > 960 ? 'pinned' : 'unattached';
+      if (size.width >= 960 && this.visible) {
+        this.$nextTick(this.handleSize);
+      }
+      setTimeout(() => {
+        this.$el.style.transitionDuration = null;
+      });
     },
   },
   created() {
@@ -44,6 +58,7 @@ export default {
     }
   },
   mounted() {
+    this.handleSize();
     if (this.type === 'smart') {
       this.$layout.on('resize', this.handleSmart, true);
     }
@@ -70,16 +85,23 @@ export default {
         boxShadow: `${this.$theme.sizes.shadow.normal} 0 ${this.$theme.sizes.shadow.normal} ${this.$theme.colors.background.shade(-50, 0.2)}`,
         [`border-${this.$theme.direction.end}`]: `solid 1px ${this.$theme.colors[this.color].shade(-15)}`,
         minHeight: '100%',
-        transition: `transform ${this.$theme.speed.normal} ease-out`,
+        
+        overflowX: 'hidden !important',
+        '& > .content': {
+          transition: `transform ${this.$theme.speed.normal} ease-out`,
+        },
         '&.pinned': {
           transition: `max-width ${this.$theme.speed.normal} ease-out`,
           '&.show': {
             width: 'auto',
-            maxWidth: '360px',
+            maxWidth: '250px',
           },
           '&.hide': {
-            maxWidth: '0px',
+            maxWidth: '0px !important',
             overflow: 'hidden',
+            '& > .content': {
+              transform: `translateX(${this.$theme.direction.leftFactor * -100}%)`
+            },
           }
         },
         '&.unattached': {
@@ -91,7 +113,7 @@ export default {
           transition: `transform ${this.$theme.speed.normal} ease-out`,
           zIndex: '2',
           '&.show': {
-            transform: `translateX(0) !important`
+            transform: `translateX(0) !important`,
           },
           '&.hide': {
             transform: `translateX(${this.$theme.direction.leftFactor * -100}%)`
@@ -101,19 +123,8 @@ export default {
       mediaQuery({maxWidth: '960px'}, [
         className('sidebar', {
           '&.smart': {
-            top: '0',
-            height: '100%',
-            maxHeight: '100%',
-            overflow: 'auto',
-            position: unattachedPostion,
-            transform: `translateX(${this.$theme.direction.leftFactor * -100}%) !important`,
-          }
-        })
-      ]),
-      mediaQuery({minWidth: '961px'}, [
-        className('sidebar', {
-          '&.smart': {
-            width: 'auto',
+            position: 'absolute',
+            opacity: 0,
           }
         })
       ])
