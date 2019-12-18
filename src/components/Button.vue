@@ -55,9 +55,10 @@ export default {
         borderRadius: this.border ? this.$theme.sizes.radius.normal : 0,
         minHeight: this.$theme.sizes.base.multiplyBy(sizeFactorMap[this.size]),
         height: this.$theme.sizes.base.multiplyBy(sizeFactorMap[this.size]),
-        padding: `0 ${this.$theme.sizes.base.normal}`,
+        padding: `0 ${this.$theme.sizes.base.multiplyBy(2)}`,
+        transition: `all ${this.$theme.speed.multiplyBy(0.5)}`,
         cursor: 'pointer',
-        '&:hover': {
+        '&:hover, &:focus': {
           background: this.color ? this.$theme.colors[this.color].shade(10) : 'inherit',
         },
         '&:active': {
