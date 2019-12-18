@@ -106,19 +106,65 @@ export default {
         (this.global ? window : this.$el).removeEventListener(eventType, localListener);
       }
     },
-    neglectTo(element, listener) {
+    focusStoler(element) {
+      const focusableItems = element.querySelectorAll('select, input, textarea, button, [tabindex]:not([tabindex=""])');
+      const first = focusableItems[0] || element;
+      const last = focusableItems[focusableItems.length - 1] || element;
+      function onKeyDown(event) {
+        if (event.which === 9) {
+          if (event.target === first && event.shiftKey) {
+            // when first item is focused and user press shift + tab
+            event.preventDefault()
+            last.focus()
+          } else if (event.target === last && !event.shiftKey) {
+            // when last item is focused and user press tab
+            event.preventDefault()
+            first.focus()
+          }
+        }
+      }
+      const startFocusFor = element.querySelector('[autofocus]') || last;
+      startFocusFor.focus();
+      window.addEventListener('keydown', onKeyDown);
+
+      return {
+        release() {
+          element.focus();
+          window.removeEventListener('keydown', onKeyDown);
+        }
+      }
+    },
+    cancelDetector(callback) {
+      function onKeyDown(event) {
+        if (event.which === 27) {
+          callback();
+          window.removeEventListener('keydown', onKeyDown);
+        }
+      }
+      window.addEventListener('keydown', onKeyDown);
+      return {
+        release() {
+          window.removeEventListener('keydown', onKeyDown);
+        }
+      }
+    },
+    outerClickDetector(element, calback) {
       const layoutEl = (this.global ? window : this.$el);
-      element.inlineClickHandler = event => {
+      function onClick(event) {
         if (!element.contains(event.target)) {
-          listener();
-          layoutEl.removeEventListener('click', element.inlineClickHandler)
-          layoutEl.removeEventListener('touchstart', element.inlineClickHandler)
+          calback();
         }
       }
       setTimeout(() => {
-        layoutEl.addEventListener('click', element.inlineClickHandler);
-        layoutEl.addEventListener('touchstart', element.inlineClickHandler);
+        layoutEl.addEventListener('click', onClick);
+        layoutEl.addEventListener('touchstart', onClick);
       });
+      return {
+        release() {
+          layoutEl.removeEventListener('click', onClick);
+          layoutEl.removeEventListener('touchstart', onClick);
+        }
+      }
     },
     lock() {
       (this.global ? document.body : this.$el).style.overflow = 'hidden';
