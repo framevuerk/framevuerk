@@ -22,6 +22,7 @@
 
 <script>
 import parent from '@/utility/parent';
+import { dashCase } from '@/utility/utils';
   
 export default {
   props: {
@@ -46,14 +47,17 @@ export default {
       []
     ];
     this.$slots.default.filter(vnode => vnode.componentOptions).forEach((vnode) => {
-      const tag = vnode.componentOptions.tag;
-      if (tag === 'fvHeader') {
+      const is = (section) => (
+        (vnode.componentOptions.propsData || {}).layoutSection === section || dashCase(vnode.componentOptions.tag) === `fv-${section}`
+      );
+
+      if (is('header')) {
         children[0].push(vnode);
-      } else if (tag === 'fvFooter') {
+      } else if (is('footer')) {
         children[2].push(vnode);
-      } else if (tag === 'fvContent') {
+      } else if (is('content')) {
         children[1][1].push(vnode);
-      } else if (tag === 'fvSidebar') {
+      } else if (is('sidebar')) {
         if (vnode.componentOptions.propsData.position === 'end') {
           children[1][2].push(vnode);
         } else {
