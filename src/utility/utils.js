@@ -1,4 +1,4 @@
-// export const dashCase = (str) => str.split('').map((char) => (/[A-Z]/.test(char) ? '-' : '') + char.toLowerCase()).join('');
+export const dashCase = (str) => str.split('').map((char, index) => (/[A-Z]/.test(char) && index > 0 ? '-' : '') + char.toLowerCase()).join('');
 
 // export const makeError = (msg) => { throw new Error(`[VueComponentStyle] ${msg}`); };
 
