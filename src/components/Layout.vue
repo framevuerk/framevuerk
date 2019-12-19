@@ -72,38 +72,51 @@ export default {
   },
   data() {
     return {
-      scrollListeners: [],
-      resizeListeners: [],
-      lastScrollPosition: 0,
-      lastScrollTimeout: null,
+      eventEl: null,
+      listeners: {
+        scroll: [],
+        resize: [],
+      },
+      localListeners: {
+        scroll: this.onScroll,
+        resize: this.onResize,
+      },
+      eventsData: {
+        scroll: {
+          last: 0,
+          timeout: null,
+        },
+      },
       lockers: 0,
     };
+  },
+  mounted() {
+    this.eventEl = this.global ? window : this.$el;
   },
   beforeDestroy () {
     (this.global ? window : this.$el).removeEventListener('scroll', this.localScrollListener);
   },
   methods: {
     on(eventType, listener, immediately = false) {
-      const listeners = this[`${eventType}Listeners`];
-      const localListener = this[`${eventType}Listener`];
-      listeners.push(listener);
-      if (listeners.length === 1) {
+      const listeners = this.listeners[eventType];
+      const localListener = this.localListeners[eventType];
+      if (listeners.push(listener) === 1) {
         this.$nextTick(() => {
           setTimeout(() => {
-            (this.global ? window : this.$el).addEventListener(eventType, localListener);
+            this.eventEl.addEventListener(eventType, localListener);
             if (immediately) {
               localListener();
             }
           });
         });
-      }
+      };
     },
     off(eventType, listener) {
-      const listeners = this[`${eventType}Listeners`];
-      const localListener = this[`${eventType}Listener`];
+      const listeners = this.listeners[eventType];
+      const localListener = this.localListeners[eventType];
       listeners.splice(listeners.find((l) => listener));
       if (listeners.length === 0) {
-        (this.global ? window : this.$el).removeEventListener(eventType, localListener);
+        this.eventEl.removeEventListener(eventType, localListener);
       }
     },
     focusStoler(element) {
@@ -177,22 +190,22 @@ export default {
         (this.global ? document.body : this.$el).style.overflow = null;
       }
     },
-    scrollListener() {
+    onScroll() {
       const el = (this.global ? document.scrollingElement : this.$el);
       const scrollTop = el.scrollTop;
-      clearTimeout(this.lastScrollPosition);
-      this.lastScrollTimeout = setTimeout(() => {
-        this.lastScrollPosition = scrollTop;
+      clearTimeout(this.eventsData.scroll.timeout);
+      this.listeners.scroll.forEach(listener => listener(scrollTop, scrollTop > this.eventsData.scroll.last ? 'down' : 'up'));
+      this.eventsData.scroll.timeout = setTimeout(() => {
+        this.eventsData.scroll.last = scrollTop;
       });
-      this.scrollListeners.forEach(listener => listener(scrollTop, scrollTop > this.lastScrollPosition ? 'down' : 'up'));
     },
-    resizeListener() {
-      const el = (this.global ? document.scrollingElement : this.$el);
+    onResize() {
+      const el = (this.global ? document.body : this.$el);
       const size = {
         width: el.offsetWidth,
         height: el.offsetHeight,
       };
-      this.resizeListeners.forEach(listener => listener(size));
+      this.listeners.resize.forEach(listener => listener(size));
     }
   },
   style({ className }) {
