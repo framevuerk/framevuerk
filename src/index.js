@@ -14,7 +14,7 @@ import fvContainer from './components/Container.vue';
 // import fvListItem from './components/fvListItem.vue'
 // import fvMenu from './components/fvMenu.vue'
 // import fvInput from './components/fvInput.vue'
-import fvButton from './components/Button.vue'
+import fvButton from './components/Button.vue';
 // import fvSwitch from './components/fvSwitch.vue'
 // import fvDialog from './components/fvDialog.vue'
 // import fvTable from './components/fvTable.vue'
@@ -63,7 +63,7 @@ const Framevuerk = {
   // fvPagination,
   // fvFormElement,
   // config,
-  install (Vue, userConfig = []) {
+  install(Vue, userConfig = []) {
     // Components
     Vue.component('fvThemeProvider', fvThemeProvider);
     Vue.component('fvLayout', fvLayout);
@@ -98,10 +98,10 @@ const Framevuerk = {
   },
   // name: process.env.name,
   // version: process.env.version
-}
+};
 
 if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(Framevuerk)
+  window.Vue.use(Framevuerk);
 }
 
-export default Framevuerk
+export default Framevuerk;

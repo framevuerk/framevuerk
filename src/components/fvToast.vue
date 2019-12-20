@@ -6,62 +6,62 @@ transition(name="fv-toast")
 </template>
 
 <script>
-import parent from '../utility/parent.js'
-import colorMixin from '../mixins/color.js'
+import parent from '../utility/parent.js';
+import colorMixin from '../mixins/color.js';
 
 export default {
   mixins: [
     colorMixin({
-      color: 'background'
-    })
+      color: 'background',
+    }),
   ],
   props: {
     color: {
       type: String,
-      default: 'sidebar'
+      default: 'sidebar',
     },
     value: {
       type: Boolean,
-      default: false
+      default: false,
     },
     timeout: {
       type: Number,
-      default: 3000
-    }
+      default: 3000,
+    },
   },
-  data () {
+  data() {
     return {
-      timer: null
-    }
+      timer: null,
+    };
   },
   methods: {
-    onOpen () {
-      this.$emit('open')
-      parent.appendChild(this.$el)
+    onOpen() {
+      this.$emit('open');
+      parent.appendChild(this.$el);
       if (this.timeout > 0) {
-        this.timer = setTimeout(this.close, this.timeout)
+        this.timer = setTimeout(this.close, this.timeout);
       }
     },
-    onClose () {
-      this.$emit('close')
-      clearTimeout(this.timer)
+    onClose() {
+      this.$emit('close');
+      clearTimeout(this.timer);
     },
-    close () {
-      this.$emit('input', false)
+    close() {
+      this.$emit('input', false);
     },
-    valueHandler (value) {
+    valueHandler(value) {
       if (value) {
-        return this.onOpen()
+        return this.onOpen();
       }
-      return this.onClose()
-    }
+      return this.onClose();
+    },
   },
   watch: {
-    value (value) {
-      this.valueHandler(value)
-    }
-  }
-}
+    value(value) {
+      this.valueHandler(value);
+    },
+  },
+};
 </script>
 
 <style lang="scss">

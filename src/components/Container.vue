@@ -28,9 +28,9 @@ export default {
         border: this.border ? `solid 1px ${this.$theme.colors.background.shade(-15)}` : 'none',
         borderRadius: this.border ? this.$theme.sizes.radius.normal : 0,
         padding: this.padding ? this.$theme.sizes.base.normal : 'none',
-      })
-    ]
+      }),
+    ];
   },
-  inject: ['$theme']
-}
+  inject: ['$theme'],
+};
 </script>

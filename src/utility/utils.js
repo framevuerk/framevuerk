@@ -1,6 +1,9 @@
+/* eslint-disable no-undef */
 export const dashCase = (str) => str.split('').map((char, index) => (/[A-Z]/.test(char) && index > 0 ? '-' : '') + char.toLowerCase()).join('');
 
 // export const makeError = (msg) => { throw new Error(`[VueComponentStyle] ${msg}`); };
+
+export const cx = (sp, ...args) => args.filter((arg) => arg).join(sp);
 
 export const typeOf = (x) => toString.call(x).match(/\s([a-zA-Z]+)/)[1];
 
@@ -12,7 +15,7 @@ export const hexToRgb = (hexColor) => {
   const color = (() => {
     let c = hexColor.replace('#', '');
     if (c.length === 3) {
-      c = c.split('').map(x => x + x).join('');
+      c = c.split('').map((x) => x + x).join('');
     }
     if (c.length !== 6) {
       throw new Error('Bad color passes!');

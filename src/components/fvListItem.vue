@@ -16,79 +16,79 @@ li.fv-list-item(:disabled="disabled")
 </template>
 
 <script>
-import icon from '../icons/ARR.svg'
-import parent from '../utility/parent.js'
+import icon from '../icons/ARR.svg';
+import parent from '../utility/parent.js';
 
 export default {
   props: {
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     expanded: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
-  data () {
+  data() {
     return {
       isExpanded: this.expanded,
-      icon
-    }
+      icon,
+    };
   },
   computed: {
-    hasSubList () {
-      return this.$slots.hasOwnProperty('sub-list') || this.$scopedSlots.hasOwnProperty('sub-list')
-    }
+    hasSubList() {
+      return this.$slots.hasOwnProperty('sub-list') || this.$scopedSlots.hasOwnProperty('sub-list');
+    },
   },
   methods: {
-    subListHeight () {
-      let hopeHeight = '100vh'
+    subListHeight() {
+      let hopeHeight = '100vh';
       if (parent.$body) {
-        const tempEl = this.$refs.subList.cloneNode(true)
-        tempEl.style.display = 'block'
-        tempEl.style.visibility = 'hidden'
-        tempEl.style.position = 'absolute'
-        tempEl.style.top = '-200vh'
-        tempEl.style.height = 'auto'
-        parent.$body.appendChild(tempEl)
-        hopeHeight = `${tempEl.scrollHeight + 2}px`
-        tempEl.remove()
+        const tempEl = this.$refs.subList.cloneNode(true);
+        tempEl.style.display = 'block';
+        tempEl.style.visibility = 'hidden';
+        tempEl.style.position = 'absolute';
+        tempEl.style.top = '-200vh';
+        tempEl.style.height = 'auto';
+        parent.$body.appendChild(tempEl);
+        hopeHeight = `${tempEl.scrollHeight + 2}px`;
+        tempEl.remove();
       }
-      return hopeHeight
+      return hopeHeight;
     },
-    expand () {
-      this.$refs.subList.style.maxHeight = this.subListHeight()
+    expand() {
+      this.$refs.subList.style.maxHeight = this.subListHeight();
       setTimeout(() => {
-        this.isExpanded = true
-        this.$emit('expand')
-      })
+        this.isExpanded = true;
+        this.$emit('expand');
+      });
     },
-    collapse () {
-      this.$refs.subList.style.maxHeight = this.subListHeight()
+    collapse() {
+      this.$refs.subList.style.maxHeight = this.subListHeight();
       setTimeout(() => {
-        this.isExpanded = false
-        this.$emit('collapse')
-      })
+        this.isExpanded = false;
+        this.$emit('collapse');
+      });
     },
-    toggle (event) {
-      event.stopPropagation()
+    toggle(event) {
+      event.stopPropagation();
       if (this.isExpanded) {
-        this.collapse()
+        this.collapse();
       } else {
-        this.expand()
+        this.expand();
       }
     },
-    onClick (event) {
+    onClick(event) {
       if (!this.disabled) {
-        this.$emit('click', event)
+        this.$emit('click', event);
       }
     },
-    onHover () { // called by parent
-      this.$emit('hover')
-    }
-  }
-}
+    onHover() { // called by parent
+      this.$emit('hover');
+    },
+  },
+};
 </script>
 
 <style lang="scss">

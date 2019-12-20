@@ -28,82 +28,80 @@
 </template>
 
 <script>
-import parent from '../utility/parent.js'
+import parent from '../utility/parent.js';
 
 export default {
   props: {
     fields: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     titleKey: {
       type: String,
-      default: ''
+      default: '',
     },
     valueKey: {
       type: String,
-      default: ''
+      default: '',
     },
     rows: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     showTitle: {
       type: Boolean,
-      default: true
+      default: true,
     },
     breaked: {
       type: [Boolean, Object],
-      validator: (value) => {
-        return [true, false, null].indexOf(value) > -1
-      },
-      default: null
-    }
+      validator: (value) => [true, false, null].indexOf(value) > -1,
+      default: null,
+    },
   },
-  data () {
+  data() {
     return {
-      isBreaked: this.breaked || false
-    }
+      isBreaked: this.breaked || false,
+    };
   },
   methods: {
-    fieldProp (field, prop) {
+    fieldProp(field, prop) {
       if (!prop) {
-        return field
+        return field;
       }
       switch (prop) {
         case 'title':
-          return this.titleKey ? field[this.titleKey] : field
+          return this.titleKey ? field[this.titleKey] : field;
         case 'value':
-          return this.valueKey ? field[this.valueKey] : field
+          return this.valueKey ? field[this.valueKey] : field;
       }
     },
-    defaultFieldValueInRow (field, row) {
+    defaultFieldValueInRow(field, row) {
       if (typeof row === 'object') {
-        const prop = this.fieldProp(field, 'value')
+        const prop = this.fieldProp(field, 'value');
         if (typeof prop !== 'object') {
-          return row[prop]
+          return row[prop];
         }
-        return row
+        return row;
       }
-      return row
+      return row;
     },
-    onResize () {
+    onResize() {
       if (this.pin !== null) {
-        return
+        return;
       }
-      const isBreaked = parent.getSize().indexOf('lg') === -1
-      this.isBreaked = isBreaked
-      this.$emit('breakedChange', isBreaked)
-    }
+      const isBreaked = parent.getSize().indexOf('lg') === -1;
+      this.isBreaked = isBreaked;
+      this.$emit('breakedChange', isBreaked);
+    },
   },
-  mounted () {
-    parent.on('sizechange', this.onResize)
-    this.onResize()
+  mounted() {
+    parent.on('sizechange', this.onResize);
+    this.onResize();
   },
-  beforeDestroy () {
-    parent.off('sizechange', this.onResize)
-  }
-}
+  beforeDestroy() {
+    parent.off('sizechange', this.onResize);
+  },
+};
 </script>
 
 <style lang="scss">

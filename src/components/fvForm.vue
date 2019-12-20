@@ -6,63 +6,63 @@ form.fv-form(@submit.prevent="submit")
 <script>
 export default {
   methods: {
-    submit () {
-      function fvValidate (child) {
+    submit() {
+      function fvValidate(child) {
         if (typeof child.disabled !== 'undefined' && child.disabled) {
-          return true
+          return true;
         }
         if (typeof child.fvValidate !== 'undefined' && !child.fvValidate) {
-          return false
+          return false;
         }
-        return true
+        return true;
       }
-      function focus (child) {
+      function focus(child) {
         if (typeof child.focus === 'function') {
-          child.focus()
+          child.focus();
         } else if (typeof child.$el.focus === 'function') {
-          child.$el.focus()
+          child.$el.focus();
         }
       }
-      function warn (child) {
+      function warn(child) {
         if (typeof child.warn === 'function') {
-          child.warn()
+          child.warn();
         }
       }
-      function getChilds (parent, force = false) {
-        let ret = []
+      function getChilds(parent, force = false) {
+        let ret = [];
         if (
-          (parent.$el.classList.contains('fv-form') || typeof parent.fvValidate !== 'undefined') &&
-          !force) {
-          return []
+          (parent.$el.classList.contains('fv-form') || typeof parent.fvValidate !== 'undefined')
+          && !force) {
+          return [];
         }
-        parent.$children.forEach(child => {
-          ret.push(child)
+        parent.$children.forEach((child) => {
+          ret.push(child);
           if (child.$children.length) {
-            ret = ret.concat(getChilds(child, false))
+            ret = ret.concat(getChilds(child, false));
           }
-        })
-        return ret
+        });
+        return ret;
       }
 
-      const childs = getChilds(this, true)
+      const childs = getChilds(this, true);
 
-      const invalids = []
+      const invalids = [];
 
-      childs.forEach(child => {
+      childs.forEach((child) => {
         if (!fvValidate(child)) {
-          invalids.push(child)
-          warn(child)
+          invalids.push(child);
+          warn(child);
         }
-      })
+      });
       if (invalids.length) {
-        focus(invalids[0])
-        this.$emit('reject', invalids)
+        focus(invalids[0]);
+        this.$emit('reject', invalids);
       } else {
-        this.$emit('submit')
+        this.$emit('submit');
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">

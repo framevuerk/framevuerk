@@ -13,33 +13,33 @@ export default {
   props: {
     label: {
       type: String,
-      default: ''
+      default: '',
     },
     singleLine: {
       type: Boolean,
-      default: false
+      default: false,
     },
     inline: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
-      isHighlighted: false
-    }
+      isHighlighted: false,
+    };
   },
-  provide () {
+  provide() {
     return {
-      fvFormElement: this
-    }
+      fvFormElement: this,
+    };
   },
   methods: {
-    turn (on = true) {
-      this.isHighlighted = on
-    }
-  }
-}
+    turn(on = true) {
+      this.isHighlighted = on;
+    },
+  },
+};
 </script>
 
 <style lang="scss">

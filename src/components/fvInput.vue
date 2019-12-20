@@ -12,47 +12,47 @@ component.fv-input(
 </template>
 
 <script>
-import parent from '../utility/parent.js'
-import config from '../utility/config.js'
-import colorMixin from '../mixins/color.js'
-import formElementMixin from '../mixins/formElement.js'
+import parent from '../utility/parent.js';
+import config from '../utility/config.js';
+import colorMixin from '../mixins/color.js';
+import formElementMixin from '../mixins/formElement.js';
 
 export default {
   mixins: [
     colorMixin({
-      color: 'background'
+      color: 'background',
     }),
-    formElementMixin(v => !!v)
+    formElementMixin((v) => !!v),
   ],
   props: {
     multiline: {
       type: Boolean,
-      default: false
+      default: false,
     },
     autoHeight: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   computed: {
-    tag () {
-      return this.multiline ? 'textarea' : 'input'
-    }
+    tag() {
+      return this.multiline ? 'textarea' : 'input';
+    },
   },
   methods: {
-    onFocus () {
-      this.$el.select()
-      this.onFocusDefault()
+    onFocus() {
+      this.$el.select();
+      this.onFocusDefault();
     },
-    onInput (event) {
+    onInput(event) {
       if (this.autoHeight && this.multiline) {
-        this.$el.style.height = '2.8em'
-        this.$el.style.height = `${this.$el.scrollHeight - 2}px`
+        this.$el.style.height = '2.8em';
+        this.$el.style.height = `${this.$el.scrollHeight - 2}px`;
       }
-      this.$emit('input', event.target.value)
-    }
-  }
-}
+      this.$emit('input', event.target.value);
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -89,7 +89,7 @@ export default {
     &:focus,
     &[focus] {
       border-color: var(--color-borderhover);
-      
+
 
       &:invalid,
       &[invalid] {

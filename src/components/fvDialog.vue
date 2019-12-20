@@ -6,84 +6,84 @@ transition(:name="animation", afterEnter="onOpen(2)", @beforeLeave="onClose(1)",
 </template>
 
 <script>
-import parent from '../utility/parent.js'
-import CancelDetector from '../utility/CancelDetector.js'
-import FocusStoler from '../utility/FocusStoler.js'
+import parent from '../utility/parent.js';
+import CancelDetector from '../utility/CancelDetector.js';
+import FocusStoler from '../utility/FocusStoler.js';
 
 export default {
   props: {
     value: {
       type: Boolean,
-      default: false
+      default: false,
     },
     animation: {
       type: String,
-      default: 'fv-fade'
-    }
+      default: 'fv-fade',
+    },
   },
-  data () {
+  data() {
     return {
       cancelDetector: new CancelDetector(),
       focusStoler: new FocusStoler(),
-      outer: null
-    }
+      outer: null,
+    };
   },
   methods: {
-    valueHandler (value) {
+    valueHandler(value) {
       if (value) {
-        this.onOpen(1)
+        this.onOpen(1);
       }
       // onClose handled by transition
     },
-    onOpen (step) {
+    onOpen(step) {
       if (step === 1) {
-        this.$emit('open')
-        this.cancelDetector.start(this.onCancel)
-        this.outer = parent.newEl('div', 'fv-dialog-outer')
-        this.outer.onclick = this.onCancel
-        this.outer.appendChild(this.$el)
-        parent.lock(this._uid)
-        this.focusStoler.stole(this.outer)
+        this.$emit('open');
+        this.cancelDetector.start(this.onCancel);
+        this.outer = parent.newEl('div', 'fv-dialog-outer');
+        this.outer.onclick = this.onCancel;
+        this.outer.appendChild(this.$el);
+        parent.lock(this._uid);
+        this.focusStoler.stole(this.outer);
       } else if (step === 2) {
-        this.outer.scrollTo(0, 0)
+        this.outer.scrollTo(0, 0);
       }
     },
-    onCancel (event) {
+    onCancel(event) {
       if (this.value) {
-        this.$emit('input', false)
+        this.$emit('input', false);
       }
     },
-    onClose (step) {
+    onClose(step) {
       if (step === 1) {
-        this.$emit('close')
-        this.cancelDetector.stop()
-        parent.unlock(this._uid)
+        this.$emit('close');
+        this.cancelDetector.stop();
+        parent.unlock(this._uid);
       } else if (step === 2) {
-        parent.appendChild(this.$el)
+        parent.appendChild(this.$el);
         this.$nextTick(() => {
-          this.focusStoler.restore()
+          this.focusStoler.restore();
           if (this.outer) {
-            this.outer.remove()
+            this.outer.remove();
           }
-        })
+        });
       }
     },
-    cancel () {
-      return
-    }
+    cancel() {
+
+    },
   },
   watch: {
-    value (value) {
-      this.valueHandler(value)
-    }
+    value(value) {
+      this.valueHandler(value);
+    },
   },
-  beforeDestroy () {
-    this.onClose()
+  beforeDestroy() {
+    this.onClose();
   },
-  mounted () {
-    this.valueHandler(this.value)
-  }
-}
+  mounted() {
+    this.valueHandler(this.value);
+  },
+};
 
 </script>
 

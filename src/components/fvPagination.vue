@@ -27,111 +27,109 @@
 </template>
 
 <script>
-import icon from '../icons/ARR.svg'
+import icon from '../icons/ARR.svg';
 
 export default {
   props: {
     value: {
       type: Number,
-      default: 1
+      default: 1,
     },
     total: {
       type: Number,
-      default: 0
+      default: 0,
     },
     size: {
       type: Number,
-      default: 5
+      default: 5,
     },
     navigation: {
       type: Boolean,
-      default: true
+      default: true,
     },
     next: {
       type: Boolean,
-      default: true
+      default: true,
     },
     prev: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
-  data () {
+  data() {
     return {
-      inputMode: false
-    }
+      inputMode: false,
+    };
   },
   computed: {
-    icons () {
+    icons() {
       return {
         icon,
         next: process.env.direction === 'ltr' ? 'rotate(-90deg)' : 'rotate(90deg)',
-        prev: process.env.direction === 'ltr' ? 'rotate(90deg)' : 'rotate(-90deg)'
-      }
+        prev: process.env.direction === 'ltr' ? 'rotate(90deg)' : 'rotate(-90deg)',
+      };
     },
-    pages () {
-      const list = []
-      const end = () => {
-        return list.map(item => {
-          if (typeof item === 'number') {
-            return {
-              type: 'page',
-              number: item
-            }
-          }
-          return item
-        })
-      }
-      if (!this.total || this.total < 1) {
-        list.push(this.value)
-        return end()
-      } else if (this.total < this.size) {
-        for (let i = 1; i <= this.total; i++) {
-          list.push(i)
+    pages() {
+      const list = [];
+      const end = () => list.map((item) => {
+        if (typeof item === 'number') {
+          return {
+            type: 'page',
+            number: item,
+          };
         }
-        return end()
+        return item;
+      });
+      if (!this.total || this.total < 1) {
+        list.push(this.value);
+        return end();
+      } if (this.total < this.size) {
+        for (let i = 1; i <= this.total; i++) {
+          list.push(i);
+        }
+        return end();
       }
-      let remained = this.size
-      const offset = Math.floor(remained / 2)
-      let from = this.value - offset
-      from = from < 1 ? 1 : from
-      from = from + remained > this.total ? (this.total - remained + 1) : from
+      let remained = this.size;
+      const offset = Math.floor(remained / 2);
+      let from = this.value - offset;
+      from = from < 1 ? 1 : from;
+      from = from + remained > this.total ? (this.total - remained + 1) : from;
       for (let i = from; remained > 0; remained--) {
-        list.push(i++)
+        list.push(i++);
       }
-      list[0] = 1
+      list[0] = 1;
       const dots = {
         type: 'dots',
-        text: '...'
-      }
+        text: '...',
+      };
       if (list[1] !== 2) {
-        list.splice(1, 0, dots)
+        list.splice(1, 0, dots);
       }
-      list[list.length - 1] = this.total
+      list[list.length - 1] = this.total;
       if (list[list.length - 2] !== this.total - 1) {
-        list.splice(list.length - 1, 0, dots)
+        list.splice(list.length - 1, 0, dots);
       }
-      return end()
-    }
+      return end();
+    },
   },
   methods: {
-    turnInputMode () {
-      this.inputMode = true
+    turnInputMode() {
+      this.inputMode = true;
       this.$nextTick(() => {
-        this.$refs.input[0].focus()
-      })
+        this.$refs.input[0].focus();
+      });
     },
-    onEnterPage (event) {
-      this.inputMode = false
+    onEnterPage(event) {
+      this.inputMode = false;
       if (event.target.value) {
-        const page = parseInt(event.target.value)
+        const page = parseInt(event.target.value);
         if (page > 0 && (!this.total || page <= this.total)) {
-          this.$emit('input', page)
+          this.$emit('input', page);
         }
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">

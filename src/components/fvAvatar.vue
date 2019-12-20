@@ -8,39 +8,39 @@
 export default {
   props: {
     src: {
-      type: String
+      type: String,
     },
     name: {
-      type: String
+      type: String,
     },
     size: {
       type: String,
-      default: '32px'
-    }
+      default: '32px',
+    },
   },
   computed: {
-    text () {
-      var trimed = (this.name || '').trim()
-      var ret = ''
-      const charUpper = (str, at) => str.charAt(at).toUpperCase()
+    text() {
+      const trimed = (this.name || '').trim();
+      let ret = '';
+      const charUpper = (str, at) => str.charAt(at).toUpperCase();
       if (trimed) {
         if (trimed.indexOf(' ') !== -1) {
-          ret = charUpper(trimed, 0) + charUpper(trimed, trimed.lastIndexOf(' ') + 1)
+          ret = charUpper(trimed, 0) + charUpper(trimed, trimed.lastIndexOf(' ') + 1);
         } else if (trimed.length >= 2) {
-          ret = charUpper(trimed, 0) + charUpper(trimed, 1)
+          ret = charUpper(trimed, 0) + charUpper(trimed, 1);
         } else {
-          ret = charUpper(trimed, 0).repeat(2)
+          ret = charUpper(trimed, 0).repeat(2);
         }
       } else {
-        return 'XX'
+        return 'XX';
       }
-      return ret
+      return ret;
     },
-    backgroundImage () {
-      return this.src ? `url("${this.src}")` : false
-    }
-  }
-}
+    backgroundImage() {
+      return this.src ? `url("${this.src}")` : false;
+    },
+  },
+};
 </script>
 
 <style lang="scss">

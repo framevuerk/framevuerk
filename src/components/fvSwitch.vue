@@ -15,92 +15,92 @@ span.fv-switch(:class="{ on: onValue === pValue }",
 export default {
   props: {
     value: {
-      default: false
+      default: false,
     },
     onValue: {
-      default: true
+      default: true,
     },
     offValue: {
-      default: false
+      default: false,
     },
     required: {
       type: [Boolean, Function],
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
-      pValue: this.value
-    }
+      pValue: this.value,
+    };
   },
   inject: {
     fvFormElement: {
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
-    fvValidate () {
+    fvValidate() {
       if (this.required === true) {
-        return this.value === this.onValue
-      } else if (typeof this.required === 'function') {
-        return this.required(this.value)
+        return this.value === this.onValue;
+      } if (typeof this.required === 'function') {
+        return this.required(this.value);
       }
-      return true
-    }
+      return true;
+    },
   },
   watch: {
-    value (v) {
-      this.pValue = v
-      this.setStructure()
-    }
+    value(v) {
+      this.pValue = v;
+      this.setStructure();
+    },
   },
-  created () {
-    this.setStructure()
+  created() {
+    this.setStructure();
   },
   methods: {
-    toggle () {
+    toggle() {
       if (!this.disabled) {
         if (this.pValue === this.onValue) {
-          this.off()
+          this.off();
         } else {
-          this.on()
+          this.on();
         }
       }
     },
-    on () {
-      this.pValue = this.onValue
-      this.$emit('input', this.pValue)
+    on() {
+      this.pValue = this.onValue;
+      this.$emit('input', this.pValue);
     },
-    off () {
-      this.pValue = this.offValue
-      this.$emit('input', this.pValue)
+    off() {
+      this.pValue = this.offValue;
+      this.$emit('input', this.pValue);
     },
-    focus () {
+    focus() {
       if (!this.disabled) {
-        this.$el.focus()
+        this.$el.focus();
       }
     },
-    onFocus () {
+    onFocus() {
       if (this.fvFormElement) {
-        this.fvFormElement.turn(true)
+        this.fvFormElement.turn(true);
       }
     },
-    onBlur () {
+    onBlur() {
       if (this.fvFormElement) {
-        this.fvFormElement.turn(false)
+        this.fvFormElement.turn(false);
       }
     },
-    setStructure () {
+    setStructure() {
       if ([this.offValue, this.onValue].indexOf(this.value) === -1 && !this.disabled) {
-        this.off()
+        this.off();
       }
-    }
-  }
-}
+    },
+  },
+};
 
 </script>
 

@@ -13,66 +13,65 @@ textarea.fv-textarea.fv-input(:class="{'auto-height': autoHeight}",
 export default {
   props: {
     value: {
-      default: undefined
+      default: undefined,
     },
     required: {
       type: [Boolean, Function],
-      default: false
+      default: false,
     },
     autoHeight: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   inject: {
     fvFormElement: {
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
-    fvValidate () {
+    fvValidate() {
       if (this.required === true) {
         if (!this.value) {
-          return false
-        } else {
-          return true
+          return false;
         }
-      } else if (typeof this.required === 'function') {
-        return this.required(this.value)
+        return true;
+      } if (typeof this.required === 'function') {
+        return this.required(this.value);
       }
-      return true
+      return true;
     },
-    height () {
+    height() {
       if (this.autoHeight) {
-        let height
+        let height;
         if (this.value) {
-          height = this.value.split('\n').length + 2
+          height = this.value.split('\n').length + 2;
         } else {
-          height = 2
+          height = 2;
         }
-        return `${height * 1.3}em`
+        return `${height * 1.3}em`;
       }
-    }
+    },
   },
   methods: {
-    focus () {
-      this.$el.focus()
+    focus() {
+      this.$el.focus();
     },
-    onFocus () {
+    onFocus() {
       if (this.fvFormElement) {
-        this.fvFormElement.turn(true)
+        this.fvFormElement.turn(true);
       }
     },
-    onBlur () {
+    onBlur() {
       if (this.fvFormElement) {
-        this.fvFormElement.turn(false)
+        this.fvFormElement.turn(false);
       }
     },
-    onInput (event) {
-      this.$emit('input', event.target.value)
-    }
-  }
-}
+    onInput(event) {
+      this.$emit('input', event.target.value);
+    },
+  },
+};
 </script>
 
 <style lang="scss">

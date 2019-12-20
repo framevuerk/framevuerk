@@ -46,199 +46,197 @@ fv-inputbox.fv-select(:invalid="!fvValidate",
 </template>
 
 <script>
-import fvInputbox from './fvInputbox.vue'
-import colorMixin from '../mixins/color.js'
-import caretIcon from '../icons/ARR.svg'
-import insertIcon from '../icons/CLS.svg'
+import fvInputbox from './fvInputbox.vue';
+import colorMixin from '../mixins/color.js';
+import caretIcon from '../icons/ARR.svg';
+import insertIcon from '../icons/CLS.svg';
 
 export default {
   components: {
-    fvInputbox
+    fvInputbox,
   },
   mixins: [
     colorMixin({
-      color: 'background'
-    })
+      color: 'background',
+    }),
   ],
   props: {
     value: {
-      default: undefined
+      default: undefined,
     },
     options: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     disabledKey: {
       type: String,
-      default: 'disabled'
+      default: 'disabled',
     },
     valueKey: {
       type: String,
-      default: 'value'
+      default: 'value',
     },
     textKey: {
       type: String,
-      default: 'text'
+      default: 'text',
     },
     required: {
       type: [Boolean, Function],
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     search: {
       type: [Object, Boolean],
-      validator: (value) => {
-        return [true, false, null].indexOf(value) > -1
-      },
-      default: true
+      validator: (value) => [true, false, null].indexOf(value) > -1,
+      default: true,
     },
     placeholder: {
       type: String,
-      default: ''
+      default: '',
     },
     multiple: {
       type: Boolean,
-      default: false
+      default: false,
     },
     allowInsert: {
       type: Boolean,
-      default: false
+      default: false,
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     deleteButton: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
-  data () {
+  data() {
     return {
       isFocused: false,
       searchQuery: '',
       caretIcon,
-      insertIcon
-    }
+      insertIcon,
+    };
   },
   computed: {
-    filteredOptions () {
-      return this.options.filter(option => {
+    filteredOptions() {
+      return this.options.filter((option) => {
         if (this.search === true) {
           if (JSON.stringify(option).toUpperCase().indexOf(this.searchQuery.toUpperCase()) !== -1) {
-            return true
+            return true;
           }
-          return false
+          return false;
         }
-        return true
-      })
+        return true;
+      });
     },
-    fvValidate () {
+    fvValidate() {
       if (this.required === true) {
         if (typeof this.value === 'undefined' || (this.value instanceof Array && this.value.length === 0)) {
-          return false
+          return false;
         }
-        return true
-      } else if (typeof this.required === 'function') {
-        return this.required(this.value)
+        return true;
+      } if (typeof this.required === 'function') {
+        return this.required(this.value);
       }
-      return true
-    }
+      return true;
+    },
   },
   methods: {
-    focus () {
-      this.$refs.inputBox.focus()
+    focus() {
+      this.$refs.inputBox.focus();
     },
-    setStructure () {
+    setStructure() {
       if (this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))) {
-        this.$emit('input', [])
+        this.$emit('input', []);
       }
     },
-    onInsert (userString) {
-      this.$emit('insert', userString)
-      this.searchQuery = ''
+    onInsert(userString) {
+      this.$emit('insert', userString);
+      this.searchQuery = '';
     },
-    onSearch () {
+    onSearch() {
       if (this.$refs.list) {
-        this.$refs.list.moveHighlight(null)
+        this.$refs.list.moveHighlight(null);
       }
-      this.$emit('search', this.searchQuery)
+      this.$emit('search', this.searchQuery);
     },
-    optionProp (option, prop) {
+    optionProp(option, prop) {
       if (!prop) {
-        return option
+        return option;
       }
       switch (prop) {
         case 'value':
-          return this.valueKey ? option[this.valueKey] : option
+          return this.valueKey ? option[this.valueKey] : option;
         case 'text':
-          return this.textKey ? option[this.textKey] : option
+          return this.textKey ? option[this.textKey] : option;
         case 'disabled':
-          return this.disabledKey ? option[this.disabledKey] : false
+          return this.disabledKey ? option[this.disabledKey] : false;
       }
     },
-    valueProp (value, prop) {
-      const founded = this.options.find(option => this.optionProp(option, 'value') === value)
+    valueProp(value, prop) {
+      const founded = this.options.find((option) => this.optionProp(option, 'value') === value);
       if (!prop) {
-        return founded
+        return founded;
       }
       if (typeof founded !== 'undefined') {
-        return this.optionProp(founded, prop)
+        return this.optionProp(founded, prop);
       }
-      return value
+      return value;
     },
-    clickOption (option) {
+    clickOption(option) {
       if (this.isSelectedOption(option) && this.multiple) {
-        const optionValue = this.optionProp(option, 'value')
-        this.deleteValue(optionValue)
+        const optionValue = this.optionProp(option, 'value');
+        this.deleteValue(optionValue);
       } else {
-        this.selectOption(option)
+        this.selectOption(option);
       }
-      this.searchQuery = ''
+      this.searchQuery = '';
     },
-    selectOption (option) {
-      let newValue
-      const optionValue = this.optionProp(option, 'value')
+    selectOption(option) {
+      let newValue;
+      const optionValue = this.optionProp(option, 'value');
       if (this.multiple) {
-        newValue = [...this.value, optionValue]
+        newValue = [...this.value, optionValue];
       } else {
-        newValue = optionValue
+        newValue = optionValue;
       }
-      this.$emit('input', newValue)
+      this.$emit('input', newValue);
     },
-    deleteValue (value) {
+    deleteValue(value) {
       if (this.multiple) {
         if (typeof value === 'undefined') {
-          this.$emit('input', [])
+          this.$emit('input', []);
         } else {
-          const newValue = JSON.parse(JSON.stringify(this.value))
-          const indexOf = newValue.findIndex(selectedValue => JSON.stringify(selectedValue) === JSON.stringify(value))
+          const newValue = JSON.parse(JSON.stringify(this.value));
+          const indexOf = newValue.findIndex((selectedValue) => JSON.stringify(selectedValue) === JSON.stringify(value));
           if (indexOf !== -1) {
-            newValue.splice(indexOf, 1)
+            newValue.splice(indexOf, 1);
           }
-          this.$emit('input', newValue)
+          this.$emit('input', newValue);
         }
       } else {
-        this.$emit('input', undefined)
+        this.$emit('input', undefined);
       }
     },
-    isSelectedOption (option) {
+    isSelectedOption(option) {
       if (typeof this.value === 'undefined') {
-        return false
+        return false;
       }
       if (this.multiple) {
-        const indexOf = this.value.findIndex(selectedValue => JSON.stringify(selectedValue) === JSON.stringify(this.optionProp(option, 'value')))
+        const indexOf = this.value.findIndex((selectedValue) => JSON.stringify(selectedValue) === JSON.stringify(this.optionProp(option, 'value')));
         if (indexOf !== -1) {
-          return true
+          return true;
         }
-        return false
+        return false;
       }
-      return this.optionProp(option, 'value') === this.valueProp(this.value, 'value')
+      return this.optionProp(option, 'value') === this.valueProp(this.value, 'value');
     },
-    onKeydown (event) {
+    onKeydown(event) {
       switch (event.which) {
         case 37: // left
         case 38: // up
@@ -246,43 +244,43 @@ export default {
         case 40: // down
         case 13: // enter
           if (this.$refs.list) {
-            this.$refs.list.onKeydown(event)
+            this.$refs.list.onKeydown(event);
           }
-          break
+          break;
         case 8: // backspace
           if (this.searchQuery.length === 0 && this.deleteButton) {
             if (this.multiple) {
               if (this.value.length) {
-                this.deleteValue(this.value[this.value.length - 1])
+                this.deleteValue(this.value[this.value.length - 1]);
               }
             } else {
-              this.deleteValue()
+              this.deleteValue();
             }
           }
-          break
+          break;
         case 46: // delete
-          this.searchQuery = ''
+          this.searchQuery = '';
           if (this.deleteButton) {
-            this.deleteValue()
+            this.deleteValue();
           }
       }
-    }
+    },
   },
-  created () {
-    this.setStructure()
+  created() {
+    this.setStructure();
   },
   watch: {
-    value () {
+    value() {
       this.$nextTick(() => {
         if (!this.multiple) {
-          this.$refs.inputBox.close()
+          this.$refs.inputBox.close();
         } else {
-          this.$refs.inputBox.focus()
+          this.$refs.inputBox.focus();
         }
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss">

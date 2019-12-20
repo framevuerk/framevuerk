@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import parent from '../utility/parent.js'
-
 export default {
   props: {
     color: {
@@ -20,7 +18,7 @@ export default {
     },
     visible: {
       type: Boolean,
-      default: false
+      default: false,
     },
     position: {
       type: String,
@@ -33,10 +31,10 @@ export default {
       className: 'smart',
       cancelDetector: null,
       focusStoler: null,
-    }
+    };
   },
   methods: {
-    toggle () {
+    toggle() {
       this.$emit('update:visible', !this.visible);
     },
     handleSmart(size) {
@@ -75,7 +73,7 @@ export default {
         this.focusStoler && this.focusStoler.release();
         this.outerClickDetector && this.outerClickDetector.release();
       }
-    }
+    },
   },
   beforeDestroy() {
     this.$layout.off('resize', this.handleSmart);
@@ -90,7 +88,6 @@ export default {
       className('sidebar', {
         background: this.$theme.colors[this.color].normal,
         color: this.$theme.colors[this.color].text,
-        boxShadow: `${this.$theme.sizes.shadow.normal} 0 ${this.$theme.sizes.shadow.normal} ${this.$theme.colors.background.shade(-50, 0.2)}`,
         [`border-${position}`]: `solid 1px ${this.$theme.colors[this.color].shade(-15)}`,
         minHeight: '100%',
         [position]: 0,
@@ -99,12 +96,12 @@ export default {
           transition: `transform ${this.$theme.speed.normal} ease-out`,
           position: 'relative',
           '&.show': {
-            transform: `translateX(0) !important`,
+            transform: 'translateX(0) !important',
           },
           '&.hide': {
             position: unattachedPostion,
             transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
-          }
+          },
         },
         '&.unattached': {
           top: '0',
@@ -115,23 +112,23 @@ export default {
           transition: `transform ${this.$theme.speed.normal} ease-out`,
           zIndex: 2,
           '&.show': {
-            transform: `translateX(0) !important`,
+            transform: 'translateX(0) !important',
           },
           '&.hide': {
-            transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`
-          }
-        }
+            transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
+          },
+        },
       }),
-      mediaQuery({maxWidth: '960px'}, [
+      mediaQuery({ maxWidth: '960px' }, [
         className('sidebar', {
           '&.smart': {
             position: 'absolute',
             opacity: 0,
-          }
-        })
-      ])
+          },
+        }),
+      ]),
     ];
   },
   inject: ['$layout', '$theme'],
-}
+};
 </script>

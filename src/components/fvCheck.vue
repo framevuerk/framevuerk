@@ -17,102 +17,101 @@
 export default {
   props: {
     value: {
-      default: undefined
+      default: undefined,
     },
     content: {
       default: undefined,
-      required: true
+      required: true,
     },
     multiple: {
       type: Boolean,
-      default: false
+      default: false,
     },
     required: {
       type: [Boolean, Function],
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   inject: {
     fvFormElement: {
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
-    fvValidate () {
+    fvValidate() {
       if (this.required === true) {
         if (this.multiple) {
-          return this.value && this.value.constructor === Array && this.value.length
-        } else {
-          return typeof this.value !== 'undefined'
+          return this.value && this.value.constructor === Array && this.value.length;
         }
-      } else if (typeof this.required === 'function') {
-        return this.required(this.value)
+        return typeof this.value !== 'undefined';
+      } if (typeof this.required === 'function') {
+        return this.required(this.value);
       }
-      return true
+      return true;
     },
-    multipleButNotArray () {
-      return this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array))
+    multipleButNotArray() {
+      return this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array));
     },
-    pValue () {
-      return this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array)) ? [] : this.value
+    pValue() {
+      return this.multiple && (typeof this.value === 'undefined' || !(this.value instanceof Array)) ? [] : this.value;
     },
-    isChecked () {
-      const content = JSON.stringify(this.content)
+    isChecked() {
+      const content = JSON.stringify(this.content);
       if (this.multiple) {
-        if (this.pValue.findIndex(v => JSON.stringify(v) === content) > -1) {
-          return true
+        if (this.pValue.findIndex((v) => JSON.stringify(v) === content) > -1) {
+          return true;
         }
       } else {
-        return JSON.stringify(this.pValue) === content
+        return JSON.stringify(this.pValue) === content;
       }
-      return false
-    }
+      return false;
+    },
   },
   methods: {
-    focus () {
+    focus() {
       if (!this.disabled) {
-        this.$el.focus()
+        this.$el.focus();
       }
     },
-    onClick () {
+    onClick() {
       if (this.disabled) {
-        return
+        return;
       }
       if (this.multiple) {
-        let value = JSON.parse(JSON.stringify(this.pValue))
-        const content = JSON.stringify(this.content)
+        const value = JSON.parse(JSON.stringify(this.pValue));
+        const content = JSON.stringify(this.content);
         if (this.isChecked) {
-          value.splice(value.findIndex(v => JSON.stringify(v) === content), 1)
+          value.splice(value.findIndex((v) => JSON.stringify(v) === content), 1);
         } else {
-          value.push(this.content)
+          value.push(this.content);
         }
-        this.$emit('input', value)
+        this.$emit('input', value);
       } else {
-        let value
+        let value;
         if (this.isChecked) {
-          value = undefined
+          value = undefined;
         } else {
-          value = JSON.parse(JSON.stringify(this.content))
+          value = JSON.parse(JSON.stringify(this.content));
         }
-        this.$emit('input', value)
+        this.$emit('input', value);
       }
     },
-    onFocus () {
+    onFocus() {
       if (this.fvFormElement) {
-        this.fvFormElement.turn(true)
+        this.fvFormElement.turn(true);
       }
     },
-    onBlur () {
+    onBlur() {
       if (this.fvFormElement) {
-        this.fvFormElement.turn(false)
+        this.fvFormElement.turn(false);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">

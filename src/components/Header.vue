@@ -5,25 +5,24 @@
 </template>
 
 <script>
-import { offsetTo } from '@/utility/utils'
-import parent from '@/utility/parent';
+import { offsetTo } from '@/utility/utils';
 
 export default {
   props: {
     type: {
       type: String,
       default: 'smart',
-      validator: (v) => ['normal', 'smart', 'pinned'].includes(v)
+      validator: (v) => ['normal', 'smart', 'pinned'].includes(v),
     },
     color: {
       type: String,
       default: 'header',
-    }
+    },
   },
   data() {
     return {
       offsetToParent: 0,
-    }
+    };
   },
   methods: {
     handleSmart(scrollTop, direction) {
@@ -42,18 +41,18 @@ export default {
   mounted() {
     if (this.type === 'smart') {
       this.offsetToParent = offsetTo(this.$el, null).top;
-      this.$layout.on('scroll', this.handleSmart)
+      this.$layout.on('scroll', this.handleSmart);
     }
   },
   beforeDestroy() {
-    this.$layout.off('scroll', this.handleSmart)
+    this.$layout.off('scroll', this.handleSmart);
   },
   style({ className }) {
     const positionMap = {
-      'normal': 'static',
-      'smart': 'sticky',
-      'pinned': 'sticky',
-    }
+      normal: 'static',
+      smart: 'sticky',
+      pinned: 'sticky',
+    };
     return [
       className('header', {
         background: this.$theme.colors[this.color].normal,
@@ -64,7 +63,7 @@ export default {
         position: positionMap[this.type],
         top: '0',
         padding: this.$theme.sizes.base.normal,
-        transition: `transform 250ms ease-out`,
+        transition: 'transform 250ms ease-out',
         willChange: 'transform',
         zIndex: 1,
         '&.pre-show': {
@@ -72,10 +71,10 @@ export default {
         },
         '&.show': {
           transform: 'translateY(0)',
-        }
-      })
+        },
+      }),
     ];
   },
   inject: ['$layout', '$theme'],
-}
+};
 </script>

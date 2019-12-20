@@ -17,49 +17,45 @@ export default {
   props: {
     src: {
       type: [Array, String],
-      default: () => []
+      default: () => [],
     },
     alt: {
       type: [Array, String],
-      default: () => []
+      default: () => [],
     },
     showButtons: {
       type: Boolean,
-      default: true
+      default: true,
     },
     interval: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
-  data () {
+  data() {
     return {
-      value: undefined
-    }
+      value: undefined,
+    };
   },
   computed: {
-    imgs () {
-      return typeof this.src === 'string' ? [this.src] : this.src
-    }
+    imgs() {
+      return typeof this.src === 'string' ? [this.src] : this.src;
+    },
   },
   methods: {
-    altOf (index) {
+    altOf(index) {
       if (typeof this.alt === 'undefined') {
-        return this.imgs[index]
-      } else {
-        if (this.alt instanceof Array) {
-          if (typeof this.alt[index] !== 'undefined') {
-            return this.alt[index]
-          } else {
-            return this.alt.length > 0 ? this.alt[0] : this.imgs
-          }
-        } else {
-          return this.alt
+        return this.imgs[index];
+      } if (this.alt instanceof Array) {
+        if (typeof this.alt[index] !== 'undefined') {
+          return this.alt[index];
         }
+        return this.alt.length > 0 ? this.alt[0] : this.imgs;
       }
-    }
-  }
-}
+      return this.alt;
+    },
+  },
+};
 </script>
 
 <style lang="scss">

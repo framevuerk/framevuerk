@@ -20,32 +20,32 @@ export default {
     size: {
       type: String,
       default: 'md',
-      validator: (v) => ['xs', 'sm', 'md', 'lg', 'xl'].includes(v)
+      validator: (v) => ['xs', 'sm', 'md', 'lg', 'xl'].includes(v),
     },
     tag: {
       type: String,
-      default: 'button'
+      default: 'button',
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
-    onClick (event) {
+    onClick(event) {
       if (!this.loading && !this.disabled) {
-        this.$emit('click', event)
+        this.$emit('click', event);
       }
-    }
+    },
   },
-  style ({className}) {
+  style({ className }) {
     const sizeFactorMap = {
       xs: 1,
       sm: 3,
       md: 5,
       lg: 7,
       xl: 9,
-    }
+    };
     return [
       className('button', {
         background: this.color ? this.$theme.colors[this.color].normal : 'inherit',
@@ -63,12 +63,12 @@ export default {
         },
         '&:active': {
           background: this.color ? this.$theme.colors[this.color].shade(-10) : 'inherit',
-        }
-      })
-    ]
+        },
+      }),
+    ];
   },
-  inject: ['$theme']
-}
+  inject: ['$theme'],
+};
 </script>
 
 <zstyle lang="scss">

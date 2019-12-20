@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import parent from '../utility/parent.js'
-import deleteIcon from '../icons/CLS.svg'
+import parent from '../utility/parent.js';
+import deleteIcon from '../icons/CLS.svg';
 
 export default {
   // provided by parrent element
@@ -51,142 +51,142 @@ export default {
   // ]
   props: {
     value: {
-      default: undefined
+      default: undefined,
     },
     multiple: {
-      default: false
+      default: false,
     },
     deleteButton: {
-      default: true
+      default: true,
     },
     disabled: {
-      default: false
+      default: false,
     },
     placeholder: {
-      default: ''
+      default: '',
     },
     caretIcon: {
-      default: ''
+      default: '',
     },
     searchQuery: {
-      default: ''
+      default: '',
     },
     input: {
-      default: true
+      default: true,
     },
     inputType: {
-      default: 'text'
-    }
+      default: 'text',
+    },
   },
   inject: {
     fvFormElement: {
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
       isFocused: false,
       showOut: false,
       outClass: {},
       deleteIcon,
-      lastValueChanges: 0
-    }
+      lastValueChanges: 0,
+    };
   },
   computed: {
-    showPlaceholder () {
-      return this.searchQuery === '' && (typeof this.value === 'undefined' || (this.multiple && !this.value.length))
+    showPlaceholder() {
+      return this.searchQuery === '' && (typeof this.value === 'undefined' || (this.multiple && !this.value.length));
     },
-    values () {
-      return this.multiple ? this.value : (typeof this.value === 'undefined' ? [] : [this.value])
-    }
+    values() {
+      return this.multiple ? this.value : (typeof this.value === 'undefined' ? [] : [this.value]);
+    },
   },
   methods: {
-    focus () {
-      this.$refs.input.focus()
+    focus() {
+      this.$refs.input.focus();
     },
-    focusInput () {
-      this.$refs.input.focus()
+    focusInput() {
+      this.$refs.input.focus();
     },
-    onFocus () {
-      this.isFocused = true
+    onFocus() {
+      this.isFocused = true;
       if (this.fvFormElement) {
-        this.fvFormElement.turn(true)
+        this.fvFormElement.turn(true);
       }
     },
-    onBlur (event) {
-      const target = event.relatedTarget
+    onBlur(event) {
+      const target = event.relatedTarget;
       if (!target || !this.$el.contains(target)) {
-        this.isFocused = false
-        this.close()
-        this.$emit('blur')
+        this.isFocused = false;
+        this.close();
+        this.$emit('blur');
         if (this.fvFormElement) {
-          this.fvFormElement.turn(false)
+          this.fvFormElement.turn(false);
         }
       }
     },
-    onTyping (event) {
-      this.showOut = true
-      this.$emit('update:searchQuery', event.target.value)
-      this.$emit('typing', event.target.value)
+    onTyping(event) {
+      this.showOut = true;
+      this.$emit('update:searchQuery', event.target.value);
+      this.$emit('typing', event.target.value);
     },
-    onEnter (event) {
-      event.preventDefault()
+    onEnter(event) {
+      event.preventDefault();
       if (this.disabled) {
-        return
+        return;
       }
-      this.focus()
+      this.focus();
       // this if fix unhandled box opens after selecting value
       if (Date.now() - this.lastValueChanges > 500) {
-        this.open()
+        this.open();
       }
     },
-    getOutPosition () {
-      const offset = this.$el.getBoundingClientRect()
-      const parentViewport = parent.getViewport()
+    getOutPosition() {
+      const offset = this.$el.getBoundingClientRect();
+      const parentViewport = parent.getViewport();
       // it will be one of [0, 1, 2]. lowest number is nearest to top
-      const verticalPosition = offset.top / parentViewport.height
+      const verticalPosition = offset.top / parentViewport.height;
       // a number between 0 and 1. lowest number is nearest to start direction of block
-      let horizontalPosition = offset[process.env.blockStart] / parentViewport.width
+      let horizontalPosition = offset[process.env.blockStart] / parentViewport.width;
       if (process.env.direction === 'rtl') {
-        horizontalPosition = 1 - horizontalPosition
+        horizontalPosition = 1 - horizontalPosition;
       }
-      const isBottom = verticalPosition < 0.5
-      const isStart = horizontalPosition < 0.45
+      const isBottom = verticalPosition < 0.5;
+      const isStart = horizontalPosition < 0.45;
       return [
         isBottom ? 'bottom' : 'top',
-        isStart ? 'start' : 'end'
-      ]
+        isStart ? 'start' : 'end',
+      ];
     },
-    open () {
+    open() {
       if (!this.showOut) {
-        this.$emit('open')
+        this.$emit('open');
       }
-      this.outClass = this.getOutPosition()
-      this.showOut = true
-      this.focus()
-      parent.on('outsideclick', this.$el, this.close)
+      this.outClass = this.getOutPosition();
+      this.showOut = true;
+      this.focus();
+      parent.on('outsideclick', this.$el, this.close);
     },
-    onValueDelete (value) {
-      this.$emit('value-delete', value)
+    onValueDelete(value) {
+      this.$emit('value-delete', value);
     },
-    close () {
-      this.$emit('close')
-      this.showOut = false
-      parent.off('outsideclick', this.$el, this.close)
-      this.$emit('searchQuery:update', '')
+    close() {
+      this.$emit('close');
+      this.showOut = false;
+      parent.off('outsideclick', this.$el, this.close);
+      this.$emit('searchQuery:update', '');
     },
-    onInputKeydown (event) {
+    onInputKeydown(event) {
       if (this.showOut) {
-        this.$emit('input-keydown', event)
+        this.$emit('input-keydown', event);
       }
-    }
+    },
   },
   watch: {
-    value () {
-      this.lastValueChanges = Date.now()
-    }
-  }
-}
+    value() {
+      this.lastValueChanges = Date.now();
+    },
+  },
+};
 </script>
 
 <style lang="scss">

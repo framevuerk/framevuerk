@@ -2,8 +2,8 @@ const path = require('path');
 // const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 // const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
-const WebpackBar = require('webpackbar')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const WebpackBar = require('webpackbar');
 const pkg = require('../package.json');
 
 module.exports = {
@@ -81,5 +81,5 @@ module.exports = {
     //     padding: JSON.stringify('15px')
     //   }
     // }),
-  ]
-}
+  ],
+};

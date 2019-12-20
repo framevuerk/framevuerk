@@ -21,20 +21,19 @@
 </xtemplate>
 
 <script>
-import parent from '@/utility/parent';
 import { dashCase } from '@/utility/utils';
-  
+
 export default {
   props: {
     global: {
       type: Boolean,
       default: true,
-    }
+    },
   },
   provide() {
     return {
-      $layout: this
-    }
+      $layout: this,
+    };
   },
   render(createElement) {
     const children = [
@@ -44,9 +43,9 @@ export default {
         [],
         [],
       ],
-      []
+      [],
     ];
-    this.$slots.default.filter(vnode => vnode.componentOptions).forEach((vnode) => {
+    this.$slots.default.filter((vnode) => vnode.componentOptions).forEach((vnode) => {
       const is = (section) => (
         (vnode.componentOptions.propsData || {}).layoutSection === section || dashCase(vnode.componentOptions.tag) === `fv-${section}`
       );
@@ -64,10 +63,10 @@ export default {
           children[1][0].push(vnode);
         }
       }
-    })
-    
+    });
+
     return createElement('div', {
-      class: this.$style.layout
+      class: this.$style.layout,
     }, [
       children[0],
       createElement('main', children[1]),
@@ -97,7 +96,7 @@ export default {
   mounted() {
     this.eventEl = this.global ? window : this.$el;
   },
-  beforeDestroy () {
+  beforeDestroy() {
     (this.global ? window : this.$el).removeEventListener('scroll', this.localScrollListener);
   },
   methods: {
@@ -113,7 +112,7 @@ export default {
             }
           });
         });
-      };
+      }
     },
     off(eventType, listener) {
       const listeners = this.listeners[eventType];
@@ -131,12 +130,12 @@ export default {
         if (event.which === 9) {
           if (event.target === first && event.shiftKey) {
             // when first item is focused and user press shift + tab
-            event.preventDefault()
-            last.focus()
+            event.preventDefault();
+            last.focus();
           } else if (event.target === last && !event.shiftKey) {
             // when last item is focused and user press tab
-            event.preventDefault()
-            first.focus()
+            event.preventDefault();
+            first.focus();
           }
         }
       }
@@ -148,8 +147,8 @@ export default {
         release() {
           element.focus();
           window.removeEventListener('keydown', onKeyDown);
-        }
-      }
+        },
+      };
     },
     cancelDetector(callback) {
       function onKeyDown(event) {
@@ -162,8 +161,8 @@ export default {
       return {
         release() {
           window.removeEventListener('keydown', onKeyDown);
-        }
-      }
+        },
+      };
     },
     outerClickDetector(element, calback) {
       const layoutEl = (this.global ? window : this.$el);
@@ -180,8 +179,8 @@ export default {
         release() {
           layoutEl.removeEventListener('click', onClick);
           layoutEl.removeEventListener('touchstart', onClick);
-        }
-      }
+        },
+      };
     },
     lock() {
       (this.global ? document.body : this.$el).style.overflow = 'hidden';
@@ -196,9 +195,9 @@ export default {
     },
     onScroll() {
       const el = (this.global ? document.scrollingElement : this.$el);
-      const scrollTop = el.scrollTop;
+      const { scrollTop } = el;
       clearTimeout(this.eventsData.scroll.timeout);
-      this.listeners.scroll.forEach(listener => listener(scrollTop, scrollTop > this.eventsData.scroll.last ? 'down' : 'up'));
+      this.listeners.scroll.forEach((listener) => listener(scrollTop, scrollTop > this.eventsData.scroll.last ? 'down' : 'up'));
       this.eventsData.scroll.timeout = setTimeout(() => {
         this.eventsData.scroll.last = scrollTop;
       });
@@ -209,8 +208,8 @@ export default {
         width: el.offsetWidth,
         height: el.offsetHeight,
       };
-      this.listeners.resize.forEach(listener => listener(size));
-    }
+      this.listeners.resize.forEach((listener) => listener(size));
+    },
   },
   style({ className }) {
     return [
@@ -225,8 +224,8 @@ export default {
           maxWidth: '100%',
           overflowX: 'hidden',
         },
-      })
-    ]
+      }),
+    ];
   },
   inject: ['$theme'],
   // props: {
@@ -434,5 +433,5 @@ export default {
   //     ])
   //   ]
   // },
-}
+};
 </script>

@@ -11,7 +11,7 @@ export default {
       className('content', {
         flexGrow: 1,
       }),
-    ]
-  }
-}
+    ];
+  },
+};
 </script>

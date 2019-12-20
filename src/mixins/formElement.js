@@ -2,47 +2,47 @@ export default function (fillingCheck = () => true) {
   return {
     props: {
       value: {
-        default: undefined
+        default: undefined,
       },
       disabled: {
         type: Boolean,
-        default: false
+        default: false,
       },
       required: {
         type: [Boolean, Function],
-        default: false
-      }
+        default: false,
+      },
     },
     inject: {
       fvFormElement: {
-        default: false
-      }
+        default: false,
+      },
     },
     computed: {
-      fvValidate () {
+      fvValidate() {
         if (this.required === true) {
-          return fillingCheck(this.value)
+          return fillingCheck(this.value);
         }
         if (typeof this.required === 'function') {
-          return this.required(this.value)
+          return this.required(this.value);
         }
-        return true
-      }
+        return true;
+      },
     },
     methods: {
-      focus () {
-        this.$el.focus()
+      focus() {
+        this.$el.focus();
       },
-      onFocusDefault () {
+      onFocusDefault() {
         if (this.fvFormElement) {
-          this.fvFormElement.turn(true)
+          this.fvFormElement.turn(true);
         }
       },
-      onBlurDefault () {
+      onBlurDefault() {
         if (this.fvFormElement) {
-          this.fvFormElement.turn(false)
+          this.fvFormElement.turn(false);
         }
-      }
-    }
-  }
+      },
+    },
+  };
 }
