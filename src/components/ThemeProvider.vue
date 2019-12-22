@@ -110,7 +110,7 @@ export default {
       },
     });
     const queryBase = (size, content) => mediaQuery(size, [content]);
-    const attrName = (name) => `[fv-${name}]`;
+    const attrName = (name, value = null) => value ? `[${name}="${value}"]` : `[${name}]`;
 
     const helperClasses = () => {
       const ret = {};
@@ -128,7 +128,8 @@ export default {
               if (property === 'border') {
                 const sizeValue = !is ? `${factorMap[sizeIndex]}px` : 0;
                 ret[name] = {
-                  [prop]: `solid ${sizeValue} !important`,
+                  [cx('-', prop, 'width')]: sizeValue,
+                  [cx('-', prop, 'style')]: 'solid',
                 };
               } else {
                 const value = !is ? this._sizes.base.multiplyBy(factorMap[sizeIndex]) : 0;
@@ -167,14 +168,13 @@ export default {
       ret[attrName('round')] = {
         borderRadius: '50% !important',
       };
-
-      ['hidden', 'block', 'inline-block', 'inline', 'flex'].forEach((displayName, displayIndex) => {
-        const displayMap = ['none', 'block', 'inline-block', 'inline', 'flex'];
-        ret[attrName(displayName)] = {
-          display: displayMap[displayIndex],
+      // Displays
+      ['none', 'block', 'inline-block', 'inline', 'flex'].forEach((display) => {
+        ret[attrName('display', display)] = {
+          display,
         };
       });
-      ret[attrName('grow')] = {
+      ret[attrName('flex-grow')] = {
         flexGrow: 1,
       };
       ret[attrName('flex-row')] = {
@@ -183,6 +183,10 @@ export default {
       ret[attrName('flex-col')] = {
         flexDirection: 'column',
       };
+      ret[attrName('full-width')] = {
+        width: '100%',
+      };
+      // Directions
       ['text', 'dir', 'pull'].forEach((name, nameIndex) => {
         ['start', 'end', 'right', 'left'].forEach((dir) => {
           const propertyMap = ['text-align', 'direction', 'float'];
@@ -198,6 +202,30 @@ export default {
       ret[attrName('text-justify')] = {
         textAlign: 'justify',
       };
+      // Colors
+      each(this._colors, (name, color) => {
+        ret[attrName('color', name)] = {
+          color: color.text,
+          background: color.normal,
+          borderColor: color.shade(-15),
+        };
+        ret[attrName('text-color', name)] = {
+          color: color.normal,
+        };
+        ret[attrName('background-color', name)] = {
+          background: color.normal,
+        };
+      });
+      // Sizes
+      ['xs', 'sm', 'md', 'lg', 'xl'].forEach((sizeName, sizeIndex) => {
+        const sizeMap = [1, 3, 5, 7, 9];
+        const value = `${this._sizes.base.multiplyBy(sizeMap[sizeIndex])} !important`;
+        ret[attrName(`size-${sizeName}`)] = {
+          height: value,
+          minHeight: value,
+        };
+      });
+
 
       return base(ret);
     };
@@ -223,19 +251,19 @@ export default {
         }
         for (let i = 0; i < 12; i += 1) {
           const size = `${width1 * i}%`;
-          const name = cx('-', prefix, i.toString());
-          ret[attrName(`col-${name}`)] = i === 0 ? {
+          const name = i.toString();
+          ret[attrName(cx('-', 'col', prefix), name)] = i === 0 ? {
             display: 'none',
           } : {
             flex: `0 0 ${size}`,
             width: size,
             maxWidth: size,
           };
-          ret[attrName(`col-offset-${name}`)] = {
+          ret[attrName(cx('-', 'col-offset', prefix), name)] = {
             [cx('-', 'margin', this._direction.start)]: size,
           };
         }
-        ret[attrName(`hidden-${prefix}`)] = {
+        ret[attrName(cx('-', 'hidden', prefix))] = {
           display: 'none',
         };
         return base(ret);
