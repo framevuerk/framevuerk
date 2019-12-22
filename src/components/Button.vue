@@ -8,11 +8,11 @@
 </template>
 
 <script>
+import color from '@/mixins/color';
+
 export default {
+  mixins: [color],
   props: {
-    color: {
-      type: String,
-    },
     border: {
       type: Boolean,
       default: false,
@@ -48,21 +48,24 @@ export default {
     };
     return [
       className('button', {
-        background: this.color ? this.$theme.colors[this.color].normal : 'inherit',
-        color: this.color ? this.$theme.colors[this.color].text : 'inherit',
+        background: this.$color.normal,
+        color: this.$color.text,
         boxShadow: this.border ? `0 ${this.$theme.sizes.shadow.normal} ${this.$theme.sizes.shadow.normal} ${this.$theme.colors.background.shade(-50, 0.2)}` : 'none',
-        border: this.border && this.color ? `solid 1px ${this.$theme.colors[this.color].shade(-15)}` : 'none',
-        borderRadius: this.border ? this.$theme.sizes.radius.normal : 0,
-        minHeight: this.$theme.sizes.base.multiplyBy(sizeFactorMap[this.size]),
-        height: this.$theme.sizes.base.multiplyBy(sizeFactorMap[this.size]),
+        borderStyle: 'solid',
+        borderWidth: this.border ? '1px' : '0',
+        fontWeight: 'bold',
+        borderColor: this.$color.shade(-8),
+        borderRadius: this.$theme.sizes.radius.normal,
+        minHeight: this.$theme.sizes.base.normal,
+        height: this.$theme.sizes.base.multiplyBy(5),
         padding: `0 ${this.$theme.sizes.base.multiplyBy(2)}`,
-        transition: `all ${this.$theme.speed.multiplyBy(0.5)}`,
+        transition: `all ${this.$theme.speed.normal}`,
         cursor: 'pointer',
         '&:hover, &:focus': {
-          background: this.color ? this.$theme.colors[this.color].shade(10) : 'inherit',
+          background: this.$color.shade(5),
         },
         '&:active': {
-          background: this.color ? this.$theme.colors[this.color].shade(-10) : 'inherit',
+          background: this.$color.shade(-5),
         },
       }),
     ];
