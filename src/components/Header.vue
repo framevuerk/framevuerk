@@ -14,10 +14,6 @@ export default {
       default: 'smart',
       validator: (v) => ['normal', 'smart', 'pinned'].includes(v),
     },
-    color: {
-      type: String,
-      default: 'header',
-    },
   },
   data() {
     return {
@@ -55,10 +51,9 @@ export default {
     };
     return [
       className('header', {
-        background: this.$theme.colors[this.color].normal,
-        color: this.$theme.colors[this.color].text,
         boxShadow: `0 ${this.$theme.sizes.shadow.normal} ${this.$theme.sizes.shadow.normal} ${this.$theme.colors.background.shade(-50, 0.2)}`,
-        borderBottom: `solid 1px ${this.$theme.colors[this.color].shade(-15)}`,
+        borderBottomWidth: '1px',
+        borderBottomStyle: 'solid',
         width: '100%',
         position: positionMap[this.type],
         top: '0',
