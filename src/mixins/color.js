@@ -1,14 +1,9 @@
 export default {
   inject: ['$theme'],
-  props: {
-    color: {
-      type: String,
-      default: 'background',
-    },
-  },
+  props: ['cssColor'],
   computed: {
     $color() {
-      return this.$theme.colors[this.color];
+      return this.$theme.colors[this.$props.cssColor || 'background'];
     },
   },
 };
