@@ -54,15 +54,54 @@ export default {
     _sizes() {
       const defaultSizes = {
         base: 8,
+        font: 14,
         radius: 6,
         shadow: 2,
       };
       const sizes = Object.assign(defaultSizes, this.sizes);
+      const heightFactor = [0, 1, 3, 5, 7, 9];
+      const sizeFactor = [0, 0.25, 0.5, 1, 2, 4];
+      const shadowFactor = [0, 0.25, 0.5, 1, 2, 4];
+      const shadowBlurFactor = [0, 0.5, 0.75, 1, 1.25, 1.5];
+      const fontFactor = [0, 0.7, 0.85, 1, 1.45, 1.8];
+      const borderFactor = [0, 0.0625, 0.125, 0.125, 0.1875, 0.25];
+      const factors = ['no', 'xs', 'sm', 'md', 'lg', 'xl', 'round'];
       const ret = {};
       each(sizes, (key, value) => {
         ret[key] = {
           normal: `${value}px`,
           multiplyBy: (number) => `${value * number}px`,
+          factor: (size, factorType = 'size', arg = null) => {
+            if (factorType === 'size') {
+              return `${value * [sizeFactor[factors.indexOf(size)]]}px`;
+            }
+            
+            if (factorType === 'radius') {
+              if (size === 'round') {
+                return '50%';
+              }
+              return `${value * [sizeFactor[factors.indexOf(size)]]}px`;
+            }
+
+            if (factorType === 'border') {
+              return `${value * [borderFactor[factors.indexOf(size)]]}px`;
+            }
+
+            if (factorType === 'font') {
+              return `${value * [fontFactor[factors.indexOf(size)]]}px`;
+            }
+
+            if (factorType === 'height') {
+              return `${value * [heightFactor[factors.indexOf(size)]]}px`;
+            }
+            // shadow
+            if (size === 'no') {
+              return 'none';
+            }
+            const shadowSize = `${value * [shadowFactor[factors.indexOf(size)]]}px`;
+            const shadowBlur = `${value * [shadowBlurFactor[factors.indexOf(size)]]}px`;
+            return `0 ${shadowSize} ${shadowBlur} ${this._colors[arg || 'background'].shade(-50, 0.2)}`;
+          },
         };
       });
       return ret;
@@ -109,124 +148,139 @@ export default {
         ...content,
       },
     });
+    const forceValue = (value) => `${value} !important`;
+    const staticDir = (dir) => (dir || '').replace('start', this._direction.start).replace('end', this._direction.end) || null;
     const queryBase = (size, content) => mediaQuery(size, [content]);
-    const attrName = (name, value = null) => value ? `[${name}="${value}"]` : `[${name}]`;
+    const attrName = (name, value = null) => value ? `[css-${name}="${value}"]` : `[css-${name}]`;
 
     const helperClasses = () => {
       const ret = {};
-      ['', 'no'].forEach((is) => {
-        ['padding', 'margin', 'border'].forEach((property) => {
-          ['', 'top', 'bottom', 'start', 'end', 'right', 'left'].forEach((dir, dirIndex) => {
-            ['', 'sm', 'lg'].forEach((size, sizeIndex) => {
-              if (is && size) {
-                return;
-              }
-              const staticDir = dir.replace('start', this._direction.start).replace('end', this._direction.end);
-              const factorMap = [1, 0.5, 2];
-              const name = attrName(cx('-', is, property, dir, size));
-              const prop = cx('-', property, staticDir);
-              if (property === 'border') {
-                const sizeValue = !is ? `${factorMap[sizeIndex]}px` : 0;
-                ret[name] = {
-                  [cx('-', prop, 'width')]: sizeValue,
-                  [cx('-', prop, 'style')]: 'solid',
-                };
-              } else {
-                const value = !is ? this._sizes.base.multiplyBy(factorMap[sizeIndex]) : 0;
-                ret[name] = {
-                  [prop]: `${value} !important`,
-                };
-              }
-            });
-          });
+      // Border
+      [null, 'top', 'bottom', 'start', 'end', 'right', 'left'].forEach((dynamicDir) => {
+        ['no', 'xs', 'sm', 'md', 'lg', 'xl'].forEach((size, sizeIndex) => {
+          const rule = attrName(cx('-', 'border', dynamicDir), size);
+          const dir = staticDir(dynamicDir);
+          const prop = cx('-', 'border', dir);
+          ret[rule] = {
+            [cx('-', prop, 'style')]: forceValue('solid'),
+            [cx('-', prop, 'width')]: forceValue(this._sizes.base.factor(size, 'border')),
+          };
         });
       });
-      // Radius, Shadow
-      ['radius', 'shadow'].forEach((property, propertyIndex) => {
-        ['', 'no'].forEach((is) => {
-          ['', 'sm', 'lg'].forEach((size, sizeIndex) => {
-            if (is && size) {
+
+      // Spaces and Positions
+      [null, 'padding', 'margin'].forEach((property) => {
+        [null, 'top', 'bottom', 'start', 'end', 'right', 'left'].forEach((dynamicDir) => {
+          ['no', 'xs', 'sm', 'md', 'lg', 'xl'].forEach((size) => {
+            if (!property && !dynamicDir) {
               return;
             }
-            const propertyMap = ['border-radius', 'box-shadow'];
-            const factorMap = [1, 0.5, 2];
-            const name = attrName(cx('-', is, property, size));
-            if (property === 'shadow') {
-              const value = !is ? `0 ${this._sizes.shadow.multiplyBy(factorMap[sizeIndex])} ${this._sizes.shadow.multiplyBy(factorMap[sizeIndex])} ${this._colors.background.shade(-50, 0.2)}` : 'none';
-              ret[name] = {
-                boxShadow: `${value} !important`,
-              };
-            } else {
-              const value = !is ? this._sizes.radius.multiplyBy(factorMap[sizeIndex]) : 0;
-              ret[name] = {
-                borderRadius: `${value} !important`,
-              };
-            }
+            const dir = staticDir(dynamicDir);
+            const rule = attrName(cx('-', property, dynamicDir), size);
+            const prop = cx('-', property, dir);
+            ret[rule] = {
+              [prop]: forceValue(this._sizes.base.factor(size, 'size')),
+            };
           });
         });
       });
-      ret[attrName('round')] = {
-        borderRadius: '50% !important',
-      };
-      // Displays
-      ['none', 'block', 'inline-block', 'inline', 'flex'].forEach((display) => {
-        ret[attrName('display', display)] = {
-          display,
+
+      // Radius
+      ['no', 'xs', 'sm', 'md', 'lg', 'xl', 'round'].forEach((size) => {
+        ret[attrName(cx('-', 'radius'), size)] = {
+          borderRadius: forceValue(this._sizes.radius.factor(size, 'radius')),
         };
       });
+
+      // Shadow
+      ['no', 'xs', 'sm', 'md', 'lg', 'xl'].forEach((size) => {
+        ret[attrName(cx('-', 'shadow'), size)] = {
+          boxShadow: forceValue(this._sizes.shadow.factor(size, 'shadow')),
+        };
+      });
+
+      // Displays
+      ['none', 'block', 'inline-block', 'inline', 'flex', 'inline-flex'].forEach((display) => {
+        ret[attrName('display', display)] = {
+          display: forceValue(display),
+        };
+      });
+      ret[attrName('flex-auto')] = {
+        display: forceValue('flex'),
+        alignItems: forceValue('center'),
+        justifyContent: forceValue('center'),
+      };
       ret[attrName('flex-grow')] = {
-        flexGrow: 1,
+        flexGrow: forceValue(1),
       };
       ret[attrName('flex-row')] = {
-        flexDirection: 'row',
+        flexDirection: forceValue('row'),
       };
       ret[attrName('flex-col')] = {
-        flexDirection: 'column',
+        flexDirection: forceValue('column'),
       };
       ret[attrName('full-width')] = {
-        width: '100%',
+        width: forceValue('100%'),
       };
+
+      // Text Aligns
+      ['start', 'end', 'right', 'left', 'justify', 'center'].forEach((dynamicDir) => {
+        const dir = staticDir(dynamicDir);
+        ret[attrName(cx('-', 'align'), dynamicDir)] = {
+          textAlign: forceValue(staticDir),
+        };
+      });
+            
       // Directions
-      ['text', 'dir', 'pull'].forEach((name, nameIndex) => {
-        ['start', 'end', 'right', 'left'].forEach((dir) => {
-          const propertyMap = ['text-align', 'direction', 'float'];
-          const staticDir = dir.replace('start', this._direction.start).replace('end', this._direction.end);
-          ret[attrName(`${name}-${dir}`)] = {
-            [propertyMap[nameIndex]]: staticDir,
+      ['direction', 'float'].forEach((prop) => {
+        ['start', 'end', 'right', 'left'].forEach((dynamicDir) => {
+          const dir = staticDir(dynamicDir);
+          ret[attrName(cx('-', prop), dynamicDir)] = {
+            [prop]: forceValue(staticDir),
           };
         });
       });
       ret[attrName('clear-both')] = {
-        clear: 'both',
+        clear: forceValue('both'),
       };
-      ret[attrName('text-justify')] = {
-        textAlign: 'justify',
-      };
+
       // Colors
       each(this._colors, (name, color) => {
         ret[attrName('color', name)] = {
-          color: color.text,
-          background: color.normal,
-          borderColor: color.shade(-15),
+          color: forceValue(color.text),
+          backgroundColor: forceValue(color.normal),
+          borderColor: forceValue(color.shade(-15)),
         };
         ret[attrName('text-color', name)] = {
-          color: color.normal,
+          color: forceValue(color.normal),
         };
         ret[attrName('background-color', name)] = {
-          background: color.normal,
+          backgroundColor: forceValue(color.normal),
+        };
+        ret[attrName('background-color', name)] = {
+          borderColor: forceValue(color.normal),
         };
       });
+
       // Sizes
-      ['xs', 'sm', 'md', 'lg', 'xl'].forEach((sizeName, sizeIndex) => {
-        const sizeMap = [1, 3, 5, 7, 9];
-        const value = `${this._sizes.base.multiplyBy(sizeMap[sizeIndex])} !important`;
-        ret[attrName(`size-${sizeName}`)] = {
-          height: value,
-          minHeight: value,
+      ['xs', 'sm', 'md', 'lg', 'xl'].forEach((size) => {
+        const height = forceValue(this._sizes.base.factor(size, 'height'));
+        const fontSize = forceValue(this._sizes.font.factor(size, 'font'));
+        ret[attrName('size', size)] = {
+          height,
+          minHeight: height,
+          lineHeight: height,
+          fontSize,
+        };
+        ret[attrName('text-size', size)] = {
+          fontSize,
+        };
+        ret[attrName('height-size', size)] = {
+          height,
+          minHeight: height,
+          lineHeight: height,
         };
       });
-
-
       return base(ret);
     };
     const gridClasses = (section = 'base', prefix = '') => {
@@ -237,7 +291,7 @@ export default {
           ret[attrName('row')] = {
             display: 'flex',
             flexWrap: 'wrap',
-            padding: this._sizes.base.multiplyBy(0.5),
+            // padding: this._sizes.base.multiplyBy(0.5),
             width: '100%',
             '& > *': {
               display: 'block',
@@ -245,7 +299,7 @@ export default {
               width: 'auto',
               maxWidth: '100%',
               minHeight: '1px',
-              padding: this._sizes.base.multiplyBy(0.5),
+              // padding: this._sizes.base.multiplyBy(0.5),
             },
           };
         }
@@ -292,6 +346,23 @@ export default {
         return ret;
       }
     };
+
+    const reset = () => {
+      return base({
+        '*': {
+          '-webkitOverflowScrolling': 'touch',
+          '-webkitTapHighlightColor': 'rgba(0, 0, 0, 0)',
+          touchAction: 'pan-y',
+          boxSizing: 'border-box',
+          '&::-moz-focus-inner': {
+            border: 0,
+          },
+          '&:focus': {
+            outline: 'none',
+          }
+        }
+      })
+    }
 
 
     const style = [
