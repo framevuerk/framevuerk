@@ -57,7 +57,6 @@ export default {
         width: '100%',
         position: positionMap[this.type],
         top: '0',
-        padding: this.$theme.sizes.base.normal,
         transition: 'transform 250ms ease-out',
         willChange: 'transform',
         zIndex: 1,
