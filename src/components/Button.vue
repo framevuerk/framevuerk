@@ -36,7 +36,8 @@ export default {
   style({ className }) {
     return [
       className('button', {
-        background: this.$color.normal,
+        display: 'inline-block',
+        backgroundColor: this.$color.normal,
         color: this.$color.text,
         boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow'),
         borderStyle: 'solid',
@@ -53,11 +54,13 @@ export default {
         padding: this.fab ? '0' : `0 ${this.$theme.sizes.base.multiplyBy(2)}`,
         transition: `all ${this.$theme.speed.normal}`,
         cursor: 'pointer',
+        textDecoration: 'blink',
+        userSelect: 'none',
         '&:hover, &:focus': {
-          background: this.$color.shade(8),
+          backgroundColor: this.$color.autoShade(8),
         },
         '&:active': {
-          background: this.$color.shade(-8),
+          backgroundColor: this.$color.autoShade(-13),
         },
       }),
     ];
