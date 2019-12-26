@@ -2,7 +2,7 @@
   "name": "framevuerk",
   "version": "2.4.0",
   "description": "Fast, Responsive, Without Dependencies, Both Direction Support and Configurable UI Framework based on Vue.js.",
-  "main": "dist/framevuerk.min.js",
+  "main": "dist/framevuerk.js",
   "scripts": {
     "lint:js": "eslint ./ --ext .js,.vue",
     "lint:js:fix": "eslint ./ --fix --ext .js,.vue",
