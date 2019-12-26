@@ -60,10 +60,10 @@ export default {
       };
       const sizes = Object.assign(defaultSizes, this.sizes);
       const heightFactor = [0, 1, 3, 5, 7, 9];
-      const sizeFactor = [0, 0.25, 0.5, 1, 2, 4];
+      const sizeFactor = [0, 0.1, 0.33, 1, 3, 9];
       const shadowFactor = [0, 0.25, 0.5, 1, 2, 4];
       const shadowBlurFactor = [0, 0.5, 0.75, 1, 1.25, 1.5];
-      const fontFactor = [0, 0.7, 0.85, 1, 1.45, 1.8];
+      const fontFactor = [0, 0.7, 0.85, 1, 1.5, 2];
       const borderFactor = [0, 0.0625, 0.125, 0.125, 0.1875, 0.25];
       const factors = ['no', 'xs', 'sm', 'md', 'lg', 'xl', 'round'];
       const ret = {};
@@ -72,6 +72,9 @@ export default {
           normal: `${value}px`,
           multiplyBy: (number) => `${value * number}px`,
           factor: (size, factorType = 'size', arg = null) => {
+            if (size === 'auto') {
+              return 'auto';
+            }
             if (factorType === 'size') {
               return `${value * [sizeFactor[factors.indexOf(size)]]}px`;
             }
@@ -109,7 +112,7 @@ export default {
     _colors() {
       const defaultColors = {
         background: '#fff',
-        primary: '#069bd0',
+        primary: '#0B62EA',
         secondary: '#35485d',
         info: '#14b0cf',
         warning: '#ffd400',
@@ -127,7 +130,12 @@ export default {
           normal: rgbToText(rgb),
           text: rgbToText(shadeColor(rgb, lightness < 70 ? 90 : -90)),
           lightness,
-          contrast: (percent, alpha = 1, breakLine = 30) => rgbToText(shadeColor(rgb, (lightness < breakLine ? 1 : -1) * Math.abs(percent)), alpha),
+          autoShade: (percent,alpha = 1) => {
+            const ver1 = shadeColor(rgb, percent);
+            const ver2 = shadeColor(rgb, -1 * percent);
+            const ver1Lightness = colorLightness(ver1);
+            return rgbToText(ver1Lightness > 5 && ver1Lightness < 95 ? ver1 : ver2, alpha);
+          },
           shade: (percent, alpha = 1) => rgbToText(shadeColor(rgb, percent), alpha),
         };
       });
@@ -141,13 +149,15 @@ export default {
       };
     },
   },
-  style({ className, mediaQuery }) {
+  style({ className, mediaQuery, custom }) {
     console.time('Theme Provided in');
     const base = (content) => className('themeProvider', {
       '& ': {
         ...content,
       },
     });
+    const mediaNames = ['xs', 'sm', 'md', 'lg', 'xl'];
+    const mediaStarts = [0, 480, 768, 992, 1200];
     const forceValue = (value) => `${value} !important`;
     const staticDir = (dir) => (dir || '').replace('start', this._direction.start).replace('end', this._direction.end) || null;
     const queryBase = (size, content) => mediaQuery(size, [content]);
@@ -168,10 +178,10 @@ export default {
         });
       });
 
-      // Spaces and Positions
+      // Padding and Margin
       [null, 'padding', 'margin'].forEach((property) => {
         [null, 'top', 'bottom', 'start', 'end', 'right', 'left'].forEach((dynamicDir) => {
-          ['no', 'xs', 'sm', 'md', 'lg', 'xl'].forEach((size) => {
+          ['no', 'xs', 'sm', 'md', 'lg', 'xl', 'auto'].forEach((size) => {
             if (!property && !dynamicDir) {
               return;
             }
@@ -182,6 +192,24 @@ export default {
               [prop]: forceValue(this._sizes.base.factor(size, 'size')),
             };
           });
+        });
+      });
+
+      // Spaces
+      ['x', 'y'].forEach((dir) => {
+        ['no', 'xs', 'sm', 'md', 'lg', 'xl', 'auto'].forEach((size) => {
+          const rule = attrName(cx('-', 'space', dir), size);
+          if (dir === 'x') {
+            ret[rule] = {
+              display: forceValue('inline-block'),
+              marginLeft: forceValue(this._sizes.base.factor(size, 'size')),
+            };
+          } else { // y
+            ret[rule] = {
+              display: forceValue('block'),
+              marginTop: forceValue(this._sizes.base.factor(size, 'size')),
+            };
+          }
         });
       });
 
@@ -205,12 +233,12 @@ export default {
           display: forceValue(display),
         };
       });
-      ret[attrName('flex-auto')] = {
+      ret[attrName('flex')] = {
         display: forceValue('flex'),
         alignItems: forceValue('center'),
         justifyContent: forceValue('center'),
       };
-      ret[attrName('flex-grow')] = {
+      ret[attrName('grow')] = {
         flexGrow: forceValue(1),
       };
       ret[attrName('flex-row')] = {
@@ -226,8 +254,8 @@ export default {
       // Text Aligns
       ['start', 'end', 'right', 'left', 'justify', 'center'].forEach((dynamicDir) => {
         const dir = staticDir(dynamicDir);
-        ret[attrName(cx('-', 'align'), dynamicDir)] = {
-          textAlign: forceValue(staticDir),
+        ret[attrName('text-align', dynamicDir)] = {
+          textAlign: forceValue(dir),
         };
       });
             
@@ -236,7 +264,7 @@ export default {
         ['start', 'end', 'right', 'left'].forEach((dynamicDir) => {
           const dir = staticDir(dynamicDir);
           ret[attrName(cx('-', prop), dynamicDir)] = {
-            [prop]: forceValue(staticDir),
+            [prop]: forceValue(dir),
           };
         });
       });
@@ -263,9 +291,12 @@ export default {
       });
 
       // Sizes
-      ['xs', 'sm', 'md', 'lg', 'xl'].forEach((size) => {
+      ['xs', 'sm', 'md', 'lg', 'xl'].forEach((size, index) => {
         const height = forceValue(this._sizes.base.factor(size, 'height'));
         const fontSize = forceValue(this._sizes.font.factor(size, 'font'));
+        ret[attrName('max-width', size)] = {
+          maxWidth: forceValue(mediaStarts[index + 1] ? `${mediaStarts[index + 1]}px` : '100%'),
+        };
         ret[attrName('size', size)] = {
           height,
           minHeight: height,
@@ -324,9 +355,6 @@ export default {
       } if (section === 'mediaQuery') { // real queries
         const ret = [];
         const sizeCover = (s) => `${s}px`;
-
-        const mediaNames = ['xs', 'sm', 'md', 'lg', 'xl'];
-        const mediaStarts = [0, 480, 768, 992, 1200];
         ['', 'lower', 'only'].forEach((type) => {
           each(mediaNames, (mediaName) => {
             const mediaIndex = mediaNames.indexOf(mediaName);
@@ -347,25 +375,27 @@ export default {
       }
     };
 
-    const reset = () => {
-      return base({
-        '*': {
-          '-webkitOverflowScrolling': 'touch',
-          '-webkitTapHighlightColor': 'rgba(0, 0, 0, 0)',
-          touchAction: 'pan-y',
-          boxSizing: 'border-box',
-          '&::-moz-focus-inner': {
-            border: 0,
-          },
-          '&:focus': {
-            outline: 'none',
-          }
+    const reset = () => [
+      custom('*', {
+        padding: 0,
+        margin: 0,
+        border: 0,
+        verticalAlign: 'baseline',
+        '-webkitOverflowScrolling': 'touch',
+        '-webkitTapHighlightColor': 'rgba(0, 0, 0, 0)',
+        touchAction: 'pan-y',
+        boxSizing: 'border-box',
+        '&::-moz-focus-inner': {
+          border: 0,
+        },
+        '&:focus': {
+          outline: 'none',
         }
-      })
-    }
-
+      }),
+    ];
 
     const style = [
+      ...reset(),
       helperClasses(),
       gridClasses('base'),
       ...gridClasses('mediaQuery'),
