@@ -47,7 +47,7 @@ export default {
     ];
     this.$slots.default.filter((vnode) => vnode.componentOptions).forEach((vnode) => {
       const is = (section) => (
-        (vnode.componentOptions.propsData || {}).layoutSection === section || dashCase(vnode.componentOptions.tag) === `fv-${section}`
+        (vnode.componentOptions.propsData || vnode.data.attrs || {}).layout === section || dashCase(vnode.componentOptions.tag) === `fv-${section}`
       );
 
       if (is('header')) {
