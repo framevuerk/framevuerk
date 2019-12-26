@@ -13,18 +13,13 @@ import color from '@/mixins/color';
 export default {
   mixins: [color],
   props: {
-    border: {
-      type: Boolean,
-      default: false,
-    },
-    size: {
-      type: String,
-      default: 'md',
-      validator: (v) => ['xs', 'sm', 'md', 'lg', 'xl'].includes(v),
-    },
     tag: {
       type: String,
       default: 'button',
+    },
+    fab: {
+      type: Boolean,
+      default: false,
     },
     disabled: {
       type: Boolean,
@@ -39,33 +34,30 @@ export default {
     },
   },
   style({ className }) {
-    const sizeFactorMap = {
-      xs: 1,
-      sm: 3,
-      md: 5,
-      lg: 7,
-      xl: 9,
-    };
     return [
       className('button', {
         background: this.$color.normal,
         color: this.$color.text,
-        boxShadow: this.border ? `0 ${this.$theme.sizes.shadow.normal} ${this.$theme.sizes.shadow.normal} ${this.$theme.colors.background.shade(-50, 0.2)}` : 'none',
+        boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow'),
         borderStyle: 'solid',
-        borderWidth: this.border ? '1px' : '0',
+        borderWidth: '1px',
         fontWeight: 'bold',
-        borderColor: this.$color.shade(-8),
-        borderRadius: this.$theme.sizes.radius.normal,
-        minHeight: this.$theme.sizes.base.normal,
-        height: this.$theme.sizes.base.multiplyBy(5),
-        padding: `0 ${this.$theme.sizes.base.multiplyBy(2)}`,
+        textAlign: 'center',
+        borderColor: this.$color.shade(-13),
+        borderRadius: this.$theme.sizes.radius.factor(this.fab ? 'round' : 'md', 'radius'),
+        lineHeight: this.$theme.sizes.base.factor('md', 'height'),
+        minHeight: this.$theme.sizes.base.factor('md', 'height'),
+        height: this.$theme.sizes.base.factor('md', 'height'),
+        fontSize: this.$theme.sizes.font.factor('md', 'font'),
+        width: this.fab ? this.$theme.sizes.base.factor('md', 'height') : 'auto',
+        padding: this.fab ? '0' : `0 ${this.$theme.sizes.base.multiplyBy(2)}`,
         transition: `all ${this.$theme.speed.normal}`,
         cursor: 'pointer',
         '&:hover, &:focus': {
-          background: this.$color.shade(5),
+          background: this.$color.shade(8),
         },
         '&:active': {
-          background: this.$color.shade(-5),
+          background: this.$color.shade(-8),
         },
       }),
     ];
