@@ -51,8 +51,11 @@ export default {
     };
     return [
       className('header', {
-        boxShadow: `0 ${this.$theme.sizes.shadow.normal} ${this.$theme.sizes.shadow.normal} ${this.$theme.colors.background.shade(-50, 0.2)}`,
-        borderBottomWidth: '1px',
+        backgroundColor: this.$theme.colors.header.normal,
+        color: this.$theme.colors.header.text,
+        borderColor: this.$theme.colors.header.shade(-15),
+        boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: 'bottom' }),
+        borderBottomWidth: this.$theme.sizes.base.factor('md', 'border'),
         borderBottomStyle: 'solid',
         width: '100%',
         position: positionMap[this.type],
