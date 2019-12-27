@@ -42,20 +42,23 @@ export default {
   computed: {
     _direction() {
       const { direction } = this;
+      const start = direction === 'ltr' ? 'left' : 'right';
+      const end = direction !== 'ltr' ? 'left' : 'right';
       return {
-        start: direction === 'ltr' ? 'left' : 'right',
+        start,
         center: 'center',
-        end: direction === 'ltr' ? 'right' : 'left',
+        end,
         value: direction,
         leftFactor: direction === 'ltr' ? 1 : -1,
         rightFactor: direction === 'ltr' ? -1 : 1,
+        static: (dir) => dir ? dir.replace('start', start).replace('end', end) : null,
       };
     },
     _sizes() {
       const defaultSizes = {
         base: 8,
         font: 14,
-        radius: 6,
+        radius: 8,
         shadow: 2,
       };
       const sizes = Object.assign(defaultSizes, this.sizes);
@@ -63,7 +66,7 @@ export default {
       const sizeFactor = [0, 0.1, 0.33, 1, 3, 9];
       const shadowFactor = [0, 0.25, 0.5, 1, 2, 4];
       const shadowBlurFactor = [0, 0.5, 0.75, 1, 1.25, 1.5];
-      const fontFactor = [0, 0.7, 0.85, 1, 1.5, 2];
+      const fontFactor = [0, 0.5, 0.7, 1, 1.15, 1.8];
       const borderFactor = [0, 0.0625, 0.125, 0.125, 0.1875, 0.25];
       const factors = ['no', 'xs', 'sm', 'md', 'lg', 'xl', 'round'];
       const ret = {};
@@ -71,7 +74,7 @@ export default {
         ret[key] = {
           normal: `${value}px`,
           multiplyBy: (number) => `${value * number}px`,
-          factor: (size, factorType = 'size', arg = null) => {
+          factor: (size, factorType = 'size', options = {}) => {
             if (size === 'auto') {
               return 'auto';
             }
@@ -103,7 +106,15 @@ export default {
             }
             const shadowSize = `${value * [shadowFactor[factors.indexOf(size)]]}px`;
             const shadowBlur = `${value * [shadowBlurFactor[factors.indexOf(size)]]}px`;
-            return `0 ${shadowSize} ${shadowBlur} ${this._colors[arg || 'background'].shade(-50, 0.2)}`;
+            const shadowColor = this._colors[options.color || 'background'].shade(-50, 0.14);
+            const dir = this._direction.static(options.dir || 'all');
+            if (dir === 'all') {
+              return `0 0 ${shadowBlur} ${shadowSize} ${shadowColor}`;
+            }
+            if (['bottom', 'top'].includes(dir)) {
+              return `0 ${dir === 'top' ? '-' : ''}${shadowSize} ${shadowBlur} 0 ${shadowColor}`;
+            }
+            return `${dir === 'left' ? '-' : ''}${shadowSize} 0 ${shadowBlur} 0 ${shadowColor}`;
           },
         };
       });
@@ -118,8 +129,8 @@ export default {
         warning: '#ffd400',
         danger: '#dd4b39',
         header: '#0B62EA',
-        sidebar: '#101823',
-        footer: '#006CFF',
+        sidebar: '#2B2B2B',
+        footer: '#152235',
       };
       const colors = Object.assign(defaultColors, this.colors);
       const ret = {};
@@ -159,38 +170,58 @@ export default {
     const mediaNames = ['xs', 'sm', 'md', 'lg', 'xl'];
     const mediaStarts = [0, 480, 768, 992, 1200];
     const forceValue = (value) => `${value} !important`;
-    const staticDir = (dir) => (dir || '').replace('start', this._direction.start).replace('end', this._direction.end) || null;
     const queryBase = (size, content) => mediaQuery(size, [content]);
     const attrName = (name, value = null) => value ? `[css-${name}="${value}"]` : `[css-${name}]`;
 
     const helperClasses = () => {
       const ret = {};
       // Border
-      [null, 'top', 'bottom', 'start', 'end', 'right', 'left'].forEach((dynamicDir) => {
-        ['no', 'xs', 'sm', 'md', 'lg', 'xl'].forEach((size, sizeIndex) => {
-          const rule = attrName(cx('-', 'border', dynamicDir), size);
-          const dir = staticDir(dynamicDir);
-          const prop = cx('-', 'border', dir);
-          ret[rule] = {
-            [cx('-', prop, 'style')]: forceValue('solid'),
-            [cx('-', prop, 'width')]: forceValue(this._sizes.base.factor(size, 'border')),
-          };
+      ['border', 'shadow'].forEach((property) => {
+        [null, 'top', 'bottom', 'start', 'end', 'right', 'left'].forEach((dynamicDir) => {
+          ['no', 'xs', 'sm', 'md', 'lg', 'xl'].forEach((size, sizeIndex) => {
+            const rule = attrName(cx('-', property, dynamicDir), size);
+            const dir = this._direction.static(dynamicDir);
+            if (property === 'border') {
+              const prop = cx('-', 'border', dir);
+              ret[rule] = {
+                [cx('-', prop, 'style')]: forceValue('solid'),
+                [cx('-', prop, 'width')]: forceValue(this._sizes.base.factor(size, 'border')),
+              };
+            } else { // shadow
+              ret[rule] = {
+                boxShadow: forceValue(this._sizes.base.factor(size, 'shadow', { dir })),
+              };
+            }
+          });
         });
       });
 
       // Padding and Margin
-      [null, 'padding', 'margin'].forEach((property) => {
-        [null, 'top', 'bottom', 'start', 'end', 'right', 'left'].forEach((dynamicDir) => {
+      ['padding', 'margin'].forEach((property) => {
+        [null, 'x', 'y', 'top', 'bottom', 'start', 'end', 'right', 'left'].forEach((dynamicDir) => {
           ['no', 'xs', 'sm', 'md', 'lg', 'xl', 'auto'].forEach((size) => {
-            if (!property && !dynamicDir) {
-              return;
-            }
-            const dir = staticDir(dynamicDir);
             const rule = attrName(cx('-', property, dynamicDir), size);
-            const prop = cx('-', property, dir);
-            ret[rule] = {
-              [prop]: forceValue(this._sizes.base.factor(size, 'size')),
-            };
+            const dir = this._direction.static(dynamicDir);
+            if (dir === 'x') {
+              const prop1 = cx('-', property, 'left');
+              const prop2 = cx('-', property, 'right');
+              ret[rule] = {
+                [prop1]: forceValue(this._sizes.base.factor(size, 'size')),
+                [prop2]: forceValue(this._sizes.base.factor(size, 'size')),
+              };
+            } else if (dir === 'y') {
+              const prop1 = cx('-', property, 'top');
+              const prop2 = cx('-', property, 'bottom');
+              ret[rule] = {
+                [prop1]: forceValue(this._sizes.base.factor(size, 'size')),
+                [prop2]: forceValue(this._sizes.base.factor(size, 'size')),
+              };
+            } else {
+              const prop = cx('-', property, dir);
+              ret[rule] = {
+                [prop]: forceValue(this._sizes.base.factor(size, 'size')),
+              };
+            }
           });
         });
       });
@@ -214,17 +245,24 @@ export default {
       });
 
       // Radius
-      ['no', 'xs', 'sm', 'md', 'lg', 'xl', 'round'].forEach((size) => {
-        ret[attrName(cx('-', 'radius'), size)] = {
-          borderRadius: forceValue(this._sizes.radius.factor(size, 'radius')),
-        };
-      });
-
-      // Shadow
-      ['no', 'xs', 'sm', 'md', 'lg', 'xl'].forEach((size) => {
-        ret[attrName(cx('-', 'shadow'), size)] = {
-          boxShadow: forceValue(this._sizes.shadow.factor(size, 'shadow')),
-        };
+      [null, 'top', 'bottom', 'start', 'end', 'right', 'left'].forEach((dynamicSide) => {
+        ['no', 'xs', 'sm', 'md', 'lg', 'xl', 'round'].forEach((size) => {
+          const side = this._direction.static(dynamicSide);
+          const rule = attrName(cx('-', 'radius', dynamicSide), size);
+          const value = forceValue(this._sizes.radius.factor(size, 'radius'));
+          if (dynamicSide === null) {
+            ret[rule] = {
+              borderRadius: forceValue(this._sizes.radius.factor(size, 'radius')),
+            };
+          } else {
+            const side1 = ['top', 'bottom'].includes(dynamicSide) ? `${side}-right` : `top-${side}`;
+            const side2 = ['top', 'bottom'].includes(dynamicSide) ? `${side}-right` : `bottom-${side}`;
+            ret[rule] = {
+              [cx('-', 'border', side1, 'radius')]: value,
+              [cx('-', 'border', side2, 'radius')]: forceValue(this._sizes.radius.factor(size, 'radius')),
+            };
+          }
+        });
       });
 
       // Displays
@@ -250,10 +288,13 @@ export default {
       ret[attrName('full-width')] = {
         width: forceValue('100%'),
       };
+      ret[attrName('overflow', 'hidden')] = {
+        overflow: forceValue('hidden'),
+      };
 
       // Text Aligns
       ['start', 'end', 'right', 'left', 'justify', 'center'].forEach((dynamicDir) => {
-        const dir = staticDir(dynamicDir);
+        const dir = this._direction.static(dynamicDir);
         ret[attrName('text-align', dynamicDir)] = {
           textAlign: forceValue(dir),
         };
@@ -262,7 +303,7 @@ export default {
       // Directions
       ['direction', 'float'].forEach((prop) => {
         ['start', 'end', 'right', 'left'].forEach((dynamicDir) => {
-          const dir = staticDir(dynamicDir);
+          const dir = this._direction.static(dynamicDir);
           ret[attrName(cx('-', prop), dynamicDir)] = {
             [prop]: forceValue(dir),
           };
@@ -295,7 +336,7 @@ export default {
         const height = forceValue(this._sizes.base.factor(size, 'height'));
         const fontSize = forceValue(this._sizes.font.factor(size, 'font'));
         ret[attrName('max-width', size)] = {
-          maxWidth: forceValue(mediaStarts[index + 1] ? `${mediaStarts[index + 1]}px` : '100%'),
+          maxWidth: forceValue(mediaStarts[index + 1] ? `${mediaStarts[index + 1] - 1}px` : '100%'),
         };
         ret[attrName('size', size)] = {
           height,
@@ -320,10 +361,9 @@ export default {
         const ret = {};
         if (!prefix) {
           ret[attrName('row')] = {
-            display: 'flex',
-            flexWrap: 'wrap',
-            // padding: this._sizes.base.multiplyBy(0.5),
-            width: '100%',
+            display: forceValue('flex'),
+            flexWrap: forceValue('wrap'),
+            width: forceValue('100%'),
             '& > *': {
               display: 'block',
               flexGrow: 1,
@@ -338,18 +378,18 @@ export default {
           const size = `${width1 * i}%`;
           const name = i.toString();
           ret[attrName(cx('-', 'col', prefix), name)] = i === 0 ? {
-            display: 'none',
+            display: forceValue('none'),
           } : {
-            flex: `0 0 ${size}`,
-            width: size,
-            maxWidth: size,
+            flex: forceValue(`0 0 ${size}`),
+            width: forceValue(size),
+            maxWidth: forceValue(size),
           };
           ret[attrName(cx('-', 'col-offset', prefix), name)] = {
-            [cx('-', 'margin', this._direction.start)]: size,
+            [cx('-', 'margin', this._direction.start)]: forceValue(size),
           };
         }
         ret[attrName(cx('-', 'hidden', prefix))] = {
-          display: 'none',
+          display: forceValue('none'),
         };
         return base(ret);
       } if (section === 'mediaQuery') { // real queries
