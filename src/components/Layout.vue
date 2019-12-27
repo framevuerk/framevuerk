@@ -46,8 +46,9 @@ export default {
       [],
     ];
     this.$slots.default.filter((vnode) => vnode.componentOptions).forEach((vnode) => {
+      const get = (prop) => (vnode.componentOptions.propsData || vnode.data.attrs || {})[prop]
       const is = (section) => (
-        (vnode.componentOptions.propsData || vnode.data.attrs || {}).layout === section || dashCase(vnode.componentOptions.tag) === `fv-${section}`
+        get('layout') === section || dashCase(vnode.componentOptions.tag) === `fv-${section}`
       );
 
       if (is('header')) {
@@ -57,7 +58,7 @@ export default {
       } else if (is('content')) {
         children[1][1].push(vnode);
       } else if (is('sidebar')) {
-        if (vnode.componentOptions.propsData.position === 'end') {
+        if (get('position') === 'end') {
           children[1][2].push(vnode);
         } else {
           children[1][0].push(vnode);
