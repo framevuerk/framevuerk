@@ -1,34 +1,35 @@
-<template lang="pug">
-ul.fv-list(:tabindex="tabindex", :data-parent="parent")
-  slot(v-if="$scopedSlots.default || $slots.default")
+<template>
+<component :is="tag" :tabindex="controlerElement ? -1 : 0">
+  <slot />
+</component>
 </template>
 
 <script>
-import colorMixin from '../mixins/color.js';
+import color from '../mixins/color';
 
 export default {
-  mixins: [
-    colorMixin({
-      color: 'background',
-      activeColor: 'primary',
-    }),
-  ],
+  mixins: [color],
+  inject: ['$theme'],
   props: {
-    parent: {
-      type: Boolean,
-      default: false,
+    tag: {
+      type: String,
+      default: 'ul',
     },
+    controlerElement: {
+      type: Object,
+      default: undefined,
+    }
+  },
+  computed: {
+    eventListener() {
+      return this.controlerElement || this.$el;
+    }
   },
   data() {
     return {
       highlighted: null,
       isFocused: false,
     };
-  },
-  computed: {
-    tabindex() {
-      return this.$attrs && this.$attrs.tabindex ? parseInt(this.$attrs.tabindex) : (this.parent ? 0 : undefined);
-    },
   },
   methods: {
     onFocus() {
@@ -91,62 +92,23 @@ export default {
           event.preventDefault();
           this.moveHighlight(true);
           break;
-        case process.env.direction === 'ltr' ? 37 : 39: // 37: left, 39: right,
-          if (this.highlighted && this.highlighted.__vue__) {
-            this.highlighted.__vue__.collapse();
-          }
-          break;
-        case process.env.direction === 'ltr' ? 39 : 37: // 37: left, 39: right,
-          if (this.highlighted && this.highlighted.__vue__) {
-            this.highlighted.__vue__.expand();
-          }
-          break;
-        case 13: // enter
-          event.preventDefault();
-          if (this.highlighted && this.highlighted.__vue__) {
-            this.highlighted.__vue__.onClick(event);
-          }
-          break;
+        // case 13: // enter
+        //   event.preventDefault();
+        //   if (this.highlighted && this.highlighted.__vue__) {
+        //     this.highlighted.__vue__.onClick(event);
+        //   }
+        //   break;
       }
-    },
-    onHover(event) {
-      let el = event.target;
-      while (el) {
-        if (el && el.tagName === 'LI' && el.classList.contains('fv-list-item')) {
-          break;
-        }
-        if (el.tagName === 'UL' && el.classList.contains('fv-list')) {
-          return;
-        }
-        el = el.parentNode;
-      }
-      if (this.highlighted === el || el.getAttribute('disabled')) {
-        return;
-      }
-      this.setHighlight(el);
     },
     bindEvents() {
-      if (this.parent) {
-        this.$el.addEventListener('mousemove', this.onHover);
-        this.$el.addEventListener('mouseleave', this.onLeave);
-        this.$el.addEventListener('keydown', this.onKeydown);
-      }
-      if (this.tabindex >= 0) {
-        this.$el.addEventListener('focus', this.onFocus);
-        this.$el.addEventListener('blur', this.onBlur);
-      }
+      this.eventListener.addEventListener('keydown', this.onKeydown);
     },
     unbindEvents() {
-      this.$el.removeEventListener('mouseleave', this.onLeave);
-      this.$el.removeEventListener('mousemove', this.onHover);
-      this.$el.removeEventListener('keydown', this.onKeydown);
-      this.$el.removeEventListener('focus', this.onFocus);
-      this.$el.removeEventListener('blur', this.onBlur);
+      this.eventListener.removeEventListener('keydown', this.onKeydown);
     },
   },
   mounted() {
     this.bindEvents();
-    // this.setHighlight(null)
   },
   beforeDestroy() {
     this.unbindEvents();
