@@ -7,10 +7,6 @@
 <script>
 export default {
   props: {
-    color: {
-      type: String,
-      default: 'sidebar',
-    },
     type: {
       type: String,
       validator: (v) => ['pinned', 'unattached', 'smart'].includes(v),
@@ -22,7 +18,7 @@ export default {
     },
     position: {
       type: String,
-      validator: (v) => ['start', 'end'].includes(v),
+      validator: (v) => ['start', 'end', 'left', 'right'].includes(v),
       default: 'start',
     },
   },
@@ -40,8 +36,8 @@ export default {
     handleSmart(size) {
       this.$el.style.transitionDuration = '0s';
       this.$layout.unlock();
-      this.$emit('update:visible', size.width > 960);
-      this.className = size.width > 960 ? 'pinned' : 'unattached';
+      this.$emit('update:visible', size.width >= 992);
+      this.className = size.width >= 990 ? 'pinned' : 'unattached';
       setTimeout(() => {
         this.$el.style.transitionDuration = null;
       });
@@ -86,9 +82,12 @@ export default {
     const unattachedPostion = this.$layout.global ? 'fixed' : 'absolute';
     return [
       className('sidebar', {
-        background: this.$theme.colors[this.color].normal,
-        color: this.$theme.colors[this.color].text,
-        [`border-${position}`]: `solid 1px ${this.$theme.colors[this.color].shade(-15)}`,
+        backgroundColor: this.$theme.colors.sidebar.normal,
+        color: this.$theme.colors.sidebar.text,
+        borderColor: this.$theme.colors.sidebar.shade(-15),
+        boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: position === 'left' ? 'right' : 'left' }),
+        [`border-${position}-width`]: this.$theme.sizes.base.factor('md', 'border'),
+        [`border-${position}-style`]: 'solid',
         minHeight: '100%',
         [position]: 0,
         overflowX: 'hidden !important',
