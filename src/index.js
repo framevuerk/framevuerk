@@ -4,9 +4,9 @@ import fvLayout from '@/components/Layout.vue';
 // import fvMain from './components/fvMain.vue'
 import fvContent from './components/Content.vue';
 import fvHeader from './components/Header.vue';
-// import fvFooter from './components/fvFooter.vue'
+import fvFooter from './components/Footer.vue';
 import fvSidebar from './components/Sidebar.vue';
-import fvContainer from './components/Container.vue';
+// import fvContainer from './components/Container.vue';
 // import fvForm from './components/fvForm.vue'
 // import fvSelect from './components/fvSelect.vue'
 // import fvDatepicker from './components/fvDatepicker.vue'
@@ -32,12 +32,12 @@ import fvButton from './components/Button.vue';
 // import config from './utility/config.js'
 
 const Framevuerk = {
-  fvThemeProvider,
-  fvLayout,
+  // fvThemeProvider,
+  // fvLayout,
   // fvMain,
-  fvContent,
-  fvHeader,
-  fvContainer,
+  // fvContent,
+  // fvHeader,
+  // fvContainer,
   // fvFooter,
   // fvSidebar,
   // fvForm,
@@ -47,7 +47,7 @@ const Framevuerk = {
   // fvListItem,
   // fvMenu,
   // fvInput,
-  fvButton,
+  // fvButton,
   // fvSwitch,
   // fvDialog,
   // fvTable,
@@ -70,9 +70,9 @@ const Framevuerk = {
     Vue.component('fvHeader', fvHeader);
     // Vue.component('fvMain', fvMain)
     Vue.component('fvContent', fvContent);
-    // Vue.component('fvFooter', fvFooter)
+    Vue.component('fvFooter', fvFooter);
     Vue.component('fvSidebar', fvSidebar);
-    Vue.component('fvContainer', fvContainer);
+    // Vue.component('fvContainer', fvContainer);
     // Vue.component('fvForm', fvForm)
     // Vue.component('fvSelect', fvSelect)
     // Vue.component('fvDatepicker', fvDatepicker)
