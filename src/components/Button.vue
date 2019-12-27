@@ -1,5 +1,5 @@
 <template>
-<component :is="tag" :class="$style.button" @click="onClick" :disabled="disabled">
+<component :is="tag" :class="$style.button" @click="onClick" :disabled="disabled" :to="$attrs.to">
   <template>
     <slot />
   </template>
@@ -39,7 +39,7 @@ export default {
         display: 'inline-block',
         backgroundColor: this.$color.normal,
         color: this.$color.text,
-        boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow'),
+        boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: 'bottom' }),
         borderStyle: 'solid',
         borderWidth: '1px',
         fontWeight: 'bold',
