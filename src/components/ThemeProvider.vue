@@ -49,6 +49,8 @@ export default {
         center: 'center',
         end,
         value: direction,
+        endKey: direction === 'ltr' ? 39 : 37,
+        startKey: direction === 'ltr' ? 37 : 39,
         leftFactor: direction === 'ltr' ? 1 : -1,
         rightFactor: direction === 'ltr' ? -1 : 1,
         static: (dir) => dir ? dir.replace('start', start).replace('end', end) : null,
@@ -63,7 +65,7 @@ export default {
       };
       const sizes = Object.assign(defaultSizes, this.sizes);
       const heightFactor = [0, 1, 3, 5, 7, 9];
-      const sizeFactor = [0, 0.1, 0.33, 1, 3, 9];
+      const sizeFactor = [0, 0.3, 0.5, 1, 3, 9];
       const shadowFactor = [0, 0.25, 0.5, 1, 2, 4];
       const shadowBlurFactor = [0, 0.5, 0.75, 1, 1.25, 1.5];
       const fontFactor = [0, 0.5, 0.7, 1, 1.15, 1.8];
@@ -75,30 +77,31 @@ export default {
           normal: `${value}px`,
           multiplyBy: (number) => `${value * number}px`,
           factor: (size, factorType = 'size', options = {}) => {
+            const sum = options.sum || 0;
             if (size === 'auto') {
               return 'auto';
             }
             if (factorType === 'size') {
-              return `${value * [sizeFactor[factors.indexOf(size)]]}px`;
+              return `${(value * [sizeFactor[factors.indexOf(size)]]) + sum}px`;
             }
             
             if (factorType === 'radius') {
               if (size === 'round') {
                 return '50%';
               }
-              return `${value * [sizeFactor[factors.indexOf(size)]]}px`;
+              return `${(value * [sizeFactor[factors.indexOf(size)]]) + sum}px`;
             }
 
             if (factorType === 'border') {
-              return `${value * [borderFactor[factors.indexOf(size)]]}px`;
+              return `${(value * [borderFactor[factors.indexOf(size)]]) + sum}px`;
             }
 
             if (factorType === 'font') {
-              return `${value * [fontFactor[factors.indexOf(size)]]}px`;
+              return `${(value * [fontFactor[factors.indexOf(size)]]) + sum}px`;
             }
 
             if (factorType === 'height') {
-              return `${value * [heightFactor[factors.indexOf(size)]]}px`;
+              return `${(value * [heightFactor[factors.indexOf(size)]]) + sum}px`;
             }
             // shadow
             if (size === 'no') {
@@ -233,12 +236,12 @@ export default {
           if (dir === 'x') {
             ret[rule] = {
               display: forceValue('inline-block'),
-              marginLeft: forceValue(this._sizes.base.factor(size, 'size')),
+              paddingLeft: forceValue(this._sizes.base.factor(size, 'size')),
             };
           } else { // y
             ret[rule] = {
               display: forceValue('block'),
-              marginTop: forceValue(this._sizes.base.factor(size, 'size')),
+              paddingTop: forceValue(this._sizes.base.factor(size, 'size')),
             };
           }
         });
@@ -421,6 +424,10 @@ export default {
         margin: 0,
         border: 0,
         verticalAlign: 'baseline',
+        backfaceVisibility: 'hidden',
+        color: 'inherit',
+        borderColor: 'inherit',
+        backgroundColor: 'inherit',
         '-webkitOverflowScrolling': 'touch',
         '-webkitTapHighlightColor': 'rgba(0, 0, 0, 0)',
         touchAction: 'pan-y',
@@ -432,6 +439,9 @@ export default {
           outline: 'none',
         }
       }),
+      custom('a, a:hover, a:visited', {
+        textDecoration: 'none',
+      })
     ];
 
     const style = [
