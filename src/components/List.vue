@@ -1,15 +1,37 @@
 <template>
-<component :is="tag" :tabindex="controlerElement ? -1 : 0">
+<component :is="tag" :class="$style.list" :tabindex="controlerElement ? -1 : 1">
   <slot />
 </component>
 </template>
 
 <script>
 import color from '../mixins/color';
+import { moveIndex } from '../utility/utils';
 
 export default {
   mixins: [color],
-  inject: ['$theme'],
+  inject: {
+    $theme: {},
+    $list: {
+      default: null
+    }
+  },
+  data() {
+    return {
+      highlighted: null,
+      indent: 1,
+    }
+  },
+  provide() {
+    return {
+      $list: this,
+    };
+  },
+  created() {
+    if (this.$list) {
+      this.indent += this.$list.indent;
+    }
+  },
   props: {
     tag: {
       type: String,
@@ -25,26 +47,9 @@ export default {
       return this.controlerElement || this.$el;
     }
   },
-  data() {
-    return {
-      highlighted: null,
-      isFocused: false,
-    };
-  },
   methods: {
-    onFocus() {
-      this.isFocused = true;
-    },
-    onBlur() {
-      this.isFocused = false;
-      if (this.tabindex >= 0) {
-        this.setHighlight(null);
-      }
-    },
-    onLeave() {
-      if (!this.isFocused) {
-        this.setHighlight(null);
-      }
+    resetHighlight() {
+      this.moveHighlight('reset');
     },
     setHighlight(el) {
       const allItems = [...this.$el.querySelectorAll('.fv-list-item')];
@@ -59,38 +64,46 @@ export default {
       }
       this.highlighted = el;
     },
-    moveHighlight(next = null) {
-      const allItems = [...this.$el.querySelectorAll('.fv-list-item')].filter((el) => el.offsetHeight);
-      const highlightedIndex = allItems.findIndex((el) => this.highlighted === el);
-      let shouldHighlightIndex = highlightedIndex;
-      let tryTime = 0;
-      do {
-        if (tryTime++ >= allItems.length) {
-          this.highlighted = null;
-          return;
-        }
-        if (next === true) {
-          shouldHighlightIndex = (shouldHighlightIndex + 1) % allItems.length;
-        } else if (next === false) {
-          shouldHighlightIndex = shouldHighlightIndex - 1 < 0 ? allItems.length - 1 : shouldHighlightIndex - 1;
+    moveHighlight(action = 'reset') {
+      const items = this.$children.filter((component) => !component.disabled);
+      const highlightedIndex = items.findIndex((component) => component.isHighlighted);
+      const newIndex = action === 'reset' ? -1 : moveIndex(highlightedIndex + (action === 'next' ? 1 : -1), items.length);
+      let highlightedItem = null;
+      items.forEach((item, index) => {
+        if (newIndex === index) {
+          highlightedItem = item;
+          item.isHighlighted = true;
+          if (item.$el && item.$el.scrollIntoViewIfNeeded) {
+            item.$el.scrollIntoViewIfNeeded();
+          }
         } else {
-          shouldHighlightIndex = 0;
+          item.isHighlighted = false;
         }
-      } while (allItems[shouldHighlightIndex].__vue__ && allItems[shouldHighlightIndex].__vue__.disabled);
-      this.setHighlight(allItems[shouldHighlightIndex]);
-      if (typeof this.highlighted.scrollIntoViewIfNeeded === 'function') {
-        this.highlighted.scrollIntoViewIfNeeded();
-      }
+      });
+      this.highlighted = highlightedItem;
     },
     onKeydown(event) {
+      if (event.target !== this.eventListener) {
+        return;
+      }
       switch (event.which) {
         case 38: // up
           event.preventDefault();
-          this.moveHighlight(false);
+          this.moveHighlight('prev');
           break;
         case 40: // down
           event.preventDefault();
-          this.moveHighlight(true);
+          this.moveHighlight('next');
+          break;
+        case this.$theme.direction.endKey:
+          if (this.highlighted) {
+            this.highlighted.expand();
+          }
+          break;
+        case this.$theme.direction.startKey:
+          if (this.highlighted) {
+            this.highlighted.collapse();
+          }
           break;
         // case 13: // enter
         //   event.preventDefault();
@@ -101,9 +114,13 @@ export default {
       }
     },
     bindEvents() {
+      this.eventListener.addEventListener('focus', this.resetHighlight);
+      this.eventListener.addEventListener('blur', this.resetHighlight);
       this.eventListener.addEventListener('keydown', this.onKeydown);
     },
     unbindEvents() {
+      this.eventListener.removeEventListener('focus', this.resetHighlight);
+      this.eventListener.removeEventListener('blur', this.resetHighlight);
       this.eventListener.removeEventListener('keydown', this.onKeydown);
     },
   },
@@ -113,10 +130,19 @@ export default {
   beforeDestroy() {
     this.unbindEvents();
   },
+  style({ className }) {
+    return [
+      className('list', {
+        listStyle: 'none',
+        borderStyle: 'solid',
+        borderWidth: '0px',
+      })
+    ]
+  }
 };
 </script>
 
-<style lang="scss">
+<zstyle lang="scss">
 @import '../styles/variables';
 
 .fv-list {
@@ -126,4 +152,4 @@ export default {
     border-top: none;
   }
 }
-</style>
+</zstyle>
