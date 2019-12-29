@@ -63,3 +63,6 @@ export const offsetTo = (el, parent) => {
   }
   return ret;
 };
+
+
+export const moveIndex = (number, total) => (total + (number % total)) % total;
