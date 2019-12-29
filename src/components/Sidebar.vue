@@ -33,11 +33,11 @@ export default {
     toggle() {
       this.$emit('update:visible', !this.visible);
     },
-    handleSmart(size) {
+    handleSmart() {
       this.$el.style.transitionDuration = '0s';
       this.$layout.unlock();
-      this.$emit('update:visible', size.width >= 992);
-      this.className = size.width >= 990 ? 'pinned' : 'unattached';
+      this.$emit('update:visible', window.innerWidth >= 992);
+      this.className = window.innerWidth >= 990 ? 'pinned' : 'unattached';
       setTimeout(() => {
         this.$el.style.transitionDuration = null;
       });
@@ -53,7 +53,8 @@ export default {
   },
   mounted() {
     if (this.type === 'smart') {
-      this.$layout.on('resize', this.handleSmart, true);
+      this.handleSmart();
+      // this.$layout.on('resize', this.handleSmart, true);
     }
   },
   watch: {
@@ -92,7 +93,7 @@ export default {
         [position]: 0,
         overflowX: 'hidden !important',
         '&.pinned': {
-          transition: `transform ${this.$theme.speed.normal} ease-out`,
+          transition: `transform ${this.$theme.speed.normal} ease`,
           position: 'relative',
           '&.show': {
             transform: 'translateX(0) !important',
@@ -108,7 +109,7 @@ export default {
           maxHeight: '100%',
           overflow: 'auto',
           position: unattachedPostion,
-          transition: `transform ${this.$theme.speed.normal} ease-out`,
+          transition: `transform ${this.$theme.speed.normal} ease-in-out`,
           zIndex: 2,
           '&.show': {
             transform: 'translateX(0) !important',
