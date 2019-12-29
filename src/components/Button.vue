@@ -9,9 +9,10 @@
 
 <script>
 import color from '@/mixins/color';
+import size from '@/mixins/size';
 
 export default {
-  mixins: [color],
+  mixins: [color, size],
   props: {
     tag: {
       type: String,
@@ -39,18 +40,18 @@ export default {
         display: 'inline-block',
         backgroundColor: this.$color.normal,
         color: this.$color.text,
-        boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: 'bottom' }),
+        boxShadow: this.$theme.sizes.shadow.factor(this.$size, 'shadow', { dir: 'bottom' }),
         borderStyle: 'solid',
         borderWidth: '1px',
         fontWeight: 'bold',
         textAlign: 'center',
         borderColor: this.$color.shade(-13),
-        borderRadius: this.$theme.sizes.radius.factor(this.fab ? 'round' : 'md', 'radius'),
-        lineHeight: this.$theme.sizes.base.factor('md', 'height'),
-        minHeight: this.$theme.sizes.base.factor('md', 'height'),
-        height: this.$theme.sizes.base.factor('md', 'height'),
-        fontSize: this.$theme.sizes.font.factor('md', 'font'),
-        width: this.fab ? this.$theme.sizes.base.factor('md', 'height') : 'auto',
+        borderRadius: this.$theme.sizes.radius.factor(this.fab ? 'round' : this.$size, 'radius'),
+        lineHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
+        minHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
+        height: this.$theme.sizes.base.factor(this.$size, 'height'),
+        fontSize: this.$theme.sizes.font.factor(this.$size, 'font'),
+        width: this.fab ? this.$theme.sizes.base.factor(this.$size, 'height') : 'auto',
         padding: this.fab ? '0' : `0 ${this.$theme.sizes.base.multiplyBy(2)}`,
         transition: `all ${this.$theme.speed.normal}`,
         cursor: 'pointer',
