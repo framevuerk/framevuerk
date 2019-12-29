@@ -10,10 +10,10 @@ import fvSidebar from './components/Sidebar.vue';
 // import fvForm from './components/fvForm.vue'
 // import fvSelect from './components/fvSelect.vue'
 // import fvDatepicker from './components/fvDatepicker.vue'
-// import fvList from './components/fvList.vue'
-// import fvListItem from './components/fvListItem.vue'
+import fvList from './components/List.vue';
+import fvListItem from './components/ListItem.vue';
 // import fvMenu from './components/fvMenu.vue'
-// import fvInput from './components/fvInput.vue'
+import fvInput from './components/Input.vue';
 import fvButton from './components/Button.vue';
 // import fvSwitch from './components/fvSwitch.vue'
 // import fvDialog from './components/fvDialog.vue'
@@ -76,10 +76,10 @@ const Framevuerk = {
     // Vue.component('fvForm', fvForm)
     // Vue.component('fvSelect', fvSelect)
     // Vue.component('fvDatepicker', fvDatepicker)
-    // Vue.component('fvList', fvList)
-    // Vue.component('fvListItem', fvListItem)
+    Vue.component('fvList', fvList);
+    Vue.component('fvListItem', fvListItem);
     // Vue.component('fvMenu', fvMenu)
-    // Vue.component('fvInput', fvInput)
+    Vue.component('fvInput', fvInput);
     Vue.component('fvButton', fvButton);
     // Vue.component('fvSwitch', fvSwitch)
     // Vue.component('fvDialog', fvDialog)
