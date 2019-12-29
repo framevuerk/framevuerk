@@ -184,6 +184,7 @@ export default {
       };
     },
     lock() {
+      (this.global ? document.body : this.$el).style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
       (this.global ? document.body : this.$el).style.overflow = 'hidden';
       this.lockers += 1;
     },
@@ -192,6 +193,7 @@ export default {
       if (this.lockers < 1) {
         this.lockers = 0;
         (this.global ? document.body : this.$el).style.overflow = null;
+        (this.global ? document.body : this.$el).style.paddingRight = null;
       }
     },
     onScroll() {
@@ -212,8 +214,11 @@ export default {
       this.listeners.resize.forEach((listener) => listener(size));
     },
   },
-  style({ className }) {
+  style({ className, mediaQuery }) {
     return [
+      className('lock', {
+        overflow: 'hidden',
+      }),
       className('layout', {
         overflow: this.global ? 'visible' : 'auto',
         width: '100%',
