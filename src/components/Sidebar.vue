@@ -26,7 +26,6 @@ export default {
     return {
       className: 'smart',
       cancelDetector: null,
-      focusStoler: null,
     };
   },
   methods: {
@@ -35,7 +34,6 @@ export default {
     },
     handleSmart() {
       this.$el.style.transitionDuration = '0s';
-      this.$layout.unlock();
       this.$emit('update:visible', window.innerWidth >= 992);
       this.className = window.innerWidth >= 990 ? 'pinned' : 'unattached';
       setTimeout(() => {
@@ -54,41 +52,28 @@ export default {
   mounted() {
     if (this.type === 'smart') {
       this.handleSmart();
-      // this.$layout.on('resize', this.handleSmart, true);
     }
   },
   watch: {
     visible(newValue) {
       if (this.visible && this.className === 'unattached') {
-        this.$layout.lock();
-        this.cancelDetector = this.$layout.cancelDetector(this.toggle);
-        this.focusStoler = this.$layout.focusStoler(this.$el);
-        this.outerClickDetector = this.$layout.outerClickDetector(this.$el, this.toggle);
+        this.cancelDetector = this.$layout.cancelDetector(this.$el, this.toggle);
       } else {
-        this.$layout.unlock();
         this.cancelDetector && this.cancelDetector.release();
-        this.focusStoler && this.focusStoler.release();
-        this.outerClickDetector && this.outerClickDetector.release();
       }
     },
   },
   beforeDestroy() {
-    this.$layout.off('resize', this.handleSmart);
     this.cancelDetector && this.cancelDetector.release();
-    this.focusStoler && this.focusStoler.release();
-    this.outerClickDetector && this.outerClickDetector.release();
   },
   style({ className, mediaQuery }) {
-    const position = this.$theme.direction[this.position];
+    const position = this.$theme.direction[this.$layout.getSidebarPosition(this)];
     const unattachedPostion = this.$layout.global ? 'fixed' : 'absolute';
     return [
       className('sidebar', {
         backgroundColor: this.$theme.colors.sidebar.normal,
         color: this.$theme.colors.sidebar.text,
         borderColor: this.$theme.colors.sidebar.shade(-15),
-        boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: position === 'left' ? 'right' : 'left' }),
-        [`border-${position}-width`]: this.$theme.sizes.base.factor('md', 'border'),
-        [`border-${position}-style`]: 'solid',
         minHeight: '100%',
         [position]: 0,
         overflowX: 'hidden !important',
@@ -113,7 +98,8 @@ export default {
           zIndex: 2,
           '&.show': {
             transform: 'translateX(0) !important',
-          },
+          },        [`border-${position}-width`]: this.$theme.sizes.base.factor('md', 'border'),
+        [`border-${position}-style`]: 'solid',
           '&.hide': {
             transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
           },
