@@ -129,7 +129,7 @@ export default {
         primary: '#0B62EA',
         secondary: '#35485d',
         info: '#14b0cf',
-        warning: '#ffd400',
+        warning: '#fd9802',
         danger: '#dd4b39',
         header: '#0B62EA',
         sidebar: '#2B2B2B',
@@ -142,7 +142,7 @@ export default {
         const lightness = colorLightness(rgb);
         ret[key] = {
           normal: rgbToText(rgb),
-          text: rgbToText(shadeColor(rgb, lightness < 70 ? 90 : -90)),
+          text: rgbToText(shadeColor(rgb, lightness < 80 ? 90 : -90)),
           lightness,
           autoShade: (percent,alpha = 1) => {
             const ver1 = shadeColor(rgb, percent);
