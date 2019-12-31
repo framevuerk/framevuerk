@@ -22,6 +22,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    invert: {
+      type: Boolean,
+      default: false,
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -38,8 +42,8 @@ export default {
     return [
       className('button', {
         display: 'inline-block',
-        backgroundColor: this.$color.normal,
-        color: this.$color.text,
+        backgroundColor: this.invert ? 'inherit' : this.$color.normal,
+        color: this.$color[this.invert ? 'normal' : 'text'],
         boxShadow: this.$theme.sizes.shadow.factor(this.$size, 'shadow', { dir: 'bottom' }),
         borderStyle: 'solid',
         borderWidth: '1px',
@@ -55,13 +59,14 @@ export default {
         padding: this.fab ? '0' : `0 ${this.$theme.sizes.base.multiplyBy(2)}`,
         transition: `all ${this.$theme.speed.normal}`,
         cursor: 'pointer',
+        overflow: 'hidden',
         textDecoration: 'blink',
         userSelect: 'none',
         '&:hover, &:focus': {
-          backgroundColor: this.$color.autoShade(8),
+          backgroundColor: this.$color.autoShade(10, this.invert ? 0.1 : 1),
         },
         '&:active': {
-          backgroundColor: this.$color.autoShade(-13),
+          backgroundColor: this.$color.autoShade(-15, this.invert ? 0.2 : 1),
         },
       }),
     ];
