@@ -54,14 +54,13 @@ export default {
         borderWidth: '1px',
         borderColor: this.$color.shade(-13),
         borderRadius: this.$theme.sizes.radius.factor(this.fab ? 'round' : this.$size, 'radius'),
-        // lineHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
         minHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
         height: this.multiLine ? this.$theme.sizes.base.factor('xl', 'height') : this.$theme.sizes.base.factor(this.$size, 'height'),
         fontSize: this.$theme.sizes.font.factor(this.$size, 'font'),
         padding: this.$theme.sizes.base.multiplyBy(2),
         resize: 'vertical',
         '&:hover, &:focus': {
-          borderColor: this.$color.autoShade(-26),
+          borderColor: this.$color.autoShade(-39),
         },
       }),
     ];
