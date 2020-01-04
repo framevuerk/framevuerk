@@ -53,6 +53,8 @@ export default {
         startKey: direction === 'ltr' ? 37 : 39,
         leftFactor: direction === 'ltr' ? 1 : -1,
         rightFactor: direction === 'ltr' ? -1 : 1,
+        nextChar: direction === 'ltr' ? '>' : '<',
+        prevChar: direction === 'ltr' ? '<' : '>',
         static: (dir) => dir ? dir.replace('start', start).replace('end', end) : null,
       };
     },
@@ -373,8 +375,12 @@ export default {
               width: 'auto',
               maxWidth: '100%',
               minHeight: '1px',
-              // padding: this._sizes.base.multiplyBy(0.5),
             },
+          };
+          ret[attrName(cx('-', 'col-static'))] = {
+            flexGrow: forceValue(1),
+            flexBasis: forceValue(0),
+            flexShrink: forceValue(1),
           };
         }
         for (let i = 0; i < 12; i += 1) {
