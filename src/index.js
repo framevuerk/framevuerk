@@ -15,6 +15,9 @@ import fvListItem from './components/ListItem.vue';
 // import fvMenu from './components/fvMenu.vue'
 import fvInput from './components/Input.vue';
 import fvButton from './components/Button.vue';
+
+import fvSlider from './components/Slider.vue';
+import fvSlide from './components/Slide.vue';
 // import fvSwitch from './components/fvSwitch.vue'
 // import fvDialog from './components/fvDialog.vue'
 // import fvTable from './components/fvTable.vue'
@@ -72,6 +75,8 @@ const Framevuerk = {
     Vue.component('fvContent', fvContent);
     Vue.component('fvFooter', fvFooter);
     Vue.component('fvSidebar', fvSidebar);
+    Vue.component('fvSlider', fvSlider);
+    Vue.component('fvSlide', fvSlide);
     // Vue.component('fvContainer', fvContainer);
     // Vue.component('fvForm', fvForm)
     // Vue.component('fvSelect', fvSelect)
