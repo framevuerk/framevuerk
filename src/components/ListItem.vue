@@ -16,7 +16,7 @@ li.fv-list-item(:disabled="disabled")
 </ztemplate>
 
 <template>
-<component :is="tag" :class="[$style.listItem, isHighlighted && 'highlighted', disabled && 'disabled']">
+<component :is="tag" :class="[$style.listItem, disabled && 'disabled', selected && 'selected', isHighlighted && 'highlighted']"  :to="$attrs.to">
   <div class="content" css-padding-x="md">
     <span css-space-x="lg" v-for="i in $list.indent - 1" :key="'indent-' + i"/>
     <fvButton v-if="hasSubList" class="expand-btn" fab css-radius="no" css-shadow="no" @click="toggle" tabindex="0">
@@ -123,38 +123,15 @@ export default {
           lineHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
           [`border-${this.$theme.direction.start}-width`]: this.$theme.sizes.base.normal,
           [`border-${this.$theme.direction.start}-style`]: 'solid',
-          [`border-${this.$theme.direction.start}-color`]: this.selected ? this.$theme.colors.primary.normal : 'transparent',
+          [`border-${this.$theme.direction.start}-color`]: 'transparent',
           // position: 'relative',
           '& > .expand-btn': {
-            // [this.$theme.direction.end]: '0px',
+            fontFamily: 'monospace',
             marginTop: '5px',
             minHeight: this.$theme.sizes.base.factor(this.$size, 'font', { sum: 5 }),
             height: this.$theme.sizes.base.factor(this.$size, 'font', { sum: 5 }),
             width: this.$theme.sizes.base.factor(this.$size, 'font', { sum: 5 }),
             lineHeight: this.$theme.sizes.base.factor(this.$size, 'font', { sum: 5 }),
-            // position: 'absolute',
-            '& > .icon': {
-              display: 'inline-block',
-              height: this.$theme.sizes.base.factor(this.$size, 'size'),
-              width: this.$theme.sizes.base.factor(this.$size, 'size'),
-              borderStyle: 'solid',
-              borderWidth: '2px',
-              borderTopStyle: 'dotted',
-              borderLeftStyle: 'dotted',
-              // borderRightWidth: '2px',
-              // borderBottomWidth: '2px',
-              transitionProperty: 'transform',
-              transitionDuration: this.$theme.speed.multiplyBy(0.75),
-              willChange: 'transform',
-              transformOrigin: 'center',
-            },
-            '&.collapse > .icon': {
-              transform: 'rotate(45deg)',
-              marginTop: '-5px',
-            },
-            '&.expand > .icon': {
-              transform: 'rotate(-135deg)',
-            },
           }
         },
         '& > .sub-list': {
@@ -172,6 +149,9 @@ export default {
         },
         '&.highlighted': {
           backgroundColor: 'rgba(0, 0, 0, 0.06)',
+        },
+        '&.selected > .content': {
+          [`border-${this.$theme.direction.start}-color`]: this.$theme.colors.primary.normal,
         },
         // '&.disabled': {
         //   textDecoration: 'line-through',
