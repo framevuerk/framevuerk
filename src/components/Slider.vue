@@ -1,34 +1,36 @@
-<xtemplate>
-<div :class="[$style.layout, global ? 'global' : '']">
-  <header v-if="$slots.header" class="normal" ref="header">
-    <slot name="header"/>
-  </header>
-  <header v-if="$slots.autohideHeader" class="autohide" ref="autohideHeader">
-    <slot name="autohideHeader"/>
-  </header>
-  <main ref="main">
-    <aside ref="sidebar" :class="[sc, sc !== 'auto' ? (sv ? 'show' : 'hide') : '']">
-      <slot name="sidebar"/>
-    </aside>
-    <div class="content" ref="content">
-      <slot name="content"/>
+<template>
+<div :class="$style.slider">
+  <div class="labels">
+    <slot name="label"/>
+  </div>
+  <div class="contents">
+    <div class="inner" ref="inner">
+      <slot name="slide"/>
     </div>
-  </main>
-  <footer :class="footer">
-    <slot name="footer"/>
-  </footer>
+    <fvButton v-if="showButtons" fab class="btn prev" v-text="$theme.direction.prevChar" invert css-color="primary" css-border="no" css-shadow="no"/>
+    <fvButton v-if="showButtons" fab class="btn next" v-text="$theme.direction.nextChar" invert css-color="primary" css-border="no" css-shadow="no"/>
+  </div>
 </div>
-</xtemplate>
+</template>
 
 <script>
-import { dashCase } from '@/utility/utils';
+import { moveIndex } from '@/utility/utils';
+import Swipe from '@/utility/swipe';
 
 export default {
   props: {
     current: {
       default: undefined,
     },
-    navs: {
+    slidesPerPage: {
+      type: Number,
+      default: 2,
+    },
+    showNavs: {
+      type: Boolean,
+      default: true,
+    },
+    showButtons: {
       type: Boolean,
       default: true,
     },
@@ -38,51 +40,99 @@ export default {
       $tab: this,
     };
   },
-  render(createElement) {
-    const labels = [];
-    const contents = [];
-    this.$slots.default.filter((vnode) => vnode.componentOptions).forEach((vnode) => {
-      const is = (section) => dashCase(vnode.componentOptions.tag) === `fv-${section}`;
-      if (is('label')) {
-        labels.push(vnode);
-      } else if (is('content')) {
-        contents.push(vnode);
-      }
-    });
-
-    return createElement('div', {
-      class: this.$style.layout,
-    }, [
-      createElement('div', {
-        class: 'labels'
-      }, labels),
-      createElement('div', {
-        class: 'contents'
-      }, [
-        createElement('div', {
-          class: 'inner'
-        }, contents),
-        this.navs && createElement('div', {
-          class: 'navs'
-        }, labels),
-      ]),
-    ]);
-  },
   data() {
     return {
+      swipe: null,
     };
   },
   mounted() {
+    this.swipe = new Swipe(this.$refs.inner);
+    this.swipe.before(this.beforeSwipe);
+    this.swipe.while(this.whileSwipe);
+    this.swipe.after(this.afterSwipe);
+    this.swipe.on();
   },
   beforeDestroy() {
+    this.swipe.off();
   },
   methods: {
+    resetTransform() {
+      this.$refs.inner.style.transform = `translateX(${this.currentTransform}%)`;
+    },
+    moveIndex(offset) {
+      const max = this.numberOfTabs - (this.slidesPerPage - 1);
+      return moveIndex(this.currentIndex + offset, max);
+    },
+    beforeSwipe() {
+      this.$refs.inner.style.transitionDuration = '0s';
+    },
+    whileSwipe(pos, diff) {
+      this.$refs.inner.style.transform = `translateX(calc(${this.currentTransform}% + ${diff.x}px))`;
+    },
+    afterSwipe(pos, diff) {
+      this.$refs.inner.style.transitionDuration = null;
+      const offsetIndex = this.$theme.direction.leftFactor * (diff.x < -100 ? 1 : (diff.x > 100 ? -1 : 0));
+      const newIndex = this.moveIndex(offsetIndex);
+      const newValue = this.$slots.slide[newIndex].componentOptions.propsData.name;
+      if (newIndex === this.currentIndex) {
+        this.resetTransform();
+      }
+      this.$emit('update:current', newValue);
+    },
+  },
+  computed: {
+    numberOfTabs() {
+      return this.$slots.slide.length;
+    },
+    numberOfSlides() {
+      return Math.ceil(this.numberOfTabs / this.slidesPerPage);
+    },
+    eachTabSize() {
+      return this.numberOfTabs / (this.numberOfSlides * 100);
+    },
+    currentIndex() {
+      return this.current ? this.$slots.slide.findIndex((slide) => slide.componentOptions.propsData.name === this.current): 0;
+    },
+    currentTransform() {
+      const factor = this.$theme.direction.leftFactor * -1;
+      return factor * (this.currentIndex * (100 / this.numberOfTabs));
+    },
   },
   style({ className, mediaQuery }) {
     return [
-      className('tab', {
+      className('slider', {
+        '& > .labels': {
+          position: 'relative',
+        },
+        '& > .contents': {
+          position: 'relative',
+          overflow: 'hidden',
+          border: 'solid 1px red',
+          '& > .btn': {
+            position: 'absolute',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            '&.next': {
+              [this.$theme.direction.end]: 0,
+            },
+            '&.prev': {
+              [this.$theme.direction.start]: 0,
+            }
+          },
+          '& > .inner': {
+            display: 'flex',
+            width: `${this.numberOfSlides * 100}%`,
+            transition: 'transform 180ms',
+            willChange: 'transform',
+          },
+        }
       }),
     ];
+  },
+  watch: {
+    current() {
+      this.resetTransform();
+    },
   },
   inject: ['$theme'],
   // props: {
