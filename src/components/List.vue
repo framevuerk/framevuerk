@@ -141,15 +141,3 @@ export default {
   }
 };
 </script>
-
-<zstyle lang="scss">
-@import '../styles/variables';
-
-.fv-list {
-  clear: both;
-
-  & > .fv-list-item:first-child > .content {
-    border-top: none;
-  }
-}
-</zstyle>

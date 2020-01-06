@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { dashCase } from '@/utility/utils';
+import { dashCase } from '../utility/utils';
 
 export default {
   props: {

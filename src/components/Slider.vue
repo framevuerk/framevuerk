@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import { moveIndex } from '@/utility/utils';
-import Swipe from '@/utility/swipe';
+import { moveIndex } from '../utility/utils';
+import Swipe from '../utility/swipe';
 
 export default {
   props: {

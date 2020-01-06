@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import color from '@/mixins/color';
-import size from '@/mixins/size';
-import formElement from '@/mixins/formElement';
+import color from '../mixins/color';
+import size from '../mixins/size';
+import formElement from '../mixins/formElement';
 
 export default {
   inject: ['$theme'],

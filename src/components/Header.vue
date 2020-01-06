@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { offsetTo } from '@/utility/utils';
+import { offsetTo } from '../utility/utils';
 
 export default {
   props: {

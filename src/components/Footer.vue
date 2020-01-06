@@ -1,11 +1,23 @@
 <template>
 <footer :class="$style.footer">
   <slot />
+  <slot name="ali" value="xxx" />
 </footer>
 </template>
 
+<example>
+@data a = 2
+@data b = 3
+
+<div css-margin="md">
+  salam {{ a }}
+  <fvButton @click="a++"> Plus </fvButton>
+</div>
+
+</example>
+
 <script>
-import { offsetTo } from '@/utility/utils';
+import { offsetTo } from '../utility/utils';
 
 export default {
   props: {
