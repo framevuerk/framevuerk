@@ -7,7 +7,7 @@
 <script>
 import {
   each, shadeColor, colorLightness, hexToRgb, rgbToText, cx,
-} from '@/utility/utils';
+} from '../utility/utils';
 
 export default {
   props: {
