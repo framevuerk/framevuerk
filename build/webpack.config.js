@@ -1,22 +1,52 @@
 const path = require('path');
-// const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
-const WebpackBar = require('webpackbar');
-const pkg = require('../package.json');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-module.exports = {
-  entry: path.resolve(__dirname, '../src/index.js'),
-  mode: null, // dynamic
-  output: {
-    path: null, // dynamic
-    filename: `${pkg.name}.js`,
-    library: pkg.name.charAt(0).toUpperCase() + pkg.name.substr(1).toLowerCase(),
-    libraryTarget: 'umd',
-    libraryExport: 'default',
-  },
-  module: {
+// const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+
+module.exports = (config) => {
+  const output = {};
+  const plugins = [
+    new VueLoaderPlugin(),
+    // new FriendlyErrorsWebpackPlugin(),
+  ];
+
+  if (config.source === 'lib') {
+    output.path = path.resolve(__dirname, '../dist');
+    output.filename = 'framevuerk.js';
+    output.library = 'framevuerk';
+    output.libraryTarget = 'umd';
+    output.libraryExport = 'default';
+  } else {
+    output.path = path.resolve(__dirname, '../docs');
+    output.filename = 'bundle.js';
+    // output.publicPath = path.resolve(__dirname, '../public');
+    plugins.push(
+      new HtmlWebpackPlugin({
+        template: path.resolve(__dirname, '../docs-src/index.html'),
+        filename: path.resolve(__dirname, '../docs/index.html'),
+      }),
+      new CopyWebpackPlugin([
+        {
+          from: path.resolve(__dirname, '../static'),
+        },
+      ]),
+    );
+  }
+
+  const entry = path.resolve(__dirname, '../', config.source === 'lib' ? 'src/index.js' : 'docs-src/index.js');
+
+  const { mode } = config;
+
+  const resolve = {
+    alias: {
+      '@': path.resolve(__dirname, '../src'),
+      '@docs': path.resolve(__dirname, '../docs-src'),
+    },
+  };
+
+  const module = {
     rules: [
       {
         test: /\.vue$/,
@@ -34,15 +64,13 @@ module.exports = {
           },
         },
       },
-      // {
-      //   test: /\.(scss|css|sass)$/,
-      //   include: [path.resolve(__dirname, '../src')],
-      //   loaders: [
-      //     MiniCssExtractPlugin.loader,
-      //     'css-loader',
-      //     'sass-loader'
-      //   ]
-      // },
+      {
+        test: /\.(css)$/,
+        loaders: [
+          'style-loader',
+          'css-loader',
+        ],
+      },
       {
         test: /\.svg$/,
         loader: 'raw-loader',
@@ -52,34 +80,39 @@ module.exports = {
         loader: 'html-loader',
       },
     ],
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, '../src'),
-    },
-  },
-  plugins: [
-    // new MiniCssExtractPlugin({
-    //   filename: `${pkg.name}.css`
-    // }),
-    new VueLoaderPlugin(),
-    new WebpackBar({
-      name: pkg.name,
-    }),
-    new FriendlyErrorsWebpackPlugin(),
-    // new webpack.DefinePlugin({
-    //   'PKG_NAME': JSON.stringify(pkg.name),
-    //   'PKG_VERSION': JSON.stringify(pkg.version),
-    //   'process.env': {
-    //     NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-    //     name: JSON.stringify(pkg.name),
-    //     version: JSON.stringify(pkg.version),
-    //     direction: JSON.stringify('ltr'),
-    //     blockStart: JSON.stringify('left'),
-    //     blockEnd: JSON.stringify('right'),
-    //     primaryColor: JSON.stringify('red'),
-    //     padding: JSON.stringify('15px')
-    //   }
-    // }),
-  ],
+  };
+
+  if (config.source === 'docs') {
+    resolve.alias.framevuerk = path.resolve(__dirname, '../src/index.js');
+
+    // to generate component.__api
+    module.rules.push({
+      test: /\.vue$/,
+      loader: 'vue-docgen-loader',
+      enforce: 'post',
+      options: {
+        injectAt: '__api',
+      },
+    });
+
+    // to generate component.__example
+    module.rules.push({
+      resourceQuery: /blockType=example/,
+      loader: path.resolve(__dirname, './utils/example-loader.js'),
+    });
+  } else {
+    module.rules.push({
+      resourceQuery: /blockType=example/,
+      loader: 'null-loader',
+    });
+  }
+
+  return {
+    entry,
+    mode,
+    output,
+    module,
+    resolve,
+    plugins,
+  };
 };
