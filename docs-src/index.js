@@ -20,6 +20,11 @@ const router = new VueRouter({
 
 new Vue({
   router,
+  data() {
+    return {
+      sidebar: false,
+    };
+  },
   methods: {
     routeChange(path) {
       if (window.ga) {
