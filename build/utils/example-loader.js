@@ -16,23 +16,20 @@ module.exports = function loader(source, map) {
 
   const content = `
     export default function (Component) {
-      Component.options.__example = Component.options.__example || [];
-
-      Component.options.__example.push({
-        component: {
-          template: \`
-            <div>
-              ${template}
-            </div>
-          \`,
-          data() {
-            return {
-              ${data}
-            }
+      Component.options.__example = {
+        template: \`
+          <div>
+            ${template}
+          </div>
+        \`,
+        data() {
+          return {
+            ${data}
           }
         },
-        code: ${JSON.stringify(template)},
-      });
+        
+      };
+      Component.options.__exampleSource = ${JSON.stringify(template)};
     }
   `;
   return this.callback(null, content, map);
