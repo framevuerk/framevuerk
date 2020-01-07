@@ -17,11 +17,12 @@
     <span css-space-x="md" />
     <div css-grow>
       <h1 css-text-size="lg">
+        <appLogo style="width: 35px;" white ready />
         {{$attrs.title}}
       </h1>
     </div>
     <span css-space-x="md" />
-    <slot></slot>
+    <slot />
     <span v-if="!$attrs.hide_github" css-space-x="md" />
     <fvButton
       v-if="!$attrs.hide_github"
@@ -35,3 +36,12 @@
     </fvButton>
   </fvHeader>
 </template>
+
+<script>
+import appLogo from './appLogo.vue';
+export default {
+  components: {
+    appLogo,
+  },
+}
+</script>
