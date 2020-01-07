@@ -8,8 +8,6 @@
     </appHeader>
     <fvContent slot="content">
 
-      <ComponentExample />
-
       <div css-margin="xl">
         {{ slide }}
         <fvSlider :current.sync="slide">
@@ -131,27 +129,10 @@
 import appHeader from '../components/appHeader.vue'
 import appLogo from '../components/appLogo.vue'
 
-function ComponentExample() {
-  return new Promise((resolve) => {
-    import('framevuerk').then(x => {
-      resolve(x['Footer'].__example);
-    });
-  })
-}
-
-
-// TODO
-const componentExample = await ComponentExample();
-
-const examples = Footer.__example.map(x => x[0].component)
-const codes = Footer.__example.map(x => x[0].code)
-// console.log(component)
-
 export default {
   components: {
     appHeader,
     appLogo,
-    ComponentExample: Footer.__example,
   },
   data() {
     return {
