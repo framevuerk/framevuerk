@@ -12,9 +12,8 @@
         <fvListItem expanded class="unclickable">
             <i class="fa fa-code" /> Components
             <fvList slot="sub-list">
-              <fvListItem tag="router-link" to="/components/footer" :class="{ selected: $route.params.component === 'footer' }">
-                Footer
-              </fvListItem>
+              <fvListItem tag="router-link" to="/components/footer" :class="{ selected: $route.params.component === 'footer' }"> Footer </fvListItem>
+              <fvListItem tag="router-link" to="/components/header" :class="{ selected: $route.params.component === 'header' }"> Header </fvListItem>
             </fvList>
         </fvListItem>
       </fvList>
