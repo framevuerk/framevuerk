@@ -139,15 +139,19 @@ export default {
         overflow: 'hidden',
       }),
       className('layout', {
+        display: 'flex',
+        flexDirection: 'column',
         overflow: this.global ? 'visible' : 'auto',
         width: '100%',
         position: 'relative',
         background: this.$theme.colors.background.normal,
         color: this.$theme.colors.background.text,
+        minHeight: this.global ? '100vh' : 'auto',
         '& > main': {
           display: 'flex',
           maxWidth: '100%',
           overflowX: 'hidden',
+          flexGrow: '1',
         },
       }),
     ];
