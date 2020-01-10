@@ -58,6 +58,7 @@ export default {
     ...componentsExample([
       'Footer',
       'Header',
+      'Table',
     ]),
   },
   data() {

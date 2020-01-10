@@ -14,6 +14,7 @@
             <fvList slot="sub-list">
               <fvListItem tag="router-link" to="/components/footer" :class="{ selected: $route.params.component === 'footer' }"> Footer </fvListItem>
               <fvListItem tag="router-link" to="/components/header" :class="{ selected: $route.params.component === 'header' }"> Header </fvListItem>
+              <fvListItem tag="router-link" to="/components/table" :class="{ selected: $route.params.component === 'table' }"> Table </fvListItem>
             </fvList>
         </fvListItem>
       </fvList>
