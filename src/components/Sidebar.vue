@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      className: 'smart',
+      className: this.type,
       cancelDetector: null,
     };
   },
@@ -35,16 +35,13 @@ export default {
     handleSmart() {
       this.$el.style.transitionDuration = '0s';
       this.$emit('update:visible', window.innerWidth >= 992);
-      this.className = window.innerWidth >= 990 ? 'pinned' : 'unattached';
+      this.className = window.innerWidth >= 992 ? 'pinned' : 'unattached';
       setTimeout(() => {
         this.$el.style.transitionDuration = null;
       });
     },
   },
   created() {
-    if (this.type !== 'smart') {
-      this.className = this.type;
-    }
     if (this.type === 'unattached') {
       this.$emit('update:visible', false);
     }
