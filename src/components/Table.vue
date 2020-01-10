@@ -30,9 +30,16 @@
 </div>
 </template>
 
-<script>
-import parent from '../utility/parent.js';
+<example>
+@data fields = ['name', 'family', 'age']
+@data rows = [{ name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }]
 
+<fvTable :fields="fields" :rows="rows">
+</fvTable>
+</example>
+
+
+<script>
 export default {
   props: {
     titleKey: {
@@ -59,7 +66,6 @@ export default {
   },
   data() {
     return {
-      isBreaked: this.breaked || false,
       className: this.type,
     };
   },
@@ -87,14 +93,6 @@ export default {
         return row;
       }
       return row;
-    },
-    onResize() {
-      if (this.pin !== null) {
-        return;
-      }
-      const isBreaked = parent.getSize().indexOf('lg') === -1;
-      this.isBreaked = isBreaked;
-      this.$emit('breakedChange', isBreaked);
     },
   },
   mounted() {
