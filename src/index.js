@@ -20,6 +20,7 @@ import Button from './components/Button.vue';
 
 import Slider from './components/Slider.vue';
 import Slide from './components/Slide.vue';
+import Table from './components/Table.vue';
 // import fvSwitch from './components/fvSwitch.vue'
 // import fvDialog from './components/fvDialog.vue'
 // import fvTable from './components/fvTable.vue'
@@ -52,6 +53,7 @@ const Framevuerk = {
       Button,
       Slider,
       Slide,
+      Table,
     }, (key, component) => {
       Vue.component(`fv${key}`, component);
     });
@@ -76,6 +78,7 @@ export {
   Button,
   Slider,
   Slide,
+  Table,
 };
 
 export default Framevuerk;
