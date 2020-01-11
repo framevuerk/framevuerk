@@ -1,15 +1,13 @@
 <template>
-<component :is="tag" :class="$style.list" :tabindex="controlerElement ? -1 : 1">
+<component :is="tag" :tabindex="controlerElement ? -1 : 1">
   <slot />
 </component>
 </template>
 
 <script>
-import color from '../mixins/color';
 import { moveIndex } from '../utility/utils';
 
 export default {
-  mixins: [color],
   inject: {
     $theme: {},
     $list: {
@@ -130,14 +128,5 @@ export default {
   beforeDestroy() {
     this.unbindEvents();
   },
-  style({ className }) {
-    return [
-      className('list', {
-        listStyle: 'none',
-        borderStyle: 'solid',
-        borderWidth: '0px',
-      })
-    ]
-  }
 };
 </script>
