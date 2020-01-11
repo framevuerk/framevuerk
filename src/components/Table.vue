@@ -16,7 +16,7 @@
             <slot name="title" :field="field" />
             <span v-if="!$scopedSlots.title && !$slots.title"> {{ fieldProp(field, 'title') }} </span>
           </div>
-          <div class="field-name" @click="$emit('titleClick', field, index2)">
+          <div class="field-value" @click="$emit('titleClick', field, index2)">
             <slot name="field" :field="field" :row="row" />
             <span v-if="!$scopedSlots.field && !$slots.field"> {{ defaultFieldValueInRow(field, row) }} </span>
           </div>
@@ -32,15 +32,16 @@
 
 <example>
 @data fields = ['name', 'family', 'age']
-@data rows = [{ name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }]
+@data rows = [{ name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }]
 
-<fvTable :fields="fields" :rows="rows">
+<fvTable :fields="fields" :rows="rows" >
 </fvTable>
 </example>
 
 
 <script>
 export default {
+  inject: ['$theme'],
   props: {
     titleKey: {
       type: String,
@@ -103,7 +104,56 @@ export default {
   style({ className }) {
     return [
       className('table', {
-
+        borderWidth: '1px',
+        boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: 'bottom' }),
+        borderRadius: this.$theme.sizes.radius.factor('md', 'radius'),
+        overflow: 'hidden',
+        '& > table': {
+          width: '100%',
+          '& td, & th': {
+            textAlign: this.$theme.direction.start,
+            padding: `${this.$theme.sizes.base.factor('md', 'size')}`,
+            backgroundColor: 'transparent',
+          },
+          '& tbody tr:nth-child(odd)': {
+            backgroundColor: this.$theme.colors.primary.autoShade(30, 0.1),
+          },
+        },
+        '&.breaked': {
+          '& thead': {
+            display: 'none',
+          },
+          '& tbody tr td': {
+            [`border-${this.$theme.direction.end}-width`]: 0,
+          },
+          '& tbody tr:not(:last-child) td:last-child': {
+            borderBottomWidth: '1px',
+          },
+          '& td': {
+            display: 'flex',
+            flexDirection: 'row',
+            '& > .field-name': {
+              display: 'block',
+              fontWeight: 'bold',
+              flexGrow: 1,
+            },
+          }
+        },
+        '&.normal': {
+          '& thead th, & tbody tr:not(:last-child) td': {
+            borderBottomWidth: '1px',
+          },
+          '& thead th:not(:last-child), & tbody tr td:not(:last-child)': {
+            [`border-${this.$theme.direction.end}-width`]: '1px',
+          },
+          '& th': {
+            position: 'sticky',
+            top: 0,
+          },
+          '& tbody tr td .field-name': {
+            display: 'none',
+          },
+        }
       })
     ];
   },
