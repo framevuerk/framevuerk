@@ -24,7 +24,7 @@ export default {
     },
     slidesPerPage: {
       type: Number,
-      default: 2,
+      default: 1,
     },
     showNavs: {
       type: Boolean,
@@ -107,7 +107,6 @@ export default {
         '& > .contents': {
           position: 'relative',
           overflow: 'hidden',
-          border: 'solid 1px red',
           '& > .btn': {
             position: 'absolute',
             top: '50%',
