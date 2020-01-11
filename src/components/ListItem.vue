@@ -97,7 +97,6 @@ export default {
       className('listItem', {
         display: 'block',
         borderTopWidth: '1px',
-        borderTopStyle: 'solid',
         overflow: 'hidden',
         '& > .content': {
           opacity: this.disabled ? 0.5 : 1,
@@ -105,7 +104,6 @@ export default {
           height: this.$theme.sizes.base.factor(this.$size, 'height'),
           lineHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
           [`border-${this.$theme.direction.start}-width`]: this.$theme.sizes.base.normal,
-          [`border-${this.$theme.direction.start}-style`]: 'solid',
           [`border-${this.$theme.direction.start}-color`]: 'transparent',
           // position: 'relative',
           '& > .expand-btn': {

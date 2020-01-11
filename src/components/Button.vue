@@ -44,7 +44,6 @@ export default {
         backgroundColor: this.invert ? 'transparent' : this.$color.normal,
         color: this.$color[this.invert ? 'normal' : 'text'],
         boxShadow: this.$theme.sizes.shadow.factor(this.$size, 'shadow', { dir: 'bottom' }),
-        borderStyle: 'solid',
         borderWidth: '1px',
         fontWeight: 'bold',
         textAlign: 'center',
