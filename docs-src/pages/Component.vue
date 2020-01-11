@@ -15,8 +15,16 @@
       </div>
       <h2 css-text-size="xl"> API </h2>
       <div css-border="md" css-shadow="md" css-radius="md" css-padding="md" css-color="background">
-        <div v-text="api" />
+        <fvSlider :current.sync="apiSliderValue">
+          <fvSlide slot="slide" name="props">
+            <fvTable :fields="['name', 'type', 'defaultValue']" :rows="api.props" />
+          </fvSlide>
+          <fvSlide slot="slide" name="amir2">Amir2<br>^%%$^%<br>$$%$^</fvSlide>
+          <fvSlide slot="slide" name="amir3">Amir3<br>12321<br>312312</fvSlide>
+          <fvSlide slot="slide" name="amir4">Amir4<br>Salamcs<br>acsac</fvSlide>
+        </fvSlider>
       </div>
+      {{ api }}
       
     </div>
   </fvContent>
@@ -42,10 +50,10 @@ function LoadComponent(name, part = null) {
   return part ? res[part] : res;
 }
 
-function componentsExample(list) {
+function componentsExample() {
   const ret = {};
-  list.forEach((component) => {
-    ret[textToLower(component) + 'Example'] = Framevuerk[textAsTitle(component)].__example || { template: '<div> No Example </div>' };
+  Object.keys(Framevuerk).filter((x) => x && !['default', 'name', 'version'].includes(x)).forEach((component) => {
+    ret[textToLower(component) + 'Example'] = Framevuerk[component].__example || { template: '<div> No Example </div>' };
   });
   return ret;
 }
@@ -55,16 +63,13 @@ export default {
     appHeader,
     appFooter,
     appSidebar,
-    ...componentsExample([
-      'Footer',
-      'Header',
-      'Table',
-    ]),
+    ...componentsExample(),
   },
   data() {
     return {
       code: '',
       api: {},
+      apiSliderValue: undefined,
     }
   },
   created() {
