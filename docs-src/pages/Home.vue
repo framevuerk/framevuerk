@@ -9,16 +9,6 @@
   <fvContent slot="content">
 
     <div css-margin="xl">
-      {{ slide }}
-      <fvSlider :current.sync="slide">
-        <fvSlide slot="slide" name="amir">Amir<br>=====<br>=======</fvSlide>
-        <fvSlide slot="slide" name="amir2">Amir2<br>^%%$^%<br>$$%$^</fvSlide>
-        <fvSlide slot="slide" name="amir3">Amir3<br>12321<br>312312</fvSlide>
-        <fvSlide slot="slide" name="amir4">Amir4<br>Salamcs<br>acsac</fvSlide>
-      </fvSlider>
-      <!-- <fvInput />
-      <br />
-      <br /> -->
       <fvInputGroup>
         <fvInput v-model="x" />
         <fvButton> Salam </fvButton>
