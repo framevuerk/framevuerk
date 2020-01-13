@@ -1,11 +1,12 @@
 <template>
-<div :class="$style.slide">
+<div :class="$style.slideContent">
   <slot />
 </div>
 </template>
 
 <script>
 export default {
+  inject: ['$theme'],
   props: {
     name: {
       type: String,
@@ -14,12 +15,13 @@ export default {
   },
   style({className}) {
     return [
-      className('slide', {
+      className('slideContent', {
         userSelect: 'none',
         overflowX: 'hidden',
         flexGrow: 1,
         flexBasis: 0,
         flexShrink: 1,
+        padding: this.$theme.sizes.base.normal,
       })
     ];
   },
