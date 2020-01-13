@@ -14,18 +14,19 @@
         <component :is="example" />
       </div>
       <h2 css-text-size="xl"> API </h2>
-      <div css-border="md" css-shadow="md" css-radius="md" css-padding="md" css-color="background">
+      <div css-padding="no" css-color="background">
         <fvSlider :current.sync="apiSliderValue">
-          <fvSlide slot="slide" name="props">
+          <fvSlideLabel slot="label" name="props"> Props </fvSlideLabel>
+          <fvSlideLabel slot="label" name="slots"> Slots </fvSlideLabel>
+          <fvSlideContent slot="content" name="content"> {{ api }} </fvSlideContent>
+          <fvSlideContent slot="content" name="props">
             <fvTable :fields="['name', 'type', 'defaultValue']" :rows="api.props" />
-          </fvSlide>
-          <fvSlide slot="slide" name="amir2">Amir2<br>^%%$^%<br>$$%$^</fvSlide>
-          <fvSlide slot="slide" name="amir3">Amir3<br>12321<br>312312</fvSlide>
-          <fvSlide slot="slide" name="amir4">Amir4<br>Salamcs<br>acsac</fvSlide>
+          </fvSlideContent>
+          <fvSlideContent slot="content" name="slots">
+            <fvTable :fields="['name']" :rows="api.slots" />
+          </fvSlideContent>
         </fvSlider>
       </div>
-      {{ api }}
-      
     </div>
   </fvContent>
   <appFooter slot="footer" />
