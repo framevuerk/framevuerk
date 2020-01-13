@@ -19,7 +19,8 @@ import Input from './components/Input.vue';
 import Button from './components/Button.vue';
 
 import Slider from './components/Slider.vue';
-import Slide from './components/Slide.vue';
+import SlideContent from './components/SlideContent.vue';
+import SlideLabel from './components/SlideLabel.vue';
 import Table from './components/Table.vue';
 // import fvSwitch from './components/fvSwitch.vue'
 // import fvDialog from './components/fvDialog.vue'
@@ -52,7 +53,8 @@ const Framevuerk = {
       Input,
       Button,
       Slider,
-      Slide,
+      SlideContent,
+      SlideLabel,
       Table,
     }, (key, component) => {
       Vue.component(`fv${key}`, component);
@@ -77,7 +79,8 @@ export {
   Input,
   Button,
   Slider,
-  Slide,
+  SlideContent,
+  SlideLabel,
   Table,
 };
 
