@@ -7,9 +7,7 @@
       <div v-if="loaded && this.$data[name + '-example-length'] > 0">
         <div v-for="(e, i) in this.$data[name + '-example-empty-array']" :key="name + i">
           <h2 css-text-size="xl"> Code </h2>
-          <div css-border="md" css-shadow="md" css-radius="md" css-padding="md" css-color="sidebar">
-            <div v-text="$data[name + '-code-' + i]" />
-          </div>
+          <appCode :content="$data[name + '-code-' + i]" lang="html" css-border="md" css-shadow="md" css-radius="md" css-padding="md" css-color="sidebar" />
           <div css-margin-y="lg" />
           <h2 css-text-size="xl"> Example </h2>
           <div css-border="md" css-shadow="md" css-radius="md" css-padding="md" css-color="background">
@@ -41,6 +39,7 @@
 import appHeader from '../components/appHeader.vue';
 import appFooter from '../components/appFooter.vue';
 import appSidebar from '../components/appSidebar.vue';
+import appCode from '../components/appCode.vue';
 import * as Framevuerk from 'framevuerk';
 
 function textAsTitle(text) {
@@ -55,6 +54,7 @@ export default {
     appHeader,
     appFooter,
     appSidebar,
+    appCode,
   },
   data() {
     return {
