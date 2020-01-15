@@ -2,15 +2,17 @@ import Vue from 'vue/dist/vue.esm';
 import Framevuerk from 'framevuerk';
 import VueRouter from 'vue-router';
 import VueComponentStyle from 'vue-component-style';
+import VueHighlightJS from 'vue-highlightjs';
 import App from './App.vue';
 import routes from './routes';
-// import 'font-awesome/css/font-awesome.min.css';
+import 'font-awesome/css/font-awesome.min.css';
+import 'highlight.js/styles/a11y-dark.css';
 
 Vue.config.productionTip = false;
 Vue.use(VueComponentStyle);
 Vue.use(Framevuerk);
 Vue.use(VueRouter);
-// Vue.use(VueHighlightJS)
+Vue.use(VueHighlightJS);
 // Vue.use(Meta)
 
 const router = new VueRouter({
