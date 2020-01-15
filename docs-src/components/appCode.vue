@@ -1,10 +1,10 @@
 <template>
-  <div css-border="md" css-shadow-bottom="md" css-radius="md" css-margin-y="md" css-color="background" css-overflow="hidden">
+  <div :class="$style.markup" css-border="md" css-shadow-bottom="md" css-radius="md" css-margin-y="md" css-color="background" css-overflow="hidden">
     <pre class="markup" v-highlightjs>
-      <div class="panel" css-padding="md" css-color="sidebar">
+      <!-- <div class="panel" css-padding="md" css-color="sidebar">
         <span class="hljs-comment" v-text="langText"></span>
         <fvButton css-size="sm" css-color="sidebar" css-shadow="no" @click.prevent="copy" :disabled="copiedToast"><i class="fa fa-copy"></i> Copy</fvButton>
-      </div>
+      </div> -->
       <code :class="lang" ref="markup" v-text="content.trim()"></code>
       <!-- <fvToast v-model="copiedToast" :timeout="1200">Copied to Clipboard!</fvToast> -->
     </pre>
@@ -54,32 +54,20 @@ export default {
       window.getSelection().removeAllRanges()
       this.copiedToast = true
     }
+  },
+  style({className}) {
+    return [className('markup', {
+      position: 'relative',
+      overflow: 'hidden',
+      '& pre': {
+        whiteSpace: 'normal',
+      },
+      '& code': {
+        whiteSpace: 'pre-wrap',
+        fontFamily: 'monospace',
+      },
+    })];
   }
 }
 </script>
 
-<style lang="scss">
-.markup {
-  position: relative;
-  white-space: normal;
-  overflow: hidden;
-
-  & > .hljs {
-    padding: 1em;
-    // background: #ffffff;
-  }
-
-  & > code {
-    white-space: pre-wrap;
-    font-family: monospace;
-  }
-
-  & > .panel {
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-</style>
