@@ -79,6 +79,12 @@ module.exports = (config) => {
         test: /\.html$/,
         loader: 'html-loader',
       },
+      {
+        test: /\.(eot|woff|woff2|ttf)$/,
+        loaders: [
+          'file-loader',
+        ],
+      },
     ],
   };
 
