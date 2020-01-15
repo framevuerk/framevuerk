@@ -4,14 +4,18 @@
   <appSidebar slot="start-sidebar"/>
   <fvContent slot="content">
     <div css-max-width="md" css-padding-y="xl" css-padding-x="md"  css-margin-x="auto">
-      <h2 css-text-size="xl"> Code </h2>
-      <div css-border="md" css-shadow="md" css-radius="md" css-padding="md" css-color="sidebar">
-        <div v-text="code" />
-      </div>
-      <div css-margin-y="lg" />
-      <h2 css-text-size="xl"> Example </h2>
-      <div css-border="md" css-shadow="md" css-radius="md" css-padding="md" css-color="background">
-        <component :is="example" />
+      <div v-if="loaded && this.$data[name + '-example-length'] > 0">
+        <div v-for="(e, i) in this.$data[name + '-example-empty-array']" :key="name + i">
+          <h2 css-text-size="xl"> Code </h2>
+          <div css-border="md" css-shadow="md" css-radius="md" css-padding="md" css-color="sidebar">
+            <div v-text="$data[name + '-code-' + i]" />
+          </div>
+          <div css-margin-y="lg" />
+          <h2 css-text-size="xl"> Example </h2>
+          <div css-border="md" css-shadow="md" css-radius="md" css-padding="md" css-color="background">
+            <component :is="name + '-example-' + i" />
+          </div>
+        </div>
       </div>
       <h2 css-text-size="xl"> API </h2>
       <div css-padding="no" css-color="background">
@@ -46,31 +50,18 @@ function textToLower(text) {
   return text.toLowerCase()
 }
 
-function LoadComponent(name, part = null) {
-  const res = Framevuerk[textAsTitle(name)];
-  return part ? res[part] : res;
-}
-
-function componentsExample() {
-  const ret = {};
-  Object.keys(Framevuerk).filter((x) => x && !['default', 'name', 'version'].includes(x)).forEach((component) => {
-    ret[textToLower(component) + 'Example'] = Framevuerk[component].__example || { template: '<div> No Example </div>' };
-  });
-  return ret;
-}
-
 export default {
   components: {
     appHeader,
     appFooter,
     appSidebar,
-    ...componentsExample(),
   },
   data() {
     return {
-      code: '',
+      name: '',
       api: {},
       apiSliderValue: undefined,
+      loaded: false,
     }
   },
   created() {
@@ -78,14 +69,24 @@ export default {
   },
   methods: {
     loadData(component) {
-      this.code = Framevuerk[textAsTitle(component)].__exampleSource
-      this.api = Framevuerk[textAsTitle(component)].__api
+      this.$data.loaded = false;
+      const title = textAsTitle(component);
+      const lower = textToLower(this.$route.params.component);
+      const obj = Framevuerk[title];
+      const examples = obj.__examples || [];
+      examples.forEach((example, index) => {
+        this.$options.components[lower + '-example-' + index] = example.component;
+        this.$data[lower + '-code-' + index] = example.code;
+      });
+      this.$data[lower + '-example-length'] = examples.length;
+      this.$data[lower + '-example-empty-array'] = new Array(examples.length).fill(null);
+      this.$data.api = obj.__api;
+      this.$data.name = lower;
+      setTimeout(() => {
+        this.$data.loaded = true;
+        this.$forceUpdate();
+      });
     }
-  },
-  computed: {
-    example() {
-      return textToLower(this.$route.params.component) + 'Example';
-    },
   },
   watch: {
     '$route.params.component'(newComponent) {

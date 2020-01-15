@@ -16,7 +16,7 @@ module.exports = function loader(source, map) {
 
   const content = `
     export default function (Component) {
-      Component.options.__example = {
+      const component = {
         template: \`
           <div>
             ${template}
@@ -27,9 +27,14 @@ module.exports = function loader(source, map) {
             ${data}
           }
         },
-        
       };
-      Component.options.__exampleSource = ${JSON.stringify(template)};
+      const code = ${JSON.stringify(template)};
+
+      Component.options.__examples = Component.options.__examples || [];
+      Component.options.__examples.push({
+        component: component,
+        code: code,
+      });
     }
   `;
   return this.callback(null, content, map);
