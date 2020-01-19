@@ -62,7 +62,7 @@ export default {
       const defaultSizes = {
         base: 8,
         font: 14,
-        radius: 8,
+        radius: 6,
         shadow: 2,
       };
       const sizes = Object.assign(defaultSizes, this.sizes);
