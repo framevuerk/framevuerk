@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.markup" css-border="md" css-shadow-bottom="md" css-radius="md" css-margin-y="md" css-color="background" css-overflow="hidden">
+  <div :class="$style.markup" css-color="background" css-overflow="hidden">
     <pre class="markup" v-highlightjs>
       <!-- <div class="panel" css-padding="md" css-color="sidebar">
         <span class="hljs-comment" v-text="langText"></span>
