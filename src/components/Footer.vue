@@ -9,10 +9,12 @@
 @data a = 2
 @data b = 3
 
-<div css-margin="md">
-  salam {{ a }}
-  <fvButton @click="a++"> Plus </fvButton>
-</div>
+<fvLayout :global="false">
+  <fvHeader slot="header"> Salam </fvHeader>
+  <fvContent slot="content"> Salam </fvContent>
+  <fvFooter slot="footer" css-padding="lg"> This is Footer </fvFooter>
+
+</Layout>
 
 </example>
 
