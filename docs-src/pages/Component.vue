@@ -6,12 +6,15 @@
     <div css-max-width="md" css-padding-y="xl" css-padding-x="md"  css-margin-x="auto">
       <div v-if="loaded && this.$data[name + '-example-length'] > 0">
         <div v-for="(e, i) in this.$data[name + '-example-empty-array']" :key="name + i">
-          <h2 css-text-size="xl"> Code </h2>
-          <appCode :content="$data[name + '-code-' + i]" lang="html" css-border="md" css-shadow="md" css-radius="md" css-padding="md" css-color="sidebar" />
+          <!-- <h2 css-text-size="xl"> Code </h2> -->
+          <div css-radius="md" css-shadow-bottom="md" css-border="md" css-color="background">
+            <appCode :content="$data[name + '-code-' + i]" lang="html" css-padding="md" css-color="sidebar" />
+            <component :is="name + '-example-' + i" />
+          </div>
+
           <div css-margin-y="lg" />
           <h2 css-text-size="xl"> Example </h2>
           <div css-border="md" css-shadow="md" css-radius="md" css-padding="md" css-color="background">
-            <component :is="name + '-example-' + i" />
           </div>
         </div>
       </div>
