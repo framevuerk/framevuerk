@@ -19,7 +19,13 @@ module.exports = function loader(source, map) {
       const component = {
         template: \`
           <div>
-            ${template}
+            <div css-padding="md" css-color="sidebar">
+              <label css-display="block" css-text-color="gray"> Current State: </label>
+              <pre>{{ $data }}</pre>
+            </div>
+            <div css-padding="md">
+              ${template}
+            </div>
           </div>
         \`,
         data() {
