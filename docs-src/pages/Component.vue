@@ -23,12 +23,21 @@
         <fvSlider :current.sync="apiSliderValue">
           <fvSlideLabel slot="label" name="props"> Props </fvSlideLabel>
           <fvSlideLabel slot="label" name="slots"> Slots </fvSlideLabel>
+
           <fvSlideContent slot="content" name="content"> {{ api }} </fvSlideContent>
           <fvSlideContent slot="content" name="props">
-            <fvTable :fields="['name', 'type', 'defaultValue']" :rows="api.props" />
+            <fvTable :fields="['name', 'type', 'default', 'description']" :rows="api.props">
+            </fvTable>
           </fvSlideContent>
           <fvSlideContent slot="content" name="slots">
-            <fvTable :fields="['name']" :rows="api.slots" />
+            <fvTable :fields="['name', 'scoped', 'bindings', 'description']" :rows="api.slots">
+              <template slot="field-scoped" slot-scope="scope">
+                <div :css-text-align="scope.type === 'breaked' ? '' : 'center'">
+                  <i v-if="scope.row.scoped" class="fa fa-check" css-text-color="success" />
+                  <i v-else class="fa fa-times" css-text-color="gray" />
+                </div>
+              </template>
+            </fvTable>
           </fvSlideContent>
         </fvSlider>
       </div>
@@ -44,6 +53,7 @@ import appFooter from '../components/appFooter.vue';
 import appSidebar from '../components/appSidebar.vue';
 import appCode from '../components/appCode.vue';
 import * as Framevuerk from 'framevuerk';
+import { dashCase } from 'framevuerk/utility/utils.js';
 
 function textAsTitle(text) {
   return text[0].toUpperCase() + text.substr(1).toLowerCase()
@@ -84,12 +94,35 @@ export default {
       this.$data[lower + '-example-length'] = examples.length;
       this.$data[lower + '-example-empty-array'] = new Array(examples.length).fill(null);
       this.$data.api = obj.__api;
+      this.$data.api.props.forEach((prop) => {
+        // calc name
+        let name = dashCase(prop.name);
+        if (prop.required) {
+          name += '*';
+        }
+        prop.name = name;
+        // calc type
+        const type = prop.type.name;
+        if (prop.description && prop.description.indexOf('@oneof') !== -1) {
+          const str = prop.description.match(/(@oneof)[^)]*\)/g)[0];
+          prop.description = prop.description.replace(str, '');
+          prop.type = str;
+        } else {
+          prop.type = type;
+        }
+
+        // calc defaultValue
+        prop.default = !prop.defaultValue.func ? prop.defaultValue.value : eval(`(${prop.defaultValue.value})()`);
+      });
       this.$data.name = lower;
       setTimeout(() => {
         this.$data.loaded = true;
         this.$forceUpdate();
       });
-    }
+    },
+    getPropDefaultValue(str) {
+      return eval(`(${str})()`);
+    },
   },
   watch: {
     '$route.params.component'(newComponent) {
