@@ -89,7 +89,7 @@ module.exports = (config) => {
   };
 
   if (config.source === 'docs') {
-    resolve.alias.framevuerk = path.resolve(__dirname, '../src/index.js');
+    resolve.alias.framevuerk = path.resolve(__dirname, '../src');
 
     // to generate component.__api
     module.rules.push({
