@@ -1,11 +1,12 @@
 <template>
-<div :class="[$style.table, className]">
+<div :class="[$style.table, trueType]">
   <table>
     <thead>
       <tr>
         <th v-for="(field, index) in fields" :key="fieldProp(field, 'title')" @click="$emit('titleClick', field, index)">
-          <slot name="title" :field="field" />
-          <span v-if="!$scopedSlots.title && !$slots.title"> {{ fieldProp(field, 'title') }} </span>
+          <slot v-if="hasSlot('title-' + field)" :name="'title-' + field" :field="field" />
+          <slot v-else-if="hasSlot('title')" name="title" :field="field" />
+          <div v-else css-text-align="center"> {{ fieldProp(field, 'title') }} </div>
         </th>
       </tr>
     </thead>
@@ -13,12 +14,15 @@
       <tr v-for="(row, index) in rows" :key="'row-' + index" @click="$emit('rowClick', row, index)">
         <td v-for="(field, index2) in fields" :key="fieldProp(field, 'title')">
           <div class="field-name" @click="$emit('titleClick', field, index2)">
-            <slot name="title" :field="field" />
-            <span v-if="!$scopedSlots.title && !$slots.title"> {{ fieldProp(field, 'title') }} </span>
+            <!-- @slot you have to use exact field name described in "fields" prop -->
+            <slot v-if="hasSlot('title-' + field)" :name="'title-' + field" :field="field" :type="trueType" />
+            <slot v-else-if="hasSlot('title')" name="title" :field="field" :type="trueType" />
+            <div v-else css-text-align="center"> {{ fieldProp(field, 'title') }} </div>
           </div>
           <div class="field-value" @click="$emit('titleClick', field, index2)">
-            <slot name="field" :field="field" :row="row" />
-            <span v-if="!$scopedSlots.field && !$slots.field"> {{ defaultFieldValueInRow(field, row) }} </span>
+            <slot v-if="hasSlot('field-' + field)" :name="'field-' + field" :field="field" :row="row" :type="trueType" />
+            <slot v-else-if="hasSlot('field')" name="field" :field="field" :row="row" :type="trueType" />
+            <div v-else css-text-align="center"> {{ defaultFieldValueInRow(field, row) }} </div>
           </div>
         </td>
       </tr>
@@ -40,6 +44,8 @@
 
 
 <script>
+import { hasSlot } from '../utility/utils';
+
 export default {
   inject: ['$theme'],
   props: {
@@ -59,6 +65,7 @@ export default {
       type: Array,
       default: () => [],
     },
+    /** @oneof('normal', 'breaked', 'smart') */
     type: {
       type: String,
       validator: (value) => ['normal', 'breaked', 'smart'].indexOf(value) > -1,
@@ -67,12 +74,15 @@ export default {
   },
   data() {
     return {
-      className: this.type,
+      trueType: this.type,
     };
   },
   methods: {
+    hasSlot(name) {
+      return hasSlot(this, name);
+    },
     handleSmart() {
-      this.className = window.innerWidth >= 992 ? 'normal' : 'breaked';
+      this.trueType = window.innerWidth >= 992 ? 'normal' : 'breaked';
     },
     fieldProp(field, prop) {
       if (!prop) {
