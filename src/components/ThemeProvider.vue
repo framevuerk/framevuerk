@@ -128,8 +128,10 @@ export default {
     _colors() {
       const defaultColors = {
         background: '#fff',
+        gray: '#d4d4d4',
         primary: '#0B62EA',
         secondary: '#35485d',
+        success: '#23ab0c',
         info: '#14b0cf',
         warning: '#fd9802',
         danger: '#dd4b39',
