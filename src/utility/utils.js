@@ -66,3 +66,5 @@ export const offsetTo = (el, parent) => {
 
 
 export const moveIndex = (number, total) => (total + (number % total)) % total;
+
+export const hasSlot = (component, name) => !!(component.$scopedSlots[name] || component.$slots[name])
