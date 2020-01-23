@@ -17,6 +17,12 @@
                   <fvListItem tag="router-link" to="/components/footer" :class="{ selected: isSelected('component', 'footer') }"> Footer </fvListItem>
                 </fvList>
               </fvListItem>
+              <fvListItem expanded>
+                Other
+                <fvList slot="sub-list">
+                  <fvListItem tag="router-link" to="/components/table" :class="{ selected: isSelected('component', 'table') }"> Table </fvListItem>
+                </fvList>
+              </fvListItem>
             </fvList>
         </fvListItem>
       </fvList>
