@@ -14,7 +14,7 @@
   <fvContent slot="content"> Salam </fvContent>
   <fvFooter slot="footer" css-padding="lg"> This is Footer </fvFooter>
 
-</Layout>
+</fvLayout>
 
 </example>
 
