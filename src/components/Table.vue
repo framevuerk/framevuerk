@@ -1,5 +1,5 @@
 <template>
-<div :class="[$style.table, trueType]">
+<div :class="[$style.table, trueType]" :css-color="cssColor">
   <table>
     <thead>
       <tr>
@@ -39,16 +39,20 @@
 @data rows = [{ name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }]
 @config hidestate
 
-<fvTable :fields="fields" :rows="rows" >
+<fvTable :fields="fields" :rows="rows" css-color="background">
 </fvTable>
 </example>
 
 
 <script>
 import { hasSlot } from '../utility/utils';
+import color from '../mixins/color';
 
 export default {
   inject: ['$theme'],
+  mixins: [
+    color,
+  ],
   props: {
     titleKey: {
       type: String,
