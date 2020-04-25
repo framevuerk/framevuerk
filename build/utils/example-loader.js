@@ -9,7 +9,7 @@ const getConfigs = (str) => {
   (str.match(new RegExp('(@config)(.*)', 'g')) || []).forEach((configLine) => {
     const splited = configLine.split(' ');
     // eslint-disable-next-line no-eval
-    ret[splited[1]] = eval(splited[2]);
+    ret[splited[1]] = eval(splited.slice(2).join(' '));
   });
   return ret;
 };
@@ -20,6 +20,7 @@ module.exports = function loader(source, map) {
   if (!source) {
     return this.callback(null, '', map);
   }
+
   const data = getData(source);
   const configs = getConfigs(source);
   const template = removeData(source);
