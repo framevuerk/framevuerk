@@ -8,13 +8,15 @@
     @focus="onFocus"
     @blur="onBlurDefault"
     @input="onInput"
-    v-html="value"
+    v-text="value"
   />
 </template>
 
 <doc>
-@prop value @type String @default '' @description Value of input.
+@prop value @type Any @default undefined @description Value of input.
 @prop multiLine @type Boolean @default false @description `false` for input mode and `true` for textarea mode.
+@prop cssColor @type String @default 'background' @description Use any colors that already declared in themeProvider.
+@prop cssSize @type oneOf('xs', 'sm', 'md', 'lg', 'xl') @default 'md' @description Size of input.
 
 @event input @params newValue @description Triggers when value changes within component.
 </doc>
@@ -42,11 +44,10 @@
 @config example true
 
 @data val = 'Sizes'
-<fvInput css-height-size="xs" v-model="val" />
-<fvInput css-height-size="sm" v-model="val" />
-<fvInput css-height-size="md" v-model="val" />
-<fvInput css-height-size="lg" v-model="val" />
-<fvInput css-height-size="xl" v-model="val" />
+<fvInput css-size="sm" v-model="val" />
+<fvInput css-size="md" v-model="val" />
+<fvInput css-size="lg" v-model="val" />
+<fvInput css-size="xl" v-model="val" />
 
 </example>
 
@@ -95,11 +96,11 @@ export default {
         boxShadow: this.$theme.sizes.shadow.factor(this.$size, 'shadow', { dir: 'bottom' }),
         borderWidth: '1px',
         borderColor: this.$theme.colors[this.$color].shade(-13),
-        borderRadius: this.$theme.sizes.radius.factor(this.$size, 'radius'),
+        borderRadius: this.$theme.sizes.radius.factor('md', 'radius'),
         minHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
         height: this.multiLine ? this.$theme.sizes.base.factor('xl', 'height') : this.$theme.sizes.base.factor(this.$size, 'height'),
         fontSize: this.$theme.sizes.font.factor(this.$size, 'font'),
-        padding: this.$theme.sizes.base.multiplyBy(2),
+        padding: `0 ${this.$theme.sizes.base.normal}`,
         resize: 'vertical',
         '&:hover, &:focus': {
           borderColor: this.$theme.colors[this.$color].autoShade(-39),
