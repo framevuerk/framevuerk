@@ -6,14 +6,14 @@
 </template>
 
 <example>
-@data a = 2
-@data b = 3
+@config state false
+@config example false
 
-<fvLayout :global="false">
-  <fvHeader slot="header"> Salam </fvHeader>
-  <fvContent slot="content"> Salam </fvContent>
-  <fvFooter slot="footer" css-padding="lg"> This is Footer </fvFooter>
-
+<fvLayout>
+  <!-- ... -->
+  <!-- ... -->
+  <!-- ... -->
+  <fvFooter slot="footer"> <!-- Content --> </fvFooter>
 </fvLayout>
 
 </example>
@@ -23,6 +23,7 @@ import { offsetTo } from '../utility/utils';
 
 export default {
   props: {
+    /** @values 'normal', 'pinned' */
     type: {
       type: String,
       default: 'normal',

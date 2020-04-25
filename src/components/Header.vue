@@ -1,14 +1,41 @@
 <template>
-<header :class="$style.header">
+<header :class="$style.header" data-dev="comment-for-loader">
   <slot />
 </header>
 </template>
+
+<doc>
+
+@prop type @type oneOf('normal', 'pinned') @default 'normal' @comment used to felan
+@prop size @type Number @default 23 @comment used to bahman
+@prop state @type oneOf(true, false, null) @default null @comment felan bisar
+
+@event expand @param newFelan @param newBahman @comment hoyyy
+
+@slot default
+@slot address @scope field
+
+</doc>
+
+<example>
+@config state false
+@config example false
+
+<fvLayout>
+  <fvHeader slot="header"> <!-- Content --> </fvHeader>
+  <!-- ... -->
+  <!-- ... -->
+  <!-- ... -->
+</fvLayout>
+
+</example>
 
 <script>
 import { offsetTo } from '../utility/utils';
 
 export default {
   props: {
+    /** @values 'normal', 'smart', 'pinned' */
     type: {
       type: String,
       default: 'smart',

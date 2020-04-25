@@ -3,17 +3,23 @@
     <div v-if="codes.length > 0">
       <div v-for="(code, i) in codes" :key="'example' + i">
         <appCode :content="code" lang="html" css-padding="md" css-color="sidebar" />
-        <component :is="'example' + i" />
+        <component :is="'example' + i" :ref="'example' + i" />
       </div>
     </div>
+    <div css-margin-top="lg" />
+    <!--
     <div>
       <fvSlider :current.sync="apiSliderValue">
         <fvSlideLabel slot="label" name="props"> Props </fvSlideLabel>
+        <fvSlideLabel slot="label" name="events"> Events </fvSlideLabel>
         <fvSlideLabel slot="label" name="slots"> Slots </fvSlideLabel>
 
-        <fvSlideContent slot="content" name="content"> {{ api }} </fvSlideContent>
         <fvSlideContent slot="content" name="props">
           <fvTable :fields="['name', 'type', 'default', 'description']" :rows="api.props">
+          </fvTable>
+        </fvSlideContent>
+        <fvSlideContent slot="content" name="events">
+          <fvTable :fields="['name', 'type', 'default', 'description']" :rows="api.events">
           </fvTable>
         </fvSlideContent>
         <fvSlideContent slot="content" name="slots">
@@ -26,8 +32,9 @@
             </template>
           </fvTable>
         </fvSlideContent>
+        <fvSlideContent slot="content" name="content"> {{ api }} </fvSlideContent>
       </fvSlider>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -44,7 +51,8 @@ for(let i = 0; i < 12; i++) {
 export default {
   components: {
     appCode,
-    ...preRegisteredExamples
+    ...preRegisteredExamples,
+    // ...(new Array(10).fill({ template: '<div>#</div>' })),
   },
   props: {
     framevuerkComponent: {
@@ -53,10 +61,10 @@ export default {
   },
   data() {
     return {
-      apiSliderValue: 'content',
+      apiSliderValue: 'props',
       codes: [],
       api: {},
-    }
+    };
   },
   created() {
     this.$nextTick(() => {
@@ -66,60 +74,43 @@ export default {
   methods: {
     loadData() {
       const component = this.framevuerkComponent;
-      const examples = component.__examples || [];
-      examples.forEach((example, index) => {
+
+      this.api = component.__api ? JSON.parse(JSON.stringify(component.__api)) : {};
+
+      component.__examples.forEach((example, index) => {
         this.$options.components[`example${index}`] = {
           template: `
             <div>
-              ${!example.config.hideState && `
+              ${example.configs.state !== false ? `
                 <div css-padding="md" css-color="sidebar">
                   <label css-display="block" css-text-color="gray"> Current State: </label>
                   <pre>{{ $data }}</pre>
                 </div>
-              `}
-              <div css-padding="md">
-                ${example.code}
-              </div>
+              ` : ''}
+              ${example.configs.example !== false ? `
+                <div css-padding="md">
+                  ${example.template}
+                </div>
+              ` : ''}
             </div>
           `,
           data() {
             return example.data;
           },
         };
-        this.codes.push(example.code);
+        this.codes.push(example.template);
       });
 
-    
-      this.api = component.__api;
-
-      // cleanup api
-      const props = this.api.props || [];
-      props.forEach((prop) => {
-        // calc name
-        let name = dashCase(prop.name);
-        if (prop.required) {
-          name += '*';
-        }
-        prop.name = name;
-        // calc type
-        const type = prop.type.name;
-        if (prop.description && prop.description.indexOf('@oneof') !== -1) {
-          const str = prop.description.match(/(@oneof)[^)]*\)/g)[0];
-          prop.description = prop.description.replace(str, '');
-          prop.type = str;
-        } else {
-          prop.type = type;
-        }
-
-        // calc defaultValue
-        prop.default = !prop.defaultValue.func ? prop.defaultValue.value : eval(`(${prop.defaultValue.value})()`);
-      });
       this.$forceUpdate();
     },
   },
   watch: {
     '$route.params.component'(newComponent) {
-      this.loadData(newComponent);
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.loadData(newComponent);
+        });
+      });
     }
   }
 }

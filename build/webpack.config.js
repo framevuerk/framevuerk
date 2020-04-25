@@ -91,24 +91,25 @@ module.exports = (config) => {
   if (config.source === 'docs') {
     resolve.alias.framevuerk = path.resolve(__dirname, '../src');
 
-    // to generate component.__api
-    module.rules.push({
-      test: /\.vue$/,
-      loader: 'vue-docgen-loader',
-      enforce: 'post',
-      options: {
-        injectAt: '__api',
-      },
-    });
 
     // to generate component.__example
     module.rules.push({
       resourceQuery: /blockType=example/,
       loader: path.resolve(__dirname, './utils/example-loader.js'),
     });
+
+    module.rules.push({
+      resourceQuery: /blockType=doc/,
+      loader: path.resolve(__dirname, './utils/api-loader.js'),
+    });
+
   } else {
     module.rules.push({
       resourceQuery: /blockType=example/,
+      loader: 'null-loader',
+    });
+    module.rules.push({
+      resourceQuery: /blockType=doc/,
       loader: 'null-loader',
     });
   }

@@ -3,7 +3,7 @@
   <appHeader :title="'Framevuerk - ' + title" slot="header" />
   <appSidebar slot="start-sidebar"/>
   <fvContent slot="content">
-    <div css-max-width="md" css-padding-y="xl" css-padding-x="md"  css-margin-x="auto">
+    <div css-max-width="md" css-padding="lg" css-margin-x="auto">
       <appComponentDocs v-if="!loading" :framevuerkComponent="framevuerkComponent" />
     </div>
   </fvContent>
@@ -47,6 +47,7 @@ export default {
     loadData(framevuerkComponent) {
       this.loading = true;
       this.title = textAsTitle(framevuerkComponent);
+      // console.log(Framevuerk[this.title].__api.props[0].type);
       this.framevuerkComponent = Framevuerk[this.title];
       this.$nextTick(() => {
         this.loading = false;

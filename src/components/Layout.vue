@@ -10,6 +10,19 @@
 </div>  
 </template>
 
+<example>
+@config state false
+@config example false
+
+<fvLayout>
+  <!-- ... -->
+  <!-- ... -->
+  <!-- ... -->
+  <!-- ... -->
+</fvLayout>
+
+</example>
+
 <script>
 import { dashCase } from '../utility/utils';
 

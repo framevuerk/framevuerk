@@ -4,6 +4,19 @@
 </aside>
 </template>
 
+<example>
+@config state false
+@config example false
+
+<fvLayout>
+  <!-- ... -->
+  <fvSidebar slot="start-sidebar"> <!-- Content --> </fvSidebar>
+  <!-- ... -->
+  <!-- ... -->
+</fvLayout>
+
+</example>
+
 <script>
 export default {
   props: {
@@ -15,11 +28,6 @@ export default {
     visible: {
       type: Boolean,
       default: false,
-    },
-    position: {
-      type: String,
-      validator: (v) => ['start', 'end', 'left', 'right'].includes(v),
-      default: 'start',
     },
   },
   data() {

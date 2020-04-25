@@ -4,12 +4,27 @@
 </div>
 </template>
 
+<example>
+@config state false
+@config example false
+
+<fvLayout>
+  <!-- ... -->
+  <!-- ... -->
+  <fvContent slot="content"> <!-- Content --> </fvContent>
+  <!-- ... -->
+</fvLayout>
+
+</example>
+
 <script>
 export default {
   style({ className }) {
     return [
       className('content', {
         flexGrow: 1,
+        maxWidth: '100%',
+        overflowX: 'hidden',
       }),
     ];
   },

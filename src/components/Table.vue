@@ -36,11 +36,9 @@
 
 <example>
 @data fields = ['name', 'family', 'age']
-@data rows = [{ name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }]
-@config hidestate
+@data rows = [{ name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'David', family: 'Beckham', age: 43 }, { name: 'Ricardo', family: 'Kaka', age: 38 }]
 
-<fvTable :fields="fields" :rows="rows" css-color="background">
-</fvTable>
+<fvTable :fields="fields" :rows="rows" css-color="background" />
 </example>
 
 
@@ -70,7 +68,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    /** @oneof('normal', 'breaked', 'smart') */
+    /** @values 'normal', 'breaked', 'smart' */
     type: {
       type: String,
       validator: (value) => ['normal', 'breaked', 'smart'].indexOf(value) > -1,
