@@ -12,6 +12,44 @@
   />
 </template>
 
+<doc>
+@prop value @type String @default '' @description Value of input.
+@prop multiLine @type Boolean @default false @description `false` for input mode and `true` for textarea mode.
+
+@event input @params newValue @description Triggers when value changes within component.
+</doc>
+
+<example>
+@config state true
+@config example true
+
+@data val = 'Normal'
+<fvInput v-model="val" />
+
+</example>
+
+<example>
+@config state true
+@config example true
+
+@data val = 'Multi\nLine'
+<fvInput multiLine v-model="val" />
+
+</example>
+
+<example>
+@config state true
+@config example true
+
+@data val = 'Sizes'
+<fvInput css-height-size="xs" v-model="val" />
+<fvInput css-height-size="sm" v-model="val" />
+<fvInput css-height-size="md" v-model="val" />
+<fvInput css-height-size="lg" v-model="val" />
+<fvInput css-height-size="xl" v-model="val" />
+
+</example>
+
 <script>
 import color from '../mixins/color';
 import size from '../mixins/size';
@@ -25,6 +63,10 @@ export default {
     formElement((v) => !!v),
   ],
   props: {
+    value: {
+      type: String,
+      default: '',
+    },
     multiLine: {
       type: Boolean,
       default: false,
@@ -48,11 +90,11 @@ export default {
     return [
       className('input', {
         display: 'inline-block',
-        backgroundColor: this.$color.shade(5),
-        color: this.$color.text,
+        backgroundColor: this.$theme.colors[this.$color].shade(5),
+        color: this.$theme.colors[this.$color].text,
         boxShadow: this.$theme.sizes.shadow.factor(this.$size, 'shadow', { dir: 'bottom' }),
         borderWidth: '1px',
-        borderColor: this.$color.shade(-13),
+        borderColor: this.$theme.colors[this.$color].shade(-13),
         borderRadius: this.$theme.sizes.radius.factor(this.$size, 'radius'),
         minHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
         height: this.multiLine ? this.$theme.sizes.base.factor('xl', 'height') : this.$theme.sizes.base.factor(this.$size, 'height'),
@@ -60,7 +102,7 @@ export default {
         padding: this.$theme.sizes.base.multiplyBy(2),
         resize: 'vertical',
         '&:hover, &:focus': {
-          borderColor: this.$color.autoShade(-39),
+          borderColor: this.$theme.colors[this.$color].autoShade(-39),
         },
       }),
     ];

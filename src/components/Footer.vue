@@ -1,12 +1,14 @@
 <template>
   <footer :class="$style.footer">
     <slot />
-    <slot
-      name="ali"
-      value="xxx"
-    />
   </footer>
 </template>
+
+<doc>
+@prop type @type oneOf('normal', 'pinned') @default 'normal' @description Type of footer behavior.
+
+@slot default
+</doc>
 
 <example>
 @config state false
@@ -26,7 +28,6 @@ import { offsetTo } from '../utility/utils';
 
 export default {
   props: {
-    /** @values 'normal', 'pinned' */
     type: {
       type: String,
       default: 'normal',

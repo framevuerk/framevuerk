@@ -4,6 +4,10 @@
   </div>
 </template>
 
+<doc>
+@slot default
+</doc>
+
 <example>
 @config state false
 @config example false

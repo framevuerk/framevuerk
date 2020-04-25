@@ -44,16 +44,17 @@ export default {
     },
   },
   style({ className }) {
+    const $color = this.$theme.colors[this.$color];
     return [
       className('button', {
         display: 'inline-block',
-        backgroundColor: this.invert ? 'transparent' : this.$color.normal,
-        color: this.$color[this.invert ? 'normal' : 'text'],
+        backgroundColor: this.invert ? 'transparent' : $color.normal,
+        color: $color[this.invert ? 'normal' : 'text'],
         boxShadow: this.$theme.sizes.shadow.factor(this.$size, 'shadow', { dir: 'bottom' }),
         borderWidth: '1px',
         fontWeight: 'bold',
         textAlign: 'center',
-        borderColor: this.$color.shade(-13),
+        borderColor: $color.shade(-13),
         borderRadius: this.$theme.sizes.radius.factor(this.fab ? 'round' : this.$size, 'radius'),
         lineHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
         minHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
@@ -67,10 +68,10 @@ export default {
         textDecoration: 'blink',
         userSelect: 'none',
         '&:hover, &:focus': {
-          backgroundColor: this.$color.autoShade(10, this.invert ? 0.1 : 1),
+          backgroundColor: $color.autoShade(10, this.invert ? 0.1 : 1),
         },
         '&:active': {
-          backgroundColor: this.$color.autoShade(-15, this.invert ? 0.2 : 1),
+          backgroundColor: $color.autoShade(-15, this.invert ? 0.2 : 1),
         },
       }),
     ];

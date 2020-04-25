@@ -4,22 +4,25 @@
       <div
         v-for="(code, i) in codes"
         :key="'example' + i"
+        css-border="md"
+        css-radius="md"
+        css-color="background"
+        css-margin-bottom="lg"
+        css-overflow="hidden"
       >
         <appCode
           :content="code"
           lang="html"
           css-padding="md"
           css-color="sidebar"
-          css-radius="md"
         />
-        <div css-margin-top="lg" />
         <component
           :is="'example' + i"
           :ref="'example' + i"
         />
       </div>
     </div>
-    <div css-margin-top="lg" />
+
     <div>
       <fvSlider :current.sync="apiSliderValue">
         <fvSlideLabel slot="label" name="props"> Props </fvSlideLabel>
@@ -32,7 +35,7 @@
         <fvSlideContent slot="content" name="events">
           <fvTable :fields="['name', 'params', 'description']" :rows="api.events">
             <template slot="field-params" slot-scope="scope">
-              ({{scope.row.params.join(', ')}})
+              ({{typeof scope.row.params === 'string' ? scope.row.params : scope.row.params.join(', ')}})
             </template>
           </fvTable>
         </fvSlideContent>
@@ -108,9 +111,9 @@ export default {
       component.__examples.forEach((example, index) => {
         this.$options.components[`example${index}`] = {
           template: `
-            <div css-radius="md" css-border="md" css-color="background" css-overflow="hidden">
+            <div css-color="background" css-overflow="hidden">
               ${example.configs.state !== false ? `
-                <div css-padding="md" css-color="sidebar">
+                <div css-padding="lg" css-color="sidebar">
                   <label css-display="block" css-text-color="gray"> Current State: </label>
                   <pre>{{ $data }}</pre>
                 </div>

@@ -4,6 +4,17 @@
   </aside>
 </template>
 
+
+<doc>
+@prop type @type oneOf('pinned', 'unattached', 'smart') @default 'smart' @description Sidebar render style. The 'unattached' is hidden by default and shows like mobile side menu. 'smart' mode will be use one of those automaticly based on device size.
+@prop visible @type Boolean @default false @description Sidebar visibility. It's better to use .sync modifier for this if you want to use 'smart' mode as type.
+
+@slot default
+
+@event update:visible @description @params newVisible @description Triggers when sidemenu open/close.
+</doc>
+
+
 <example>
 @config state false
 @config example false

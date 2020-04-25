@@ -103,7 +103,7 @@
 @prop valueKey @type String @default '' @description If you've passed a list of objects to `fields` prop, pass the value key to this prop.
 @prop fields @type Array @default [] @description List of fields.
 @prop rows @type Array @default [] @description List of rows.
-@prop type @type oneOf('normal', 'breaked', 'smart') @default 'smart' @description Table render style. The 'normal' be like excel mode and 'breaked' be like mobile mode. 'smart' mode will be use one of those automatickly based on device size.
+@prop type @type oneOf('normal', 'breaked', 'smart') @default 'smart' @description Table render style. The 'normal' is like excel mode and 'breaked' is like mobile mode. 'smart' mode will be use one of those automaticly based on device size.
 
 @event titleClick @description @params field @params fieldIndex @description Trigger when user clicks on a field name.
 @event rowClick @description @params row @params rowIndex @description Trigger when user clicks on a row.
@@ -111,17 +111,6 @@
 @slot footer @description Will be renders on `tfoot` section.
 @slot title-${} @description Will be renders on `tfoot` section.
 
-</template>
-
-<script>
-export default {
-
-}
-</script>
-
-<style>
-
-</style>
 </doc>
 
 <example>
@@ -210,6 +199,7 @@ export default {
         borderWidth: '1px',
         boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: 'bottom' }),
         borderRadius: this.$theme.sizes.radius.factor('md', 'radius'),
+        borderColor: this.$theme.colors[this.$color].shade(-15),
         overflow: 'hidden',
         '& > table': {
           width: '100%',
