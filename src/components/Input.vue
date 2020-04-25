@@ -22,6 +22,7 @@
 </doc>
 
 <example>
+@config title 'Input'
 @config state true
 @config example true
 
@@ -31,6 +32,7 @@
 </example>
 
 <example>
+@config title 'Multi Line (Textarea)'
 @config state true
 @config example true
 
@@ -39,8 +41,9 @@
 
 </example>
 
-<example title="Sizes">
-@config state true
+<example>
+@config title 'Sizes'
+@config state false
 @config example true
 
 @data val = 'Sizes'
@@ -49,6 +52,17 @@
 <fvInput css-size="lg" v-model="val" />
 <fvInput css-size="xl" v-model="val" />
 
+</example>
+
+<example>
+@config title 'Colors'
+@config state false
+@config example true
+
+@data val = 'Colors'
+<fvInput css-color="background" v-model="val" />
+<fvInput css-color="header" v-model="val" />
+<fvInput css-color="sidebar" v-model="val" />
 </example>
 
 <script>

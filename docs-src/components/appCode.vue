@@ -8,15 +8,11 @@
       v-highlightjs
       class="markup"
     >
-      <!-- <div class="panel" css-padding="md" css-color="sidebar">
-        <span class="hljs-comment" v-text="langText"></span>
-        <fvButton css-size="sm" css-color="sidebar" css-shadow="no" @click.prevent="copy" :disabled="copiedToast"><i class="fa fa-copy"></i> Copy</fvButton>
-      </div> -->
       <code
-ref="markup"
-:class="lang"
-v-text="content.trim()"
-/>
+        ref="markup"
+        :class="lang"
+        v-text="content.trim()"
+        />
       <!-- <fvToast v-model="copiedToast" :timeout="1200">Copied to Clipboard!</fvToast> -->
     </pre>
   </div>
@@ -76,6 +72,9 @@ export default {
       '& code': {
         whiteSpace: 'pre-wrap',
         fontFamily: 'monospace',
+      },
+      '& .hljs': {
+        padding: 0,
       },
     })];
   },

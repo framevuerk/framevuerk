@@ -275,6 +275,14 @@ export default {
         });
       });
 
+
+      // Cursors
+      ['none', 'pointer', 'default', 'not-allowed', 'text'].forEach((cursor) => {
+        ret[attrName('cursor', cursor)] = {
+          cursor: forceValue(cursor),
+        };
+      });
+
       // Displays
       ['none', 'block', 'inline-block', 'inline', 'flex', 'inline-flex'].forEach((display) => {
         ret[attrName('display', display)] = {

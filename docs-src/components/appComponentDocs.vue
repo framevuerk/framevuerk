@@ -10,15 +10,15 @@
         css-margin-bottom="lg"
         css-overflow="hidden"
       >
+        <component
+          :is="'example' + i"
+          :ref="'example' + i"
+        />
         <appCode
           :content="code"
           lang="html"
           css-padding="md"
           css-color="sidebar"
-        />
-        <component
-          :is="'example' + i"
-          :ref="'example' + i"
         />
       </div>
     </div>
@@ -112,21 +112,27 @@ export default {
         this.$options.components[`example${index}`] = {
           template: `
             <div css-color="background" css-overflow="hidden">
-              ${example.configs.state !== false ? `
-                <div css-padding="lg" css-color="sidebar">
-                  <label css-display="block" css-text-color="gray"> Current State: </label>
-                  <pre>{{ $data }}</pre>
+              ${example.configs.example !== false ? `
+                <label css-display="block" css-padding="md"> ${example.configs.title || 'Default'} </label>
+                <div css-padding="md" css-padding-bottom="lg">
+                  ${example.template}
                 </div>
               ` : ''}
-              ${example.configs.example !== false ? `
-                <div css-padding="md">
-                  ${example.template}
+              ${example.configs.state !== false ? `
+                <div css-padding="md" css-color="sidebar" css-cursor="pointer" @click="stateVisibility = true" v-if="!stateVisibility">
+                  <pre css-text-color="gray" css-font-size="sm">$data === { ...(click to expand) }</pre>
+                </div>
+                <div css-padding="md" css-color="sidebar" css-cursor="text" @click="stateVisibility = false" v-else>
+                  <pre css-text-color="gray" css-font-size="sm">$data === {{ $data }}</pre>
                 </div>
               ` : ''}
             </div>
           `,
           data() {
-            return example.data;
+            return {
+              ...example.data,
+              stateVisibility: false,
+            };
           },
         };
         this.codes.push(example.template);

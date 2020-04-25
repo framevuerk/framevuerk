@@ -35,8 +35,8 @@
 <fvButton css-color="primary"> Primary </fvButton>
 <fvButton css-color="danger"> Danger </fvButton>
 <fvButton css-color="background"> Background </fvButton>
-<fvButton css-color="primary" invert> Iverted Primary </fvButton>
-<fvButton css-color="danger" invert> Iverted Danger </fvButton>
+<fvButton css-color="primary" invert> Inverted Primary </fvButton>
+<fvButton css-color="danger" invert> Inverted Danger </fvButton>
 </example>
 
 <example>
