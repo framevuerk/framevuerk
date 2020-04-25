@@ -19,12 +19,14 @@
     <span css-space-x="md" />
     <div css-grow>
       <h1 css-text-size="lg">
-        <appLogo
-          style="width: 35px;"
-          white
-          ready
-        />
-        {{ $attrs.title }}
+        <router-link to="/">
+          <appLogo
+            style="width: 35px;"
+            white
+            ready
+          />
+          {{ $attrs.title }}
+        </router-link>
       </h1>
     </div>
     <span css-space-x="md" />

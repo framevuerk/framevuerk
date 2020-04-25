@@ -12,6 +12,29 @@
   </component>
 </template>
 
+
+<doc>
+@prop tag @type String @default 'button' @description Rendering html tag.
+@prop fab @type Boolean @default false @description Is Fab mode?
+@prop invert @type Boolean @default false @description Does colors inverted?
+@prop disabled @type Boolean @default false @description Is disabled?
+
+@slot default
+
+
+@event click @params event @description Triggers when users clicks on component.
+</doc>
+
+<example>
+@config state false
+@config example true
+
+<fvButton css-color="primary"> Button </fvButton>
+<fvButton css-color="danger"> Button </fvButton>
+<fvButton css-color="background"> Button </fvButton>
+
+</example>
+
 <script>
 import color from '../mixins/color';
 import size from '../mixins/size';
