@@ -16,7 +16,7 @@
 @prop value @type Any @default undefined @description Value of input.
 @prop multiLine @type Boolean @default false @description `false` for input mode and `true` for textarea mode.
 @prop cssColor @type String @default 'background' @description Use any colors that already declared in themeProvider.
-@prop cssSize @type oneOf('xs', 'sm', 'md', 'lg', 'xl') @default 'md' @description Size of input.
+@prop cssSize @type oneOf('xs', 'sm', 'md', 'lg', 'xl') @default 'md' @description Size of element.
 
 @event input @params newValue @description Triggers when value changes within component.
 </doc>
@@ -39,7 +39,7 @@
 
 </example>
 
-<example>
+<example title="Sizes">
 @config state true
 @config example true
 
