@@ -10,6 +10,17 @@
   </div>
 </template>
 
+<doc>
+@prop global @type Boolean @default true @description If this is scopped and self scrolled layout, set this prop to false, unless leave it.
+
+@slot header @description Header section. By default you need to set this slot on your fvHeader component.
+@slot content @description Content section. By default you need to set this slot on your fvContent component.
+@slot footer @description Footer section. By default you need to set this slot on your fvFooter component.
+@slot start-sidebar @description Sidebar section. In ltr mode this is renders on left. Behavior is based on main direction. By default you need to set this slot on your fvSidebar component.
+@slot end-sidebar @description Sidebar section. In ltr mode this is renders on right. Behavior is based on main direction. By default you need to set this slot on your fvSidebar component.
+
+</doc>
+
 <example>
 @config state false
 @config example false
@@ -146,7 +157,7 @@ export default {
       this.listeners.resize.forEach((listener) => listener(size));
     },
   },
-  style({ className, mediaQuery }) {
+  style({ className }) {
     return [
       className('lock', {
         overflow: 'hidden',

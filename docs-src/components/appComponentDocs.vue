@@ -10,7 +10,9 @@
           lang="html"
           css-padding="md"
           css-color="sidebar"
+          css-radius="md"
         />
+        <div css-margin-top="lg" />
         <component
           :is="'example' + i"
           :ref="'example' + i"
@@ -18,7 +20,6 @@
       </div>
     </div>
     <div css-margin-top="lg" />
-    <!--
     <div>
       <fvSlider :current.sync="apiSliderValue">
         <fvSlideLabel slot="label" name="props"> Props </fvSlideLabel>
@@ -26,26 +27,33 @@
         <fvSlideLabel slot="label" name="slots"> Slots </fvSlideLabel>
 
         <fvSlideContent slot="content" name="props">
-          <fvTable :fields="['name', 'type', 'default', 'description']" :rows="api.props">
-          </fvTable>
+          <fvTable :fields="['name', 'type', 'default', 'description']" :rows="api.props" />
         </fvSlideContent>
         <fvSlideContent slot="content" name="events">
-          <fvTable :fields="['name', 'type', 'default', 'description']" :rows="api.events">
+          <fvTable :fields="['name', 'params', 'description']" :rows="api.events">
+            <template slot="field-params" slot-scope="scope">
+              ({{scope.row.params.join(', ')}})
+            </template>
           </fvTable>
         </fvSlideContent>
         <fvSlideContent slot="content" name="slots">
-          <fvTable :fields="['name', 'scoped', 'bindings', 'description']" :rows="api.slots">
+          <fvTable :fields="['name', 'scoped', 'binding', 'description']" :rows="api.slots">
             <template slot="field-scoped" slot-scope="scope">
-              <div :css-text-align="scope.type === 'breaked' ? '' : 'center'">
-                <i v-if="scope.row.scoped" class="fa fa-check" css-text-color="success" />
+              <div>
+                <i v-if="scope.row.scope" class="fa fa-check" css-text-color="success" />
                 <i v-else class="fa fa-times" css-text-color="gray" />
+              </div>
+            </template>
+            <template slot="field-binding" slot-scope="scope">
+              <div>
+                {{scope.row.scope}}
               </div>
             </template>
           </fvTable>
         </fvSlideContent>
         <fvSlideContent slot="content" name="content"> {{ api }} </fvSlideContent>
       </fvSlider>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -67,6 +75,7 @@ export default {
   },
   props: {
     framevuerkComponent: {
+      type: Object,
       required: true,
     },
   },
@@ -78,11 +87,10 @@ export default {
     };
   },
   watch: {
-    '$route.params.component': function (newComponent) {
+    // eslint-disable-next-line object-shorthand
+    '$route.params.component'(newComponent) {
       this.$nextTick(() => {
-        setTimeout(() => {
-          this.loadData(newComponent);
-        });
+        this.loadData(newComponent);
       });
     },
   },
@@ -100,7 +108,7 @@ export default {
       component.__examples.forEach((example, index) => {
         this.$options.components[`example${index}`] = {
           template: `
-            <div>
+            <div css-radius="md" css-border="md" css-color="background" css-overflow="hidden">
               ${example.configs.state !== false ? `
                 <div css-padding="md" css-color="sidebar">
                   <label css-display="block" css-text-color="gray"> Current State: </label>

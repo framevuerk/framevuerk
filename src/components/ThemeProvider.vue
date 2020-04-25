@@ -266,7 +266,7 @@ export default {
             };
           } else {
             const side1 = ['top', 'bottom'].includes(dynamicSide) ? `${side}-right` : `top-${side}`;
-            const side2 = ['top', 'bottom'].includes(dynamicSide) ? `${side}-right` : `bottom-${side}`;
+            const side2 = ['top', 'bottom'].includes(dynamicSide) ? `${side}-left` : `bottom-${side}`;
             ret[rule] = {
               [cx('-', 'border', side1, 'radius')]: value,
               [cx('-', 'border', side2, 'radius')]: forceValue(this._sizes.radius.factor(size, 'radius')),

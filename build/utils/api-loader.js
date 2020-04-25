@@ -3,21 +3,19 @@ const getKeys = (content, keyName) => {
   return lines.map((line) => {
     const sections = line.split('@');
     const lineRet = {};
-    let lineKey = '';
     sections.forEach((section) => {
       const s = section.trim().split(' ');
       const p = s[0];
       const v = s.splice(1).join(' ');
       if (p === keyName) {
-        lineKey = v;
-        lineRet[lineKey] = {};
-      } else if (lineRet[lineKey] && lineRet[lineKey][p]) {
-        lineRet[lineKey][p] = [
-          ...(Array.isArray(lineRet[lineKey][p]) ? lineRet[lineKey][p] : [lineRet[lineKey][p]]),
+        lineRet.name = v;
+      } else if (lineRet[p]) {
+        lineRet[p] = [
+          ...(Array.isArray(lineRet[p]) ? lineRet[p] : [lineRet[p]]),
           v,
         ];
-      } else if (lineRet[lineKey]) {
-        lineRet[lineKey][p] = v;
+      } else {
+        lineRet[p] = v;
       }
     });
     return lineRet;

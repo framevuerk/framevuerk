@@ -42,9 +42,9 @@
           >
             <div
               class="field-name"
+              css-text-align="start"
               @click="$emit('titleClick', field, index2)"
             >
-              <!-- @slot you have to use exact field name described in "fields" prop -->
               <slot
                 v-if="hasSlot('title-' + field)"
                 :name="'title-' + field"
@@ -59,7 +59,6 @@
               />
               <div
                 v-else
-                css-text-align="center"
               >
                 {{ fieldProp(field, 'title') }}
               </div>
@@ -99,6 +98,32 @@
   </div>
 </template>
 
+<doc>
+@prop titleKey @type String @default '' @description If you've passed a list of objects to `fields` prop, pass the title key to this prop.
+@prop valueKey @type String @default '' @description If you've passed a list of objects to `fields` prop, pass the value key to this prop.
+@prop fields @type Array @default [] @description List of fields.
+@prop rows @type Array @default [] @description List of rows.
+@prop type @type oneOf('normal', 'breaked', 'smart') @default 'smart' @description Table render style. The 'normal' be like excel mode and 'breaked' be like mobile mode. 'smart' mode will be use one of those automatickly based on device size.
+
+@event titleClick @description @params field @params fieldIndex @description Trigger when user clicks on a field name.
+@event rowClick @description @params row @params rowIndex @description Trigger when user clicks on a row.
+
+@slot footer @description Will be renders on `tfoot` section.
+@slot title-${} @description Will be renders on `tfoot` section.
+
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+
+</style>
+</doc>
+
 <example>
 @data fields = ['name', 'family', 'age']
 @data rows = [{ name: 'Amir', family: 'Momenian', age: 32 }, { name: 'Maryam', family: 'Amini Asl', age: 24 }, { name: 'David', family: 'Beckham', age: 43 }, { name: 'Ricardo', family: 'Kaka', age: 38 }]
@@ -125,15 +150,14 @@ export default {
       type: String,
       default: '',
     },
-    rows: {
-      type: Array,
-      default: () => [],
-    },
     fields: {
       type: Array,
       default: () => [],
     },
-    /** @values 'normal', 'breaked', 'smart' */
+    rows: {
+      type: Array,
+      default: () => [],
+    },
     type: {
       type: String,
       validator: (value) => ['normal', 'breaked', 'smart'].indexOf(value) > -1,
@@ -164,6 +188,7 @@ export default {
       switch (prop) {
         case 'title':
           return this.titleKey ? field[this.titleKey] : field;
+        default:
         case 'value':
           return this.valueKey ? field[this.valueKey] : field;
       }
@@ -230,6 +255,9 @@ export default {
           },
           '& tbody tr td .field-name': {
             display: 'none',
+          },
+          '& tbody tr td .field-value': {
+            textAlign: 'center',
           },
         },
       }),
