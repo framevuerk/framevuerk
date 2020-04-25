@@ -102,7 +102,6 @@ module.exports = (config) => {
       resourceQuery: /blockType=doc/,
       loader: path.resolve(__dirname, './utils/api-loader.js'),
     });
-
   } else {
     module.rules.push({
       resourceQuery: /blockType=example/,

@@ -1,13 +1,13 @@
 <template>
-<div :class="$style.layout">
-  <slot name="header" />
-  <main>
-    <slot name="start-sidebar" />
-    <slot name="content" />
-    <slot name="end-sidebar" />
-  </main>
-  <slot name="footer" />
-</div>  
+  <div :class="$style.layout">
+    <slot name="header" />
+    <main>
+      <slot name="start-sidebar" />
+      <slot name="content" />
+      <slot name="end-sidebar" />
+    </main>
+    <slot name="footer" />
+  </div>
 </template>
 
 <example>

@@ -53,6 +53,4 @@ module.exports.hasArg = (key) => {
   return index !== -1;
 };
 
-module.exports.args = () => {
-  return process.argv.slice(2);
-};
+module.exports.args = () => process.argv.slice(2);

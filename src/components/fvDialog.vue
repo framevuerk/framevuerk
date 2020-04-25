@@ -28,6 +28,17 @@ export default {
       outer: null,
     };
   },
+  watch: {
+    value(value) {
+      this.valueHandler(value);
+    },
+  },
+  beforeDestroy() {
+    this.onClose();
+  },
+  mounted() {
+    this.valueHandler(this.value);
+  },
   methods: {
     valueHandler(value) {
       if (value) {
@@ -71,17 +82,6 @@ export default {
     cancel() {
 
     },
-  },
-  watch: {
-    value(value) {
-      this.valueHandler(value);
-    },
-  },
-  beforeDestroy() {
-    this.onClose();
-  },
-  mounted() {
-    this.valueHandler(this.value);
   },
 };
 

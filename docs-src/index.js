@@ -27,16 +27,16 @@ new Vue({
       sidebar: false,
     };
   },
+  created() {
+    this.routeChange(this.$route.path);
+    this.$watch('$route.path', this.routeChange);
+  },
   methods: {
     routeChange(path) {
       if (window.ga) {
         window.ga('send', 'pageview', path.replace('#', ''));
       }
     },
-  },
-  created() {
-    this.routeChange(this.$route.path);
-    this.$watch('$route.path', this.routeChange);
   },
   render: (h) => h(App),
 }).$mount('#app');

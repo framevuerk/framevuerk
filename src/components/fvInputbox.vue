@@ -100,6 +100,11 @@ export default {
       return this.multiple ? this.value : (typeof this.value === 'undefined' ? [] : [this.value]);
     },
   },
+  watch: {
+    value() {
+      this.lastValueChanges = Date.now();
+    },
+  },
   methods: {
     focus() {
       this.$refs.input.focus();
@@ -179,11 +184,6 @@ export default {
       if (this.showOut) {
         this.$emit('input-keydown', event);
       }
-    },
-  },
-  watch: {
-    value() {
-      this.lastValueChanges = Date.now();
     },
   },
 };

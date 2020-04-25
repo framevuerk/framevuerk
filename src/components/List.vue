@@ -1,7 +1,10 @@
 <template>
-<component :is="tag" :tabindex="controlerElement ? -1 : 1">
-  <slot />
-</component>
+  <component
+    :is="tag"
+    :tabindex="controlerElement ? -1 : 1"
+  >
+    <slot />
+  </component>
 </template>
 
 <script>
@@ -11,24 +14,8 @@ export default {
   inject: {
     $theme: {},
     $list: {
-      default: null
-    }
-  },
-  data() {
-    return {
-      highlighted: null,
-      indent: 1,
-    }
-  },
-  provide() {
-    return {
-      $list: this,
-    };
-  },
-  created() {
-    if (this.$list) {
-      this.indent += this.$list.indent;
-    }
+      default: null,
+    },
   },
   props: {
     tag: {
@@ -38,12 +25,34 @@ export default {
     controlerElement: {
       type: Object,
       default: undefined,
-    }
+    },
+  },
+  data() {
+    return {
+      highlighted: null,
+      indent: 1,
+    };
+  },
+  provide() {
+    return {
+      $list: this,
+    };
   },
   computed: {
     eventListener() {
       return this.controlerElement || this.$el;
+    },
+  },
+  created() {
+    if (this.$list) {
+      this.indent += this.$list.indent;
     }
+  },
+  mounted() {
+    this.bindEvents();
+  },
+  beforeDestroy() {
+    this.unbindEvents();
   },
   methods: {
     resetHighlight() {
@@ -121,12 +130,6 @@ export default {
       this.eventListener.removeEventListener('blur', this.resetHighlight);
       this.eventListener.removeEventListener('keydown', this.onKeydown);
     },
-  },
-  mounted() {
-    this.bindEvents();
-  },
-  beforeDestroy() {
-    this.unbindEvents();
   },
 };
 </script>

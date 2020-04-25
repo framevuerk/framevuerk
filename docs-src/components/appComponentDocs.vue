@@ -1,9 +1,20 @@
 <template>
   <div>
     <div v-if="codes.length > 0">
-      <div v-for="(code, i) in codes" :key="'example' + i">
-        <appCode :content="code" lang="html" css-padding="md" css-color="sidebar" />
-        <component :is="'example' + i" :ref="'example' + i" />
+      <div
+        v-for="(code, i) in codes"
+        :key="'example' + i"
+      >
+        <appCode
+          :content="code"
+          lang="html"
+          css-padding="md"
+          css-color="sidebar"
+        />
+        <component
+          :is="'example' + i"
+          :ref="'example' + i"
+        />
       </div>
     </div>
     <div css-margin-top="lg" />
@@ -39,12 +50,12 @@
 </template>
 
 <script>
-import appCode from '../components/appCode.vue';
 import { dashCase } from 'framevuerk/utility/utils.js';
+import appCode from './appCode.vue';
 
 const defaultComponent = { template: '<div>#</div>' };
 const preRegisteredExamples = {};
-for(let i = 0; i < 12; i++) {
+for (let i = 0; i < 12; i++) {
   preRegisteredExamples[`example${i}`] = defaultComponent;
 }
 
@@ -65,6 +76,15 @@ export default {
       codes: [],
       api: {},
     };
+  },
+  watch: {
+    '$route.params.component': function (newComponent) {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.loadData(newComponent);
+        });
+      });
+    },
   },
   created() {
     this.$nextTick(() => {
@@ -104,14 +124,5 @@ export default {
       this.$forceUpdate();
     },
   },
-  watch: {
-    '$route.params.component'(newComponent) {
-      this.$nextTick(() => {
-        setTimeout(() => {
-          this.loadData(newComponent);
-        });
-      });
-    }
-  }
-}
+};
 </script>

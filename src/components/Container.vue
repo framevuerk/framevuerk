@@ -1,7 +1,7 @@
 <template>
-<div :class="$style.container">
-  <slot />
-</div>
+  <div :class="$style.container">
+    <slot />
+  </div>
 </template>
 
 <script>

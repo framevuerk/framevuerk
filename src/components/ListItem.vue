@@ -1,16 +1,39 @@
 <template>
-<component :is="tag" :class="[$style.listItem, disabled && 'disabled', selected && 'selected', isHighlighted && 'highlighted']"  :to="$attrs.to">
-  <div class="content" css-padding-x="md">
-    <span css-space-x="lg" v-for="i in $list.indent - 1" :key="'indent-' + i"/>
-    <fvButton v-if="hasSubList" class="expand-btn" fab css-radius="no" css-shadow="no" @click="toggle" tabindex="0">
-      {{ isExpanded ? '-' : '+' }}
-    </fvButton>
-    <slot name="default" />
-  </div>
-  <div class="sub-list" :class="[isExpanded ? 'expand' : 'collapse']" ref="subList">
-    <slot name="sub-list" />
-  </div>
-</component>
+  <component
+    :is="tag"
+    :class="[$style.listItem, disabled && 'disabled', selected && 'selected', isHighlighted && 'highlighted']"
+    :to="$attrs.to"
+  >
+    <div
+      class="content"
+      css-padding-x="md"
+    >
+      <span
+        v-for="i in $list.indent - 1"
+        :key="'indent-' + i"
+        css-space-x="lg"
+      />
+      <fvButton
+        v-if="hasSubList"
+        class="expand-btn"
+        fab
+        css-radius="no"
+        css-shadow="no"
+        tabindex="0"
+        @click="toggle"
+      >
+        {{ isExpanded ? '-' : '+' }}
+      </fvButton>
+      <slot name="default" />
+    </div>
+    <div
+      ref="subList"
+      class="sub-list"
+      :class="[isExpanded ? 'expand' : 'collapse']"
+    >
+      <slot name="sub-list" />
+    </div>
+  </component>
 </template>
 
 <script>
@@ -52,25 +75,6 @@ export default {
       return this.$slots.hasOwnProperty('sub-list');
     },
   },
-  methods: {
-    expand() {
-      this.isExpanded = true;
-    },
-    collapse() {
-      this.isExpanded = false;
-    },
-    toggle(event) {
-      this.isExpanded = !this.isExpanded;
-    },
-    onClick(event) {
-      if (!this.disabled) {
-        this.$emit('click', event);
-      }
-    },
-    onHover() { // called by parent
-      this.$emit('hover');
-    },
-  },
   watch: {
     isExpanded(value) {
       if (value) {
@@ -90,7 +94,26 @@ export default {
           this.$emit('collapse');
         }, 20);
       }
-    }
+    },
+  },
+  methods: {
+    expand() {
+      this.isExpanded = true;
+    },
+    collapse() {
+      this.isExpanded = false;
+    },
+    toggle(event) {
+      this.isExpanded = !this.isExpanded;
+    },
+    onClick(event) {
+      if (!this.disabled) {
+        this.$emit('click', event);
+      }
+    },
+    onHover() { // called by parent
+      this.$emit('hover');
+    },
   },
   style({ className }) {
     return [
@@ -113,7 +136,7 @@ export default {
             height: this.$theme.sizes.base.factor(this.$size, 'font', { sum: 5 }),
             width: this.$theme.sizes.base.factor(this.$size, 'font', { sum: 5 }),
             lineHeight: this.$theme.sizes.base.factor(this.$size, 'font', { sum: 5 }),
-          }
+          },
         },
         '& > .sub-list': {
           overflowY: 'visible',
@@ -126,7 +149,7 @@ export default {
           },
           '&.expand': {
             height: 'auto',
-          }
+          },
         },
         '&.highlighted': {
           backgroundColor: 'rgba(0, 0, 0, 0.06)',
@@ -138,7 +161,7 @@ export default {
         //   textDecoration: 'line-through',
         // }
       }),
-    ]
-  }
+    ];
+  },
 };
 </script>

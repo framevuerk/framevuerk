@@ -1,7 +1,10 @@
 <template>
-<button :class="[$style.slideLabel, isSelected && 'selected']" @click="onClick">
-  <slot />
-</button>
+  <button
+    :class="[$style.slideLabel, isSelected && 'selected']"
+    @click="onClick"
+  >
+    <slot />
+  </button>
 </template>
 
 <script>
@@ -16,14 +19,14 @@ export default {
   computed: {
     isSelected() {
       return this.$slider && this.$slider.current === this.name;
-    }
+    },
   },
   methods: {
     onClick() {
       this.$slider.setCurrent(this.name);
     },
   },
-  style({className}) {
+  style({ className }) {
     return [
       className('slideLabel', {
         userSelect: 'none',
@@ -37,9 +40,9 @@ export default {
         '&.selected': {
           color: this.$theme.colors.primary.normal,
           borderBottomColor: this.$theme.colors.primary.normal,
-        }
-      })
+        },
+      }),
     ];
   },
-}
+};
 </script>

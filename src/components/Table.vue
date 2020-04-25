@@ -1,37 +1,102 @@
 <template>
-<div :class="[$style.table, trueType]" :css-color="cssColor">
-  <table>
-    <thead>
-      <tr>
-        <th v-for="(field, index) in fields" :key="fieldProp(field, 'title')" @click="$emit('titleClick', field, index)">
-          <slot v-if="hasSlot('title-' + field)" :name="'title-' + field" :field="field" />
-          <slot v-else-if="hasSlot('title')" name="title" :field="field" />
-          <div v-else css-text-align="center"> {{ fieldProp(field, 'title') }} </div>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(row, index) in rows" :key="'row-' + index" @click="$emit('rowClick', row, index)">
-        <td v-for="(field, index2) in fields" :key="fieldProp(field, 'title')">
-          <div class="field-name" @click="$emit('titleClick', field, index2)">
-            <!-- @slot you have to use exact field name described in "fields" prop -->
-            <slot v-if="hasSlot('title-' + field)" :name="'title-' + field" :field="field" :type="trueType" />
-            <slot v-else-if="hasSlot('title')" name="title" :field="field" :type="trueType" />
-            <div v-else css-text-align="center"> {{ fieldProp(field, 'title') }} </div>
-          </div>
-          <div class="field-value" @click="$emit('titleClick', field, index2)">
-            <slot v-if="hasSlot('field-' + field)" :name="'field-' + field" :field="field" :row="row" :type="trueType" />
-            <slot v-else-if="hasSlot('field')" name="field" :field="field" :row="row" :type="trueType" />
-            <div v-else css-text-align="center"> {{ defaultFieldValueInRow(field, row) }} </div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <slot name="footer" />
-    </tfoot>
-  </table>
-</div>
+  <div
+    :class="[$style.table, trueType]"
+    :css-color="cssColor"
+  >
+    <table>
+      <thead>
+        <tr>
+          <th
+            v-for="(field, index) in fields"
+            :key="fieldProp(field, 'title')"
+            @click="$emit('titleClick', field, index)"
+          >
+            <slot
+              v-if="hasSlot('title-' + field)"
+              :name="'title-' + field"
+              :field="field"
+            />
+            <slot
+              v-else-if="hasSlot('title')"
+              name="title"
+              :field="field"
+            />
+            <div
+              v-else
+              css-text-align="center"
+            >
+              {{ fieldProp(field, 'title') }}
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(row, index) in rows"
+          :key="'row-' + index"
+          @click="$emit('rowClick', row, index)"
+        >
+          <td
+            v-for="(field, index2) in fields"
+            :key="fieldProp(field, 'title')"
+          >
+            <div
+              class="field-name"
+              @click="$emit('titleClick', field, index2)"
+            >
+              <!-- @slot you have to use exact field name described in "fields" prop -->
+              <slot
+                v-if="hasSlot('title-' + field)"
+                :name="'title-' + field"
+                :field="field"
+                :type="trueType"
+              />
+              <slot
+                v-else-if="hasSlot('title')"
+                name="title"
+                :field="field"
+                :type="trueType"
+              />
+              <div
+                v-else
+                css-text-align="center"
+              >
+                {{ fieldProp(field, 'title') }}
+              </div>
+            </div>
+            <div
+              class="field-value"
+              @click="$emit('titleClick', field, index2)"
+            >
+              <slot
+                v-if="hasSlot('field-' + field)"
+                :name="'field-' + field"
+                :field="field"
+                :row="row"
+                :type="trueType"
+              />
+              <slot
+                v-else-if="hasSlot('field')"
+                name="field"
+                :field="field"
+                :row="row"
+                :type="trueType"
+              />
+              <div
+                v-else
+                css-text-align="center"
+              >
+                {{ defaultFieldValueInRow(field, row) }}
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <slot name="footer" />
+      </tfoot>
+    </table>
+  </div>
 </template>
 
 <example>
@@ -80,6 +145,11 @@ export default {
       trueType: this.type,
     };
   },
+  mounted() {
+    if (this.type === 'smart') {
+      this.handleSmart();
+    }
+  },
   methods: {
     hasSlot(name) {
       return hasSlot(this, name);
@@ -108,11 +178,6 @@ export default {
       }
       return row;
     },
-  },
-  mounted() {
-    if (this.type === 'smart') {
-      this.handleSmart();
-    }
   },
   style({ className }) {
     return [
@@ -150,7 +215,7 @@ export default {
               fontWeight: 'bold',
               flexGrow: 1,
             },
-          }
+          },
         },
         '&.normal': {
           '& thead th, & tbody tr:not(:last-child) td': {
@@ -166,8 +231,8 @@ export default {
           '& tbody tr td .field-name': {
             display: 'none',
           },
-        }
-      })
+        },
+      }),
     ];
   },
 };

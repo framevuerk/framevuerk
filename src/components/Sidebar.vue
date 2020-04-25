@@ -1,7 +1,7 @@
 <template>
-<aside :class="[$style.sidebar, className, visible ? 'show' : 'hide']">
-  <slot />
-</aside>
+  <aside :class="[$style.sidebar, className, visible ? 'show' : 'hide']">
+    <slot />
+  </aside>
 </template>
 
 <example>
@@ -36,17 +36,13 @@ export default {
       cancelDetector: null,
     };
   },
-  methods: {
-    toggle() {
-      this.$emit('update:visible', !this.visible);
-    },
-    handleSmart() {
-      this.$el.style.transitionDuration = '0s';
-      this.$emit('update:visible', window.innerWidth >= 992);
-      this.className = window.innerWidth >= 992 ? 'pinned' : 'unattached';
-      setTimeout(() => {
-        this.$el.style.transitionDuration = null;
-      });
+  watch: {
+    visible(newValue) {
+      if (this.visible && this.className === 'unattached') {
+        this.cancelDetector = this.$layout.cancelDetector(this.$el, this.toggle);
+      } else {
+        this.cancelDetector && this.cancelDetector.release();
+      }
     },
   },
   created() {
@@ -59,17 +55,21 @@ export default {
       this.handleSmart();
     }
   },
-  watch: {
-    visible(newValue) {
-      if (this.visible && this.className === 'unattached') {
-        this.cancelDetector = this.$layout.cancelDetector(this.$el, this.toggle);
-      } else {
-        this.cancelDetector && this.cancelDetector.release();
-      }
-    },
-  },
   beforeDestroy() {
     this.cancelDetector && this.cancelDetector.release();
+  },
+  methods: {
+    toggle() {
+      this.$emit('update:visible', !this.visible);
+    },
+    handleSmart() {
+      this.$el.style.transitionDuration = '0s';
+      this.$emit('update:visible', window.innerWidth >= 992);
+      this.className = window.innerWidth >= 992 ? 'pinned' : 'unattached';
+      setTimeout(() => {
+        this.$el.style.transitionDuration = null;
+      });
+    },
   },
   style({ className, mediaQuery }) {
     const position = this.$theme.direction[this.$layout.getSidebarPosition(this)];
@@ -103,8 +103,9 @@ export default {
           zIndex: 2,
           '&.show': {
             transform: 'translateX(0) !important',
-          },        [`border-${position}-width`]: this.$theme.sizes.base.factor('md', 'border'),
-        [`border-${position}-style`]: 'solid',
+          },
+          [`border-${position}-width`]: this.$theme.sizes.base.factor('md', 'border'),
+          [`border-${position}-style`]: 'solid',
           '&.hide': {
             transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
           },

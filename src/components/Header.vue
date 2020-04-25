@@ -1,7 +1,10 @@
 <template>
-<header :class="$style.header" data-dev="comment-for-loader">
-  <slot />
-</header>
+  <header
+    :class="$style.header"
+    data-dev="comment-for-loader"
+  >
+    <slot />
+  </header>
 </template>
 
 <doc>
@@ -47,6 +50,15 @@ export default {
       offsetToParent: 0,
     };
   },
+  mounted() {
+    if (this.type === 'smart') {
+      this.offsetToParent = offsetTo(this.$el, null).top;
+      this.$layout.on('scroll', this.handleSmart);
+    }
+  },
+  beforeDestroy() {
+    this.$layout.off('scroll', this.handleSmart);
+  },
   methods: {
     handleSmart(scrollTop, direction) {
       if (scrollTop > this.offsetToParent) {
@@ -60,15 +72,6 @@ export default {
         this.$el.classList.remove('pre-show');
       }
     },
-  },
-  mounted() {
-    if (this.type === 'smart') {
-      this.offsetToParent = offsetTo(this.$el, null).top;
-      this.$layout.on('scroll', this.handleSmart);
-    }
-  },
-  beforeDestroy() {
-    this.$layout.off('scroll', this.handleSmart);
   },
   style({ className }) {
     const positionMap = {

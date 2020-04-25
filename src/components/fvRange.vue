@@ -85,6 +85,12 @@ export default {
       return this.data[this.dataType === 'array' ? (this.data.length - 1) : 'to'];
     },
   },
+  watch: {
+    value() {
+      this.syncLocalValue();
+      this.redraw();
+    },
+  },
   created() {
     this.syncLocalValue();
     this.syncValue();
@@ -305,12 +311,6 @@ export default {
       }
       const x = (valueIndex / (this.dataLength - 1)) * 100;
       return x;
-    },
-  },
-  watch: {
-    value() {
-      this.syncLocalValue();
-      this.redraw();
     },
   },
 };

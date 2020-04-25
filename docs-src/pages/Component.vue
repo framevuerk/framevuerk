@@ -1,29 +1,39 @@
 <template>
-<fvLayout>
-  <appHeader :title="'Framevuerk - ' + title" slot="header" />
-  <appSidebar slot="start-sidebar"/>
-  <fvContent slot="content">
-    <div css-max-width="md" css-padding="lg" css-margin-x="auto">
-      <appComponentDocs v-if="!loading" :framevuerkComponent="framevuerkComponent" />
-    </div>
-  </fvContent>
-  <appFooter slot="footer" />
-</fvLayout>
+  <fvLayout>
+    <appHeader
+      slot="header"
+      :title="'Framevuerk - ' + title"
+    />
+    <appSidebar slot="start-sidebar" />
+    <fvContent slot="content">
+      <div
+        css-max-width="md"
+        css-padding="lg"
+        css-margin-x="auto"
+      >
+        <appComponentDocs
+          v-if="!loading"
+          :framevuerk-component="framevuerkComponent"
+        />
+      </div>
+    </fvContent>
+    <appFooter slot="footer" />
+  </fvLayout>
 </template>
 
 <script>
+import * as Framevuerk from 'framevuerk';
+import { dashCase } from 'framevuerk/utility/utils.js';
 import appHeader from '../components/appHeader.vue';
 import appFooter from '../components/appFooter.vue';
 import appSidebar from '../components/appSidebar.vue';
 import appComponentDocs from '../components/appComponentDocs.vue';
-import * as Framevuerk from 'framevuerk';
-import { dashCase } from 'framevuerk/utility/utils.js';
 
 function textAsTitle(text) {
-  return text[0].toUpperCase() + text.substr(1).toLowerCase()
+  return text[0].toUpperCase() + text.substr(1).toLowerCase();
 }
 function textToLower(text) {
-  return text.toLowerCase()
+  return text.toLowerCase();
 }
 
 export default {
@@ -38,7 +48,12 @@ export default {
       loading: true,
       title: undefined,
       framevuerkComponent: undefined,
-    }
+    };
+  },
+  watch: {
+    '$route.params.component': function (framevuerkComponent) {
+      this.loadData(framevuerkComponent);
+    },
   },
   created() {
     this.loadData(this.$route.params.component);
@@ -54,10 +69,5 @@ export default {
       });
     },
   },
-  watch: {
-    '$route.params.component'(framevuerkComponent) {
-      this.loadData(framevuerkComponent);
-    }
-  }
-}
+};
 </script>

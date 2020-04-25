@@ -96,22 +96,6 @@ export default {
       searchQuery: undefined,
     };
   },
-  created() {
-    this.setEditingValue(true);
-    const dt = new this.Date();
-    dt.setDate(dt.getDate() - (dt.getDay()));
-    for (let i = 0; i < 7; i++) {
-      this.weekDayNames.push(dt.toString().split(' ')[0]);
-      dt.setDate(dt.getDate() + 1);
-    }
-
-    dt.setDate(1);
-    dt.setMonth(0);
-    for (let i = 0; i < 12; i++) {
-      this.monthNames.push(dt.toString().replace(/[0-9,۰-۹]/g, '').split(' ').filter((p) => !!p)[1]);
-      dt.setMonth(dt.getMonth() + 1);
-    }
-  },
   computed: {
     fvValidate() {
       if (this.required === true) {
@@ -141,6 +125,29 @@ export default {
         prevYear: process.env.direction === 'ltr' ? 'rotate(90deg)' : 'rotate(-90deg)',
       };
     },
+  },
+  watch: {
+    value() {
+      this.$nextTick(() => {
+        this.$refs.inputBox.close();
+      });
+    },
+  },
+  created() {
+    this.setEditingValue(true);
+    const dt = new this.Date();
+    dt.setDate(dt.getDate() - (dt.getDay()));
+    for (let i = 0; i < 7; i++) {
+      this.weekDayNames.push(dt.toString().split(' ')[0]);
+      dt.setDate(dt.getDate() + 1);
+    }
+
+    dt.setDate(1);
+    dt.setMonth(0);
+    for (let i = 0; i < 12; i++) {
+      this.monthNames.push(dt.toString().replace(/[0-9,۰-۹]/g, '').split(' ').filter((p) => !!p)[1]);
+      dt.setMonth(dt.getMonth() + 1);
+    }
   },
   methods: {
     onTyping(value) {
@@ -310,13 +317,6 @@ export default {
     },
     isDateDisabled(day, month, year) {
       return !this.checkFvValidity(day, month, year);
-    },
-  },
-  watch: {
-    value() {
-      this.$nextTick(() => {
-        this.$refs.inputBox.close();
-      });
     },
   },
 };

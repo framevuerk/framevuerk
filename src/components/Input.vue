@@ -1,14 +1,15 @@
 <template>
-<component
-  :is="tag"
-  :class="$style.input"
-  :disabled="disabled"
-  :invalid="!fvValidate"
-  :value="value"
-  v-html="value"
-  @focus="onFocus"
-  @blur="onBlurDefault"
-  @input="onInput" />
+  <component
+    :is="tag"
+    :class="$style.input"
+    :disabled="disabled"
+    :invalid="!fvValidate"
+    :value="value"
+    @focus="onFocus"
+    @blur="onBlurDefault"
+    @input="onInput"
+    v-html="value"
+  />
 </template>
 
 <script>
@@ -43,7 +44,7 @@ export default {
       this.$emit('input', event.target.value);
     },
   },
-  style({className}) {
+  style({ className }) {
     return [
       className('input', {
         display: 'inline-block',

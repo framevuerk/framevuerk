@@ -1,9 +1,15 @@
 <template>
-<component :is="tag" :class="$style.button" @click="onClick" :disabled="disabled" :to="$attrs.to">
-  <template>
-    <slot />
-  </template>
-</component>
+  <component
+    :is="tag"
+    :class="$style.button"
+    :disabled="disabled"
+    :to="$attrs.to"
+    @click="onClick"
+  >
+    <template>
+      <slot />
+    </template>
+  </component>
 </template>
 
 <script>

@@ -1,7 +1,7 @@
 <template>
-<div :class="$style.slideContent">
-  <slot />
-</div>
+  <div :class="$style.slideContent">
+    <slot />
+  </div>
 </template>
 
 <script>
@@ -13,7 +13,7 @@ export default {
       required: true,
     },
   },
-  style({className}) {
+  style({ className }) {
     return [
       className('slideContent', {
         userSelect: 'none',
@@ -22,8 +22,8 @@ export default {
         flexBasis: 0,
         flexShrink: 1,
         padding: this.$theme.sizes.base.normal,
-      })
+      }),
     ];
   },
-}
+};
 </script>

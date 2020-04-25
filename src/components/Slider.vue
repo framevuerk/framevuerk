@@ -1,16 +1,39 @@
 <template>
-<div :class="$style.slider">
-  <div class="labels">
-    <slot name="label"/>
-  </div>
-  <div class="contents">
-    <div class="inner" ref="inner">
-      <slot name="content"/>
+  <div :class="$style.slider">
+    <div class="labels">
+      <slot name="label" />
     </div>
-    <fvButton v-if="showButtons" fab class="btn prev" v-text="$theme.direction.prevChar" invert css-color="primary" css-border="no" css-shadow="no" @click="moveCurrent(-1)"/>
-    <fvButton v-if="showButtons" fab class="btn next" v-text="$theme.direction.nextChar" invert css-color="primary" css-border="no" css-shadow="no" @click="moveCurrent(1)"/>
+    <div class="contents">
+      <div
+        ref="inner"
+        class="inner"
+      >
+        <slot name="content" />
+      </div>
+      <fvButton
+        v-if="showButtons"
+        fab
+        class="btn prev"
+        invert
+        css-color="primary"
+        css-border="no"
+        css-shadow="no"
+        @click="moveCurrent(-1)"
+        v-text="$theme.direction.prevChar"
+      />
+      <fvButton
+        v-if="showButtons"
+        fab
+        class="btn next"
+        invert
+        css-color="primary"
+        css-border="no"
+        css-shadow="no"
+        @click="moveCurrent(1)"
+        v-text="$theme.direction.nextChar"
+      />
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -44,6 +67,29 @@ export default {
     return {
       swipe: null,
     };
+  },
+  computed: {
+    numberOfTabs() {
+      return this.$slots.content.length;
+    },
+    numberOfSlides() {
+      return Math.ceil(this.numberOfTabs / this.slidesPerPage);
+    },
+    eachTabSize() {
+      return this.numberOfTabs / (this.numberOfSlides * 100);
+    },
+    currentIndex() {
+      return this.current ? this.$slots.content.findIndex((content) => content.componentOptions.propsData.name === this.current) : 0;
+    },
+    currentTransform() {
+      const factor = this.$theme.direction.leftFactor * -1;
+      return factor * (this.currentIndex * (100 / this.numberOfTabs));
+    },
+  },
+  watch: {
+    current() {
+      this.resetTransform();
+    },
   },
   mounted() {
     this.swipe = new Swipe(this.$refs.inner);
@@ -86,24 +132,6 @@ export default {
       this.$emit('update:current', this.$slots.content[this.moveIndex(offset)].componentOptions.propsData.name);
     },
   },
-  computed: {
-    numberOfTabs() {
-      return this.$slots.content.length;
-    },
-    numberOfSlides() {
-      return Math.ceil(this.numberOfTabs / this.slidesPerPage);
-    },
-    eachTabSize() {
-      return this.numberOfTabs / (this.numberOfSlides * 100);
-    },
-    currentIndex() {
-      return this.current ? this.$slots.content.findIndex((content) => content.componentOptions.propsData.name === this.current): 0;
-    },
-    currentTransform() {
-      const factor = this.$theme.direction.leftFactor * -1;
-      return factor * (this.currentIndex * (100 / this.numberOfTabs));
-    },
-  },
   style({ className, mediaQuery }) {
     return [
       className('slider', {
@@ -127,7 +155,7 @@ export default {
             },
             '&.prev': {
               [this.$theme.direction.start]: 0,
-            }
+            },
           },
           '& > .inner': {
             display: 'flex',
@@ -136,14 +164,9 @@ export default {
             transition: 'transform 230ms',
             willChange: 'transform',
           },
-        }
+        },
       }),
     ];
-  },
-  watch: {
-    current() {
-      this.resetTransform();
-    },
   },
   inject: ['$theme'],
   // props: {

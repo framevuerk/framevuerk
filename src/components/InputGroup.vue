@@ -1,7 +1,7 @@
 <template>
-<div :class="$style.inputGroup">
-  <slot />
-</div>
+  <div :class="$style.inputGroup">
+    <slot />
+  </div>
 </template>
 
 <script>
@@ -14,7 +14,7 @@ export default {
     color,
     size,
   ],
-  style({className}) {
+  style({ className }) {
     const forceValue = (x) => `${x} !important`;
     return [
       className('inputGroup', {

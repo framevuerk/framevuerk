@@ -63,6 +63,13 @@ export default {
       isBreaked: this.breaked || false,
     };
   },
+  mounted() {
+    parent.on('sizechange', this.onResize);
+    this.onResize();
+  },
+  beforeDestroy() {
+    parent.off('sizechange', this.onResize);
+  },
   methods: {
     fieldProp(field, prop) {
       if (!prop) {
@@ -93,13 +100,6 @@ export default {
       this.isBreaked = isBreaked;
       this.$emit('breakedChange', isBreaked);
     },
-  },
-  mounted() {
-    parent.on('sizechange', this.onResize);
-    this.onResize();
-  },
-  beforeDestroy() {
-    parent.off('sizechange', this.onResize);
   },
 };
 </script>

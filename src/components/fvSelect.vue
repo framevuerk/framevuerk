@@ -146,6 +146,20 @@ export default {
       return true;
     },
   },
+  watch: {
+    value() {
+      this.$nextTick(() => {
+        if (!this.multiple) {
+          this.$refs.inputBox.close();
+        } else {
+          this.$refs.inputBox.focus();
+        }
+      });
+    },
+  },
+  created() {
+    this.setStructure();
+  },
   methods: {
     focus() {
       this.$refs.inputBox.focus();
@@ -264,20 +278,6 @@ export default {
             this.deleteValue();
           }
       }
-    },
-  },
-  created() {
-    this.setStructure();
-  },
-  watch: {
-    value() {
-      this.$nextTick(() => {
-        if (!this.multiple) {
-          this.$refs.inputBox.close();
-        } else {
-          this.$refs.inputBox.focus();
-        }
-      });
     },
   },
 };

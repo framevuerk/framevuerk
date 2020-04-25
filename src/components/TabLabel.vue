@@ -97,6 +97,22 @@ export default {
       };
     },
   },
+  watch: {
+    slidesPerPage() {
+      this.setValue(0);
+    },
+  },
+  beforeDestroy() {
+    this.unbindInitialEvents();
+  },
+  updated() {
+    this.onValueChanges();
+  },
+  mounted() {
+    this.setValue(this.value);
+    // bind initial events to recalc positions
+    this.bindInitialEvents();
+  },
   methods: {
     addSlide(slideComponent) {
       this.slides.push(slideComponent);
@@ -229,22 +245,6 @@ export default {
         this.afterMove();
       });
     },
-  },
-  beforeDestroy() {
-    this.unbindInitialEvents();
-  },
-  updated() {
-    this.onValueChanges();
-  },
-  watch: {
-    slidesPerPage() {
-      this.setValue(0);
-    },
-  },
-  mounted() {
-    this.setValue(this.value);
-    // bind initial events to recalc positions
-    this.bindInitialEvents();
   },
 };
 </script>

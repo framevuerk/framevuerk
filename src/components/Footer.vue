@@ -1,8 +1,11 @@
 <template>
-<footer :class="$style.footer">
-  <slot />
-  <slot name="ali" value="xxx" />
-</footer>
+  <footer :class="$style.footer">
+    <slot />
+    <slot
+      name="ali"
+      value="xxx"
+    />
+  </footer>
 </template>
 
 <example>

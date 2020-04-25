@@ -1,7 +1,10 @@
 <template>
-<div :dir="direction" :class="$style.themeProvider">
-  <slot />
-</div>
+  <div
+    :dir="direction"
+    :class="$style.themeProvider"
+  >
+    <slot />
+  </div>
 </template>
 
 <script>
@@ -55,7 +58,7 @@ export default {
         rightFactor: direction === 'ltr' ? -1 : 1,
         nextChar: direction === 'ltr' ? '>' : '<',
         prevChar: direction === 'ltr' ? '<' : '>',
-        static: (dir) => dir ? dir.replace('start', start).replace('end', end) : null,
+        static: (dir) => (dir ? dir.replace('start', start).replace('end', end) : null),
       };
     },
     _sizes() {
@@ -86,7 +89,7 @@ export default {
             if (factorType === 'size') {
               return `${(value * [sizeFactor[factors.indexOf(size)]]) + sum}px`;
             }
-            
+
             if (factorType === 'radius') {
               if (size === 'round') {
                 return '50%';
@@ -148,7 +151,7 @@ export default {
           normal: rgbToText(rgb),
           text: rgbToText(shadeColor(rgb, lightness < 80 ? 90 : -90)),
           lightness,
-          autoShade: (percent,alpha = 1) => {
+          autoShade: (percent, alpha = 1) => {
             const ver1 = shadeColor(rgb, percent);
             const ver2 = shadeColor(rgb, -1 * percent);
             const ver1Lightness = colorLightness(ver1);
@@ -178,7 +181,7 @@ export default {
     const mediaStarts = [0, 480, 768, 992, 1200];
     const forceValue = (value) => `${value} !important`;
     const queryBase = (size, content) => mediaQuery(size, [content]);
-    const attrName = (name, value = null) => value ? `[css-${name}="${value}"]` : `[css-${name}]`;
+    const attrName = (name, value = null) => (value ? `[css-${name}="${value}"]` : `[css-${name}]`);
 
     const helperClasses = () => {
       const ret = {};
@@ -306,7 +309,7 @@ export default {
           textAlign: forceValue(dir),
         };
       });
-            
+
       // Directions
       ['direction', 'float'].forEach((prop) => {
         ['start', 'end', 'right', 'left'].forEach((dynamicDir) => {
@@ -448,11 +451,11 @@ export default {
         },
         '&:focus': {
           outline: 'none',
-        }
+        },
       }),
       custom('a, a:hover, a:visited', {
         textDecoration: 'none',
-      })
+      }),
     ];
 
     const style = [

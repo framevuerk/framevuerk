@@ -1,14 +1,24 @@
 <template>
-<fvLayout>
-  <appHeader title="Get Started" slot="header" />
-  <appSidebar slot="start-sidebar"/>
-  <fvContent slot="content">
-    <div css-max-width="md" css-padding-y="xl" css-padding-x="md"  css-margin-x="auto">
-      <h2 css-text-size="xl"> How to Install </h2>
-    </div>
-  </fvContent>
-  <appFooter slot="footer" />
-</fvLayout>
+  <fvLayout>
+    <appHeader
+      slot="header"
+      title="Get Started"
+    />
+    <appSidebar slot="start-sidebar" />
+    <fvContent slot="content">
+      <div
+        css-max-width="md"
+        css-padding-y="xl"
+        css-padding-x="md"
+        css-margin-x="auto"
+      >
+        <h2 css-text-size="xl">
+          How to Install
+        </h2>
+      </div>
+    </fvContent>
+    <appFooter slot="footer" />
+  </fvLayout>
 </template>
 
 <script>
@@ -22,5 +32,5 @@ export default {
     appFooter,
     appSidebar,
   },
-}
+};
 </script>

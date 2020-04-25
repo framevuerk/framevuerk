@@ -1,26 +1,19 @@
 module.exports = {
-  env: {
-    browser: true,
-    es6: true,
-  },
   extends: [
-    'plugin:vue/essential',
     'airbnb-base',
+    'plugin:vue/recommended',
   ],
-  globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
-  },
+  parser: 'vue-eslint-parser',
   parserOptions: {
-    ecmaVersion: 2018,
+    parser: 'babel-eslint',
     sourceType: 'module',
   },
-  plugins: [
-    'vue',
-  ],
   rules: {
-    'import/no-unresolved': 'off',
-    'no-underscore-dangle': 'off',
-    'import/no-extraneous-dependencies': 'off',
-  },
-};
+    'vue/component-tags-order': [
+      'error',
+      {
+        order: ['template', 'script', 'style']
+      }
+    ]
+  }
+}

@@ -23,6 +23,21 @@ export default {
       lastClickedPosition: null,
     };
   },
+  watch: {
+    value(value) {
+      this.valueHandler(value);
+    },
+  },
+  created() {
+    parent.on('click', this.lastClickPositionHandler, true);
+    parent.on('contextmenu', this.lastClickPositionHandler, true);
+  },
+  beforeDestroy() {
+    parent.off('click', this.lastClickPositionHandler, true);
+    parent.off('contextmenu', this.lastClickPositionHandler, true);
+    this.$el.remove();
+    this.valueHandler(false);
+  },
   methods: {
     valueHandler(value) {
       if (value) {
@@ -79,21 +94,6 @@ export default {
       offset.bottom = scrollPos.height - offset.top;
       this.lastClickedPosition = offset;
     },
-  },
-  watch: {
-    value(value) {
-      this.valueHandler(value);
-    },
-  },
-  created() {
-    parent.on('click', this.lastClickPositionHandler, true);
-    parent.on('contextmenu', this.lastClickPositionHandler, true);
-  },
-  beforeDestroy() {
-    parent.off('click', this.lastClickPositionHandler, true);
-    parent.off('contextmenu', this.lastClickPositionHandler, true);
-    this.$el.remove();
-    this.valueHandler(false);
   },
 };
 </script>

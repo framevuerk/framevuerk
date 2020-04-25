@@ -34,6 +34,11 @@ export default {
       timer: null,
     };
   },
+  watch: {
+    value(value) {
+      this.valueHandler(value);
+    },
+  },
   methods: {
     onOpen() {
       this.$emit('open');
@@ -54,11 +59,6 @@ export default {
         return this.onOpen();
       }
       return this.onClose();
-    },
-  },
-  watch: {
-    value(value) {
-      this.valueHandler(value);
     },
   },
 };
