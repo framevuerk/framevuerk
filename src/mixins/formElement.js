@@ -33,14 +33,18 @@ export default function (fillingCheck = () => true) {
       focus() {
         this.$el.focus();
       },
+      reject() {
+        console.log('this is rejected');
+        this.$emit('reject');
+      },
       onFocusDefault() {
-        if (this.fvFormElement) {
-          this.fvFormElement.turn(true);
+        if (this.$formElement) {
+          this.$formElement.turn(true);
         }
       },
       onBlurDefault() {
-        if (this.fvFormElement) {
-          this.fvFormElement.turn(false);
+        if (this.$formElement) {
+          this.$formElement.turn(false);
         }
       },
     },

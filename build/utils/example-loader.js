@@ -1,7 +1,7 @@
 
 const getData = (str) => (str.match(/(@data)(.*)(?=)/g) || []).map((item) => {
   const parsed = item.substr(5).split('=');
-  return `${parsed[0].trim()}: ${parsed[1].trim()}`;
+  return `${parsed[0].trim()}: ${parsed.slice(1).join('=').trim()}`;
 }).join(',');
 
 const getConfigs = (str) => {

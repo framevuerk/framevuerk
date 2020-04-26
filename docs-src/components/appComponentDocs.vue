@@ -35,7 +35,7 @@
         <fvSlideContent slot="content" name="events">
           <fvTable :fields="['name', 'params', 'description']" :rows="api.events">
             <template slot="field-params" slot-scope="scope">
-              ({{typeof scope.row.params === 'string' ? scope.row.params : scope.row.params.join(', ')}})
+              ({{typeof scope.row.params !== 'object' ? scope.row.params : scope.row.params.join(', ')}})
             </template>
           </fvTable>
         </fvSlideContent>

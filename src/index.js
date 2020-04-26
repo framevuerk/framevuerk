@@ -8,12 +8,12 @@ import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 import Sidebar from './components/Sidebar.vue';
 // import fvContainer from './components/Container.vue';
-// import fvForm from './components/fvForm.vue'
 // import fvSelect from './components/fvSelect.vue'
 // import fvDatepicker from './components/fvDatepicker.vue'
 import List from './components/List.vue';
 import ListItem from './components/ListItem.vue';
 // import fvMenu from './components/fvMenu.vue'
+import Form from './components/Form.vue';
 import InputGroup from './components/InputGroup.vue';
 import Input from './components/Input.vue';
 import Button from './components/Button.vue';
@@ -49,6 +49,7 @@ const Framevuerk = {
       Sidebar,
       List,
       ListItem,
+      Form,
       InputGroup,
       Input,
       Button,
@@ -75,6 +76,7 @@ export {
   Sidebar,
   List,
   ListItem,
+  Form,
   InputGroup,
   Input,
   Button,

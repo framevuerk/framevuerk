@@ -66,6 +66,13 @@
               <fvList slot="sub-list">
                 <fvListItem
                   tag="router-link"
+                  to="/components/form"
+                  :class="{ selected: isSelected('component', 'form') }"
+                >
+                  Form
+                </fvListItem>
+                <fvListItem
+                  tag="router-link"
                   to="/components/input"
                   :class="{ selected: isSelected('component', 'input') }"
                 >
