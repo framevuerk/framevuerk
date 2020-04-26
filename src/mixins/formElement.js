@@ -34,7 +34,6 @@ export default function (fillingCheck = () => true) {
         this.$el.focus();
       },
       reject() {
-        console.log('this is rejected');
         this.$emit('reject');
       },
       onFocusDefault() {

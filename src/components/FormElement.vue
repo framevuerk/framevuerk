@@ -8,6 +8,15 @@
   slot(v-else)
 </template>
 
+<template>
+  <div :class="$style.formElement">
+    <label> Label </label>
+    <div :class="$style.element">
+      <slot />
+    </div>
+  </div>
+</template>
+
 <script>
 export default {
   props: {
@@ -24,6 +33,7 @@ export default {
       default: false,
     },
   },
+  inject: ['$theme'],
   data() {
     return {
       isHighlighted: false,
@@ -31,13 +41,23 @@ export default {
   },
   provide() {
     return {
-      fvFormElement: this,
+      $formElement: this,
     };
   },
   methods: {
     turn(on = true) {
       this.isHighlighted = on;
     },
+  },
+  style({ className }) {
+    return [
+      className('formElement', {
+        display: 'flex',
+        '& > label': {
+          color: this.$theme.colors.gray.normal,
+        },
+      }),
+    ];
   },
 };
 </script>
