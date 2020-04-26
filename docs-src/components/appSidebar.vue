@@ -85,6 +85,13 @@
                 >
                   Button
                 </fvListItem>
+                <fvListItem
+                  tag="router-link"
+                  to="/components/input-group"
+                  :class="{ selected: isSelected('component', 'input-group') }"
+                >
+                  Input Group
+                </fvListItem>
               </fvList>
             </fvListItem>
             <fvListItem expanded>

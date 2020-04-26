@@ -29,12 +29,6 @@ import appFooter from '../components/appFooter.vue';
 import appSidebar from '../components/appSidebar.vue';
 import appComponentDocs from '../components/appComponentDocs.vue';
 
-function textAsTitle(text) {
-  return text[0].toUpperCase() + text.substr(1).toLowerCase();
-}
-function textToLower(text) {
-  return text.toLowerCase();
-}
 
 export default {
   components: {
@@ -61,8 +55,22 @@ export default {
   methods: {
     loadData(framevuerkComponent) {
       this.loading = true;
-      this.title = textAsTitle(framevuerkComponent);
-      // console.log(Framevuerk[this.title].__api.props[0].type);
+
+      let componentName = '';
+      let nextUpper = true;
+      for (let i = 0; i < framevuerkComponent.length; i++) {
+        if (framevuerkComponent[i] === '-') {
+          nextUpper = true;
+        } else if (nextUpper) {
+          componentName += framevuerkComponent[i].toUpperCase();
+          nextUpper = false;
+        } else {
+          componentName += framevuerkComponent[i].toLowerCase();
+        }
+      }
+
+      this.title = componentName;
+
       this.framevuerkComponent = Framevuerk[this.title];
       this.$nextTick(() => {
         this.loading = false;
