@@ -14,12 +14,12 @@ export default function (fillingCheck = () => true) {
       },
     },
     inject: {
-      fvFormElement: {
+      $formElement: {
         default: false,
       },
     },
     computed: {
-      fvValidate() {
+      isValidate() {
         if (this.required === true) {
           return fillingCheck(this.value);
         }

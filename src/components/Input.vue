@@ -3,7 +3,7 @@
     :is="tag"
     :class="$style.input"
     :disabled="disabled"
-    :invalid="!fvValidate"
+    :invalid="!isValidate"
     :value="value"
     @focus="onFocus"
     @blur="onBlurDefault"
@@ -14,6 +14,8 @@
 
 <doc>
 @prop value @type Any @default undefined @description Value of input.
+@prop required @type Boolean or Function @default false @description If you use this element inside `form` component, the `form` component will reject until this element filled. by passing `false` this check will be skiped and by passing function, you can manualy get current value as an argument and return true/false to allow/reject form submits.
+@prop disabled @type Boolean @default false @description Is disabled?
 @prop multiLine @type Boolean @default false @description `false` for input mode and `true` for textarea mode.
 @prop cssColor @type String @default 'background' @description Use any colors that already declared in themeProvider.
 @prop cssSize @type oneOf('xs', 'sm', 'md', 'lg', 'xl') @default 'md' @description Size of element.
@@ -102,14 +104,15 @@ export default {
     },
   },
   style({ className }) {
+    const $color = this.$theme.colors[this.$color];
     return [
       className('input', {
         display: 'inline-block',
-        backgroundColor: this.$theme.colors[this.$color].shade(5),
-        color: this.$theme.colors[this.$color].text,
+        backgroundColor: $color.shade(5),
+        color: $color.text,
         boxShadow: this.$theme.sizes.shadow.factor(this.$size, 'shadow', { dir: 'bottom' }),
         borderWidth: '1px',
-        borderColor: this.$theme.colors[this.$color].shade(-13),
+        borderColor: $color.shade(-13),
         borderRadius: this.$theme.sizes.radius.factor('md', 'radius'),
         minHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
         height: this.multiLine ? this.$theme.sizes.base.factor('xl', 'height') : this.$theme.sizes.base.factor(this.$size, 'height'),
@@ -117,7 +120,7 @@ export default {
         padding: `0 ${this.$theme.sizes.base.normal}`,
         resize: 'vertical',
         '&:hover, &:focus': {
-          borderColor: this.$theme.colors[this.$color].autoShade(-39),
+          borderColor: $color.autoShade(-39),
         },
       }),
     ];

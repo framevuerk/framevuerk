@@ -1,3 +1,5 @@
+const dashCase = (str) => str.split('').map((char) => (/[A-Z]/.test(char) ? '-' : '') + char.toLowerCase()).join('');
+
 const getKeys = (content, keyName) => {
   const lines = (content.match(new RegExp(`(@${keyName})(.*)`, 'g')) || []);
   return lines.map((line) => {
@@ -8,7 +10,7 @@ const getKeys = (content, keyName) => {
       const p = s[0];
       const v = s.splice(1).join(' ');
       if (p === keyName) {
-        lineRet.name = v;
+        lineRet.name = dashCase(v);
       } else if (lineRet[p]) {
         lineRet[p] = [
           ...(Array.isArray(lineRet[p]) ? lineRet[p] : [lineRet[p]]),
