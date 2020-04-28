@@ -1,7 +1,6 @@
 <template>
   <header
     :class="$style.header"
-    data-dev="comment-for-loader"
   >
     <slot />
   </header>
