@@ -171,6 +171,7 @@ export default {
     },
   },
   style({ className, mediaQuery, custom }) {
+    // eslint-disable-next-line no-console
     console.time('Theme Provided in');
     const base = (content) => className('themeProvider', {
       '& ': {
@@ -396,7 +397,7 @@ export default {
             flexShrink: forceValue(1),
           };
         }
-        for (let i = 0; i < 12; i += 1) {
+        for (let i = 0; i <= 12; i += 1) {
           const size = `${width1 * i}%`;
           const name = i.toString();
           ret[attrName(cx('-', 'col', prefix), name)] = i === 0 ? {
@@ -472,6 +473,7 @@ export default {
       gridClasses('base'),
       ...gridClasses('mediaQuery'),
     ];
+    // eslint-disable-next-line no-console
     console.timeEnd('Theme Provided in');
     return style;
   },
