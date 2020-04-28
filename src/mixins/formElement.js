@@ -20,6 +20,9 @@ export default function (fillingCheck = () => true) {
     },
     computed: {
       isValidate() {
+        if (this.disabled) {
+          return true;
+        }
         if (this.required === true) {
           return fillingCheck(this.value);
         }
@@ -44,6 +47,13 @@ export default function (fillingCheck = () => true) {
       onBlurDefault() {
         if (this.$formElement) {
           this.$formElement.turn(false);
+        }
+      },
+    },
+    watch: {
+      isValidate(x) {
+        if (this.$formElement) {
+          this.$formElement.setIsValidate(x);
         }
       },
     },
