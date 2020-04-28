@@ -109,7 +109,7 @@
 @event rowClick @description @params row @params rowIndex @description Trigger when user clicks on a row.
 
 @slot footer @description Will be renders on `tfoot` section.
-@slot title-${} @description Will be renders on `tfoot` section.
+@slot title-${} @description Will be renders on `TODO` section.
 
 </doc>
 
