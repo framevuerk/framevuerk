@@ -33,23 +33,21 @@
           <fvTable :fields="['name', 'type', 'default', 'description']" :rows="api.props" />
         </fvSlideContent>
         <fvSlideContent slot="content" name="events">
-          <fvTable :fields="['name', 'params', 'description']" :rows="api.events">
-            <template slot="field-params" slot-scope="scope">
-              ({{typeof scope.row.params !== 'object' ? scope.row.params : scope.row.params.join(', ')}})
+          <fvTable :fields="['name', 'args', 'description']" :rows="api.events">
+            <template slot="field-args" slot-scope="scope">
+              <i v-if="!scope.row.params" class="fa fa-times" css-text-color="gray" />
+              <div v-else>
+                ({{typeof scope.row.params !== 'object' ? scope.row.params : scope.row.params.join(', ')}})
+              </div>
             </template>
           </fvTable>
         </fvSlideContent>
         <fvSlideContent slot="content" name="slots">
-          <fvTable :fields="['name', 'scoped', 'binding', 'description']" :rows="api.slots">
-            <template slot="field-scoped" slot-scope="scope">
-              <div>
-                <i v-if="scope.row.scope" class="fa fa-check" css-text-color="success" />
-                <i v-else class="fa fa-times" css-text-color="gray" />
-              </div>
-            </template>
+          <fvTable :fields="['name', 'binding', 'description']" :rows="api.slots">
             <template slot="field-binding" slot-scope="scope">
-              <div>
-                {{scope.row.scope}}
+              <i v-if="!scope.row.params" class="fa fa-times" css-text-color="gray" />
+              <div v-else>
+                {<span>{{typeof scope.row.params !== 'object' ? scope.row.params : scope.row.params.join(', ')}}</span>}
               </div>
             </template>
           </fvTable>
