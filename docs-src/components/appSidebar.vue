@@ -73,6 +73,20 @@
                 </fvListItem>
                 <fvListItem
                   tag="router-link"
+                  to="/components/form-element"
+                  :class="{ selected: isSelected('component', 'form-element') }"
+                >
+                  Form Element
+                </fvListItem>
+                <fvListItem
+                  tag="router-link"
+                  to="/components/input-box"
+                  :class="{ selected: isSelected('component', 'input-box') }"
+                >
+                  InputBox
+                </fvListItem>
+                <fvListItem
+                  tag="router-link"
                   to="/components/input"
                   :class="{ selected: isSelected('component', 'input') }"
                 >

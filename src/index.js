@@ -14,7 +14,9 @@ import List from './components/List.vue';
 import ListItem from './components/ListItem.vue';
 // import fvMenu from './components/fvMenu.vue'
 import Form from './components/Form.vue';
+import FormElement from './components/FormElement.vue';
 import InputGroup from './components/InputGroup.vue';
+import InputBox from './components/InputBox.vue';
 import Input from './components/Input.vue';
 import Button from './components/Button.vue';
 
@@ -35,7 +37,6 @@ import Table from './components/Table.vue';
 // import fvRange from './components/fvRange.vue'
 // import fvLoading from './components/fvLoading.vue'
 // import fvPagination from './components/fvPagination.vue'
-// import fvFormElement from './components/fvFormElement.vue'
 // import config from './utility/config.js'
 
 const Framevuerk = {
@@ -50,7 +51,9 @@ const Framevuerk = {
       List,
       ListItem,
       Form,
+      FormElement,
       InputGroup,
+      InputBox,
       Input,
       Button,
       Slider,
@@ -77,8 +80,10 @@ export {
   List,
   ListItem,
   Form,
+  FormElement,
   InputGroup,
   Input,
+  InputBox,
   Button,
   Slider,
   SlideContent,
