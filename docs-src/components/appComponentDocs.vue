@@ -109,7 +109,7 @@ export default {
       component.__examples.forEach((example, index) => {
         this.$options.components[`example${index}`] = {
           template: `
-            <div css-color="background" css-overflow="hidden">
+            <div css-color="background">
               ${example.configs.example !== false ? `
                 <label css-display="block" css-padding="md"> ${example.configs.title || 'Default'} </label>
                 <div css-padding="md" css-padding-bottom="lg">
