@@ -6,14 +6,35 @@
     :tabindex="containerTabIndex"
     :focus="isFocused"
     @focus="onFocus"
+    @blur.capture="onBlur"
   >
     <div class="input-container">
-      <div v-if="shouldRenderPlaceholder" class="placeholder" v-text="placeholder" />
-      <div class="value" v-else>
+      <div
+        v-if="shouldRenderPlaceholder"
+        class="placeholder"
+        v-text="placeholder"
+      />
+      <div
+        v-else
+        class="value"
+      >
         <slot name="input" />
       </div>
+      <component
+        :is="focusElemenTag"
+        v-if="isFocused"
+        ref="focusElement"
+        class="focus-element"
+        tabindex="-1"
+        :value="searchInputValue"
+        css-width="auto"
+        css-margom-start="md"
+        :size="searchInputValue.length"
+        @input="onFocusElementInput"
+        @keydown="onFocusElementKeydown"
+      />
     </div>
-    <input v-if="isFocused" class="input-container" ref="searchInput" @blur="onBlur" />
+
     <div v-if="isFocused" class="box-container">
       <slot name="box" />
     </div>
@@ -37,12 +58,18 @@
 @config example true
 
 @data val = 'Normal'
-<fvInputBox placeholder="salammmm">
+<fvInputBox placeholder="salammmm" :search="false">
+
   <div slot="input">
-    salamAghaa
+    Gulakh
   </div>
   <div slot="box">
-    Salam
+    <fvList>
+      <fvListItem> yek </fvListItem>
+      <fvListItem> do </fvListItem>
+      <fvListItem> se </fvListItem>
+      <fvListItem> char </fvListItem>
+    </fvList>
   </div>
 </fvInputBox>
 
@@ -56,17 +83,27 @@ import formElement from '../mixins/formElement';
 
 export default {
   inject: ['$theme'],
-  props: {
-    placeholder: {
-      type: String,
-      default: '',
-    },
-  },
   mixins: [
     color,
     size,
     formElement((v) => !!v),
   ],
+  props: {
+    placeholder: {
+      type: String,
+      default: '',
+    },
+    searchInput: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  data() {
+    return {
+      isFocused: false,
+      searchInputValue: '',
+    };
+  },
   computed: {
     // when box is opened, focus moves to input. so wee need to prevent browser to focus
     // container again by shift+tab
@@ -74,30 +111,37 @@ export default {
       return this.isFocused ? '-1' : (this.$attrs.tabindex || '0');
     },
     shouldRenderPlaceholder() {
-      return !this.$slots.input;
+      return !this.$slots.input && !this.searchInputValue;
     },
-  },
-  data() {
-    return {
-      isFocused: false,
-    };
+    focusElemenTag() {
+      return this.searchInput ? 'input' : 'div';
+    },
   },
   methods: {
     onFocus(e) {
       this.isFocused = true;
       this.$nextTick(() => {
-        this.$refs.searchInput.focus();
+        this.$refs.focusElement.focus();
         this.onFocusDefault();
       });
     },
     onBlur(e) {
-      this.$nextTick(() => {
+      this.searchInputValue = '';
+      setTimeout(() => {
         if (this.$el.contains(document.activeElement)) {
           return;
         }
         this.isFocused = false;
         this.onBlurDefault();
       });
+    },
+    onFocusElementInput(event) {
+      const val = event.target.value;
+      this.searchInputValue = val;
+      this.$emit('search', val);
+    },
+    onFocusElementKeydown(event) {
+      this.$emit('keydown', event);
     },
   },
   style({ className }) {
@@ -128,15 +172,23 @@ export default {
           height: '100%',
           alignItems: 'center',
         },
+        '& > .focus-element': {
+          width: 'auto',
+        },
         '& > .box-container': {
           position: 'absolute',
-          backgroundColor: 'red',
+          backgroundColor: this.$theme.colors.background.normal,
+          boxShadow: this.$theme.sizes.shadow.factor(this.$size, 'shadow', { dir: 'bottom' }),
+          borderWidth: '1px',
+          borderColor: $color.shade(-13),
+          borderRadius: this.$theme.sizes.radius.factor('md', 'radius'),
           top: this.$theme.sizes.base.factor(this.$size, 'height'),
           marginTop: '3px',
           minHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
+          height: 'auto',
           width: '100%',
           left: '0',
-          zIndex: 2,
+          zIndex: 999,
         },
       }),
     ];
