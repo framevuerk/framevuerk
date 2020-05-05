@@ -3,13 +3,13 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-// const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 module.exports = (config) => {
   const output = {};
   const plugins = [
     new VueLoaderPlugin(),
-    // new FriendlyErrorsWebpackPlugin(),
+    new FriendlyErrorsWebpackPlugin(),
   ];
 
   if (config.source === 'lib') {
@@ -18,6 +18,7 @@ module.exports = (config) => {
     output.library = 'framevuerk';
     output.libraryTarget = 'umd';
     output.libraryExport = 'default';
+    console.warn(output);
   } else {
     output.path = path.resolve(__dirname, '../docs');
     output.filename = 'bundle.js';
@@ -36,6 +37,8 @@ module.exports = (config) => {
   }
 
   const entry = path.resolve(__dirname, '../', config.source === 'lib' ? 'src/index.js' : 'docs-src/index.js');
+
+  console.warn(entry);
 
   const { mode } = config;
 
@@ -101,15 +104,6 @@ module.exports = (config) => {
     module.rules.push({
       resourceQuery: /blockType=doc/,
       loader: path.resolve(__dirname, './utils/api-loader.js'),
-    });
-  } else {
-    module.rules.push({
-      resourceQuery: /blockType=example/,
-      loader: 'null-loader',
-    });
-    module.rules.push({
-      resourceQuery: /blockType=doc/,
-      loader: 'null-loader',
     });
   }
 

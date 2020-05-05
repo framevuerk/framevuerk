@@ -4,7 +4,7 @@ const WebpackDevServer = require('webpack-dev-server');
 const cli = require('./utils/cli.js');
 
 const mode = cli.hasArg('-p') ? 'production' : 'development';
-const source = cli.getArg('--source'); // lib, doc
+const source = cli.getArg('--source');
 const watch = cli.hasArg('--watch');
 
 const webpackConfig = require('./webpack.config.js')({
@@ -41,7 +41,9 @@ if (watch) {
   }
 } else {
   cli.write(`Building ${source}...`);
-  compiler.run(() => {
+  compiler.run((e, e2) => {
+    // cli.write(e);
+    // cli.write(e2);
     cli.write('Done!');
   });
 }
