@@ -35,7 +35,11 @@
       />
     </div>
 
-    <div v-if="isFocused" class="box-container">
+    <div
+      v-if="isFocused"
+      :class="boxPosition"
+      class="box-container"
+    >
       <slot name="box" />
     </div>
   </div>
@@ -58,6 +62,7 @@
 @config example true
 
 @data val = 'Normal'
+<br v-for="i in 50" />
 <fvInputBox placeholder="salammmm" :search="false">
 
   <div slot="input">
@@ -101,6 +106,7 @@ export default {
   data() {
     return {
       isFocused: false,
+      boxPosition: 'down',
       searchInputValue: '',
     };
   },
@@ -119,6 +125,13 @@ export default {
   },
   methods: {
     onFocus(e) {
+      try {
+        const offset = this.$el.getBoundingClientRect();
+        this.boxPosition = offset.top / window.innerHeight > 0.6 ? 'up' : 'down';
+      } catch (_e) {
+        this.boxPosition = 'down';
+      }
+
       this.isFocused = true;
       this.$nextTick(() => {
         this.$refs.focusElement.focus();
@@ -182,13 +195,19 @@ export default {
           borderWidth: '1px',
           borderColor: $color.shade(-13),
           borderRadius: this.$theme.sizes.radius.factor('md', 'radius'),
-          top: this.$theme.sizes.base.factor(this.$size, 'height'),
-          marginTop: '3px',
           minHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
           height: 'auto',
           width: '100%',
           left: '0',
           zIndex: 999,
+          '&.down': {
+            marginTop: '5px',
+            top: this.$theme.sizes.base.factor(this.$size, 'height'),
+          },
+          '&.up': {
+            marginBottom: '5px',
+            bottom: this.$theme.sizes.base.factor(this.$size, 'height'),
+          },
         },
       }),
     ];
