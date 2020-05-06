@@ -19,6 +19,7 @@ import InputGroup from './components/InputGroup.vue';
 import InputBox from './components/InputBox.vue';
 import Input from './components/Input.vue';
 import Button from './components/Button.vue';
+import Select from './components/Select.vue'
 
 import Slider from './components/Slider.vue';
 import SlideContent from './components/SlideContent.vue';
@@ -56,6 +57,7 @@ const Framevuerk = {
       InputBox,
       Input,
       Button,
+      Select,
       Slider,
       SlideContent,
       SlideLabel,
@@ -85,6 +87,7 @@ export {
   Input,
   InputBox,
   Button,
+  Select,
   Slider,
   SlideContent,
   SlideLabel,

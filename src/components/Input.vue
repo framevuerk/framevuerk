@@ -2,6 +2,7 @@
   <component
     :is="tag"
     :class="$style.input"
+    :placeholder="placeholder"
     :disabled="disabled"
     :invalid="!isValidate"
     :value="value"
@@ -13,9 +14,10 @@
 </template>
 
 <doc>
-@prop value @type Any @default undefined @description Value of input.
+@prop value @type String @default '' @description Value of input.
 @prop required @type Boolean or Function @default false @description If you use this element inside `form` component, the `form` component will reject until this element filled. by passing `false` this check will be skiped and by passing function, you can manualy get current value as an argument and return true/false to allow/reject form submits.
 @prop disabled @type Boolean @default false @description Is disabled?
+@prop placeholder @type String @default '' @description Showes when value is empty.
 @prop multiLine @type Boolean @default false @description `false` for input mode and `true` for textarea mode.
 @prop cssColor @type String @default 'background' @description Use any colors that already declared in themeProvider.
 @prop cssSize @type oneOf('xs', 'sm', 'md', 'lg', 'xl') @default 'md' @description Size of element.
@@ -29,7 +31,7 @@
 @config example true
 
 @data val = 'Normal'
-<fvInput v-model="val" />
+<fvInput placeholder="Type something" v-model="val" />
 
 </example>
 
@@ -39,7 +41,7 @@
 @config example true
 
 @data val = 'Multi\nLine'
-<fvInput multiLine v-model="val" />
+<fvInput placeholder="Type something" multiLine v-model="val" />
 
 </example>
 
@@ -49,10 +51,10 @@
 @config example true
 
 @data val = 'Sizes'
-<fvInput css-size="sm" v-model="val" />
-<fvInput css-size="md" v-model="val" />
-<fvInput css-size="lg" v-model="val" />
-<fvInput css-size="xl" v-model="val" />
+<fvInput placeholder="Type something" css-size="sm" v-model="val" />
+<fvInput placeholder="Type something" css-size="md" v-model="val" />
+<fvInput placeholder="Type something" css-size="lg" v-model="val" />
+<fvInput placeholder="Type something" css-size="xl" v-model="val" />
 
 </example>
 
@@ -77,7 +79,7 @@ export default {
   mixins: [
     color,
     size,
-    formElement((v) => !!v),
+    formElement,
   ],
   props: {
     value: {
@@ -92,6 +94,18 @@ export default {
   computed: {
     tag() {
       return this.multiLine ? 'textarea' : 'input';
+    },
+    isValidate() {
+      if (this.disabled) {
+        return true;
+      }
+      if (this.required === true) {
+        return !!this.value;
+      }
+      if (typeof this.required === 'function') {
+        return this.required(this.value);
+      }
+      return true;
     },
   },
   methods: {
@@ -117,10 +131,13 @@ export default {
         minHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
         height: this.multiLine ? this.$theme.sizes.base.factor('xl', 'height') : this.$theme.sizes.base.factor(this.$size, 'height'),
         fontSize: this.$theme.sizes.font.factor(this.$size, 'font'),
-        padding: `0 ${this.$theme.sizes.base.normal}`,
+        padding: `${this.$theme.sizes.base.normal}`,
         resize: 'vertical',
         '&:hover, &:focus': {
           borderColor: $color.autoShade(-39),
+        },
+        '&::placeholder': {
+          color: $color.autoShade(-42),
         },
       }),
     ];

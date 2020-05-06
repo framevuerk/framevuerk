@@ -80,17 +80,17 @@
                 </fvListItem>
                 <fvListItem
                   tag="router-link"
-                  to="/components/input-box"
-                  :class="{ selected: isSelected('component', 'input-box') }"
-                >
-                  InputBox
-                </fvListItem>
-                <fvListItem
-                  tag="router-link"
                   to="/components/input"
                   :class="{ selected: isSelected('component', 'input') }"
                 >
                   Input
+                </fvListItem>
+                <fvListItem
+                  tag="router-link"
+                  to="/components/select"
+                  :class="{ selected: isSelected('component', 'select') }"
+                >
+                  Dropdown Select
                 </fvListItem>
                 <fvListItem
                   tag="router-link"
@@ -117,6 +117,13 @@
                   :class="{ selected: isSelected('component', 'table') }"
                 >
                   Table
+                </fvListItem>
+                <fvListItem
+                  tag="router-link"
+                  to="/components/input-box"
+                  :class="{ selected: isSelected('component', 'input-box') }"
+                >
+                  Input Box
                 </fvListItem>
               </fvList>
             </fvListItem>

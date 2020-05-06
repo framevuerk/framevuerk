@@ -1,7 +1,7 @@
 <template>
   <component
     :is="tag"
-    :tabindex="controlerElement ? -1 : 1"
+    :tabindex="tabindex"
   >
     <slot />
   </component>
@@ -41,6 +41,12 @@ export default {
   computed: {
     eventListener() {
       return this.controlerElement || this.$el;
+    },
+    tabindex() {
+      if (typeof this.$attrs.tabindex !== 'undefined') {
+        return this.$attrs.tabindex;
+      }
+      return this.controlerElement ? -1 : 1;
     },
   },
   created() {
@@ -90,9 +96,9 @@ export default {
       this.highlighted = highlightedItem;
     },
     onKeydown(event) {
-      if (event.target !== this.eventListener) {
-        return;
-      }
+      // if (event.target !== this.eventListener) {
+      //   return;
+      // }
       switch (event.which) {
         case 38: // up
           event.preventDefault();
@@ -112,12 +118,12 @@ export default {
             this.highlighted.collapse();
           }
           break;
-        // case 13: // enter
-        //   event.preventDefault();
-        //   if (this.highlighted && this.highlighted.__vue__) {
-        //     this.highlighted.__vue__.onClick(event);
-        //   }
-        //   break;
+        case 13: // enter
+          event.preventDefault();
+          if (this.highlighted) {
+            this.highlighted.onClick(event);
+          }
+          break;
       }
     },
     bindEvents() {

@@ -8,7 +8,11 @@
     @focus="onFocus"
     @blur.capture="onBlur"
   >
-    <div class="input-container">
+    <div
+      class="input-container"
+      css-padding-x="md"
+      css-padding-y="sm"
+    >
       <div
         v-if="shouldRenderPlaceholder"
         class="placeholder"
@@ -28,32 +32,34 @@
         tabindex="-1"
         :value="searchInputValue"
         css-width="auto"
-        css-margom-start="md"
+        css-margin-start="md"
         :size="searchInputValue.length"
         @input="onFocusElementInput"
         @keydown="onFocusElementKeydown"
       />
     </div>
-
-    <div
-      v-if="isFocused"
-      :class="boxPosition"
-      class="box-container"
-    >
-      <slot name="box" />
-    </div>
+    <transition :name="$style.boxAnimation">
+      <div
+        v-if="isFocused"
+        :class="boxPosition"
+        class="box-container"
+      >
+        <slot name="box" />
+      </div>
+    </transition>
   </div>
 </template>
 
 <doc>
-@prop value @type Any @default undefined @description Value of input.
-@prop required @type Boolean or Function @default false @description If you use this element inside `form` component, the `form` component will reject until this element filled. by passing `false` this check will be skiped and by passing function, you can manualy get current value as an argument and return true/false to allow/reject form submits.
+@prop searchInput @type Boolean @default false @description Allow users to temporary typing inside value slot? (content accessable via `search` event)
 @prop disabled @type Boolean @default false @description Is disabled?
-@prop multiLine @type Boolean @default false @description `false` for input mode and `true` for textarea mode.
+@prop isValidate @type Boolean @default true @description Is validated?
+@prop placeholder @type String @default '' @description String shows instead of `input` slot.
 @prop cssColor @type String @default 'background' @description Use any colors that already declared in themeProvider.
 @prop cssSize @type oneOf('xs', 'sm', 'md', 'lg', 'xl') @default 'md' @description Size of element.
 
-@event input @params newValue @description Triggers when value changes within component.
+@event search @params content @description Triggers when user types into search input.
+@event keydown @params nativeEvent @description Triggers when user start pressing a button while 'box' slot is open.
 </doc>
 
 <example>
@@ -61,20 +67,15 @@
 @config state true
 @config example true
 
-@data val = 'Normal'
-<br v-for="i in 50" />
-<fvInputBox placeholder="salammmm" :search="false">
+@data val = '123'
 
-  <div slot="input">
-    Gulakh
+<fvInputBox :searchInput="false" placeholder="Placeholder">
+  <div slot="input" v-if="val">
+    <span css-padding-x="sm" css-color="background" css-border="md" css-radius="md"> Input Content </span>
   </div>
-  <div slot="box">
-    <fvList>
-      <fvListItem> yek </fvListItem>
-      <fvListItem> do </fvListItem>
-      <fvListItem> se </fvListItem>
-      <fvListItem> char </fvListItem>
-    </fvList>
+  <div slot="box" css-text-align="center">
+    Box Content:
+    <fvButton @click="val = val ? null : '123'"> Toggle Value </fvButton>
   </div>
 </fvInputBox>
 
@@ -84,23 +85,29 @@
 <script>
 import color from '../mixins/color';
 import size from '../mixins/size';
-import formElement from '../mixins/formElement';
 
 export default {
   inject: ['$theme'],
   mixins: [
     color,
     size,
-    formElement((v) => !!v),
   ],
   props: {
     placeholder: {
       type: String,
       default: '',
     },
-    searchInput: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    isValidate: {
       type: Boolean,
       default: true,
+    },
+    searchInput: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -117,7 +124,7 @@ export default {
       return this.isFocused ? '-1' : (this.$attrs.tabindex || '0');
     },
     shouldRenderPlaceholder() {
-      return !this.$slots.input && !this.searchInputValue;
+      return this.placeholder && !this.searchInputValue;
     },
     focusElemenTag() {
       return this.searchInput ? 'input' : 'div';
@@ -125,6 +132,9 @@ export default {
   },
   methods: {
     onFocus(e) {
+      if (this.disabled) {
+        return;
+      }
       try {
         const offset = this.$el.getBoundingClientRect();
         this.boxPosition = offset.top / window.innerHeight > 0.6 ? 'up' : 'down';
@@ -135,7 +145,6 @@ export default {
       this.isFocused = true;
       this.$nextTick(() => {
         this.$refs.focusElement.focus();
-        this.onFocusDefault();
       });
     },
     onBlur(e) {
@@ -145,7 +154,6 @@ export default {
           return;
         }
         this.isFocused = false;
-        this.onBlurDefault();
       });
     },
     onFocusElementInput(event) {
@@ -161,7 +169,7 @@ export default {
     const $color = this.$theme.colors[this.$color];
     return [
       className('inputBox', {
-        display: 'inline-block',
+        // display: 'inline-block',
         position: 'relative',
         // overflow: 'visible',
         backgroundColor: $color.shade(5),
@@ -172,18 +180,26 @@ export default {
         borderRadius: this.$theme.sizes.radius.factor('md', 'radius'),
         minHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
         minWidth: '180px',
-        height: this.$theme.sizes.base.factor(this.$size, 'height'),
+        display: 'inline-flex',
+        flexDirection: 'row',
+        alignItems: 'center',
         fontSize: this.$theme.sizes.font.factor(this.$size, 'font'),
-        padding: `0 ${this.$theme.sizes.base.normal}`,
         '&:hover, &:focus, &[focus]': {
           borderColor: $color.autoShade(-39),
         },
         '& > .input-container': {
-          display: 'flex',
-          flexDirection: 'row',
-          position: 'absolute',
-          height: '100%',
-          alignItems: 'center',
+
+          // position: 'absolute',
+          minHeight: '100%',
+          height: 'auto',
+          width: '100%',
+          // padding: `0 ${this.$theme.sizes.base.factor('sm', 'size')}`,
+          overflow: 'hidden',
+          '& > .placeholder': {
+            color: $color.autoShade(-42),
+            whiteSpace: 'nowrap',
+            // padding: `0 ${this.$theme.sizes.base.factor('sm', 'size')}`,
+          },
         },
         '& > .focus-element': {
           width: 'auto',
@@ -208,6 +224,15 @@ export default {
             marginBottom: '5px',
             bottom: this.$theme.sizes.base.factor(this.$size, 'height'),
           },
+        },
+      }),
+      className('boxAnimation', {
+        '&-enter-active, &-leave-active': {
+          transitionDuration: '300ms',
+          transitionProperty: 'opacity',
+        },
+        '&-enter, &-leave-to': {
+          opacity: 0,
         },
       }),
     ];

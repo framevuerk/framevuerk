@@ -8,7 +8,6 @@
         css-radius="md"
         css-color="background"
         css-margin-bottom="lg"
-        css-overflow="hidden"
       >
         <component
           :is="'example' + i"

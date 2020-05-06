@@ -3,6 +3,7 @@
     :is="tag"
     :class="[$style.listItem, disabled && 'disabled', selected && 'selected', isHighlighted && 'highlighted']"
     :to="$attrs.to"
+    @click="onClick"
   >
     <div
       class="content"

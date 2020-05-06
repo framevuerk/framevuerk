@@ -70,7 +70,7 @@ export default {
       };
       const sizes = Object.assign(defaultSizes, this.sizes);
       const heightFactor = [0, 1, 3, 5, 7, 9];
-      const sizeFactor = [0, 0.3, 0.5, 1, 3, 9];
+      const sizeFactor = [0, 0.25, 0.5, 1, 3, 9];
       const shadowFactor = [0, 0.25, 0.5, 1, 1.5, 2.5];
       const shadowBlurFactor = [0, 0.5, 0.75, 1, 1.25, 1.5];
       const fontFactor = [0, 0.5, 0.7, 1, 1.15, 1.8];
