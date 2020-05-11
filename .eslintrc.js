@@ -14,6 +14,7 @@ module.exports = {
       {
         order: ['template', 'script', 'style']
       }
-    ]
+    ],
+    'max-len': 'off',
   }
 }
