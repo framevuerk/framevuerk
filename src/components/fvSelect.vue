@@ -262,7 +262,7 @@ export default {
           }
           break;
         case 8: // backspace
-          if (this.searchQuery.length === 0 && this.deleteButton) {
+          if (this.searchQuery.length === 0) {
             if (this.multiple) {
               if (this.value.length) {
                 this.deleteValue(this.value[this.value.length - 1]);

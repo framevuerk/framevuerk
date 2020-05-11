@@ -131,7 +131,7 @@ export default {
     },
   },
   methods: {
-    onFocus(e) {
+    onFocus() {
       if (this.disabled) {
         return;
       }
@@ -147,7 +147,7 @@ export default {
         this.$refs.focusElement.focus();
       });
     },
-    onBlur(e) {
+    onBlur() {
       this.searchInputValue = '';
       setTimeout(() => {
         if (this.$el.contains(document.activeElement)) {
@@ -196,7 +196,7 @@ export default {
           // padding: `0 ${this.$theme.sizes.base.factor('sm', 'size')}`,
           overflow: 'hidden',
           '& > .placeholder': {
-            color: $color.autoShade(-42),
+            color: 'gray',
             whiteSpace: 'nowrap',
             // padding: `0 ${this.$theme.sizes.base.factor('sm', 'size')}`,
           },

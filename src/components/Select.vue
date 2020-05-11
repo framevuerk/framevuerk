@@ -23,6 +23,7 @@
       <fvList
         ref="optionsList"
         tabindex="-1"
+        css-cursor="pointer"
       >
         <fvListItem
           v-for="(option, index) in options"
@@ -143,9 +144,9 @@ export default {
     },
     handleOptionsHighlight(e) {
       // console.log(e);
-      this.$refs.optionsList.onKeydown(e);
+      this.$refs.optionsList.onKeydown(e, 'select');
     },
-    handleClickOption(item, e) {
+    handleClickOption(item) {
       const index = this.itemIndex(item);
       if (this.multiple) {
         if (index > -1) {
@@ -165,12 +166,6 @@ export default {
         this.$emit('input', item);
       }
     },
-  },
-  style({ className }) {
-    const $color = this.$theme.colors[this.$color];
-    return [
-
-    ];
   },
 };
 </script>

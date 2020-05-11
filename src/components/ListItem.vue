@@ -3,28 +3,30 @@
     :is="tag"
     :class="[$style.listItem, disabled && 'disabled', selected && 'selected', isHighlighted && 'highlighted']"
     :to="$attrs.to"
-    @click="onClick"
+    tabindex="-1"
+    @focus.capture="onFocus"
   >
     <div
       class="content"
       css-padding-x="md"
+      @mouseenter.stop="onMouseEnter"
+      @click.stop="onClick"
     >
       <span
         v-for="i in $list.indent - 1"
         :key="'indent-' + i"
         css-space-x="lg"
       />
-      <fvButton
+      <span
         v-if="hasSubList"
         class="expand-btn"
-        fab
         css-radius="no"
         css-shadow="no"
-        tabindex="0"
-        @click="toggle"
+        css-cursor="pointer"
+        css-text-size="lg"
       >
         {{ isExpanded ? '-' : '+' }}
-      </fvButton>
+      </span>
       <slot name="default" />
     </div>
     <div
@@ -38,8 +40,7 @@
 </template>
 
 <script>
-import icon from '../icons/ARR.svg';
-import parent from '../utility/parent.js';
+import { hasSlot } from '../utility/utils';
 import size from '../mixins/size';
 
 export default {
@@ -65,15 +66,13 @@ export default {
   },
   data() {
     return {
-      isHighlighted: false, //
-      isExpanded: true, // this.expanded,
-
-      icon,
+      isHighlighted: false,
+      isExpanded: true,
     };
   },
   computed: {
     hasSubList() {
-      return this.$slots.hasOwnProperty('sub-list');
+      return hasSlot(this, 'sub-list');
     },
   },
   watch: {
@@ -104,16 +103,30 @@ export default {
     collapse() {
       this.isExpanded = false;
     },
-    toggle(event) {
+    toggle() {
       this.isExpanded = !this.isExpanded;
     },
     onClick(event) {
       if (!this.disabled) {
+        this.$list.focus();
+        try {
+          this.$el.click(); // click on root element manually (links, etc)
+        } catch (_e) {
+          //
+        }
+        if (this.hasSubList) {
+          this.toggle();
+        }
         this.$emit('click', event);
       }
     },
-    onHover() { // called by parent
-      this.$emit('hover');
+    onMouseEnter() {
+      if (!this.disabled) {
+        this.$list.moveHighlight('set', this);
+      }
+    },
+    onFocus(event) {
+      event.preventDefault();
     },
   },
   style({ className }) {
@@ -129,15 +142,6 @@ export default {
           lineHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
           [`border-${this.$theme.direction.start}-width`]: this.$theme.sizes.base.normal,
           [`border-${this.$theme.direction.start}-color`]: 'transparent',
-          // position: 'relative',
-          '& > .expand-btn': {
-            fontFamily: 'monospace',
-            marginTop: '5px',
-            minHeight: this.$theme.sizes.base.factor(this.$size, 'font', { sum: 5 }),
-            height: this.$theme.sizes.base.factor(this.$size, 'font', { sum: 5 }),
-            width: this.$theme.sizes.base.factor(this.$size, 'font', { sum: 5 }),
-            lineHeight: this.$theme.sizes.base.factor(this.$size, 'font', { sum: 5 }),
-          },
         },
         '& > .sub-list': {
           overflowY: 'visible',
@@ -152,7 +156,7 @@ export default {
             height: 'auto',
           },
         },
-        '&.highlighted': {
+        '&.highlighted > .content': {
           backgroundColor: 'rgba(0, 0, 0, 0.06)',
         },
         '&.selected > .content': {

@@ -2,6 +2,7 @@
   <component
     :is="tag"
     :tabindex="tabindex"
+    @keydown.capture="onKeydown"
   >
     <slot />
   </component>
@@ -22,119 +23,107 @@ export default {
       type: String,
       default: 'ul',
     },
-    controlerElement: {
-      type: Object,
-      default: undefined,
-    },
   },
   data() {
     return {
       highlighted: null,
       indent: 1,
+      blurTimeout: null,
     };
   },
   provide() {
+    if (this.$list) {
+      this.indent += this.$list.indent;
+      return {
+        $list: {
+          ...this.$list,
+          indent: this.indent,
+        },
+      };
+    }
     return {
       $list: this,
     };
   },
   computed: {
-    eventListener() {
-      return this.controlerElement || this.$el;
-    },
     tabindex() {
+      if (this.indent > 1) {
+        return null;
+      }
       if (typeof this.$attrs.tabindex !== 'undefined') {
         return this.$attrs.tabindex;
       }
-      return this.controlerElement ? -1 : 1;
+      return 0;
     },
-  },
-  created() {
-    if (this.$list) {
-      this.indent += this.$list.indent;
-    }
-  },
-  mounted() {
-    this.bindEvents();
-  },
-  beforeDestroy() {
-    this.unbindEvents();
+    recursiveChildren() {
+      if (this.indent > 1) {
+        return [];
+      }
+      const getChildren = (comp) => {
+        let ret = [];
+        const root = comp.$children.filter((component) => !component.disabled);
+        root.forEach((child) => {
+          ret.push(child);
+          if (child.hasSubList && child.isExpanded) {
+            ret = ret.concat(getChildren(child.$children[0]));
+            // TODO do better way to find sublist comp
+          }
+        });
+        return ret;
+      };
+      return getChildren(this);
+    },
   },
   methods: {
-    resetHighlight() {
-      this.moveHighlight('reset');
-    },
-    setHighlight(el) {
-      const allItems = [...this.$el.querySelectorAll('.fv-list-item')];
-      allItems.forEach((li) => {
-        if (li !== el) {
-          li.classList.remove('highlighted');
-        }
-      });
-      if (el) {
-        el.classList.add('highlighted');
-        el.__vue__.onHover();
-      }
-      this.highlighted = el;
-    },
-    moveHighlight(action = 'reset') {
-      const items = this.$children.filter((component) => !component.disabled);
+    moveHighlight(action = 'reset', listItemComponent) {
+      const items = this.recursiveChildren;
+      // console.log(this.recursiveChildren, 'r');
       const highlightedIndex = items.findIndex((component) => component.isHighlighted);
-      const newIndex = action === 'reset' ? -1 : moveIndex(highlightedIndex + (action === 'next' ? 1 : -1), items.length);
+      let newIndex = -1;
+      if (action === 'set') {
+        newIndex = items.findIndex((x) => x === listItemComponent);
+      } else {
+        newIndex = action === 'reset' ? -1 : moveIndex(highlightedIndex + (action === 'next' ? 1 : -1), items.length);
+      }
       let highlightedItem = null;
       items.forEach((item, index) => {
         if (newIndex === index) {
           highlightedItem = item;
+          // eslint-disable-next-line no-param-reassign
           item.isHighlighted = true;
           if (item.$el && item.$el.scrollIntoViewIfNeeded) {
             item.$el.scrollIntoViewIfNeeded();
           }
         } else {
+          // eslint-disable-next-line no-param-reassign
           item.isHighlighted = false;
         }
       });
       this.highlighted = highlightedItem;
     },
     onKeydown(event) {
-      // if (event.target !== this.eventListener) {
-      //   return;
-      // }
-      switch (event.which) {
-        case 38: // up
-          event.preventDefault();
-          this.moveHighlight('prev');
-          break;
-        case 40: // down
-          event.preventDefault();
-          this.moveHighlight('next');
-          break;
-        case this.$theme.direction.endKey:
-          if (this.highlighted) {
-            this.highlighted.expand();
-          }
-          break;
-        case this.$theme.direction.startKey:
-          if (this.highlighted) {
-            this.highlighted.collapse();
-          }
-          break;
-        case 13: // enter
-          event.preventDefault();
-          if (this.highlighted) {
-            this.highlighted.onClick(event);
-          }
-          break;
+      if (this.indent > 1) {
+        return;
+      }
+      if (event.which === 38) { // up
+        event.preventDefault();
+        this.moveHighlight('prev');
+      } else if (event.which === 40) { // bottom
+        event.preventDefault();
+        this.moveHighlight('next');
+      } else if (event.which === 13) { // enter
+        event.preventDefault();
+        if (this.highlighted) {
+          this.highlighted.onClick(event);
+        }
       }
     },
-    bindEvents() {
-      this.eventListener.addEventListener('focus', this.resetHighlight);
-      this.eventListener.addEventListener('blur', this.resetHighlight);
-      this.eventListener.addEventListener('keydown', this.onKeydown);
-    },
-    unbindEvents() {
-      this.eventListener.removeEventListener('focus', this.resetHighlight);
-      this.eventListener.removeEventListener('blur', this.resetHighlight);
-      this.eventListener.removeEventListener('keydown', this.onKeydown);
+    focus() {
+      if (this.indent > 1) {
+        this.$list.focus();
+      } else {
+        this.$el.focus();
+      }
     },
   },
 };
