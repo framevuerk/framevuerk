@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <p v-html="api.doc && api.doc.length ? api.doc[0].description : ''" css-margin-bottom="lg" />
     <div v-if="codes.length > 0">
       <div
         v-for="(code, i) in codes"

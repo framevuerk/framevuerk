@@ -22,6 +22,18 @@
           <i class="fa fa-code" /> Components
           <fvList slot="sub-list">
             <fvListItem expanded>
+              Main
+              <fvList slot="sub-list">
+                <fvListItem
+                  tag="router-link"
+                  to="/components/theme-provider"
+                  :class="{ selected: isSelected('component', 'theme-provider') }"
+                >
+                  Theme Provider
+                </fvListItem>
+              </fvList>
+            </fvListItem>
+            <fvListItem expanded>
               Layout
               <fvList slot="sub-list">
                 <fvListItem
@@ -117,6 +129,13 @@
                   :class="{ selected: isSelected('component', 'table') }"
                 >
                   Table
+                </fvListItem>
+                <fvListItem
+                  tag="router-link"
+                  to="/components/loading"
+                  :class="{ selected: isSelected('component', 'loading') }"
+                >
+                  Loading
                 </fvListItem>
                 <fvListItem
                   tag="router-link"

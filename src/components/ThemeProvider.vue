@@ -7,7 +7,42 @@
   </div>
 </template>
 
+<doc>
+@doc @description Framevuerk version 3 has new component named fvThemeProviver for theming and styling. Using this component is mandatory and should be used at root level of your app.
+
+@prop direction @type oneOf('ltr', 'rtl') @default 'ltr' @description App direction.
+@prop sizes @type Object { sizeName: Number /* px value */ } @default { base: 8, font: 14, radius: 6, shadow: 2 } @description Application sizes. Keys described in default value will use in framevuerk styling system, others will accessable with `$theme.sizes` object provided by this component.
+@prop colors @type Object { colorName: String /* hex color */ } @default { background: '#fff', gray: '#d4d4d4', primary: '#0B62EA', header: '#0B62EA', sidebar: '#2B2B2B', footer: '#152235' } @description Application colors. Keys described in default value will use in framevuerk styling system, others will accessable with `$theme.colors` object provided by this component.
+@prop speed @type Number /* millisecond value */ @default 250 @description App animations base speed.
+
+@slot default
+
+@globalProp 
+</doc>
+
+<example>
+@config state false
+@config example false
+
+<fvThemeProvider
+  direction="ltr"
+  :colors="{
+    primary: '#eee',
+    customColor: '#fff',
+  }"
+  :sizes="{
+    base: 8,
+    font: 16,
+    customSize: 12,
+  }"
+  :speed="320"
+>
+  <!-- Entire App -->
+</fvThemeProvider>
+</example>
+
 <script>
+/* eslint-disable no-underscore-dangle */
 import {
   each, shadeColor, colorLightness, hexToRgb, rgbToText, cx,
 } from '../utility/utils';
@@ -69,7 +104,9 @@ export default {
         shadow: 2,
       };
       const sizes = Object.assign(defaultSizes, this.sizes);
+      // const heightFactor = [0, 1, 3, 5, 7, 9];
       const heightFactor = [0, 1, 3, 5, 7, 9];
+      const borderHeightFactor = [0, 0.25, 0.75, 1.25, 1.75, 2.25];
       const sizeFactor = [0, 0.25, 0.5, 1, 3, 9];
       const shadowFactor = [0, 0.25, 0.5, 1, 1.5, 2.5];
       const shadowBlurFactor = [0, 0.5, 0.75, 1, 1.25, 1.5];
@@ -108,6 +145,10 @@ export default {
             if (factorType === 'height') {
               return `${(value * [heightFactor[factors.indexOf(size)]]) + sum}px`;
             }
+
+            if (factorType === 'borderHeight') {
+              return `${(value * [borderHeightFactor[factors.indexOf(size)]]) + sum}px`;
+            }
             // shadow
             if (size === 'no') {
               return 'none';
@@ -133,11 +174,6 @@ export default {
         background: '#fff',
         gray: '#d4d4d4',
         primary: '#0B62EA',
-        secondary: '#35485d',
-        success: '#23ab0c',
-        info: '#14b0cf',
-        warning: '#fd9802',
-        danger: '#dd4b39',
         header: '#0B62EA',
         sidebar: '#2B2B2B',
         footer: '#152235',
@@ -189,7 +225,7 @@ export default {
       // Border
       ['border', 'shadow'].forEach((property) => {
         [null, 'top', 'bottom', 'start', 'end', 'right', 'left'].forEach((dynamicDir) => {
-          ['no', 'xs', 'sm', 'md', 'lg', 'xl'].forEach((size, sizeIndex) => {
+          ['no', 'xs', 'sm', 'md', 'lg', 'xl'].forEach((size) => {
             const rule = attrName(cx('-', property, dynamicDir), size);
             const dir = this._direction.static(dynamicDir);
             if (property === 'border') {
@@ -436,6 +472,7 @@ export default {
         });
         return ret;
       }
+      return null;
     };
 
     const reset = () => [

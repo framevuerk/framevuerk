@@ -137,7 +137,7 @@ export default {
           borderColor: $color.autoShade(-39),
         },
         '&::placeholder': {
-          color: 'gray',
+          color: this.$theme.colors.gray.normal,
         },
       }),
     ];

@@ -31,6 +31,7 @@ module.exports = function loader(source, map) {
   }
 
   const api = {
+    doc: getKeys(source, 'doc'),
     props: getKeys(source, 'prop'),
     events: getKeys(source, 'event'),
     slots: getKeys(source, 'slot'),

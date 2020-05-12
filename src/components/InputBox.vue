@@ -196,7 +196,7 @@ export default {
           // padding: `0 ${this.$theme.sizes.base.factor('sm', 'size')}`,
           overflow: 'hidden',
           '& > .placeholder': {
-            color: 'gray',
+            color: this.$theme.colors.gray.normal,
             whiteSpace: 'nowrap',
             // padding: `0 ${this.$theme.sizes.base.factor('sm', 'size')}`,
           },
