@@ -36,7 +36,7 @@ import Table from './components/Table.vue';
 // import fvAvatar from './components/fvAvatar.vue'
 // import fvSteps from './components/fvSteps.vue'
 // import fvRange from './components/fvRange.vue'
-// import fvLoading from './components/fvLoading.vue'
+import Loading from './components/Loading.vue'
 // import fvPagination from './components/fvPagination.vue'
 // import config from './utility/config.js'
 
@@ -62,6 +62,7 @@ const Framevuerk = {
       SlideContent,
       SlideLabel,
       Table,
+      Loading,
     }, (key, component) => {
       Vue.component(`fv${key}`, component);
     });
@@ -92,6 +93,7 @@ export {
   SlideContent,
   SlideLabel,
   Table,
+  Loading,
 };
 
 export default Framevuerk;
