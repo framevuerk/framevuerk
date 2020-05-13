@@ -95,7 +95,7 @@ export default {
             highlightedItem = item;
             // eslint-disable-next-line no-param-reassign
             item.isHighlighted = true;
-            if (item.$el && item.$el.scrollIntoViewIfNeeded) {
+            if (['prev', 'next'].includes(action) && item.$el && item.$el.scrollIntoViewIfNeeded) {
               item.$el.scrollIntoViewIfNeeded();
             }
           } else {
