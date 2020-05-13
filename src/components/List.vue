@@ -2,11 +2,31 @@
   <component
     :is="tag"
     :tabindex="tabindex"
+    :class="$style.list"
     @keydown.capture="onKeydown"
   >
     <slot />
   </component>
 </template>
+
+
+<doc>
+@prop tag @type String @default 'ul' @description Default root element of component.
+
+@slot default
+</doc>
+
+<example>
+@config title 'Default'
+@config state false
+@config example true
+
+<fvList>
+  <fvListItem> Item #1 </fvListItem>
+  <fvListItem> Item #2 </fvListItem>
+  <fvListItem> Item #3 </fvListItem>
+</fvList>
+</example>
 
 <script>
 import { moveIndex } from '../utility/utils';
@@ -130,6 +150,15 @@ export default {
         this.$el.focus();
       }
     },
+  },
+  style({ className }) {
+    return [
+      className('list', {
+        '& > *:first-child': {
+          borderTopWidth: 0,
+        },
+      }),
+    ];
   },
 };
 </script>

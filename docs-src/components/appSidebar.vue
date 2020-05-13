@@ -162,6 +162,25 @@
                   </fvList>
                 </fvListItem>
                 <fvListItem expanded>
+                  List
+                  <fvList slot="sub-list">
+                    <fvListItem
+                      tag="router-link"
+                      to="/components/list"
+                      :class="{ selected: isSelected('component', 'list') }"
+                    >
+                      List
+                    </fvListItem>
+                    <fvListItem
+                      tag="router-link"
+                      to="/components/list-item"
+                      :class="{ selected: isSelected('component', 'list-item') }"
+                    >
+                      List Item
+                    </fvListItem>
+                  </fvList>
+                </fvListItem>
+                <fvListItem expanded>
                   Slider/Tab
                   <fvList slot="sub-list">
                     <fvListItem

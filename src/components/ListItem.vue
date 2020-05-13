@@ -30,6 +30,7 @@
       <slot name="default" />
     </div>
     <div
+      v-if="hasSubList"
       ref="subList"
       class="sub-list"
       :class="[isExpanded ? 'expand' : 'collapse']"
@@ -38,6 +39,51 @@
     </div>
   </component>
 </template>
+
+<doc>
+@prop tag @type String @default 'ul' @description Default root element of component.
+@prop disabled @type Boolean @default false @description Is element disabled?
+@prop selected @type Boolean @default false @description Is element selected?
+@prop expanded @type Boolean @default true @description Show sub-list (if founds any) by default?
+
+@event click @params nativeEvent @description Triggres when user clicks on element. (with both keyboard enter key or tapping by cursor)
+@event expand @description Triggres when sub-list expanded.
+@event collapse Triggres when sub-list collapsed.
+
+@slot default @description content of item.
+@slot sub-list @description If the list-item has a sub list, put new fvList component inside with this slot name.
+</doc>
+
+<example>
+@config title 'Default'
+@config state false
+@config example true
+
+<fvList>
+  <fvListItem> Item #1 </fvListItem>
+  <fvListItem> Item #2 </fvListItem>
+  <fvListItem> Item #3 </fvListItem>
+</fvList>
+</example>
+
+<example>
+@config title 'SubList'
+@config state false
+@config example true
+
+<fvList>
+  <fvListItem> Item #1 </fvListItem>
+  <fvListItem> Item #2 </fvListItem>
+  <fvListItem expanded>
+    Item #3
+    <fvList slot="sub-list">
+      <fvListItem> Item #3-1 </fvListItem>
+      <fvListItem> Item #3-2 </fvListItem>
+      <fvListItem> Item #3-3 </fvListItem>
+    </fvList>
+  </fvListItem>
+</fvList>
+</example>
 
 <script>
 import { hasSlot } from '../utility/utils';
@@ -111,7 +157,6 @@ export default {
     },
     onClick(event) {
       if (!this.disabled) {
-        // this.$list.focus();
         try {
           this.$el.click(); // click on root element manually (links, etc)
         } catch (_e) {
@@ -152,6 +197,7 @@ export default {
           transitionProperty: 'height',
           willChange: 'height',
           transitionTimingFunction: 'ease',
+          borderTopWidth: '1px',
           '&.collapse': {
             height: 0,
           },
