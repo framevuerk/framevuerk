@@ -1,7 +1,7 @@
 <template>
+  <!-- eslint-disable vue/max-attributes-per-line, vue/no-v-html, vue/singleline-html-element-content-newline  -->
   <div>
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="api.doc && api.doc.length ? api.doc[0].description : ''" css-margin-bottom="lg" />
+    <p css-margin-bottom="lg" v-html="api.doc && api.doc.length ? api.doc[0].description : ''" />
     <div v-if="codes.length > 0">
       <div
         v-for="(code, i) in codes"
@@ -31,7 +31,7 @@
         <fvSlideLabel slot="label" name="slots"> Slots </fvSlideLabel>
 
         <fvSlideContent slot="content" name="props">
-          <fvTable>
+          <fvTable v-if="api.props && api.props.length">
             <fvTableField slot="th" name="name"> Name </fvTableField>
             <fvTableField slot="th" name="type"> Type </fvTableField>
             <fvTableField slot="th" name="default"> Default </fvTableField>
@@ -47,9 +47,12 @@
               <fvTableField slot="td" name="description"> {{ row.description }} </fvTableField>
             </fvTableRow>
           </fvTable>
+          <h4 v-else css-text-align="center" css-padding-y="lg">
+            <i class="fa fa-info-circle" /> No Props Found for This Component
+          </h4>
         </fvSlideContent>
         <fvSlideContent slot="content" name="events">
-          <fvTable>
+          <fvTable v-if="api.events && api.events.length">
             <fvTableField slot="th" name="name"> Name </fvTableField>
             <fvTableField slot="th" name="args"> Arguments </fvTableField>
             <fvTableField slot="th" name="description"> Description </fvTableField>
@@ -68,9 +71,12 @@
               <fvTableField slot="td" name="description"> {{ row.description }} </fvTableField>
             </fvTableRow>
           </fvTable>
+          <h4 v-else css-text-align="center" css-padding-y="lg">
+            <i class="fa fa-info-circle" /> No Events Found for This Component
+          </h4>
         </fvSlideContent>
         <fvSlideContent slot="content" name="slots">
-          <fvTable>
+          <fvTable v-if="api.slots && api.slots.length">
             <fvTableField slot="th" name="name"> Name </fvTableField>
             <fvTableField slot="th" name="binding"> Slot Scope </fvTableField>
             <fvTableField slot="th" name="description"> Description </fvTableField>
@@ -89,20 +95,22 @@
               <fvTableField slot="td" name="description"> {{ row.description }} </fvTableField>
             </fvTableRow>
           </fvTable>
+          <h4 v-else css-text-align="center" css-padding-y="lg">
+            <i class="fa fa-info-circle" /> No Slots Found for This Component
+          </h4>
         </fvSlideContent>
-        <fvSlideContent slot="content" name="content"> {{ api }} </fvSlideContent>
       </fvSlider>
     </div>
   </div>
 </template>
 
 <script>
-import { dashCase } from 'framevuerk/utility/utils.js';
+/* eslint-disable no-underscore-dangle, object-shorthand */
 import appCode from './appCode.vue';
 
 const defaultComponent = { template: '<div>#</div>' };
 const preRegisteredExamples = {};
-for (let i = 0; i < 12; i++) {
+for (let i = 0; i < 12; i += 1) {
   preRegisteredExamples[`example${i}`] = defaultComponent;
 }
 
@@ -110,7 +118,6 @@ export default {
   components: {
     appCode,
     ...preRegisteredExamples,
-    // ...(new Array(10).fill({ template: '<div>#</div>' })),
   },
   props: {
     framevuerkComponent: {
@@ -126,7 +133,6 @@ export default {
     };
   },
   watch: {
-    // eslint-disable-next-line object-shorthand
     '$route.params.component'(newComponent) {
       this.$nextTick(() => {
         this.loadData(newComponent);
@@ -141,8 +147,24 @@ export default {
   methods: {
     loadData() {
       const component = this.framevuerkComponent;
-
+      window.scrollTo(0, 0);
       this.api = component.__api ? JSON.parse(JSON.stringify(component.__api)) : {};
+
+      this.apiSliderValue = (() => {
+        if (this.api.props && this.api.props.length) {
+          return 'props';
+        }
+        if (this.api.events && this.api.events.length) {
+          return 'events';
+        }
+        if (this.api.slots && this.api.slots.length) {
+          return 'slots';
+        }
+        if (this.api.providedProps && this.api.providedProps.length) {
+          return 'providedProps';
+        }
+        return 'props';
+      })();
 
       (component.__examples || []).forEach((example, index) => {
         this.$options.components[`example${index}`] = {
