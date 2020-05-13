@@ -1,20 +1,20 @@
-<!-- template lang="pug">
-  .fv-form-element(:class="{ 'single-line': singleLine, 'multi-line': !singleLine, inline: inline, block: !inline }")
-    label(:class="{ highlighted: isHighlighted, valid: isValid, unvalid: !isValid }")
-      slot(v-if="$slots.label || $scopedSlots.label", :label="label", :highlighted="isHighlighted", name="label")
-      span(v-else) {{label}}
-    .container(v-if="singleLine || inline")
-      slot
-    slot(v-else)
-</template -->
-
 <template>
-  <div :class="[$style.formElement, singleLine && 'single-line', !singleLine && 'multi-line', inline && 'inline', !inline && 'block']">
-    <label :class="[isHighlighted && 'highlighted', isValid && 'valid', !isValid && 'unvalid']">
-      <slot v-if="$slots.label" name="label" :highlighted="isHighlighted" :label="label" />
-      <span v-else v-text="label" />
-    </label>
-    <div v-if="singleLine || inline" :class="$style.container">
+  <div
+    :class="[$style.formElement, singleLine && 'single-line', inline && 'inline']"
+  >
+    <div
+      class="label"
+      :class="[isHighlighted && 'highlighted', !isValid && 'unvalid']"
+    >
+      <slot
+        name="label"
+        :highlighted="isHighlighted"
+      />
+    </div>
+    <div
+      v-if="singleLine || inline"
+      :class="$style.container"
+    >
       <slot />
     </div>
     <slot v-else />
@@ -22,6 +22,9 @@
 </template>
 
 <doc>
+@prop signleLine @type Boolean @default false @description Show both label and form element in single line?
+@prop inline @type Boolean @default false @description Only set this true for inline form elements including fvCheck, fvSwitch, etc.
+
 @slot label @params label @params highlighted @description Optional slot to manul rendering label section.
 @slot default @description The form element component. Input, Dropdown, etc.
 
@@ -36,19 +39,26 @@
 
 @data val1 = ''
 @data val2 = ''
-@data val3 = ''
-@data val4 = ''
+@data val3 = undefined
 @data alert = (x) => console.warn(x)
 
 <fvForm css-row="fv-row" @submit="alert('submit')" @reject="alert('reject')">
-  <fvFormElement css-col-lg="4" css-col-md="6" css-margin="sm" label="Name">
+  <fvFormElement css-col-lg="4" css-col-md="6" css-margin="sm">
+    <label slot="label"> Name </label>
     <fvInput v-model="val1" placeholder="Enter your name" required/>
   </fvFormElement>
-  <fvFormElement css-col-lg="4" css-col-md="6" css-margin="sm" label="Family">
+  <fvFormElement css-col-lg="4" css-col-md="6" css-margin="sm">
+    <label slot="label"> Family </label>
     <fvInput v-model="val2" placeholder="Enter your family" required/>
   </fvFormElement>
-  <fvFormElement css-col-lg="4" css-col-md="6" css-margin="sm" label="Age">
-    <fvInput v-model="val3" placeholder="Enter your age" required/>
+  <fvFormElement css-col-lg="4" css-col-md="6" css-margin="sm">
+    <label slot="label"> Age </label>
+    <fvSelect v-model="val3" placeholder="Enter your age" required>
+      <fvSelectOption value="-7"> Under 7 </fvSelectOption>
+      <fvSelectOption value="7-13"> 7 to 13 </fvSelectOption>
+      <fvSelectOption value="13-25"> 13 to 25 </fvSelectOption>
+      <fvSelectOption value="+26"> More than 26 </fvSelectOption>
+    </fvSelect>
   </fvFormElement>
   <div css-col="12" css-margin="sm">
     <fvButton type="submit"> Done </fvButton>
@@ -59,11 +69,8 @@
 
 <script>
 export default {
+  inject: ['$theme'],
   props: {
-    label: {
-      type: String,
-      default: '',
-    },
     singleLine: {
       type: Boolean,
       default: false,
@@ -73,7 +80,6 @@ export default {
       default: false,
     },
   },
-  inject: ['$theme'],
   data() {
     return {
       isHighlighted: false,
@@ -99,7 +105,7 @@ export default {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        '& > label': {
+        '& > .label': {
           display: 'block',
           minWidth: '25%',
           '&:not(.highlighted)': {
@@ -109,7 +115,7 @@ export default {
             color: this.$theme.colors.danger.normal,
           },
         },
-        '&.multi-line': {
+        '&:not(.single-line)': {
           flexDirection: 'column',
 
           '& > label': {
@@ -133,7 +139,7 @@ export default {
               flexGrow: 1,
             },
           },
-          '&.block > .container > *': {
+          '&:not(.inline) > .container > *': {
             width: '100%',
             minWidth: '100%',
             maxWidth: '100%',

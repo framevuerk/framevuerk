@@ -36,22 +36,63 @@
   </div>
 </template>
 
+<doc>
+@prop current @type Any @default undefined @description Current selected slide on viewport. Use this with .sync modifier.
+@prop slidesPerPage @type Number @default 1 @description How many slides should visible on each view.
+
+@prop showButtons @type Boolean @default false @description Show next/prev buttons at sides?
+
+@event update:current @params newValue @description Triggers when selected slide changes.
+
+@slot label @description Use fvSlideLabel with this slot name in top of component content. Each `label` slot counts as one label/slide.
+@slot content @description Use fvSlideContent with this slot name in component content just after defining `label`s.. Each `content` slot counts as one content/slide.
+</doc>
+
+<example>
+@config title 'Default'
+@config state true
+@config example true
+
+@data val = '1'
+<fvSlider :current.sync="val" show-buttons>
+  <fvSlideLabel slot="label" name="1"> One </fvSlideLabel>
+  <fvSlideLabel slot="label" name="2"> Two </fvSlideLabel>
+  <fvSlideLabel slot="label" name="3"> Three </fvSlideLabel>
+  <fvSlideLabel slot="label" name="4"> Four </fvSlideLabel>
+
+  <fvSlideContent slot="content" name="1" css-padding-y="xl" css-text-align="center" css-color="footer">
+    <h2> Hiiii </h2>
+    <h5> is this ok?! </h5>
+  </fvSlideContent>
+  <fvSlideContent slot="content" name="2" css-padding-y="xl" css-text-align="center" css-color="danger">
+    <h2> Byeee </h2>
+    <h5> is this not ok?! </h5>
+  </fvSlideContent>
+  <fvSlideContent slot="content" name="3" css-padding-y="xl" css-text-align="center" css-color="gray">
+    <h2> Dumba </h2>
+    <h5> dishdi dum?! </h5>
+  </fvSlideContent>
+  <fvSlideContent slot="content" name="4" css-padding-y="xl" css-text-align="center" css-color="background">
+    <h2> Yayyy </h2>
+    <h5> my eyes. my eyeeees! </h5>
+  </fvSlideContent>
+</fvSlider>
+</example>
+
 <script>
 import { moveIndex } from '../utility/utils';
 import Swipe from '../utility/swipe';
 
 export default {
+  inject: ['$theme'],
   props: {
+    // eslint-disable-next-line vue/require-prop-types
     current: {
       default: undefined,
     },
     slidesPerPage: {
       type: Number,
       default: 1,
-    },
-    showNavs: {
-      type: Boolean,
-      default: true,
     },
     showButtons: {
       type: Boolean,
@@ -117,6 +158,7 @@ export default {
     },
     afterSwipe(pos, diff) {
       this.$refs.inner.style.transitionDuration = null;
+      // eslint-disable-next-line no-nested-ternary
       const offsetIndex = this.$theme.direction.leftFactor * (diff.x < -100 ? 1 : (diff.x > 100 ? -1 : 0));
       const newIndex = this.moveIndex(offsetIndex);
       const newValue = this.$slots.content[newIndex].componentOptions.propsData.name;
@@ -132,14 +174,13 @@ export default {
       this.$emit('update:current', this.$slots.content[this.moveIndex(offset)].componentOptions.propsData.name);
     },
   },
-  style({ className, mediaQuery }) {
+  style({ className }) {
     return [
       className('slider', {
         '& > .labels': {
           position: 'relative',
           display: 'flex',
           flexDirection: 'row',
-          // boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: 'bottom' }),
           borderBottomWidth: '1px',
           borderBottomColor: this.$theme.colors.background.shade(-13),
         },
@@ -168,211 +209,5 @@ export default {
       }),
     ];
   },
-  inject: ['$theme'],
-  // props: {
-  //   global: {
-  //     type: Boolean,
-  //     default: true,
-  //   },
-  //   header: {
-  //     type: String,
-  //     validator: v => ['normal', 'fixed', 'autohide', 'overlay'].includes(v),
-  //     default: 'autohide',
-  //   },
-  //   footer: {
-  //     type: String,
-  //     validator: v => ['normal', 'fixed', 'overlay'].includes(v),
-  //     default: 'normal',
-  //   },
-  //   sidebar: {
-  //     type: String,
-  //     validator: v => ['pinned', 'unattached', 'auto'].includes(v),
-  //     default: 'auto',
-  //   }
-  // },
-  // data() {
-  //   return {
-  //     // scrolling element
-  //     se: null, // calc on run-time
-  //     // scroll listener element
-  //     sl: null, // calc on run-time
-  //     // scroll direction
-  //     sd: 'up',
-  //     // last scroll position
-  //     lsp: Infinity,
-  //     // sidebar visibility
-  //     sv: true,
-  //     // sidebar class
-  //     sc: this.sidebar,
-  //   }
-  // },
-  // methods: {
-  //   onScroll(event) {
-  //     if (this.se.scrollTop < this.$refs.autohideHeader.offsetHeight) {
-  //       this.$refs.autohideHeader.classList.remove('hide');
-  //       return
-  //     }
-  //     console.log('here')
-  //     this.sd = this.se.scrollTop > this.lsp ? 'down' : 'up';
-  //     this.lsp = this.se.scrollTop;
-  //     if (this.sd === 'down') {
-  //       this.$refs.autohideHeader.classList.add('hide');
-  //     } else {
-  //       this.$refs.autohideHeader.classList.remove('hide');
-  //     }
-  //   },
-  //   sidebarAutoState() {
-  //     return document.body.offsetWidth < 768 ? 'unattached' : 'pinned';
-  //   },
-  //   sidebarResizeHandler() {
-  //     parent.unlock();
-  //     parent.off('outsideclick', this.$refs.sidebar, this.toggleSidebar);
-  //     if (document.body.offsetWidth < 768) {
-  //       this.sv = false;
-  //       this.sc = 'unattached';
-  //     } else {
-  //       this.sv = true;
-  //       this.sc = 'pinned';
-  //     }
-  //   },
-  //   toggleSidebar() {
-  //     this.sv = !this.sv;
-  //     if (this.sv && this.sc === 'unattached') {
-  //       parent.lock();
-  //       setTimeout(() => {
-  //         parent.on('outsideclick', this.$refs.sidebar, this.toggleSidebar);
-  //       })
-  //     } else {
-  //       parent.unlock();
-  //       parent.off('outsideclick', this.$refs.sidebar, this.toggleSidebar);
-  //     }
-  //   },
-  //   sidebarToggleHandler(event) {
-  //     let e = event.target;
-  //     while (e !== this.$el) {
-  //       if (e.hasAttribute('data-sidebar-toggle')) {
-  //         this.toggleSidebar();
-  //         return;
-  //       }
-  //       e = e.parentElement;
-  //     }
-  //   }
-  // },
-  // created () {
-  //   if (this.sidebar === 'unattached') {
-  //     this.sv = false;
-  //   }
-  // },
-  // mounted () {
-  //   this.se = this.global ? document.scrollingElement : this.$el;
-  //   this.sl = this.global ? window : this.$el;
-  //   if (this.$slots.autohideHeader) {
-  //     setTimeout(() => {
-  //       this.sl.addEventListener('scroll', this.onScroll);
-  //     }, 120)
-  //   }
-  //   this.$nextTick(() => {
-  //     this.$el.addEventListener('click', this.sidebarToggleHandler);
-  //   });
-  //   if (this.sidebar === 'auto') {
-  //     const newState = this.sidebarAutoState();
-  //     if (newState === 'unattached') {
-  //       this.sv = false
-  //     }
-  //     this.sc = newState;
-  //     parent.on('sizechange', this.sidebarResizeHandler);
-  //   }
-  // },
-  // beforeDestroy () {
-  //   this.sl.removeEventListener('scroll', this.onScroll);
-  //   this.$el.removeEventListener('click', this.sidebarToggleHandler);
-  // },
-  // style({ className, mediaQuery }){
-  //   return [
-  //     className('layout', {
-  //       // overflow: 'hidden',
-  //       border: 'solid 1px red',
-  //       minHeight: '100%',
-  //       display: 'flex',
-  //       flexDirection: 'column',
-  //       '&.global': {
-  //         minHeight: '100vh',
-  //       },
-  //       '& > header': {
-  //         backgroundColor: this.$theme.colors.primary.normal,
-  //         '&.autohide': {
-  //           width: '100%',
-  //           position: 'sticky',
-  //           top: '0',
-  //           transform: 'translateY(0)',
-  //           transition: `transform 200ms linear`,
-  //           willChange: 'transform',
-  //           '&.hide': {
-  //             transform: 'translateY(-100%)',
-  //           }
-  //         }
-  //       },
-  //       '& > main': {
-  //         flexGrow: '1',
-  //         display: 'flex',
-  //         flexDirection: 'row',
-  //         '& > .content': {
-  //           flexGrow: '1',
-  //         },
-  //         '& > .sidebar-overlay': {
-  //           position: 'fixed',
-  //           top: '0',
-  //           left: '0',
-  //           width: '100%',
-  //           height: '100%',
-  //           backgroundColor: this.$theme.colors.background.shade(-20, 0.1),
-  //         },
-  //         '& > aside': {
-  //           overflow: 'hidden',
-  //           backgroundColor: 'red',
-  //           transition: `transform ${this.$theme.speed.normal} ease`,
-  //           '&.pinned': {
-  //             transition: `max-width ${this.$theme.speed.normal} ease`,
-  //             '&.show': {
-  //               width: 'auto',
-  //               maxWidth: '360px',
-  //             },
-  //             '&.hide': {
-  //               maxWidth: '0px',
-  //             }
-  //           },
-  //           '&.unattached': {
-  //             position: 'fixed',
-  //             transition: `transform ${this.$theme.speed.normal} ease`,
-  //             top: '0',
-  //             height: '100vh',
-  //             zIndex: '2',
-  //             '&.show': {
-  //               transform: `translateX(0) !important`
-  //             },
-  //             '&.hide': {
-  //               transform: `translateX(${this.$theme.direction.ltrFactor * -100}%)`
-  //             }
-  //           }
-  //         }
-  //       },
-  //     }),
-  //     mediaQuery({maxWidth: '767px'}, [
-  //       className('layout', {
-  //         '& > main > aside.auto': {
-  //           position: 'fixed',
-  //           transform: `translateX(${this.$theme.direction.ltrFactor * -100}%) !important`,
-  //         }
-  //       })
-  //     ]),
-  //     mediaQuery({minWidth: '768px'}, [
-  //       className('layout', {
-  //         '& > main > aside.auto': {
-  //           width: 'auto',
-  //         }
-  //       })
-  //     ])
-  //   ]
-  // },
 };
 </script>

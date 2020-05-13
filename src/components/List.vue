@@ -55,6 +55,8 @@ export default {
       }
       return 0;
     },
+  },
+  methods: {
     recursiveChildren() {
       if (this.indent > 1) {
         return [];
@@ -63,43 +65,46 @@ export default {
         let ret = [];
         const root = comp.$children.filter((component) => !component.disabled);
         root.forEach((child) => {
-          ret.push(child);
-          if (child.hasSubList && child.isExpanded) {
-            ret = ret.concat(getChildren(child.$children[0]));
-            // TODO do better way to find sublist comp
+          if (typeof child.$list === 'undefined') {
+            ret = ret.concat(getChildren(child));
+          } else {
+            ret.push(child);
+            if (child.hasSubList && child.isExpanded) {
+              ret = ret.concat(getChildren(child.$children[0]));
+              // TODO do better way to find sublist comp
+            }
           }
         });
         return ret;
       };
       return getChildren(this);
     },
-  },
-  methods: {
     moveHighlight(action = 'reset', listItemComponent) {
-      const items = this.recursiveChildren;
-      // console.log(this.recursiveChildren, 'r');
-      const highlightedIndex = items.findIndex((component) => component.isHighlighted);
-      let newIndex = -1;
-      if (action === 'set') {
-        newIndex = items.findIndex((x) => x === listItemComponent);
-      } else {
-        newIndex = action === 'reset' ? -1 : moveIndex(highlightedIndex + (action === 'next' ? 1 : -1), items.length);
-      }
-      let highlightedItem = null;
-      items.forEach((item, index) => {
-        if (newIndex === index) {
-          highlightedItem = item;
-          // eslint-disable-next-line no-param-reassign
-          item.isHighlighted = true;
-          if (item.$el && item.$el.scrollIntoViewIfNeeded) {
-            item.$el.scrollIntoViewIfNeeded();
-          }
+      this.$nextTick(() => {
+        const items = this.recursiveChildren();
+        const highlightedIndex = items.findIndex((component) => component.isHighlighted);
+        let newIndex = -1;
+        if (action === 'set') {
+          newIndex = items.findIndex((x) => x === listItemComponent);
         } else {
-          // eslint-disable-next-line no-param-reassign
-          item.isHighlighted = false;
+          newIndex = action === 'reset' ? -1 : moveIndex(highlightedIndex + (action === 'next' ? 1 : -1), items.length);
         }
+        let highlightedItem = null;
+        items.forEach((item, index) => {
+          if (newIndex === index) {
+            highlightedItem = item;
+            // eslint-disable-next-line no-param-reassign
+            item.isHighlighted = true;
+            if (item.$el && item.$el.scrollIntoViewIfNeeded) {
+              item.$el.scrollIntoViewIfNeeded();
+            }
+          } else {
+            // eslint-disable-next-line no-param-reassign
+            item.isHighlighted = false;
+          }
+        });
+        this.highlighted = highlightedItem;
       });
-      this.highlighted = highlightedItem;
     },
     onKeydown(event) {
       if (this.indent > 1) {

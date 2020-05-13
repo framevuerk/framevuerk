@@ -1,13 +1,12 @@
 <template>
-  <aside :class="[$style.sidebar, className, visible ? 'show' : 'hide']">
+  <aside :class="[$style.sidebar, visible ? 'show' : 'hide']">
     <slot />
   </aside>
 </template>
 
 
 <doc>
-@prop type @type oneOf('pinned', 'unattached', 'smart') @default 'smart' @description Sidebar render style. The 'unattached' is hidden by default and shows like mobile side menu. 'smart' mode will be use one of those automaticly based on device size.
-@prop visible @type Boolean @default false @description Sidebar visibility. It's better to use .sync modifier for this if you want to use 'smart' mode as type.
+@prop visible @type Boolean @default false @description Sidebar visibility. To use all of fvSidebar functionality, use .sync modifier.
 
 @slot default
 
@@ -31,11 +30,6 @@
 <script>
 export default {
   props: {
-    type: {
-      type: String,
-      validator: (v) => ['pinned', 'unattached', 'smart'].includes(v),
-      default: 'smart',
-    },
     visible: {
       type: Boolean,
       default: false,
@@ -43,31 +37,33 @@ export default {
   },
   data() {
     return {
-      className: this.type,
+      lastCapturedViewportWidth: 0,
       cancelDetector: null,
     };
   },
   watch: {
     visible(newValue) {
-      if (this.visible && this.className === 'unattached') {
+      if (this.cancelDetector) {
+        this.cancelDetector.release();
+      }
+      if (newValue && window.innerWidth < 992) {
         this.cancelDetector = this.$layout.cancelDetector(this.$el, this.toggle);
-      } else {
-        this.cancelDetector && this.cancelDetector.release();
       }
     },
   },
-  created() {
-    if (this.type === 'unattached') {
-      this.$emit('update:visible', false);
-    }
-  },
   mounted() {
-    if (this.type === 'smart') {
-      this.handleSmart();
+    if (window.innerWidth < 992) {
+      this.$emit('update:visible', false);
+    } else {
+      this.$emit('update:visible', true);
     }
+    this.$layout.on('resize', this.handleResize);
   },
   beforeDestroy() {
-    this.cancelDetector && this.cancelDetector.release();
+    if (this.cancelDetector) {
+      this.cancelDetector.release();
+    }
+    this.$layout.off('resize', this.handleResize);
   },
   methods: {
     toggle() {
@@ -81,10 +77,15 @@ export default {
         this.$el.style.transitionDuration = null;
       });
     },
+    handleResize() {
+      if (window.innerWidth !== this.lastCapturedViewportWidth) {
+        this.handleSmart();
+        this.lastCapturedViewportWidth = window.innerWidth;
+      }
+    },
   },
   style({ className, mediaQuery }) {
     const position = this.$theme.direction[this.$layout.getSidebarPosition(this)];
-    const unattachedPostion = this.$layout.global ? 'fixed' : 'absolute';
     return [
       className('sidebar', {
         backgroundColor: this.$theme.colors.sidebar.normal,
@@ -93,23 +94,23 @@ export default {
         minHeight: '100%',
         [position]: 0,
         overflowX: 'hidden !important',
-        '&.pinned': {
-          transition: `transform ${this.$theme.speed.normal} ease`,
-          position: 'relative',
-          '&.show': {
-            transform: 'translateX(0) !important',
-          },
-          '&.hide': {
-            position: unattachedPostion,
-            transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
-          },
+        transition: `transform ${this.$theme.speed.normal} ease`,
+        position: 'relative',
+        '&.show': {
+          transform: 'translateX(0) !important',
         },
-        '&.unattached': {
+        '&.hide': {
+          position: 'fixed',
+          transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
+        },
+      }),
+      mediaQuery({ maxWidth: '991px' }, [
+        className('sidebar', {
           top: '0',
           height: '100%',
           maxHeight: '100%',
           overflow: 'auto',
-          position: unattachedPostion,
+          position: 'fixed',
           transition: `transform ${this.$theme.speed.normal} ease-in-out`,
           zIndex: 2,
           '&.show': {
@@ -119,14 +120,6 @@ export default {
           [`border-${position}-style`]: 'solid',
           '&.hide': {
             transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
-          },
-        },
-      }),
-      mediaQuery({ maxWidth: '960px' }, [
-        className('sidebar', {
-          '&.smart': {
-            position: 'absolute',
-            opacity: 0,
           },
         }),
       ]),

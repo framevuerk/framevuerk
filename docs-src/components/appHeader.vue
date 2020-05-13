@@ -1,6 +1,6 @@
 <template>
   <fvHeader
-    type="smart"
+    type="pinned"
     css-color="header"
     css-flex
     css-padding="md"

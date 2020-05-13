@@ -1,7 +1,12 @@
 <template>
   <fvInputBox
     :placeholder="isEmpty ? placeholder : ''"
+    :search-input="searchInput"
+    :query="query"
+    @update:query="handleUpdateQuery"
     @keydown="handleOptionsHighlight"
+    @focus="onFocus"
+    @blur="onBlur"
   >
     <div
       v-if="!isEmpty"
@@ -16,8 +21,19 @@
         css-padding-x="sm"
         css-margin-y="xs"
         css-margin-end="xs"
-        v-text="item"
-      />
+      >
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <span v-html="singleValueTemplate(item)" />
+        <span
+          css-cursor="pointer"
+          css-border-start="md"
+          css-padding-start="sm"
+          css-padding-end="xs"
+          @click="handleClickOption(item)"
+        >
+          x
+        </span>
+      </span>
     </div>
     <div slot="box">
       <fvList
@@ -25,14 +41,7 @@
         tabindex="-1"
         css-cursor="pointer"
       >
-        <fvListItem
-          v-for="(option, index) in options"
-          :key="index"
-          :selected="itemIndex(option) > -1"
-          @click="handleClickOption(option, $event)"
-        >
-          {{ option }}
-        </fvListItem>
+        <slot />
       </fvList>
     </div>
   </fvInputBox>
@@ -42,7 +51,6 @@
 @prop value @type oneOf(Any /* for non-multiple */, Array /* for multiple */) @default undefined @description Value of input.
 @prop multiple @type Boolean @default false @description Allow user to select multiple items.
 @prop placeholder @type String @default '' @description Showes when value is empty.
-@prop options @type Array @default [] @description List of options.
 @prop required @type Boolean or Function @default false @description If you use this element inside `form` component, the `form` component will reject until this element filled. by passing `false` this check will be skiped and by passing function, you can manualy get current value as an argument and return true/false to allow/reject form submits.
 @prop disabled @type Boolean @default false @description Is disabled?
 
@@ -58,9 +66,11 @@
 @config example true
 
 @data val = undefined
-@data options = ['men', 'women', 'other']
-<fvSelect v-model="val" :options="options" placeholder="Choose one"/>
-
+<fvSelect v-model="val" placeholder="Sex">
+  <fvSelectOption value="m"> Male </fvSelectOption>
+  <fvSelectOption value="f"> Female </fvSelectOption>
+  <fvSelectOption value="o"> Other </fvSelectOption>
+</fvSelect>
 </example>
 
 <example>
@@ -68,9 +78,19 @@
 @config state true
 @config example true
 
+@data options = [{value: 'milan', title: 'A.C. Milan'}, {value: 'inter', title: 'Inter Milan'}, {value: 'juve', title: 'Juventus F.C.'}, {value: 'napoli', title: 'S.C.S. Napoli'}, {value: 'lazio', title: 'SS Lazio'}]
 @data val = []
-@data options = ['hat', 'shirt', 't-shirt', 'scarf', 'poliver']
-<fvSelect v-model="val" multiple :options="options" placeholder="Choose"/>
+@data query = ''
+<fvSelect v-model="val" multiple placeholder="Favorite Teams" :search-input="true" :query.sync="query">
+  <fvSelectOption
+    v-for="opt in options"
+    :value="opt.value"
+    :key="opt.value"
+    v-if="opt.value.includes(query)"
+  >
+    {{ opt.title }}
+  </fvSelectOption>
+</fvSelect>
 
 </example>
 
@@ -84,6 +104,11 @@ const toStatic = JSON.stringify;
 
 export default {
   inject: ['$theme'],
+  provide() {
+    return {
+      $select: this,
+    };
+  },
   mixins: [
     color,
     size,
@@ -101,26 +126,34 @@ export default {
       type: Boolean,
       default: false,
     },
-    options: {
-      type: Array,
-      default: () => [],
+    searchInput: {
+      type: Boolean,
+      default: false,
     },
+    query: {
+      type: String,
+      default: '',
+    },
+  },
+  data() {
+    return {
+      options: [], // filled by childs
+    };
   },
   computed: {
     forceArrayValue() {
-      return this.multiple ? this.value : [this.value];
+      // eslint-disable-next-line no-nested-ternary
+      return this.multiple ? this.value : (this.value ? [this.value] : []);
     },
     isEmpty() {
-      return this.multiple
-        ? this.value.length === 0
-        : typeof this.value === 'undefined';
+      return this.forceArrayValue.length === 0;
     },
     isValidate() {
       if (this.disabled) {
         return true;
       }
       if (this.required === true) {
-        return !!this.isEmpty;
+        return !this.isEmpty;
       }
       if (typeof this.required === 'function') {
         return this.required(this.value);
@@ -129,18 +162,27 @@ export default {
     },
   },
   methods: {
+    singleValueTemplate(value) {
+      try {
+        const optionComponent = this.options.find((option) => toStatic(option.value) === toStatic(value));
+        return optionComponent.$el.querySelector('.content').innerHTML; // TODO use better way
+      } catch (_e) {
+        return value;
+      }
+    },
+    handleUpdateQuery(newQuery) {
+      this.$emit('update:query', newQuery);
+    },
     onFocus() {
       // this.$el.select();
       this.onFocusDefault();
     },
-    itemIndex(option) {
-      if (this.multiple) {
-        return this.value.findIndex((x) => toStatic(x) === toStatic(option));
-      }
-      return toStatic(this.value) === toStatic(option) ? 0 : -1;
+    onBlur() {
+      // this.$el.select();
+      this.onBlurDefault();
     },
-    onInput(event) {
-      this.$emit('input', event.target.value);
+    itemIndex(option) {
+      return this.forceArrayValue.findIndex((x) => toStatic(x) === toStatic(option));
     },
     handleOptionsHighlight(e) {
       // console.log(e);
@@ -165,6 +207,9 @@ export default {
       } else {
         this.$emit('input', item);
       }
+      this.$nextTick(() => {
+        this.$emit('update:query', '');
+      });
     },
   },
 };

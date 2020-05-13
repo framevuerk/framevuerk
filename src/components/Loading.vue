@@ -35,7 +35,6 @@ export default {
     const $size = this.$theme.sizes.base.factor(this.$size, 'height');
     const $borderSize = this.$theme.sizes.base.factor(this.$size, 'borderHeight');
     const $animationSpeed = this.$theme.speed.multiplyBy(2.2);
-    console.info(`${keyFrames('loading')} ${$animationSpeed} infinite linear`);
     return [
       className('loading', {
         display: 'inline-block',
@@ -63,14 +62,6 @@ export default {
           transform: 'rotate(359deg)',
         },
       }),
-      // keyFrames('loading', {
-      //   from: {
-      //     transform: 'rotate(0deg)',
-      //   },
-      //   to: {
-      //     transform: 'rotate(359deg)',
-      //   },
-      // }),
     ];
   },
 };

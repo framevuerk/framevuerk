@@ -96,6 +96,9 @@ export default {
       }
     },
   },
+  created() {
+    this.$list.moveHighlight('reset');
+  },
   methods: {
     expand() {
       this.isExpanded = true;
@@ -108,7 +111,7 @@ export default {
     },
     onClick(event) {
       if (!this.disabled) {
-        this.$list.focus();
+        // this.$list.focus();
         try {
           this.$el.click(); // click on root element manually (links, etc)
         } catch (_e) {

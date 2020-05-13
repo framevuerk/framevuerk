@@ -97,12 +97,24 @@
                 >
                   Input
                 </fvListItem>
-                <fvListItem
-                  tag="router-link"
-                  to="/components/select"
-                  :class="{ selected: isSelected('component', 'select') }"
-                >
+                <fvListItem expanded>
                   Dropdown Select
+                  <fvList slot="sub-list">
+                    <fvListItem
+                      tag="router-link"
+                      to="/components/select"
+                      :class="{ selected: isSelected('component', 'select') }"
+                    >
+                      Select
+                    </fvListItem>
+                    <fvListItem
+                      tag="router-link"
+                      to="/components/select-option"
+                      :class="{ selected: isSelected('component', 'select-option') }"
+                    >
+                      Option
+                    </fvListItem>
+                  </fvList>
                 </fvListItem>
                 <fvListItem
                   tag="router-link"
@@ -123,12 +135,57 @@
             <fvListItem expanded>
               Other
               <fvList slot="sub-list">
-                <fvListItem
-                  tag="router-link"
-                  to="/components/table"
-                  :class="{ selected: isSelected('component', 'table') }"
-                >
+                <fvListItem expanded>
                   Table
+                  <fvList slot="sub-list">
+                    <fvListItem
+                      tag="router-link"
+                      to="/components/table"
+                      :class="{ selected: isSelected('component', 'table') }"
+                    >
+                      Table
+                    </fvListItem>
+                    <fvListItem
+                      tag="router-link"
+                      to="/components/table-row"
+                      :class="{ selected: isSelected('component', 'table-row') }"
+                    >
+                      Table Row
+                    </fvListItem>
+                    <fvListItem
+                      tag="router-link"
+                      to="/components/table-field"
+                      :class="{ selected: isSelected('component', 'table-field') }"
+                    >
+                      Table Field
+                    </fvListItem>
+                  </fvList>
+                </fvListItem>
+                <fvListItem expanded>
+                  Slider/Tab
+                  <fvList slot="sub-list">
+                    <fvListItem
+                      tag="router-link"
+                      to="/components/slider"
+                      :class="{ selected: isSelected('component', 'slider') }"
+                    >
+                      Slider
+                    </fvListItem>
+                    <fvListItem
+                      tag="router-link"
+                      to="/components/slide-label"
+                      :class="{ selected: isSelected('component', 'slide-label') }"
+                    >
+                      Slide Label
+                    </fvListItem>
+                    <fvListItem
+                      tag="router-link"
+                      to="/components/slide-content"
+                      :class="{ selected: isSelected('component', 'slide-content') }"
+                    >
+                      Slide Content
+                    </fvListItem>
+                  </fvList>
                 </fvListItem>
                 <fvListItem
                   tag="router-link"

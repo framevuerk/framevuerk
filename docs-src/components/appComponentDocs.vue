@@ -31,26 +31,63 @@
         <fvSlideLabel slot="label" name="slots"> Slots </fvSlideLabel>
 
         <fvSlideContent slot="content" name="props">
-          <fvTable :fields="['name', 'type', 'default', 'description']" :rows="api.props" />
+          <fvTable>
+            <fvTableField slot="th" name="name"> Name </fvTableField>
+            <fvTableField slot="th" name="type"> Type </fvTableField>
+            <fvTableField slot="th" name="default"> Default </fvTableField>
+            <fvTableField slot="th" name="description"> Description </fvTableField>
+            <fvTableRow
+              v-for="row in api.props"
+              :key="row.name"
+              slot="tr"
+            >
+              <fvTableField slot="td" name="name"> {{ row.name }} </fvTableField>
+              <fvTableField slot="td" name="type"> {{ row.type }} </fvTableField>
+              <fvTableField slot="td" name="default"> {{ row.default }} </fvTableField>
+              <fvTableField slot="td" name="description"> {{ row.description }} </fvTableField>
+            </fvTableRow>
+          </fvTable>
         </fvSlideContent>
         <fvSlideContent slot="content" name="events">
-          <fvTable :fields="['name', 'args', 'description']" :rows="api.events">
-            <template slot="field-args" slot-scope="scope">
-              <i v-if="!scope.row.params" class="fa fa-times" css-text-color="gray" />
-              <div v-else>
-                ({{typeof scope.row.params !== 'object' ? scope.row.params : scope.row.params.join(', ')}})
-              </div>
-            </template>
+          <fvTable>
+            <fvTableField slot="th" name="name"> Name </fvTableField>
+            <fvTableField slot="th" name="args"> Arguments </fvTableField>
+            <fvTableField slot="th" name="description"> Description </fvTableField>
+            <fvTableRow
+              v-for="row in api.events"
+              :key="row.name"
+              slot="tr"
+            >
+              <fvTableField slot="td" name="name"> {{ row.name }} </fvTableField>
+              <fvTableField slot="td" name="args">
+                <i v-if="!row.params" class="fa fa-times" css-text-color="gray" />
+                <div v-else>
+                  ({{typeof row.params !== 'object' ? row.params : row.params.join(', ')}})
+                </div>
+              </fvTableField>
+              <fvTableField slot="td" name="description"> {{ row.description }} </fvTableField>
+            </fvTableRow>
           </fvTable>
         </fvSlideContent>
         <fvSlideContent slot="content" name="slots">
-          <fvTable :fields="['name', 'binding', 'description']" :rows="api.slots">
-            <template slot="field-binding" slot-scope="scope">
-              <i v-if="!scope.row.params" class="fa fa-times" css-text-color="gray" />
-              <div v-else>
-                {<span>{{typeof scope.row.params !== 'object' ? scope.row.params : scope.row.params.join(', ')}}</span>}
-              </div>
-            </template>
+          <fvTable>
+            <fvTableField slot="th" name="name"> Name </fvTableField>
+            <fvTableField slot="th" name="binding"> Slot Scope </fvTableField>
+            <fvTableField slot="th" name="description"> Description </fvTableField>
+            <fvTableRow
+              v-for="row in api.slots"
+              :key="row.name"
+              slot="tr"
+            >
+              <fvTableField slot="td" name="name"> {{ row.name }} </fvTableField>
+              <fvTableField slot="td" name="binding">
+                <i v-if="!row.params" class="fa fa-times" css-text-color="gray" />
+                <div v-else>
+                  {<span>{{typeof row.params !== 'object' ? row.params : row.params.join(', ')}}</span>}
+                </div>
+              </fvTableField>
+              <fvTableField slot="td" name="description"> {{ row.description }} </fvTableField>
+            </fvTableRow>
           </fvTable>
         </fvSlideContent>
         <fvSlideContent slot="content" name="content"> {{ api }} </fvSlideContent>
@@ -107,7 +144,7 @@ export default {
 
       this.api = component.__api ? JSON.parse(JSON.stringify(component.__api)) : {};
 
-      component.__examples.forEach((example, index) => {
+      (component.__examples || []).forEach((example, index) => {
         this.$options.components[`example${index}`] = {
           template: `
             <div css-color="background">

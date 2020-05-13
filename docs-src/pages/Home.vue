@@ -16,51 +16,20 @@
       </fvButton>
     </appHeader>
     <fvContent slot="content">
-      <div css-margin="xl">
-        <fvInputGroup>
-          <fvInput v-model="x" />
-          <fvButton> Salam </fvButton>
-        </fvInputGroup>
-        <fvInputGroup>
-          <fvButton> Salam </fvButton>
-          <fvInput v-model="x" />
-          <fvButton> Salam </fvButton>
-        </fvInputGroup>
-        <fvInputGroup>
-          <fvButton> Salam </fvButton>
-          <fvInput v-model="x" />
-        </fvInputGroup>
-        <fvInputGroup>
-          <fvButton> Salam </fvButton>
-        </fvInputGroup>
-        <br>
-        <br>
-        <fvInput
-          v-model="x"
-          multi-line
-        />
-      <!-- <fvList>
-        <fvListItem selected tag="a">Item #1</fvListItem>
-        <fvListItem disabled>Item #2</fvListItem>
-        <fvListItem>
-          Item #3
-          <fvList slot="sub-list">
-            <fvListItem>SubItem #1</fvListItem>
-            <fvListItem disabled>SubItem #2</fvListItem>
-            <fvListItem>SubItem #3</fvListItem>
-            <fvListItem>
-              SubItem #4
-              <fvList slot="sub-list">
-                <fvListItem>SubItem #1</fvListItem>
-                <fvListItem disabled>SubItem #2</fvListItem>
-                <fvListItem>SubItem #3</fvListItem>
-                <fvListItem>SubItem #4</fvListItem>
-              </fvList>
-            </fvListItem>
-          </fvList>
-        </fvListItem>
-        <fvListItem>Item #4</fvListItem>
-      </fvList> -->
+      <div css-padding="xl">
+        <a @click="x = x === 'breaked' ? 'normal' : 'breaked'"> {{x}} </a>
+
+        <fvTable :type="'smart'">
+          <fvTableField slot="th" name="fn" @click="y = y === 'up' ? 'down': 'up'"> Title {{ y === 'up' ? '/\\' : '\\/' }} </fvTableField>
+          <fvTableField slot="th" name="ln"> Last Name </fvTableField>
+          <fvTableField slot="th" name="ag"> Age </fvTableField>
+
+          <fvTableRow slot="tr" v-for="i in [{name: 'Amir', family: 'Momenian', age: 29}, {name: 'Maryam', family: 'Amini', age: 28}, {name: 'Saeed', family: 'Kamyabi', age: 29}]" :key="i.name">
+            <fvTableField slot="td" name="fn"> {{ i.name }} </fvTableField>
+            <fvTableField slot="td" name="ln"> {{ i.family }} </fvTableField>
+            <fvTableField slot="td" name="ag"> {{ i.age }} </fvTableField>
+          </fvTableRow>
+        </fvTable>
       </div>
       <div
         css-max-width="sm"
@@ -407,9 +376,15 @@ export default {
   },
   data() {
     return {
-      x: '123',
+      x: 'breaked',
+      y: 'up',
       slide: undefined,
     };
+  },
+  methods: {
+    log(...x) {
+      console.log(...x);
+    },
   },
 };
 </script>

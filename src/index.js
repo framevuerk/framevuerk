@@ -8,7 +8,6 @@ import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 import Sidebar from './components/Sidebar.vue';
 // import fvContainer from './components/Container.vue';
-// import fvSelect from './components/fvSelect.vue'
 // import fvDatepicker from './components/fvDatepicker.vue'
 import List from './components/List.vue';
 import ListItem from './components/ListItem.vue';
@@ -20,11 +19,14 @@ import InputBox from './components/InputBox.vue';
 import Input from './components/Input.vue';
 import Button from './components/Button.vue';
 import Select from './components/Select.vue'
+import SelectOption from './components/SelectOption.vue'
 
 import Slider from './components/Slider.vue';
 import SlideContent from './components/SlideContent.vue';
 import SlideLabel from './components/SlideLabel.vue';
 import Table from './components/Table.vue';
+import TableField from './components/TableField.vue';
+import TableRow from './components/TableRow.vue';
 // import fvSwitch from './components/fvSwitch.vue'
 // import fvDialog from './components/fvDialog.vue'
 // import fvTable from './components/fvTable.vue'
@@ -58,10 +60,13 @@ const Framevuerk = {
       Input,
       Button,
       Select,
+      SelectOption,
       Slider,
       SlideContent,
       SlideLabel,
       Table,
+      TableField,
+      TableRow,
       Loading,
     }, (key, component) => {
       Vue.component(`fv${key}`, component);
@@ -89,10 +94,13 @@ export {
   InputBox,
   Button,
   Select,
+  SelectOption,
   Slider,
   SlideContent,
   SlideLabel,
   Table,
+  TableField,
+  TableRow,
   Loading,
 };
 

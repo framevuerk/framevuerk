@@ -11,8 +11,6 @@
 </template>
 
 <doc>
-@prop global @type Boolean @default true @description If this is scopped and self scrolled layout, set this prop to false, unless leave it.
-
 @slot header @description Header section. By default you need to set this slot on your fvHeader component.
 @slot content @description Content section. By default you need to set this slot on your fvContent component.
 @slot footer @description Footer section. By default you need to set this slot on your fvFooter component.
@@ -35,15 +33,7 @@
 </example>
 
 <script>
-import { dashCase } from '../utility/utils';
-
 export default {
-  props: {
-    global: {
-      type: Boolean,
-      default: true,
-    },
-  },
   provide() {
     return {
       $layout: this,
@@ -69,11 +59,8 @@ export default {
       lockers: 0,
     };
   },
-  mounted() {
-    this.eventEl = this.global ? window : this.$el;
-  },
   beforeDestroy() {
-    (this.global ? window : this.$el).removeEventListener('scroll', this.localScrollListener);
+    window.removeEventListener('scroll', this.localScrollListener);
   },
   methods: {
     on(eventType, listener, immediately = false) {
@@ -82,7 +69,7 @@ export default {
       if (listeners.push(listener) === 1) {
         this.$nextTick(() => {
           setTimeout(() => {
-            this.eventEl.addEventListener(eventType, localListener);
+            window.addEventListener(eventType, localListener);
             if (immediately) {
               localListener();
             }
@@ -93,16 +80,15 @@ export default {
     off(eventType, listener) {
       const listeners = this.listeners[eventType];
       const localListener = this.localListeners[eventType];
-      listeners.splice(listeners.find((l) => listener));
+      listeners.splice(listeners.findIndex((l) => l === listener), 1);
       if (listeners.length === 0) {
-        this.eventEl.removeEventListener(eventType, localListener);
+        window.removeEventListener(eventType, localListener);
       }
     },
     getSidebarPosition(sidebarComponent) {
       return (this.$slots['end-sidebar'] || []).includes(sidebarComponent.$vnode) ? 'end' : 'start';
     },
-    cancelDetector(element, calback) {
-      const layoutEl = (this.global ? window : this.$el);
+    cancelDetector(element, callback) {
       function onKeyDown(event) {
         if (event.which === 27) {
           callback();
@@ -110,19 +96,21 @@ export default {
       }
       function onClick(event) {
         if (!element.contains(event.target)) {
-          calback();
+          callback();
         }
       }
       setTimeout(() => {
-        layoutEl.addEventListener('keydown', onKeyDown);
-        layoutEl.addEventListener('click', onClick);
-        layoutEl.addEventListener('touchstart', onClick);
+        window.addEventListener('keydown', onKeyDown);
+        window.addEventListener('click', onClick);
+        window.addEventListener('touchstart', onClick);
         // focus on current
         const startFocusFor = element.querySelector('[autofocus]') || element;
-        startFocusFor && startFocusFor.focus && startFocusFor.focus();
+        if (startFocusFor && startFocusFor.focus) {
+          startFocusFor.focus();
+        }
         // hide scroll
-        (this.global ? document.body : this.$el).style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
-        (this.global ? document.body : this.$el).style.overflow = 'hidden';
+        document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
+        document.body.style.overflow = 'hidden';
         this.lockers += 1;
       });
       return {
@@ -130,18 +118,17 @@ export default {
           this.lockers -= 1;
           if (this.lockers < 1) {
             this.lockers = 0;
-            (this.global ? document.body : this.$el).style.overflow = null;
-            (this.global ? document.body : this.$el).style.paddingRight = null;
+            document.body.style.overflow = null;
+            document.body.style.paddingRight = null;
           }
-          layoutEl.removeEventListener('keydown', onKeyDown);
-          layoutEl.removeEventListener('click', onClick);
-          layoutEl.removeEventListener('touchstart', onClick);
+          window.removeEventListener('keydown', onKeyDown);
+          window.removeEventListener('click', onClick);
+          window.removeEventListener('touchstart', onClick);
         },
       };
     },
     onScroll() {
-      const el = (this.global ? document.scrollingElement : this.$el);
-      const { scrollTop } = el;
+      const { scrollTop } = document.scrollingElement;
       clearTimeout(this.eventsData.scroll.timeout);
       this.listeners.scroll.forEach((listener) => listener(scrollTop, scrollTop > this.eventsData.scroll.last ? 'down' : 'up'));
       this.eventsData.scroll.timeout = setTimeout(() => {
@@ -149,7 +136,7 @@ export default {
       });
     },
     onResize() {
-      const el = (this.global ? document.body : this.$el);
+      const el = document.scrollingElement;
       const size = {
         width: el.offsetWidth,
         height: el.offsetHeight,
@@ -165,12 +152,12 @@ export default {
       className('layout', {
         display: 'flex',
         flexDirection: 'column',
-        overflow: this.global ? 'visible' : 'auto',
+        overflow: 'visible',
         width: '100%',
         position: 'relative',
         background: this.$theme.colors.background.normal,
         color: this.$theme.colors.background.text,
-        minHeight: this.global ? '100vh' : 'auto',
+        minHeight: '100vh',
         '& > main': {
           display: 'flex',
           maxWidth: '100%',

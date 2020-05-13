@@ -24,20 +24,14 @@
 </example>
 
 <script>
-import { offsetTo } from '../utility/utils';
-
 export default {
+  inject: ['$layout', '$theme'],
   props: {
     type: {
       type: String,
       default: 'normal',
       validator: (v) => ['normal', 'pinned'].includes(v),
     },
-  },
-  data() {
-    return {
-      offsetToParent: 0,
-    };
   },
   style({ className }) {
     const positionMap = {
@@ -59,6 +53,5 @@ export default {
       }),
     ];
   },
-  inject: ['$layout', '$theme'],
 };
 </script>

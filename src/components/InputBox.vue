@@ -24,17 +24,22 @@
       >
         <slot name="input" />
       </div>
-      <component
-        :is="focusElemenTag"
-        v-if="isFocused"
+      <input
+        v-if="isFocused && searchInput"
         ref="focusElement"
         class="focus-element"
         tabindex="-1"
-        :value="searchInputValue"
-        css-width="auto"
+        :value="query"
         css-margin-start="md"
-        :size="searchInputValue.length"
+        :size="query.length || 1"
         @input="onFocusElementInput"
+        @keydown="onFocusElementKeydown"
+      >
+      <span
+        v-else-if="isFocused"
+        ref="focusElement"
+        class="focus-element"
+        tabindex="-1"
         @keydown="onFocusElementKeydown"
       />
     </div>
@@ -52,14 +57,17 @@
 
 <doc>
 @prop searchInput @type Boolean @default false @description Allow users to temporary typing inside value slot? (content accessable via `search` event)
+@prop query @type String @default '' @description User searching string. use .sync modifier to works.
 @prop disabled @type Boolean @default false @description Is disabled?
 @prop isValidate @type Boolean @default true @description Is validated?
 @prop placeholder @type String @default '' @description String shows instead of `input` slot.
 @prop cssColor @type String @default 'background' @description Use any colors that already declared in themeProvider.
 @prop cssSize @type oneOf('xs', 'sm', 'md', 'lg', 'xl') @default 'md' @description Size of element.
 
-@event search @params content @description Triggers when user types into search input.
+@event update:query @params content @description Triggers when user types into search input.
 @event keydown @params nativeEvent @description Triggers when user start pressing a button while 'box' slot is open.
+@event focus @params nativeEvent @description Triggers when user focus on element.
+@event blur @params nativeEvent @description Triggers when user blur from element.
 </doc>
 
 <example>
@@ -109,12 +117,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    query: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
       isFocused: false,
       boxPosition: 'down',
-      searchInputValue: '',
     };
   },
   computed: {
@@ -124,14 +135,14 @@ export default {
       return this.isFocused ? '-1' : (this.$attrs.tabindex || '0');
     },
     shouldRenderPlaceholder() {
-      return this.placeholder && !this.searchInputValue;
+      return this.placeholder && !this.query;
     },
     focusElemenTag() {
       return this.searchInput ? 'input' : 'div';
     },
   },
   methods: {
-    onFocus() {
+    onFocus(event) {
       if (this.disabled) {
         return;
       }
@@ -143,23 +154,24 @@ export default {
       }
 
       this.isFocused = true;
+      this.$emit('focus', event);
       this.$nextTick(() => {
         this.$refs.focusElement.focus();
       });
     },
-    onBlur() {
-      this.searchInputValue = '';
+    onBlur(event) {
       setTimeout(() => {
         if (this.$el.contains(document.activeElement)) {
           return;
         }
+        this.$emit('update:query', '');
         this.isFocused = false;
+        this.$emit('blur', event);
       });
     },
     onFocusElementInput(event) {
       const val = event.target.value;
-      this.searchInputValue = val;
-      this.$emit('search', val);
+      this.$emit('update:query', val);
     },
     onFocusElementKeydown(event) {
       this.$emit('keydown', event);
@@ -190,6 +202,7 @@ export default {
         '& > .input-container': {
 
           // position: 'absolute',
+          display: 'inline-flex',
           minHeight: '100%',
           height: 'auto',
           width: '100%',
@@ -200,9 +213,10 @@ export default {
             whiteSpace: 'nowrap',
             // padding: `0 ${this.$theme.sizes.base.factor('sm', 'size')}`,
           },
-        },
-        '& > .focus-element': {
-          width: 'auto',
+          '& > .focus-element': {
+            width: 'auto',
+            display: 'inline',
+          },
         },
         '& > .box-container': {
           position: 'absolute',

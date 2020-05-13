@@ -12,12 +12,12 @@
 
 @prop direction @type oneOf('ltr', 'rtl') @default 'ltr' @description App direction.
 @prop sizes @type Object { sizeName: Number /* px value */ } @default { base: 8, font: 14, radius: 6, shadow: 2 } @description Application sizes. Keys described in default value will use in framevuerk styling system, others will accessable with `$theme.sizes` object provided by this component.
-@prop colors @type Object { colorName: String /* hex color */ } @default { background: '#fff', gray: '#d4d4d4', primary: '#0B62EA', header: '#0B62EA', sidebar: '#2B2B2B', footer: '#152235' } @description Application colors. Keys described in default value will use in framevuerk styling system, others will accessable with `$theme.colors` object provided by this component.
+@prop colors @type Object { colorName: String /* hex color */ } @default { background: '#FFF', gray: '#AAA', primary: '#0B62EA', danger: '#EF2424', header: '#0B62EA', sidebar: '#2B2B2B', footer: '#152235' } @description Application colors. Keys described in default value will use in framevuerk styling system, others will accessable with `$theme.colors` object provided by this component.
 @prop speed @type Number /* millisecond value */ @default 250 @description App animations base speed.
 
 @slot default
 
-@globalProp 
+@globalProp
 </doc>
 
 <example>
@@ -171,9 +171,10 @@ export default {
     },
     _colors() {
       const defaultColors = {
-        background: '#fff',
-        gray: '#d4d4d4',
+        background: '#FFF',
+        gray: '#AAA',
         primary: '#0B62EA',
+        danger: '#EF2424',
         header: '#0B62EA',
         sidebar: '#2B2B2B',
         footer: '#152235',

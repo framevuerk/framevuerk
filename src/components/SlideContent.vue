@@ -4,6 +4,12 @@
   </div>
 </template>
 
+<doc>
+@doc @description Use as contents of slides inside Slider component. Check Slider component to view example.
+@slot default
+@prop name* @type String @description Tab unique name.
+</doc>
+
 <script>
 export default {
   inject: ['$theme'],
