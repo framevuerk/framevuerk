@@ -220,6 +220,13 @@
                 >
                   Input Box
                 </fvListItem>
+                <fvListItem
+                  tag="router-link"
+                  to="/components/pagination"
+                  :class="{ selected: isSelected('component', 'pagination') }"
+                >
+                  Pagination
+                </fvListItem>
               </fvList>
             </fvListItem>
           </fvList>
