@@ -103,7 +103,6 @@ import formElement from '../mixins/formElement';
 const toStatic = JSON.stringify;
 
 export default {
-  inject: ['$theme'],
   provide() {
     return {
       $select: this,
