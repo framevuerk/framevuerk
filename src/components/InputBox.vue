@@ -45,7 +45,7 @@
     </div>
     <transition :name="$style.boxAnimation">
       <div
-        v-if="isFocused"
+        v-show="isFocused"
         :class="boxPosition"
         class="box-container"
       >
