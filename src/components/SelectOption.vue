@@ -45,7 +45,7 @@ export default {
       return this.$select.forceArrayValue.findIndex((x) => toStatic(x) === toStatic(this.value)) > -1;
     },
   },
-  created() {
+  mounted() {
     this.$select.options.push(this);
   },
   methods: {
