@@ -65,7 +65,7 @@
 @config state true
 @config example true
 
-@data val = undefined
+@data val = 'm'
 <fvSelect v-model="val" placeholder="Sex">
   <fvSelectOption value="m"> Male </fvSelectOption>
   <fvSelectOption value="f"> Female </fvSelectOption>
@@ -79,7 +79,7 @@
 @config example true
 
 @data options = [{value: 'milan', title: 'A.C. Milan'}, {value: 'inter', title: 'Inter Milan'}, {value: 'juve', title: 'Juventus F.C.'}, {value: 'napoli', title: 'S.C.S. Napoli'}, {value: 'lazio', title: 'SS Lazio'}]
-@data val = []
+@data val = ['milan']
 @data query = ''
 <fvSelect v-model="val" multiple placeholder="Favorite Teams" :search-input="true" :query.sync="query">
   <fvSelectOption
@@ -173,18 +173,15 @@ export default {
       this.$emit('update:query', newQuery);
     },
     onFocus() {
-      // this.$el.select();
       this.onFocusDefault();
     },
     onBlur() {
-      // this.$el.select();
       this.onBlurDefault();
     },
     itemIndex(option) {
       return this.forceArrayValue.findIndex((x) => toStatic(x) === toStatic(option));
     },
     handleOptionsHighlight(e) {
-      // console.log(e);
       this.$refs.optionsList.onKeydown(e, 'select');
     },
     handleClickOption(item) {
