@@ -3,6 +3,8 @@
     :placeholder="isEmpty ? placeholder : ''"
     :search-input="searchInput"
     :query="query"
+    :disabled="disabled"
+    :is-validate="isValidate"
     @update:query="handleUpdateQuery"
     @keydown="handleOptionsHighlight"
     @focus="onFocus"
@@ -66,7 +68,7 @@
 @config example true
 
 @data val = 'm'
-<fvSelect v-model="val" placeholder="Sex">
+<fvSelect v-model="val" placeholder="Sex" disabled>
   <fvSelectOption value="m"> Male </fvSelectOption>
   <fvSelectOption value="f"> Female </fvSelectOption>
   <fvSelectOption value="o"> Other </fvSelectOption>
@@ -185,6 +187,9 @@ export default {
       this.$refs.optionsList.onKeydown(e, 'select');
     },
     handleClickOption(item) {
+      if (this.disabled) {
+        return;
+      }
       const index = this.itemIndex(item);
       if (this.multiple) {
         if (index > -1) {

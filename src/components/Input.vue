@@ -133,11 +133,17 @@ export default {
         fontSize: this.$theme.sizes.font.factor(this.$size, 'font'),
         padding: `${this.$theme.sizes.base.normal}`,
         resize: 'vertical',
-        '&:hover, &:focus': {
-          borderColor: $color.autoShade(-39),
-        },
         '&::placeholder': {
           color: this.$theme.colors.gray.normal,
+        },
+        '&[disabled]': {
+          opacity: 0.5,
+          cursor: 'not-allowed',
+        },
+        '&:not([disabled])': {
+          '&:hover, &:focus': {
+            borderColor: $color.autoShade(-39),
+          },
         },
       }),
     ];

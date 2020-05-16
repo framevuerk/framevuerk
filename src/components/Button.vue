@@ -116,11 +116,17 @@ export default {
         overflow: 'hidden',
         textDecoration: 'blink',
         userSelect: 'none',
-        '&:hover, &:focus': {
-          backgroundColor: $color.autoShade(10, this.invert ? 0.1 : 1),
+        '&[disabled]': {
+          opacity: 0.5,
+          cursor: 'not-allowed',
         },
-        '&:active': {
-          backgroundColor: $color.autoShade(-15, this.invert ? 0.2 : 1),
+        '&:not([disabled])': {
+          '&:hover, &:focus': {
+            backgroundColor: $color.autoShade(10, this.invert ? 0.1 : 1),
+          },
+          '&:active': {
+            backgroundColor: $color.autoShade(-15, this.invert ? 0.2 : 1),
+          },
         },
       }),
     ];

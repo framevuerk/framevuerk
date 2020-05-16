@@ -132,6 +132,9 @@ export default {
     // when box is opened, focus moves to input. so wee need to prevent browser to focus
     // container again by shift+tab
     containerTabIndex() {
+      if (this.disabled) {
+        return undefined;
+      }
       return this.isFocused ? '-1' : (this.$attrs.tabindex || '0');
     },
     shouldRenderPlaceholder() {
@@ -196,11 +199,16 @@ export default {
         flexDirection: 'row',
         alignItems: 'center',
         fontSize: this.$theme.sizes.font.factor(this.$size, 'font'),
-        '&:hover, &:focus, &[focus]': {
-          borderColor: $color.autoShade(-39),
+        '&[disabled]': {
+          opacity: 0.5,
+          cursor: 'not-allowed',
+        },
+        '&:not([disabled])': {
+          '&:hover, &:focus, &[focus]': {
+            borderColor: $color.autoShade(-39),
+          },
         },
         '& > .input-container': {
-
           // position: 'absolute',
           display: 'inline-flex',
           minHeight: '100%',
