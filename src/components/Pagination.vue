@@ -82,7 +82,7 @@
 @config example true
 
 @data val = undefined
-<fvPagination v-model="val" :total="10" />
+<fvPagination v-model="val" :total="1" />
 </example>
 
 <example>
@@ -144,7 +144,7 @@ export default {
         key: key(),
       });
       const ret = [];
-      if (this.total > 1 && this.size >= this.total) {
+      if (this.total > 0 && this.size >= this.total) {
         // return full set if size is enaugh for all
         for (let i = 0; i < this.total; i += 1) {
           ret.push(numberObj(i + 1));
