@@ -118,6 +118,13 @@
                 </fvListItem>
                 <fvListItem
                   tag="router-link"
+                  to="/components/check"
+                  :class="{ selected: isSelected('component', 'check') }"
+                >
+                  Check Box / Radio Button
+                </fvListItem>
+                <fvListItem
+                  tag="router-link"
                   to="/components/button"
                   :class="{ selected: isSelected('component', 'button') }"
                 >

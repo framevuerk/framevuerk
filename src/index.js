@@ -18,8 +18,8 @@ import InputGroup from './components/InputGroup.vue';
 import InputBox from './components/InputBox.vue';
 import Input from './components/Input.vue';
 import Button from './components/Button.vue';
-import Select from './components/Select.vue'
-import SelectOption from './components/SelectOption.vue'
+import Select from './components/Select.vue';
+import SelectOption from './components/SelectOption.vue';
 
 import Slider from './components/Slider.vue';
 import SlideContent from './components/SlideContent.vue';
@@ -29,8 +29,7 @@ import TableField from './components/TableField.vue';
 import TableRow from './components/TableRow.vue';
 // import fvSwitch from './components/fvSwitch.vue'
 // import fvDialog from './components/fvDialog.vue'
-// import fvTable from './components/fvTable.vue'
-// import fvCheck from './components/fvCheck.vue'
+import Check from './components/Check.vue';
 // import fvImg from './components/fvImg.vue'
 // import fvSlider from './components/fvSlider.vue'
 // import fvSlide from './components/fvSlide.vue'
@@ -69,6 +68,7 @@ const Framevuerk = {
       TableRow,
       Loading,
       Pagination,
+      Check,
     }, (key, component) => {
       Vue.component(`fv${key}`, component);
     });
@@ -104,6 +104,7 @@ export {
   TableRow,
   Loading,
   Pagination,
+  Check,
 };
 
 export default Framevuerk;
