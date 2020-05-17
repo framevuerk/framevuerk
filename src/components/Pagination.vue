@@ -13,7 +13,7 @@
       </fvButton>
     </span>
     <span
-      v-for="page in pages"
+      v-for="page in pages()"
       :key="page.key"
       class="page"
     >
@@ -82,7 +82,7 @@
 @config example true
 
 @data val = undefined
-<fvPagination v-model="val" :total="1" />
+<fvPagination v-model="val" :total="10" />
 </example>
 
 <example>
@@ -129,9 +129,10 @@ export default {
   data() {
     return {
       inputMode: false,
+      uniqueKey: 1,
     };
   },
-  computed: {
+  methods: {
     pages() {
       const key = () => `${Math.random()}${Date.now()}`;
       const numberObj = (number) => ({
@@ -179,8 +180,6 @@ export default {
       ret.push(numberObj(this.total));
       return ret;
     },
-  },
-  methods: {
     turnInputMode() {
       this.inputMode = true;
       this.$nextTick(() => {
