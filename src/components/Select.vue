@@ -7,8 +7,8 @@
     :is-validate="isValidate"
     @update:query="handleUpdateQuery"
     @keydown="handleOptionsHighlight"
-    @focus="onFocus"
-    @blur="onBlur"
+    @focus="onFocusDefault"
+    @blur="onBlurDefault"
   >
     <div
       v-if="!isEmpty"
@@ -174,15 +174,6 @@ export default {
     handleUpdateQuery(newQuery) {
       this.$emit('update:query', newQuery);
     },
-    onFocus() {
-      this.onFocusDefault();
-    },
-    onBlur() {
-      this.onBlurDefault();
-    },
-    itemIndex(option) {
-      return this.forceArrayValue.findIndex((x) => toStatic(x) === toStatic(option));
-    },
     handleOptionsHighlight(e) {
       this.$refs.optionsList.onKeydown(e, 'select');
     },
@@ -190,7 +181,7 @@ export default {
       if (this.disabled) {
         return;
       }
-      const index = this.itemIndex(item);
+      const index = this.forceArrayValue.findIndex((x) => toStatic(x) === toStatic(item));
       if (this.multiple) {
         if (index > -1) {
           this.$emit('input', [
