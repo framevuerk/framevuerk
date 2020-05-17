@@ -101,11 +101,11 @@ export default {
         width,
         cursor: 'pointer',
         '& > .container': {
-          backgroundColor: $color.normal,
+          backgroundColor: $color.shade(5),
           borderWidth: '1px',
-          borderColor: $color.shade(-16),
+          borderColor: $color.shade(-13),
           width: '100%',
-          height: '8px',
+          height: '10px',
           borderRadius: this.$theme.sizes.radius.factor('md', 'radius'),
           '& > .handler': {
             position: 'absolute',

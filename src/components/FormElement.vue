@@ -132,11 +132,11 @@ export default {
 
           '& > label': {
             paddingBottom: this.$theme.sizes.base.normal,
+            flexGrow: 1,
           },
           '& > *': {
             '&:last-child': {
               [`margin-${this.$theme.direction.start}`]: this.$theme.sizes.base.normal,
-              flexGrow: 1,
             },
           },
           '&:not(.inline) > .container > *': {
