@@ -27,9 +27,9 @@ import SlideLabel from './components/SlideLabel.vue';
 import Table from './components/Table.vue';
 import TableField from './components/TableField.vue';
 import TableRow from './components/TableRow.vue';
-// import fvSwitch from './components/fvSwitch.vue'
 // import fvDialog from './components/fvDialog.vue'
 import Check from './components/Check.vue';
+import Switch from './components/Switch.vue';
 // import fvImg from './components/fvImg.vue'
 // import fvSlider from './components/fvSlider.vue'
 // import fvSlide from './components/fvSlide.vue'
@@ -69,6 +69,7 @@ const Framevuerk = {
       Loading,
       Pagination,
       Check,
+      Switch,
     }, (key, component) => {
       Vue.component(`fv${key}`, component);
     });
@@ -105,6 +106,7 @@ export {
   Loading,
   Pagination,
   Check,
+  Switch,
 };
 
 export default Framevuerk;

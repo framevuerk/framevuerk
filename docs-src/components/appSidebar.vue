@@ -125,6 +125,13 @@
                 </fvListItem>
                 <fvListItem
                   tag="router-link"
+                  to="/components/switch"
+                  :class="{ selected: isSelected('component', 'switch') }"
+                >
+                  Switch
+                </fvListItem>
+                <fvListItem
+                  tag="router-link"
                   to="/components/button"
                   :class="{ selected: isSelected('component', 'button') }"
                 >
