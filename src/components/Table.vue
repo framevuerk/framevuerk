@@ -73,6 +73,7 @@ export default {
         boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: 'bottom' }),
         borderRadius: this.$theme.sizes.radius.factor('md', 'radius'),
         width: '100%',
+        maxWidth: '100%',
         '& > thead > th': {
           ...fieldContainerCommonStyle,
           borderBottomWidth: '1px',
