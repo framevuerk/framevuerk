@@ -40,7 +40,9 @@ export default {
           el.$children.forEach((child) => {
             if (child.isValidate === false) {
               ret.push(child);
-              child.reject();
+              if (typeof child.reject === 'function') {
+                child.reject();
+              }
             }
             if (child.$children.length) {
               ret = ret.concat(insideFunc(child));
