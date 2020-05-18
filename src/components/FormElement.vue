@@ -118,7 +118,7 @@ export default {
         '&:not(.single-line)': {
           flexDirection: 'column',
 
-          '& > label': {
+          '& > .label': {
             paddingBottom: this.$theme.sizes.base.multiplyBy(0.5),
           },
           '& > *': {

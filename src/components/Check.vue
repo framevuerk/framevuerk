@@ -15,7 +15,10 @@
       class="box"
       :class="{square: multiple, circle: !multiple}"
     />
-    <span class="label">
+    <span
+      class="label"
+      css-padding-start="md"
+    >
       <slot />
     </span>
   </div>
@@ -172,7 +175,6 @@ export default {
         },
         '& > .label': {
           display: 'inline-block',
-          margin: '0 3px',
         },
         '&[disabled]': {
           opacity: 0.5,
