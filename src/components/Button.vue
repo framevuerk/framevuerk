@@ -96,6 +96,7 @@ export default {
     const $color = this.$theme.colors[this.$color];
     return [
       className('button', {
+        font: 'inherit',
         display: 'inline-block',
         backgroundColor: this.invert ? 'transparent' : $color.normal,
         color: $color[this.invert ? 'normal' : 'text'],

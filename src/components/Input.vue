@@ -121,6 +121,7 @@ export default {
     const $color = this.$theme.colors[this.$color];
     return [
       className('input', {
+        font: 'inherit',
         display: 'inline-block',
         backgroundColor: $color.shade(5),
         color: $color.text,
