@@ -65,6 +65,7 @@ export default {
       textAlign: 'center',
       padding: `${this.$theme.sizes.base.factor('md', 'size')}`,
       backgroundColor: 'transparent',
+      verticalAlign: 'middle',
     };
 
     return [
