@@ -17,14 +17,25 @@
 @config example true
 
 @data val = ''
-@data alert = (x) => { alert(x) }
+@data val2 = []
+@data alert = (x) => { console.log(x) }
 
-<fvForm @submit="alert('submitted')" @reject="alert('rejected')">
-  <div>
+<fvForm @submit="alert('submitted')" @reject="alert('rejected')" css-border="md" css-max-width="xs">
+  <fvFormElement css-padding="md">
+    <div slot="label"> Name </div>
     <fvInput v-model="val" required placeholder="Enter your name" />
-  </div>
-  <div css-padding-y="md" />
-  <div>
+  </fvFormElement>
+  <fvFormElement css-padding="md" inline>
+    <div slot="label"> Gender </div>
+    <fvCheck content="ss" v-model="val2" multiple required> Super-Small </fvCheck>
+    <fvCheck content="xs" v-model="val2" multiple required> X-Small </fvCheck>
+    <fvCheck content="sm" v-model="val2" multiple required> Small </fvCheck>
+    <fvCheck content="md" v-model="val2" multiple required> Medium </fvCheck>
+    <fvCheck content="lg" v-model="val2" multiple required> Large </fvCheck>
+    <fvCheck content="xl" v-model="val2" multiple required> X-Large </fvCheck>
+    <fvCheck content="sl" v-model="val2" multiple required> Super-Large </fvCheck>
+  </fvFormElement>
+  <div css-margin-top="md" css-padding="md" css-border-top="md">
     <fvButton css-color="primary" type="submit"> Submit </fvButton>
   </div>
 </fvForm>
@@ -38,13 +49,12 @@ export default {
         const insideFunc = (el) => {
           let ret = [];
           el.$children.forEach((child) => {
-            if (child.isValidate === false) {
+            if (typeof child.isValidate !== 'undefined' && !child.isValidate) {
               ret.push(child);
               if (typeof child.reject === 'function') {
                 child.reject();
               }
-            }
-            if (child.$children.length) {
+            } else if (child.$children.length) {
               ret = ret.concat(insideFunc(child));
             }
           });
