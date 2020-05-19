@@ -20,7 +20,7 @@
         css-display="inline-block"
         css-border="md"
         css-radius="md"
-        css-padding-x="sm"
+        css-padding-start="md"
         css-margin-y="xs"
         css-margin-end="xs"
       >
@@ -29,8 +29,7 @@
         <span
           css-cursor="pointer"
           css-border-start="md"
-          css-padding-start="sm"
-          css-padding-end="xs"
+          css-padding-x="md"
           @click="handleClickOption(item)"
         >
           x
