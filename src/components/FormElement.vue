@@ -108,6 +108,7 @@ export default {
         '& > .label': {
           display: 'block',
           minWidth: '25%',
+          fontWeight: 'bold',
           '&:not(.highlighted)': {
             opacity: 0.7,
           },

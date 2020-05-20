@@ -31,6 +31,9 @@ export default {
       this.$el.focus();
     },
     reject() {
+      if (this.$formElement) {
+        this.$formElement.setIsValidate(false);
+      }
       this.$emit('reject');
     },
     onFocusDefault() {
