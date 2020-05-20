@@ -45,9 +45,11 @@
     </div>
     <transition :name="$style.boxAnimation">
       <div
-        v-show="isFocused"
+        v-show="isFocused && isOpened"
+        ref="box"
         :class="boxPosition"
         class="box-container"
+        @click="onBoxClick"
       >
         <slot name="box" />
       </div>
@@ -121,10 +123,15 @@ export default {
       type: String,
       default: '',
     },
+    autoClose: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
       isFocused: false,
+      isOpened: false,
       boxPosition: 'down',
     };
   },
@@ -157,6 +164,7 @@ export default {
       }
 
       this.isFocused = true;
+      this.isOpened = true;
       this.$emit('focus', event);
       this.$nextTick(() => {
         this.$refs.focusElement.focus();
@@ -169,7 +177,17 @@ export default {
         }
         this.$emit('update:query', '');
         this.isFocused = false;
+        this.isOpened = false;
         this.$emit('blur', event);
+      });
+    },
+    onBoxClick(e) {
+      this.$nextTick(() => {
+        if (this.autoClose && e.target !== this.$refs.box) {
+          this.$refs.focusElement.focus();
+          this.isFocused = true;
+          this.isOpened = false;
+        }
       });
     },
     onFocusElementInput(event) {
@@ -178,15 +196,15 @@ export default {
     },
     onFocusElementKeydown(event) {
       this.$emit('keydown', event);
+      this.isFocused = true;
+      this.isOpened = true;
     },
   },
   style({ className }) {
     const $color = this.$theme.colors[this.$color];
     return [
       className('inputBox', {
-        // display: 'inline-block',
         position: 'relative',
-        // overflow: 'visible',
         backgroundColor: $color.shade(5),
         color: $color.text,
         boxShadow: this.$theme.sizes.shadow.factor(this.$size, 'shadow', { dir: 'bottom' }),
@@ -209,17 +227,14 @@ export default {
           },
         },
         '& > .input-container': {
-          // position: 'absolute',
           display: 'inline-flex',
           minHeight: '100%',
           height: 'auto',
           width: '100%',
-          // padding: `0 ${this.$theme.sizes.base.factor('sm', 'size')}`,
           overflow: 'hidden',
           '& > .placeholder': {
             color: this.$theme.colors.gray.normal,
             whiteSpace: 'nowrap',
-            // padding: `0 ${this.$theme.sizes.base.factor('sm', 'size')}`,
           },
           '& > .focus-element': {
             width: 'auto',

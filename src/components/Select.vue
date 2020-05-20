@@ -5,6 +5,7 @@
     :query="query"
     :disabled="disabled"
     :is-validate="isValidate"
+    :auto-close="!multiple"
     @update:query="handleUpdateQuery"
     @keydown="handleOptionsHighlight"
     @focus="onFocusDefault"
@@ -67,7 +68,7 @@
 @config example true
 
 @data val = 'm'
-<fvSelect v-model="val" placeholder="Sex" disabled>
+<fvSelect v-model="val" placeholder="Sex">
   <fvSelectOption value="m"> Male </fvSelectOption>
   <fvSelectOption value="f"> Female </fvSelectOption>
   <fvSelectOption value="o"> Other </fvSelectOption>
