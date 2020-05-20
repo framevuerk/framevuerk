@@ -105,7 +105,7 @@ export default {
           },
         },
       }),
-      mediaQuery({ maxWidth: '767px' }, [
+      mediaQuery({ maxWidth: '1200px' }, [
         className('table', {
           '& > thead': {
             display: 'none',
