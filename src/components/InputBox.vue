@@ -63,6 +63,7 @@
 @prop disabled @type Boolean @default false @description Is disabled?
 @prop isValidate @type Boolean @default true @description Is validated?
 @prop placeholder @type String @default '' @description String shows instead of `input` slot.
+@prop autoClose @type Boolean @defeault true auto close outer box when user clicks on it.
 @prop cssColor @type String @default 'background' @description Use any colors that already declared in themeProvider.
 @prop cssSize @type oneOf('xs', 'sm', 'md', 'lg', 'xl') @default 'md' @description Size of element.
 
