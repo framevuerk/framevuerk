@@ -116,6 +116,7 @@ export default {
         cursor: 'pointer',
         overflow: 'hidden',
         textDecoration: 'blink',
+        whiteSpace: 'nowrap',
         userSelect: 'none',
         '&[disabled]': {
           opacity: 0.5,
