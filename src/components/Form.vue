@@ -86,12 +86,14 @@ export default {
   methods: {
     submit() {
       const invalids = [];
+      const values = {};
       const formElements = (() => {
         const insideFunc = (el) => {
           let ret = {};
           el.$children.forEach((child) => {
             if (typeof child.validation === 'function') {
               child.valueChangesHandler(child.value);
+              values[child.name] = child.formattedValue;
               ret[child.name] = {
                 component: child,
                 value: child.formattedValue,
@@ -117,7 +119,7 @@ export default {
         invalids[0].component.focus();
         this.$emit('reject', formElements);
       } else {
-        this.$emit('submit', formElements);
+        this.$emit('submit', values);
       }
     },
   },
