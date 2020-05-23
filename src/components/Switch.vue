@@ -66,17 +66,6 @@ export default {
     tabindex() {
       return this.disabled ? null : (this.$attrs.tabindex || 0);
     },
-    isValidate() {
-      if (this.disabled) {
-        return true;
-      }
-      if (this.required === true) {
-        return this.isOn;
-      } if (typeof this.required === 'function') {
-        return this.required(this.value);
-      }
-      return true;
-    },
   },
   methods: {
     onClick() {

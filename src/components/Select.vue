@@ -149,18 +149,6 @@ export default {
     isEmpty() {
       return this.forceArrayValue.length === 0;
     },
-    isValidate() {
-      if (this.disabled) {
-        return true;
-      }
-      if (this.required === true) {
-        return !this.isEmpty;
-      }
-      if (typeof this.required === 'function') {
-        return this.required(this.value);
-      }
-      return true;
-    },
   },
   methods: {
     singleValueTemplate(value) {

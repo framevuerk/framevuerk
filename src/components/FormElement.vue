@@ -4,7 +4,7 @@
   >
     <div
       class="label"
-      :class="[isHighlighted && 'highlighted', !isValid && 'unvalid']"
+      :class="[isHighlighted && 'highlighted', !isValidate && 'unvalid']"
     >
       <slot
         name="label"
@@ -18,6 +18,9 @@
       <slot />
     </div>
     <slot v-else />
+    <div v-if="hasErrorsSlot">
+      <slot name="errors" :errors="errors" />
+    </div>
   </div>
 </template>
 
@@ -68,6 +71,8 @@
 </example>
 
 <script>
+import { hasSlot } from '../utility/utils';
+
 export default {
   inject: ['$theme'],
   props: {
@@ -82,22 +87,20 @@ export default {
   },
   data() {
     return {
-      isHighlighted: false,
-      isValid: true,
+      isHighlighted: false, // will set from child component
+      isValidate: true, // will set from child component
+      errors: [], // will set from child component
     };
+  },
+  computed: {
+    hasErrorsSlot() {
+      return hasSlot(this, 'errors');
+    },
   },
   provide() {
     return {
       $formElement: this,
     };
-  },
-  methods: {
-    turn(on = true) {
-      this.isHighlighted = on;
-    },
-    setIsValidate(newValue) {
-      this.isValid = newValue;
-    },
   },
   style({ className }) {
     return [

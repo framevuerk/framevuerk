@@ -99,20 +99,6 @@ export default {
     tabindex() {
       return this.disabled ? null : (this.$attrs.tabindex || 0);
     },
-    isValidate() {
-      if (this.disabled) {
-        return true;
-      }
-      if (this.required === true) {
-        if (this.multiple) {
-          return this.value && this.value.constructor === Array && this.value.length;
-        }
-        return typeof this.value !== 'undefined';
-      } if (typeof this.required === 'function') {
-        return this.required(this.value);
-      }
-      return true;
-    },
     forceArrayValue() {
       // eslint-disable-next-line no-nested-ternary
       return this.multiple ? this.value : (this.value ? [this.value] : []);

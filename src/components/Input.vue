@@ -113,18 +113,6 @@ export default {
     tag() {
       return this.multiLine ? 'textarea' : 'input';
     },
-    isValidate() {
-      if (this.disabled) {
-        return true;
-      }
-      if (this.required === true) {
-        return !!this.value;
-      }
-      if (typeof this.required === 'function') {
-        return this.required(this.value);
-      }
-      return true;
-    },
   },
   methods: {
     onFocus() {
