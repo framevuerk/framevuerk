@@ -1,15 +1,17 @@
 <template>
-  <component
-    :is="tag"
-    :class="$style.input"
-    :placeholder="placeholder"
-    :disabled="disabled"
-    :invalid="!isValidate"
-    :value="value"
+  <input
+    v-if="!multiLine"
+    v-model="theValue"
+    v-bind="commonAttrs"
     @focus="onFocus"
     @blur="onBlurDefault"
-    @input="onInput"
-    v-text="value"
+  >
+  <textarea
+    v-else
+    v-model="theValue"
+    v-bind="commonAttrs"
+    @focus="onFocus"
+    @blur="onBlurDefault"
   />
 </template>
 
@@ -31,7 +33,7 @@
 @config example true
 
 @data val = 'Normal'
-<fvInput placeholder="Type something" v-model="val" />
+<fvInput placeholder="Type something" v-model="val" /> {{val}}
 
 </example>
 
@@ -92,6 +94,22 @@ export default {
     },
   },
   computed: {
+    theValue: {
+      get() {
+        return this.value || '';
+      },
+      set(x) {
+        this.$emit('input', x);
+      },
+    },
+    commonAttrs() {
+      return {
+        class: this.$style.input,
+        placeholder: this.placeholder,
+        disabled: this.disabled,
+        invalid: !this.isValidate,
+      };
+    },
     tag() {
       return this.multiLine ? 'textarea' : 'input';
     },
