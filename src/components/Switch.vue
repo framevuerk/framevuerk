@@ -19,8 +19,12 @@
 @prop value* @type oneOf(onValue /* described in props */, offValue /* described in props */) @description Value of input.
 @prop onValue @type Any @default false @description Selected value when switch is on.
 @prop offValue @type Any @default false @description Selected value when switch is off.
-@prop required @type Boolean or Function @default false @description If you use this element inside `form` component, the `form` component will reject until this element filled. by passing `false` this check will be skiped and by passing function, you can manualy get current value as an argument and return true/false to allow/reject form submits.
 @prop disabled @type Boolean @default false @description Is disabled?
+@prop required @type Boolean @default false @description Is required to fill?
+@prop validation @type Function @default () => true @description If you use this element inside `form` component, the `form` component will reject until this function pass `true` or empty array. You can return Array of errors or even Boolean value at the end of function.
+@prop formatter @type Function @default (value) => value @description If you use this element inside `form` component, will format `value` of component by this function.
+@prop name @type String @default () => Math.random() @description If you use this element inside `form` component, you will access the value and triggered errors of this component by this key.
+
 @prop cssColor @type String @default 'background' @description Use any colors that already declared in themeProvider.
 
 @event input @params newValue @description Triggers when value changes within component.

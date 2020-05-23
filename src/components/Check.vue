@@ -26,9 +26,12 @@
 
 <doc>
 @prop value @type oneOf(Any /* for non-multiple */, Array /* for multiple */) @default undefined @description Value of input.
-@prop content @type Any @default undefined @description The data of current item that you want to inject to value.
-@prop required @type Boolean or Function @default false @description If you use this element inside `form` component, the `form` component will reject until this element filled. by passing `false` this check will be skiped and by passing function, you can manualy get current value as an argument and return true/false to allow/reject form submits.
 @prop disabled @type Boolean @default false @description Is disabled?
+@prop required @type Boolean @default false @description Is required to fill?
+@prop validation @type Function @default () => true @description If you use this element inside `form` component, the `form` component will reject until this function pass `true` or empty array. You can return Array of errors or even Boolean value at the end of function.
+@prop formatter @type Function @default (value) => value @description If you use this element inside `form` component, will format `value` of component by this function.
+@prop name @type String @default () => Math.random() @description If you use this element inside `form` component, you will access the value and triggered errors of this component by this key.
+@prop content @type Any @default undefined @description The data of current item that you want to inject to value.
 @prop multiple @type Boolean @default false @description If this input is multi choice (checkbox), use `true` and if this is not (radio), pass `false`.
 @prop cssColor @type String @default 'background' @description Use any colors that already declared in themeProvider.
 

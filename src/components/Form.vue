@@ -7,8 +7,8 @@
 <doc>
 @slot default
 
-@event submit @description Triggers when form submitted.
-@event reject @params listOfInvalids @description Triggers when form submitted but it's rejected because of element validation.
+@event submit @params objectOfElementsWithFormattedValue @description Triggers when form submitted.
+@event reject @params objectOfElementsWithErrors @description Triggers when form submitted but it's rejected because of element validation.
 </doc>
 
 <example>
