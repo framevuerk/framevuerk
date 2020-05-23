@@ -60,8 +60,17 @@ export default {
     valueChangesHandler(newValue) {
       const formattedValue = this.formatter(newValue);
       let errors = [];
-      if (!this.disabled) {
-        const validation = this.validation(formattedValue);
+      const validation = this.validation(formattedValue);
+      const isFilled = (() => {
+        if (this.multiple) {
+          return Array.isArray(formattedValue) && formattedValue.length;
+        }
+        return !!formattedValue;
+      })();
+      const isRequired = this.required;
+      const isEnabled = !this.disabled;
+
+      const putValidationErrors = () => {
         if (typeof validation === 'string') {
           errors = [
             validation,
@@ -70,21 +79,19 @@ export default {
           errors = [
             ...validation,
           ];
-        } else if (
-          validation === false
-          || (
-            this.required
-            && (
-              !formattedValue
-              || (this.multiple && (
-                !Array.isArray(formattedValue)
-                || formattedValue.length === 0
-              ))
-            )
-          )
-        ) {
+        } else if (validation === false) {
           errors = [
-            'Invalid Value',
+            'Invalid',
+          ];
+        }
+      };
+
+      if (isEnabled) {
+        if (isFilled) {
+          putValidationErrors();
+        } else if (isRequired) {
+          errors = [
+            'Required',
           ];
         }
       }
