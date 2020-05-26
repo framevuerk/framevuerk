@@ -2,14 +2,20 @@
   <input
     v-if="!multiLine"
     v-model="theValue"
-    v-bind="commonAttrs"
+    :class="$style.input"
+    :placeholder="placeholder"
+    :disabled="disabled"
+    :invalid="!isValidate"
     @focus="onFocus"
     @blur="onBlurDefault"
   >
   <textarea
     v-else
     v-model="theValue"
-    v-bind="commonAttrs"
+    :class="$style.input"
+    :placeholder="placeholder"
+    :disabled="disabled"
+    :invalid="!isValidate"
     @focus="onFocus"
     @blur="onBlurDefault"
   />
@@ -37,7 +43,7 @@
 @config example true
 
 @data val = 'Normal'
-<fvInput placeholder="Type something" v-model="val" /> {{val}}
+<fvInput placeholder="Type something" v-model="val" type="password"/> {{val}}
 
 </example>
 
@@ -106,25 +112,11 @@ export default {
         this.$emit('input', x);
       },
     },
-    commonAttrs() {
-      return {
-        class: this.$style.input,
-        placeholder: this.placeholder,
-        disabled: this.disabled,
-        invalid: !this.isValidate,
-      };
-    },
-    tag() {
-      return this.multiLine ? 'textarea' : 'input';
-    },
   },
   methods: {
-    onFocus() {
+    onFocus(e) {
       this.$el.select();
       this.onFocusDefault();
-    },
-    onInput(event) {
-      this.$emit('input', event.target.value);
     },
   },
   style({ className }) {
