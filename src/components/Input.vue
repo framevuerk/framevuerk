@@ -114,7 +114,7 @@ export default {
     },
   },
   methods: {
-    onFocus(e) {
+    onFocus() {
       this.$el.select();
       this.onFocusDefault();
     },
