@@ -11,9 +11,9 @@
     @focus="onFocusDefault"
     @blur="onBlurDefault"
   >
-    <div
+    <template
       v-if="!isEmpty"
-      slot="input"
+      #input
     >
       <span
         v-for="item in forceArrayValue"
@@ -36,8 +36,8 @@
           x
         </span>
       </span>
-    </div>
-    <div slot="box">
+    </template>
+    <template #box>
       <fvList
         ref="optionsList"
         tabindex="-1"
@@ -45,7 +45,7 @@
       >
         <slot />
       </fvList>
-    </div>
+    </template>
   </fvInputBox>
 </template>
 
