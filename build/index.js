@@ -27,7 +27,7 @@ if (watch) {
     cli.write('Serving docs...');
     const devServer = {
       contentBase: 'docs-src',
-      port: 8080,
+      port: 3231,
       stats: 'none',
       host: '0.0.0.0',
       clientLogLevel: 'none',
