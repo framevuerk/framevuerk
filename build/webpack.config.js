@@ -2,6 +2,8 @@ const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WebpackBar = require('webpackbar');
+
 
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
@@ -9,6 +11,7 @@ module.exports = (config) => {
   const output = {};
   const plugins = [
     new VueLoaderPlugin(),
+    new WebpackBar(),
     new FriendlyErrorsWebpackPlugin(),
   ];
 
@@ -18,7 +21,6 @@ module.exports = (config) => {
     output.library = 'framevuerk';
     output.libraryTarget = 'umd';
     output.libraryExport = 'default';
-    console.warn(output);
   } else {
     output.path = path.resolve(__dirname, '../docs');
     output.filename = 'bundle.js';
