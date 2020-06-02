@@ -18,7 +18,7 @@
   <!-- ... -->
   <!-- ... -->
   <!-- ... -->
-  <fvFooter slot="footer"> <!-- Content --> </fvFooter>
+  <fvFooter #footer> <!-- Content --> </fvFooter>
 </fvLayout>
 
 </example>

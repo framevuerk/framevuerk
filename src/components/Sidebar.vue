@@ -20,7 +20,7 @@
 
 <fvLayout>
   <!-- ... -->
-  <fvSidebar slot="start-sidebar"> <!-- Content --> </fvSidebar>
+  <fvSidebar #start-sidebar> <!-- Content --> </fvSidebar>
   <!-- ... -->
   <!-- ... -->
 </fvLayout>

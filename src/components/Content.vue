@@ -15,7 +15,7 @@
 <fvLayout>
   <!-- ... -->
   <!-- ... -->
-  <fvContent slot="content"> <!-- Content --> </fvContent>
+  <fvContent #content> <!-- Content --> </fvContent>
   <!-- ... -->
 </fvLayout>
 

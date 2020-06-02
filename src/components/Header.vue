@@ -17,7 +17,7 @@
 @config example false
 
 <fvLayout>
-  <fvHeader slot="header"> <!-- Content --> </fvHeader>
+  <fvHeader #header> <!-- Content --> </fvHeader>
   <!-- ... -->
   <!-- ... -->
   <!-- ... -->
