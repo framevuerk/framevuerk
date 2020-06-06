@@ -28,11 +28,11 @@ if (watch) {
     const devServer = {
       contentBase: 'docs-src',
       port: 3231,
-      stats: 'none',
       host: '0.0.0.0',
       clientLogLevel: 'none',
       liveReload: true,
-      quiet: false,
+      quiet: true,
+      stats: 'none',
       watchOptions: {
         poll: true,
       },
@@ -41,9 +41,7 @@ if (watch) {
   }
 } else {
   cli.write(`Building ${source}...`);
-  compiler.run((e, e2) => {
-    // cli.write(e);
-    // cli.write(e2);
+  compiler.run(() => {
     cli.write('Done!');
   });
 }

@@ -3,8 +3,6 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WebpackBar = require('webpackbar');
-
-
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 module.exports = (config) => {
@@ -24,7 +22,7 @@ module.exports = (config) => {
   } else {
     output.path = path.resolve(__dirname, '../docs');
     output.filename = 'bundle.js';
-    // output.publicPath = path.resolve(__dirname, '../public');
+    output.chunkFilename = '[name].js';
     plugins.push(
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, '../docs-src/index.html'),
@@ -39,8 +37,6 @@ module.exports = (config) => {
   }
 
   const entry = path.resolve(__dirname, '../', config.source === 'lib' ? 'src/index.js' : 'docs-src/index.js');
-
-  console.warn(entry);
 
   const { mode } = config;
 
@@ -95,14 +91,10 @@ module.exports = (config) => {
 
   if (config.source === 'docs') {
     resolve.alias.framevuerk = path.resolve(__dirname, '../src');
-
-
-    // to generate component.__example
     module.rules.push({
       resourceQuery: /blockType=example/,
       loader: path.resolve(__dirname, './utils/example-loader.js'),
     });
-
     module.rules.push({
       resourceQuery: /blockType=doc/,
       loader: path.resolve(__dirname, './utils/api-loader.js'),
