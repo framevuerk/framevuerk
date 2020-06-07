@@ -56,7 +56,7 @@ export default {
           timeout: null,
         },
       },
-      lockers: 0,
+      overlays: [],
     };
   },
   beforeDestroy() {
@@ -90,7 +90,7 @@ export default {
     },
     cancelDetector(element, callback) {
       function onKeyDown(event) {
-        if (event.which === 27) {
+        if (event.keyCode === 27) {
           callback();
         }
       }
@@ -108,24 +108,43 @@ export default {
         if (startFocusFor && startFocusFor.focus) {
           startFocusFor.focus();
         }
-        // hide scroll
-        document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
-        document.body.style.overflow = 'hidden';
-        this.lockers += 1;
+        this.addOverlay(element);
       });
       return {
         release: () => {
-          this.lockers -= 1;
-          if (this.lockers < 1) {
-            this.lockers = 0;
-            document.body.style.overflow = null;
-            document.body.style.paddingRight = null;
-          }
+          this.removeOverlay(element);
           window.removeEventListener('keydown', onKeyDown);
           window.removeEventListener('click', onClick);
           window.removeEventListener('touchstart', onClick);
         },
       };
+    },
+    addOverlay(el) {
+      // hide scroll
+      document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
+      document.body.style.overflow = 'hidden';
+      const overlay = document.createElement('DIV');
+      overlay.classList.add(this.$style.overlay);
+      const parent = el.parentElement;
+      parent.insertBefore(overlay, el);
+      this.overlays.push({
+        el,
+        overlay,
+      });
+    },
+    removeOverlay(el) {
+      const index = this.overlays.findIndex((item) => item.el === el);
+      if (index > -1) {
+        this.overlays[index].overlay.remove();
+        this.overlays = [
+          ...this.overlays.slice(0, index),
+          ...this.overlays.slice(index + 1),
+        ];
+      }
+      if (this.overlays.length === 0) {
+        document.body.style.overflow = null;
+        document.body.style.paddingRight = null;
+      }
     },
     onScroll() {
       const { scrollTop } = document.scrollingElement;
@@ -146,8 +165,14 @@ export default {
   },
   style({ className }) {
     return [
-      className('lock', {
-        overflow: 'hidden',
+      className('overlay', {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        zIndex: 1,
       }),
       className('layout', {
         display: 'flex',
