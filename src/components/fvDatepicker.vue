@@ -51,157 +51,168 @@ fv-inputbox.fv-datepicker(:invalid="!fvValidate",
 </template>
 
 <script>
-import icon from '../icons/ARR.svg'
-import iconY from '../icons/WRR.svg'
+import fvInputbox from './fvInputbox.vue';
+import icon from '../icons/ARR.svg';
+import iconY from '../icons/WRR.svg';
 
 export default {
+  components: {
+    fvInputbox,
+  },
   props: {
     value: {
-      default: undefined
+      default: undefined,
     },
     defaultValue: {
-      default: Date.now()
+      default: Date.now(),
     },
     required: {
       type: [Boolean, Function],
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     placeholder: {
       type: String,
-      default: ''
+      default: '',
     },
     deleteButton: {
       type: Boolean,
-      default: true
+      default: true,
     },
     dateLibrary: {
-      type: [Object, Function]
-    }
+      type: [Object, Function],
+    },
   },
-  data () {
+  data() {
     return {
       Date: this.dateLibrary || Date,
       editingValue: undefined,
       visualProps: {},
       weekDayNames: [],
       monthNames: [],
-      searchQuery: undefined
-    }
-  },
-  created () {
-    this.setEditingValue(true)
-    const dt = new this.Date()
-    dt.setDate(dt.getDate() - (dt.getDay()))
-    for (let i = 0; i < 7; i++) {
-      this.weekDayNames.push(dt.toString().split(' ')[0])
-      dt.setDate(dt.getDate() + 1)
-    }
-
-    dt.setDate(1)
-    dt.setMonth(0)
-    for (let i = 0; i < 12; i++) {
-      this.monthNames.push(dt.toString().replace(/[0-9,۰-۹]/g, '').split(' ').filter(p => !!p)[1])
-      dt.setMonth(dt.getMonth() + 1)
-    }
+      searchQuery: undefined,
+    };
   },
   computed: {
-    fvValidate () {
+    fvValidate() {
       if (this.required === true) {
         if (!this.value) {
-          return false
+          return false;
         }
-        return true
-      } else if (typeof this.required === 'function') {
-        return this.required(this.value)
+        return true;
+      } if (typeof this.required === 'function') {
+        return this.required(this.value);
       }
-      return true
+      return true;
     },
-    defaultFormattedValue () {
+    defaultFormattedValue() {
       if (this.value) {
-        const value = new this.Date(this.value)
-        return `${value.getDate()}/${value.getMonth() + 1}/${value.getFullYear()}`
+        const value = new this.Date(this.value);
+        return `${value.getDate()}/${value.getMonth() + 1}/${value.getFullYear()}`;
       }
-      return ''
+      return '';
     },
-    icons () {
+    icons() {
       return {
         icon,
         iconY,
         nextMonth: process.env.direction === 'ltr' ? 'rotate(-90deg)' : 'rotate(90deg)',
         prevMonth: process.env.direction === 'ltr' ? 'rotate(90deg)' : 'rotate(-90deg)',
         nextYear: process.env.direction === 'ltr' ? 'rotate(-90deg)' : 'rotate(90deg)',
-        prevYear: process.env.direction === 'ltr' ? 'rotate(90deg)' : 'rotate(-90deg)'
-      }
+        prevYear: process.env.direction === 'ltr' ? 'rotate(90deg)' : 'rotate(-90deg)',
+      };
+    },
+  },
+  watch: {
+    value() {
+      this.$nextTick(() => {
+        this.$refs.inputBox.close();
+      });
+    },
+  },
+  created() {
+    this.setEditingValue(true);
+    const dt = new this.Date();
+    dt.setDate(dt.getDate() - (dt.getDay()));
+    for (let i = 0; i < 7; i++) {
+      this.weekDayNames.push(dt.toString().split(' ')[0]);
+      dt.setDate(dt.getDate() + 1);
+    }
+
+    dt.setDate(1);
+    dt.setMonth(0);
+    for (let i = 0; i < 12; i++) {
+      this.monthNames.push(dt.toString().replace(/[0-9,۰-۹]/g, '').split(' ').filter((p) => !!p)[1]);
+      dt.setMonth(dt.getMonth() + 1);
     }
   },
   methods: {
-    onTyping (value) {
-      const text = value.toString()
-      const digits = value.replace(/[^0-9]/g, '')
+    onTyping(value) {
+      const text = value.toString();
+      const digits = value.replace(/[^0-9]/g, '');
       // if use type a seprator
       if (digits.length !== text.length) {
-        this.searchQuery = ''
-        const editingValue = new this.Date(this.editingValue)
-        const number = parseInt(digits)
+        this.searchQuery = '';
+        const editingValue = new this.Date(this.editingValue);
+        const number = parseInt(digits);
         if (number.toString().length === 4) {
-          editingValue.setFullYear(number)
+          editingValue.setFullYear(number);
         } else if (number.toString().length <= 2 && number <= 12 && this.searchQuery !== ' ') {
-          editingValue.setMonth(number - 1)
+          editingValue.setMonth(number - 1);
         }
-        this.$set(this, 'editingValue', editingValue)
-        this.calcVisualProps()
+        this.$set(this, 'editingValue', editingValue);
+        this.calcVisualProps();
       }
     },
-    onOpen () {
-      this.searchQuery = ''
-      this.setEditingValue(true)
+    onOpen() {
+      this.searchQuery = '';
+      this.setEditingValue(true);
     },
-    deleteValue () {
-      this.searchQuery = ''
-      this.$emit('input', undefined)
+    deleteValue() {
+      this.searchQuery = '';
+      this.$emit('input', undefined);
     },
-    setEditingValue (force = false) {
+    setEditingValue(force = false) {
       if (!this.editingValue || force) {
-        this.editingValue = new this.Date(this.value || this.defaultValue)
-        this.calcVisualProps()
+        this.editingValue = new this.Date(this.value || this.defaultValue);
+        this.calcVisualProps();
       }
     },
-    monthFirstDay (month, year) {
-      return new this.Date(year, month, 1).getDay()
+    monthFirstDay(month, year) {
+      return new this.Date(year, month, 1).getDay();
     },
-    daysInMonth (month, year) {
-      return new this.Date(year, month + 1, 0).getDate()
+    daysInMonth(month, year) {
+      return new this.Date(year, month + 1, 0).getDate();
     },
-    calcVisualProps () {
+    calcVisualProps() {
       const visualProps = {
         year: this.editingValue.getFullYear(),
         month: this.editingValue.getMonth() + 1,
         date: this.editingValue.getDate(),
         monthFirstDay: this.monthFirstDay(this.editingValue.getMonth(), this.editingValue.getFullYear()),
-        daysInMonth: this.daysInMonth(this.editingValue.getMonth(), this.editingValue.getFullYear())
-      }
-      this.$set(this, 'visualProps', visualProps)
-      return visualProps
+        daysInMonth: this.daysInMonth(this.editingValue.getMonth(), this.editingValue.getFullYear()),
+      };
+      this.$set(this, 'visualProps', visualProps);
+      return visualProps;
     },
-    focus () {
-      this.$refs.inputBox.focus()
+    focus() {
+      this.$refs.inputBox.focus();
     },
-    dpRow (dp, month, year) {
+    dpRow(dp, month, year) {
       const calc = (d, dp) => {
-        const date = (d + ((dp - 1) * 7)) - this.visualProps.monthFirstDay
-        const hidden = !(date > 0 && date <= this.visualProps.daysInMonth)
-        let realDate = date
-        let realMonth = month
-        let realYear = year
+        const date = (d + ((dp - 1) * 7)) - this.visualProps.monthFirstDay;
+        const hidden = !(date > 0 && date <= this.visualProps.daysInMonth);
+        let realDate = date;
+        let realMonth = month;
+        let realYear = year;
         if (date < 1 || date > this.visualProps.daysInMonth) {
-          const dt = new this.Date(year, month, date)
-          realDate = dt.getDate()
-          realMonth = dt.getMonth()
-          realYear = dt.getFullYear()
+          const dt = new this.Date(year, month, date);
+          realDate = dt.getDate();
+          realMonth = dt.getMonth();
+          realYear = dt.getFullYear();
         }
         return {
           date,
@@ -211,111 +222,104 @@ export default {
           hidden,
           highlighted: this.isHighlighted(realDate, realMonth, realYear),
           selected: this.isSelected(realDate, realMonth, realYear),
-          disabled: this.isDateDisabled(realDate, realMonth, realYear)
-        }
-      }
-      const ret = []
+          disabled: this.isDateDisabled(realDate, realMonth, realYear),
+        };
+      };
+      const ret = [];
       for (let d = 1; d <= 7; d++) {
-        ret.push(calc(d, dp))
+        ret.push(calc(d, dp));
       }
-      return ret
+      return ret;
     },
-    isSelected (date, month, year) {
+    isSelected(date, month, year) {
       if (!this.value) {
-        return false
+        return false;
       }
-      const value = new this.Date(this.value)
-      return value.getDate() === date && value.getMonth() === month && value.getFullYear() === year
+      const value = new this.Date(this.value);
+      return value.getDate() === date && value.getMonth() === month && value.getFullYear() === year;
     },
-    isHighlighted (date, month, year) {
+    isHighlighted(date, month, year) {
       if (!this.editingValue) {
-        return false
+        return false;
       }
-      return this.editingValue.getDate() === date && this.editingValue.getMonth() === month && this.editingValue.getFullYear() === year
+      return this.editingValue.getDate() === date && this.editingValue.getMonth() === month && this.editingValue.getFullYear() === year;
     },
-    moveValue (unit, value) {
-      const editingValue = new this.Date(this.editingValue)
+    moveValue(unit, value) {
+      const editingValue = new this.Date(this.editingValue);
       switch (unit) {
         case 'year':
-          editingValue.setFullYear(editingValue.getFullYear() + value)
-          break
+          editingValue.setFullYear(editingValue.getFullYear() + value);
+          break;
         case 'month':
-          editingValue.setMonth(editingValue.getMonth() + value)
-          break
+          editingValue.setMonth(editingValue.getMonth() + value);
+          break;
         case 'date':
-          editingValue.setDate(editingValue.getDate() + value)
-          break
+          editingValue.setDate(editingValue.getDate() + value);
+          break;
       }
-      this.$set(this, 'editingValue', editingValue)
-      this.calcVisualProps()
+      this.$set(this, 'editingValue', editingValue);
+      this.calcVisualProps();
     },
-    selectDate (value, event) {
-      this.setDate(value)
+    selectDate(value, event) {
+      this.setDate(value);
       if (event.target.getAttribute('disabled')) {
-        return
+        return;
       }
-      this.searchQuery = ''
-      const ret = new this.Date(this.editingValue)
-      this.$emit('input', ret)
+      this.searchQuery = '';
+      const ret = new this.Date(this.editingValue);
+      this.$emit('input', ret);
     },
-    setDate (value) {
+    setDate(value) {
       if (value !== null) {
-        this.editingValue.setDate(value)
+        this.editingValue.setDate(value);
       }
     },
-    onKeydown (event) {
+    onKeydown(event) {
       switch (event.which) {
         case 38: // up
-          event.preventDefault()
-          this.moveValue('date', -7)
-          break
+          event.preventDefault();
+          this.moveValue('date', -7);
+          break;
         case 40: // down
-          event.preventDefault()
-          this.moveValue('date', 7)
-          break
+          event.preventDefault();
+          this.moveValue('date', 7);
+          break;
         case process.env.direction === 'ltr' ? 37 : 39: // 37: left, 39: right,
-          event.preventDefault()
-          this.moveValue('date', -1)
-          break
+          event.preventDefault();
+          this.moveValue('date', -1);
+          break;
         case process.env.direction === 'ltr' ? 39 : 37: // 37: left, 39: right,
-          event.preventDefault()
-          this.moveValue('date', 1)
-          break
+          event.preventDefault();
+          this.moveValue('date', 1);
+          break;
         case 13: // enter
-          event.preventDefault()
-          this.selectDate(parseInt(this.searchQuery) || null, event)
-          break
+          event.preventDefault();
+          this.selectDate(parseInt(this.searchQuery) || null, event);
+          break;
         case 8: // backspace
           if (this.searchQuery.length === 0 && this.deleteButton) {
-            this.deleteValue()
+            this.deleteValue();
           }
-          break
+          break;
         case 46: // delete
-          this.searchQuery = ''
+          this.searchQuery = '';
           if (this.deleteButton) {
-            this.deleteValue()
+            this.deleteValue();
           }
       }
     },
-    checkFvValidity (day, month, year) {
+    checkFvValidity(day, month, year) {
       if (typeof this.required === 'function') {
-        const dt = new this.Date(year, month, day)
-        return this.required(dt)
+        const dt = new this.Date(year, month, day);
+        return this.required(dt);
       }
-      return true
+      return true;
     },
-    isDateDisabled (day, month, year) {
-      return !this.checkFvValidity(day, month, year)
-    }
+    isDateDisabled(day, month, year) {
+      return !this.checkFvValidity(day, month, year);
+    },
   },
-  watch: {
-    value () {
-      this.$nextTick(() => {
-        this.$refs.inputBox.close()
-      })
-    }
-  }
-}
+};
 </script>
 
 <style lang="scss">

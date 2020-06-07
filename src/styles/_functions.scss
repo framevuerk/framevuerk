@@ -144,47 +144,50 @@
 }
 
 @function shadow($to: bottom, $color: $shadow-color-light) {
+  $shadow-size: var(--sizes-shadow-md);
+  $shadow-size-invert: calc(-1 * var(--sizes-shadow-md));
+
   @if $to == no {
     @return none;
   }
 
   @else if $to == bottom {
-    @return 0 #{$shadow-size} $shadow-size $color;
+    @return 0 #{$shadow-size} #{$shadow-size} $color;
   }
 
   @else if $to == inset-bottom {
-    @return inset 0 #{$shadow-size} $shadow-size $color;
+    @return inset 0 #{$shadow-size} #{$shadow-size} $color;
   }
 
   @else if $to == top {
-    @return 0 #{-1 * $shadow-size} $shadow-size $color;
+    @return 0 #{$shadow-size-invert} #{$shadow-size} $color;
   }
 
   @else if $to == inset-top {
-    @return inset 0 #{-1 * $shadow-size} $shadow-size $color;
+    @return inset 0 #{$shadow-size-invert} #{$shadow-size} $color;
   }
 
   @else if $to == right {
-    @return #{$shadow-size} 0 $shadow-size $color;
+    @return #{$shadow-size} 0 #{$shadow-size} $color;
   }
 
   @else if $to == inset-right {
-    @return inset #{$shadow-size} 0 $shadow-size $color;
+    @return inset #{$shadow-size} 0 #{$shadow-size} $color;
   }
 
   @else if $to == left {
-    @return #{-1 * $shadow-size} 0 $shadow-size $color;
+    @return #{$shadow-size-invert} 0 #{$shadow-size} $color;
   }
 
   @else if $to == inset-left {
-    @return inset #{-1 * $shadow-size} 0 $shadow-size $color;
+    @return inset #{$shadow-size-invert} 0 #{$shadow-size} $color;
   }
 
   @else if $to == all {
-    @return 0 0 $shadow-size $color;
+    @return 0 0 #{$shadow-size} $color;
   }
 
   @else if $to == inset-all {
-    @return inset 0 0 $shadow-size $color;
+    @return inset 0 0 #{$shadow-size} $color;
   }
 }

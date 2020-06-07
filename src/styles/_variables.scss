@@ -5,18 +5,34 @@
 // $secondary-color: #35485d
 @import './functions';
 
-// $transition-speed: 0.35s;
-$transition-speed-fast: $transition-speed / 3;
-$transition-speed-slow: $transition-speed * 1.7;
 
+$direction: ltr;
 $block-start: if($direction == rtl, right, left);
 $block-end: if($direction == rtl, left, right);
 
-// $bg-color: #f9f9f9 !default;
+$shadow-color: rgba(0, 0, 0, 0.2) !default;
+$shadow-color-light: rgba(0, 0, 0, 0.05) !default;
+$shadow-color-dark: rgba(0, 0, 0, 0.35) !default;
+
+
+
+$footer-bg-color: black !default;
+$header-bg-color: black !default;
+$sidebar-bg-color: black !default;
+
+
+// should be removed {
+
+$transition-speed: 0.25s;
+$transition-speed-fast: $transition-speed / 3;
+$transition-speed-slow: $transition-speed * 1.7;
+
+$bg-color: #f9f9f9 !default;
 $bg-color-contrast: yiq($bg-color, 3%) !default;
 $bg-color-contrast-more: yiq($bg-color, 20%) !default;
 $bg-color-contrast-much-more: yiq($bg-color, 30%) !default;
 
+$bg-color: #fff !default;
 $bg-color-light: lighten($bg-color, 5%) !default;
 $bg-color-dark: darken($bg-color, 3%) !default;
 
@@ -29,9 +45,6 @@ $night-bg-color: #383f47 !default;
 $shadow-percent: 20%;
 $shadow-percent-light: 5%;
 $shadow-percent-dark: 35%;
-$shadow-color: rgba(0, 0, 0, 0.2) !default;
-$shadow-color-light: rgba(0, 0, 0, 0.05) !default;
-$shadow-color-dark: rgba(0, 0, 0, 0.35) !default;
 
 $highlight-percent: 19%;
 $highlight-percent-light: 6%;
@@ -44,26 +57,35 @@ $gray-color: #f1f1f1 !default;
 $gray-color-light: lighten($gray-color, 4%) !default;
 $gray-color-dark: darken($gray-color, 18%) !default;
 
+$primary-color: blue !default;
 $primary-color-light: lighten($primary-color, 10%) !default;
 $primary-color-dark: darken($primary-color, 10%) !default;
 
+$secondary-color: purple !default;
 $secondary-color-light: lighten($secondary-color, 10%) !default;
 $secondary-color-dark: darken($secondary-color, 10%) !default;
 
+$danger-color: red !default;
 $danger-color-light: lighten($danger-color, 10%) !default;
 $danger-color-dark: darken($danger-color, 5%) !default;
 
+$warning-color: yellow !default;
 $warning-color-light: lighten($warning-color, 10%) !default;
 $warning-color-dark: darken($warning-color, 5%) !default;
 
+$info-color: cyan !default;
 $info-color-light: lighten($info-color, 10%) !default;
 $info-color-dark: darken($info-color, 5%) !default;
 
+$padding : 1em;
 $padding-small: $padding / 2 !default;
 $padding-large: $padding * 1.5 !default;
 
+$border-radius: 4px;
 $border-radius-small: $border-radius / 2;
 $border-radius-large: $border-radius * 3;
+
+// } should be removed
 
 $break-xs: 480px;
 $break-sm: 768px;

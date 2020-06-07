@@ -19,21 +19,21 @@ export default {
   props: {
     value: {
       type: Number,
-      default: 0
+      default: 0,
     },
     steps: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
-  data () {
+  data() {
     return {
       searchTimeout: null,
       searching: false,
-      suggestions: []
-    }
-  }
-}
+      suggestions: [],
+    };
+  },
+};
 </script>
 
 <style lang="scss">
@@ -89,7 +89,7 @@ $line-height: 0.8em;
 
     & > .text {
       color: darken($bg-color-light, $shadow-percent);
-      padding: $padding-small 0;
+      padding: var(sizes-space-sm) 0;
       line-height: 1;
     }
 

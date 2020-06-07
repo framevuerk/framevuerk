@@ -1,13 +1,24 @@
 @import './variables';
 @import './functions';
 
-@mixin outline($color: $primary-color, $border: true) {
+// TODO red shoud remove
+@mixin outline($color: var(--colors-primary-shallow), $color2: var(--colors-primary-normal), $border: true) {
+  // $shadow-size-sm: var(--sizes-shadow-md);
+  // $shadow-size: var(--sizes-shadow-md);
+  // $shadow-size-invert: calc(-1 * var(--sizes-shadow-md));
+
+  // z-index: 2;
+  // box-shadow: 0 #{$shadow-size} $shadow-size $shadow-color-light, ;
+  // outline: none;
+
+
   z-index: 2;
-  box-shadow: 0 #{$shadow-size} $shadow-size $shadow-color-light, 0 0 #{$shadow-size / 2} 1px $color;
+  box-shadow: 0 0 0 1px $color;
   outline: none;
 
-  @if $border {
-    border-color: transparent;
+
+  @if $color2 {
+    border-color: $color2;
   }
 }
 
@@ -120,7 +131,7 @@
   border-radius: $border-radius;
   font-family: inherit;
   position: relative;
-  padding: 0 $padding-small;
+  padding: 0 var(sizes-space-sm);
 
   &:not([disabled]) {
     &:hover {

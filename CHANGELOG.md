@@ -82,3 +82,9 @@
 - add titleClick event to fvTable component
 - add new prop slidesPerPage prop to fvSlider component
 - improve fvSlider component functionality
+
+#### 3.0.0
+- runtime config
+- use internal mixins
+- remove fvTextarea component
+- merge input and textarea components

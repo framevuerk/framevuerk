@@ -5,97 +5,97 @@ transition(name="fv-menu")
 </template>
 
 <script>
-import parent from '../utility/parent.js'
-import CancelDetector from '../utility/CancelDetector.js'
-import FocusStoler from '../utility/FocusStoler.js'
+import parent from '../utility/parent.js';
+import CancelDetector from '../utility/CancelDetector.js';
+import FocusStoler from '../utility/FocusStoler.js';
 
 export default {
   props: {
     value: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
       cancelDetector: new CancelDetector(),
       focusStoler: new FocusStoler(),
-      lastClickedPosition: null
-    }
+      lastClickedPosition: null,
+    };
+  },
+  watch: {
+    value(value) {
+      this.valueHandler(value);
+    },
+  },
+  created() {
+    parent.on('click', this.lastClickPositionHandler, true);
+    parent.on('contextmenu', this.lastClickPositionHandler, true);
+  },
+  beforeDestroy() {
+    parent.off('click', this.lastClickPositionHandler, true);
+    parent.off('contextmenu', this.lastClickPositionHandler, true);
+    this.$el.remove();
+    this.valueHandler(false);
   },
   methods: {
-    valueHandler (value) {
+    valueHandler(value) {
       if (value) {
-        this.$emit('open')
-        parent.appendChild(this.$el)
-        parent.on('outsideclick', this.$el, this.close)
-        this.cancelDetector.start(this.close)
+        this.$emit('open');
+        parent.appendChild(this.$el);
+        parent.on('outsideclick', this.$el, this.close);
+        this.cancelDetector.start(this.close);
         this.$nextTick(() => {
-          this.setPosition()
-          this.focusStoler.stole(this.$el)
-        })
-        return
+          this.setPosition();
+          this.focusStoler.stole(this.$el);
+        });
+        return;
       }
-      this.$emit('close')
-      parent.off('outsideclick', this.$el, this.close)
-      this.cancelDetector.stop()
-      this.focusStoler.restore()
+      this.$emit('close');
+      parent.off('outsideclick', this.$el, this.close);
+      this.cancelDetector.stop();
+      this.focusStoler.restore();
     },
-    setPosition () {
+    setPosition() {
       if (!this.lastClickedPosition) {
-        return
+        return;
       }
-      const offset = this.lastClickedPosition
-      const viewport = parent.getViewport()
+      const offset = this.lastClickedPosition;
+      const viewport = parent.getViewport();
       // a number between 0 and 1. lowest number is nearest to start direction of block
-      const horizontalPosition = offset[process.env.blockStart] / viewport.width
+      const horizontalPosition = offset[process.env.blockStart] / viewport.width;
       // it will be one of [0, 1, 2]. lowest number is nearest to top
-      const verticalPosition = offset.viewportTop / viewport.height
+      const verticalPosition = offset.viewportTop / viewport.height;
 
       const basedOn = {
         nx: horizontalPosition > 0.45 ? process.env.blockStart : process.env.blockEnd,
         x: horizontalPosition > 0.45 ? process.env.blockEnd : process.env.blockStart,
         ny: verticalPosition > 0.7 ? 'top' : 'bottom',
-        y: verticalPosition > 0.7 ? 'bottom' : 'top'
-      }
-      this.$el.style[basedOn.x] = `${offset[basedOn.x]}px`
-      this.$el.style[basedOn.ny] = 'auto'
-      this.$el.style[basedOn.nx] = 'auto'
-      this.$el.style[basedOn.y] = `${offset[basedOn.y]}px`
+        y: verticalPosition > 0.7 ? 'bottom' : 'top',
+      };
+      this.$el.style[basedOn.x] = `${offset[basedOn.x]}px`;
+      this.$el.style[basedOn.ny] = 'auto';
+      this.$el.style[basedOn.nx] = 'auto';
+      this.$el.style[basedOn.y] = `${offset[basedOn.y]}px`;
     },
-    close () {
-      this.$emit('input', false)
+    close() {
+      this.$emit('input', false);
     },
-    lastClickPositionHandler (event) {
-      const viewport = parent.getViewport()
-      const scrollPos = parent.getScrollPosition()
+    lastClickPositionHandler(event) {
+      const viewport = parent.getViewport();
+      const scrollPos = parent.getScrollPosition();
       const offset = {
         left: event.clientX,
         top: event.clientY + scrollPos.top,
-        viewportTop: event.clientY
-      }
-      const scrollBarSize = 15 // not big deal if it's wrong on other browsers
-      offset.right = viewport.width - offset.left - scrollBarSize
-      offset.bottom = scrollPos.height - offset.top
-      this.lastClickedPosition = offset
-    }
+        viewportTop: event.clientY,
+      };
+      const scrollBarSize = 15; // not big deal if it's wrong on other browsers
+      offset.right = viewport.width - offset.left - scrollBarSize;
+      offset.bottom = scrollPos.height - offset.top;
+      this.lastClickedPosition = offset;
+    },
   },
-  watch: {
-    value (value) {
-      this.valueHandler(value)
-    }
-  },
-  created () {
-    parent.on('click', this.lastClickPositionHandler, true)
-    parent.on('contextmenu', this.lastClickPositionHandler, true)
-  },
-  beforeDestroy () {
-    parent.off('click', this.lastClickPositionHandler, true)
-    parent.off('contextmenu', this.lastClickPositionHandler, true)
-    this.$el.remove()
-    this.valueHandler(false)
-  }
-}
+};
 </script>
 
 <style lang="scss">
