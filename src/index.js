@@ -27,7 +27,7 @@ import SlideLabel from './components/SlideLabel.vue';
 import Table from './components/Table.vue';
 import TableField from './components/TableField.vue';
 import TableRow from './components/TableRow.vue';
-// import fvDialog from './components/fvDialog.vue'
+import Dialog from './components/Dialog.vue';
 import Check from './components/Check.vue';
 import Switch from './components/Switch.vue';
 // import fvImg from './components/fvImg.vue'
@@ -66,6 +66,7 @@ const Framevuerk = {
       Table,
       TableField,
       TableRow,
+      Dialog,
       Loading,
       Pagination,
       Check,
@@ -103,6 +104,7 @@ export {
   Table,
   TableField,
   TableRow,
+  Dialog,
   Loading,
   Pagination,
   Check,

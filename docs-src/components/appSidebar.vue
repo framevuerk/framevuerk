@@ -149,6 +149,13 @@
             <fvListItem expanded>
               Other
               <fvList slot="sub-list">
+                <fvListItem
+                  tag="router-link"
+                  to="/components/dialog"
+                  :class="{ selected: isSelected('component', 'dialog') }"
+                >
+                  Dialog (Modal)
+                </fvListItem>
                 <fvListItem expanded>
                   Table
                   <fvList slot="sub-list">
