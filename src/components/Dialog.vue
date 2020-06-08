@@ -16,7 +16,6 @@
         css-radius="md"
         v-bind="$attrs"
         v-on="$listeners"
-        @click.stop="cancel"
       >
         <slot />
       </div>
@@ -61,7 +60,6 @@ export default {
   inject: ['$layout', '$theme'],
   data() {
     return {
-      outer: null,
       cancelDetector: null,
     };
   },
