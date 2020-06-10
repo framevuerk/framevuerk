@@ -10,7 +10,7 @@
       class="content"
       css-padding-x="md"
       @mouseenter.stop="onMouseEnter"
-      @click.stop="onClick"
+      @click="onClick"
     >
       <span
         v-for="i in $list.indent - 1"
@@ -157,15 +157,18 @@ export default {
     },
     onClick(event) {
       if (!this.disabled) {
-        try {
-          this.$el.click(); // click on root element manually (links, etc)
-        } catch (_e) {
-          //
-        }
         if (this.hasSubList) {
           this.toggle();
         }
         this.$emit('click', event);
+        if (event.type === 'keydown') {
+          try {
+            this.$el.click(); // click on root element manually (links, etc)
+            event.stopPropagation();
+          } catch (_e) {
+            //
+          }
+        }
       }
     },
     onMouseEnter() {
