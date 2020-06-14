@@ -29,6 +29,7 @@
         <fvSlideLabel slot="label" name="props"> Props </fvSlideLabel>
         <fvSlideLabel slot="label" name="events"> Events </fvSlideLabel>
         <fvSlideLabel slot="label" name="slots"> Slots </fvSlideLabel>
+        <fvSlideLabel slot="label" name="methods"> Methods </fvSlideLabel>
 
         <fvSlideContent slot="content" name="props">
           <fvTable v-if="api.props && api.props.length">
@@ -97,6 +98,30 @@
           </fvTable>
           <h4 v-else css-text-align="center" css-padding-y="lg">
             <i class="fa fa-info-circle" /> No Slots Found for This Component
+          </h4>
+        </fvSlideContent>
+        <fvSlideContent slot="content" name="methods">
+          <fvTable v-if="api.methods && api.methods.length">
+            <fvTableField slot="th" name="name"> Name </fvTableField>
+            <fvTableField slot="th" name="params"> Parameters </fvTableField>
+            <fvTableField slot="th" name="description"> Description </fvTableField>
+            <fvTableRow
+              v-for="row in api.methods"
+              :key="row.name"
+              slot="tr"
+            >
+              <fvTableField slot="td" name="name"> {{ row.name }} </fvTableField>
+              <fvTableField slot="td" name="binding">
+                <i v-if="!row.params" class="fa fa-times" css-text-color="gray" />
+                <div v-else>
+                  (<span>{{typeof row.params !== 'object' ? row.params : row.params.join(', ')}}</span>)
+                </div>
+              </fvTableField>
+              <fvTableField slot="td" name="description"> {{ row.description }} </fvTableField>
+            </fvTableRow>
+          </fvTable>
+          <h4 v-else css-text-align="center" css-padding-y="lg">
+            <i class="fa fa-info-circle" /> No Methods Found for This Component
           </h4>
         </fvSlideContent>
       </fvSlider>

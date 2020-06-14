@@ -35,6 +35,7 @@ module.exports = function loader(source, map) {
     props: getKeys(source, 'prop'),
     events: getKeys(source, 'event'),
     slots: getKeys(source, 'slot'),
+    methods: getKeys(source, 'method'),
   };
 
   const content = `
