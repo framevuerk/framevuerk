@@ -156,6 +156,13 @@
                 >
                   Dialog (Modal)
                 </fvListItem>
+                <fvListItem
+                  tag="router-link"
+                  to="/components/menu"
+                  :class="{ selected: isSelected('component', 'menu') }"
+                >
+                  Menu (Popup)
+                </fvListItem>
                 <fvListItem expanded>
                   Table
                   <fvList slot="sub-list">

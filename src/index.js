@@ -11,7 +11,7 @@ import Sidebar from './components/Sidebar.vue';
 // import fvDatepicker from './components/fvDatepicker.vue'
 import List from './components/List.vue';
 import ListItem from './components/ListItem.vue';
-// import fvMenu from './components/fvMenu.vue'
+import Menu from './components/Menu.vue';
 import Form from './components/Form.vue';
 import FormElement from './components/FormElement.vue';
 import InputGroup from './components/InputGroup.vue';
@@ -71,6 +71,7 @@ const Framevuerk = {
       Pagination,
       Check,
       Switch,
+      Menu,
     }, (key, component) => {
       Vue.component(`fv${key}`, component);
     });
@@ -109,6 +110,7 @@ export {
   Pagination,
   Check,
   Switch,
+  Menu,
 };
 
 export default Framevuerk;
