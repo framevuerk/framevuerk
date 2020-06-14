@@ -91,18 +91,21 @@ export default {
     cancelDetector(element, callback) {
       function onKeyDown(event) {
         if (event.keyCode === 27) {
+          event.preventDefault();
+          event.stopPropagation();
           callback();
         }
       }
       function onClick(event) {
         if (!element.contains(event.target)) {
+          event.stopPropagation();
           callback();
         }
       }
       setTimeout(() => {
-        window.addEventListener('keydown', onKeyDown);
-        window.addEventListener('click', onClick);
-        window.addEventListener('touchstart', onClick);
+        window.addEventListener('keydown', onKeyDown, true);
+        window.addEventListener('click', onClick, true);
+        window.addEventListener('touchstart', onClick, true);
         // focus on current
         const startFocusFor = element.querySelector('[autofocus]') || element;
         if (startFocusFor && startFocusFor.focus) {
@@ -113,9 +116,9 @@ export default {
       return {
         release: () => {
           this.removeOverlay(element);
-          window.removeEventListener('keydown', onKeyDown);
-          window.removeEventListener('click', onClick);
-          window.removeEventListener('touchstart', onClick);
+          window.removeEventListener('keydown', onKeyDown, true);
+          window.removeEventListener('click', onClick, true);
+          window.removeEventListener('touchstart', onClick, true);
         },
       };
     },
