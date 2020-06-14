@@ -99,7 +99,6 @@ export default {
         position = setPosition(touch.clientY, touch.clientX);
       } else if (event.pageY || event.pageX) {
         position = setPosition(event.clientY, event.clientX);
-        global.ev = event;
         event.preventDefault();
       } else {
         const rect = event.target.getBoundingClientRect();
