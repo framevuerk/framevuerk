@@ -39,8 +39,8 @@
 <doc>
 @prop current @type Any @default undefined @description Current selected slide on viewport. Use this with .sync modifier.
 @prop slidesPerPage @type Number @default 1 @description How many slides should visible on each view.
-
 @prop showButtons @type Boolean @default false @description Show next/prev buttons at sides?
+@prop swipeEvents @type Boolean @default true @description Handle swipe geastures to move slide to left/right.
 
 @event update:current @params newValue @description Triggers when selected slide changes.
 
@@ -98,6 +98,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    swipeEvents: {
+      type: Boolean,
+      default: true,
+    },
   },
   provide() {
     return {
@@ -131,18 +135,30 @@ export default {
     current() {
       this.resetTransform();
     },
-  },
-  mounted() {
-    this.swipe = new Swipe(this.$refs.inner);
-    this.swipe.before(this.beforeSwipe);
-    this.swipe.while(this.whileSwipe);
-    this.swipe.after(this.afterSwipe);
-    this.swipe.on();
+    swipeEvents: {
+      handler(value) {
+        this.setSwipeEvents(value);
+      },
+      immediate: true,
+    },
   },
   beforeDestroy() {
-    this.swipe.off();
+    this.setSwipeEvents(false);
   },
   methods: {
+    setSwipeEvents(active) {
+      this.$nextTick(() => {
+        if (active) {
+          this.swipe = new Swipe(this.$refs.inner);
+          this.swipe.before(this.beforeSwipe);
+          this.swipe.while(this.whileSwipe);
+          this.swipe.after(this.afterSwipe);
+          this.swipe.on();
+        } else {
+          this.swipe.off();
+        }
+      });
+    },
     resetTransform() {
       this.$refs.inner.style.transform = `translateX(${this.currentTransform}%)`;
     },
