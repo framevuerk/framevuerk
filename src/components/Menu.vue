@@ -34,10 +34,10 @@
 
 @data dialogOne = false
 
-<div css-padding="xl" css-border="md" @click="$refs.menu.open($event)">
+<div css-padding="xl" css-border="md" @contextmenu.prevent="$refs.menu.open($event)">
   <div css-padding="xl"></div>
   <div css-padding="xl"></div>
-  Click inside this Box
+  Right-Click inside this Box
   <div css-padding="xl"></div>
   <div css-padding="xl"></div>
 </div>
