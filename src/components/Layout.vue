@@ -186,7 +186,6 @@ export default {
         '& > main': {
           display: 'flex',
           maxWidth: '100%',
-          overflowX: 'hidden',
           flexGrow: '1',
         },
       }),

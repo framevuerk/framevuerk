@@ -28,7 +28,6 @@ export default {
       className('content', {
         flexGrow: 1,
         maxWidth: '100%',
-        overflowX: 'hidden',
       }),
     ];
   },

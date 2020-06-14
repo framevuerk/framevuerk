@@ -36,7 +36,6 @@ export default {
     return [
       className('slideLabel', {
         userSelect: 'none',
-        overflowX: 'hidden',
         flexGrow: 1,
         borderBottomWidth: '3px',
         borderBottomColor: 'transparent',
