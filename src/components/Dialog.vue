@@ -1,7 +1,6 @@
 <template>
   <transition
     :name="$style.dialogAnimation"
-    @afterLeave="close"
   >
     <div
       v-show="visible"
