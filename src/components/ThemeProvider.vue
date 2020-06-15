@@ -382,7 +382,7 @@ export default {
         ret[attrName('background-color', name)] = {
           backgroundColor: forceValue(color.normal),
         };
-        ret[attrName('background-color', name)] = {
+        ret[attrName('border-color', name)] = {
           borderColor: forceValue(color.normal),
         };
       });
