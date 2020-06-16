@@ -28,6 +28,8 @@
 </example>
 
 <script>
+import cancelDetector from '../utility/cancelDetector';
+
 export default {
   props: {
     visible: {
@@ -47,7 +49,7 @@ export default {
         this.cancelDetector.release();
       }
       if (newValue && window.innerWidth < 992) {
-        this.cancelDetector = this.$layout.cancelDetector(this.$el, this.toggle);
+        this.cancelDetector = cancelDetector(this.$el, this.toggle);
       }
     },
   },

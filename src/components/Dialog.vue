@@ -48,6 +48,8 @@
 </example>
 
 <script>
+import cancelDetector from '../utility/cancelDetector';
+
 export default {
   inheritAttrs: false,
   props: {
@@ -56,7 +58,7 @@ export default {
       default: false,
     },
   },
-  inject: ['$layout', '$theme'],
+  inject: ['$theme'],
   data() {
     return {
       cancelDetector: null,
@@ -82,7 +84,7 @@ export default {
       if (this.cancelDetector) {
         this.cancelDetector.release();
       }
-      this.cancelDetector = this.$layout.cancelDetector(this.$refs.dialog, this.close);
+      this.cancelDetector = cancelDetector(this.$refs.dialog, this.close);
       this.parentElement = this.$el.parentElement;
       document.body.appendChild(this.$el);
       this.$emit('open');
@@ -91,7 +93,9 @@ export default {
       if (this.cancelDetector) {
         this.cancelDetector.release();
       }
-      this.parentElement.appendChild(this.$el);
+      if (this.parentElement) {
+        this.parentElement.appendChild(this.$el);
+      }
       this.$emit('close');
     },
     close() {
