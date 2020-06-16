@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       cancelDetector: null,
+      parentElement: null,
     };
   },
   watch: {
@@ -82,12 +83,15 @@ export default {
         this.cancelDetector.release();
       }
       this.cancelDetector = this.$layout.cancelDetector(this.$refs.dialog, this.close);
+      this.parentElement = this.$el.parentElement;
+      document.body.appendChild(this.$el);
       this.$emit('open');
     },
     handleClose() {
       if (this.cancelDetector) {
         this.cancelDetector.release();
       }
+      this.parentElement.appendChild(this.$el);
       this.$emit('close');
     },
     close() {
