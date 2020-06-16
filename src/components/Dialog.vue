@@ -3,7 +3,7 @@
     :name="$style.dialogAnimation"
   >
     <div
-      v-show="visible"
+      v-if="visible"
       :class="$style.dialogContainer"
     >
       <div
@@ -84,10 +84,12 @@ export default {
       if (this.cancelDetector) {
         this.cancelDetector.release();
       }
-      this.cancelDetector = cancelDetector(this.$refs.dialog, this.close);
       this.parentElement = this.$el.parentElement;
       document.body.appendChild(this.$el);
-      this.$emit('open');
+      this.$nextTick(() => {
+        this.cancelDetector = cancelDetector(this.$refs.dialog, this.close);
+        this.$emit('open');
+      });
     },
     handleClose() {
       if (this.cancelDetector) {
