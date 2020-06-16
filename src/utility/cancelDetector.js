@@ -22,7 +22,6 @@ export default (element, callback) => {
   };
   const onClick = (event) => {
     if (!element.contains(event.target)) {
-      event.stopPropagation();
       callback();
     }
   };
