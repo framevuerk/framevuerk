@@ -1,5 +1,7 @@
+let timeout;
 export default (element, callback) => {
   // hide scroll
+  clearTimeout(timeout);
   document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
   document.body.style.overflow = 'hidden';
   const overlay = document.createElement('DIV');
@@ -8,7 +10,7 @@ export default (element, callback) => {
   overlay.style.left = 0;
   overlay.style.width = '100%';
   overlay.style.height = '100%';
-  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
+  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.06)';
   overlay.dataset.overlay = 'true';
   const parent = element.parentElement;
   parent.insertBefore(overlay, element);
@@ -39,13 +41,15 @@ export default (element, callback) => {
     release: () => {
       overlay.remove();
       const overlays = document.querySelectorAll('[data-overlay=true]');
-      if (overlays.length === 0) {
-        document.body.style.overflow = null;
-        document.body.style.paddingRight = null;
-      }
       window.removeEventListener('keydown', onKeyDown, true);
       window.removeEventListener('click', onClick, true);
       window.removeEventListener('touchstart', onClick, true);
+      if (overlays.length === 0) {
+        timeout = setTimeout(() => {
+          document.body.style.overflow = null;
+          document.body.style.paddingRight = null;
+        }, 220);
+      }
     },
   };
 };
