@@ -88,67 +88,6 @@ export default {
     getSidebarPosition(sidebarComponent) {
       return (this.$slots['end-sidebar'] || []).includes(sidebarComponent.$vnode) ? 'end' : 'start';
     },
-    cancelDetector(element, callback) {
-      function onKeyDown(event) {
-        if (event.keyCode === 27) {
-          event.preventDefault();
-          event.stopPropagation();
-          callback();
-        }
-      }
-      function onClick(event) {
-        if (!element.contains(event.target)) {
-          event.stopPropagation();
-          callback();
-        }
-      }
-      setTimeout(() => {
-        window.addEventListener('keydown', onKeyDown, true);
-        window.addEventListener('click', onClick, true);
-        window.addEventListener('touchstart', onClick, true);
-        // focus on current
-        const startFocusFor = element.querySelector('[autofocus]') || element;
-        if (startFocusFor && startFocusFor.focus) {
-          startFocusFor.focus();
-        }
-        this.addOverlay(element);
-      });
-      return {
-        release: () => {
-          this.removeOverlay(element);
-          window.removeEventListener('keydown', onKeyDown, true);
-          window.removeEventListener('click', onClick, true);
-          window.removeEventListener('touchstart', onClick, true);
-        },
-      };
-    },
-    addOverlay(el) {
-      // hide scroll
-      document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
-      document.body.style.overflow = 'hidden';
-      const overlay = document.createElement('DIV');
-      overlay.classList.add(this.$style.overlay);
-      const parent = el.parentElement;
-      parent.insertBefore(overlay, el);
-      this.overlays.push({
-        el,
-        overlay,
-      });
-    },
-    removeOverlay(el) {
-      const index = this.overlays.findIndex((item) => item.el === el);
-      if (index > -1) {
-        this.overlays[index].overlay.remove();
-        this.overlays = [
-          ...this.overlays.slice(0, index),
-          ...this.overlays.slice(index + 1),
-        ];
-      }
-      if (this.overlays.length === 0) {
-        document.body.style.overflow = null;
-        document.body.style.paddingRight = null;
-      }
-    },
     onScroll() {
       const { scrollTop } = document.scrollingElement;
       clearTimeout(this.eventsData.scroll.timeout);
