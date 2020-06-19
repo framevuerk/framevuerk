@@ -71,7 +71,10 @@ export default {
     },
   },
   beforeDestroy() {
-    this.close();
+    if (this.cancelDetector) {
+      this.cancelDetector.release();
+    }
+    this.$el.remove();
   },
   mounted() {
     this.handleVisibleChange(this.visible);

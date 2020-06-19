@@ -58,6 +58,7 @@ export default {
       visible: false,
       position: {},
       cancelDetector: null,
+      parentElement: null,
     };
   },
   watch: {
@@ -69,6 +70,7 @@ export default {
     if (this.cancelDetector) {
       this.cancelDetector.release();
     }
+    this.$el.remove();
   },
   methods: {
     handleVisibleChange(value) {
@@ -78,6 +80,8 @@ export default {
       if (this.cancelDetector) {
         this.cancelDetector.release();
       }
+      this.parentElement = this.$el.parentElement;
+      document.body.appendChild(this.$el);
       this.$nextTick(() => {
         this.cancelDetector = cancelDetector(this.$refs.menu, this.close);
         this.$emit('open');
@@ -86,6 +90,9 @@ export default {
     handleClose() {
       if (this.cancelDetector) {
         this.cancelDetector.release();
+      }
+      if (this.parentElement) {
+        this.parentElement.appendChild(this.$el);
       }
       this.$emit('close');
     },
