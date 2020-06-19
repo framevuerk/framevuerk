@@ -73,6 +73,7 @@ export default {
         borderWidth: '1px',
         boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: 'bottom' }),
         borderRadius: this.$theme.sizes.radius.factor('md', 'radius'),
+        fontSize: this.$theme.sizes.font.factor('md', 'font'),
         width: '100%',
         maxWidth: '100%',
         '& > thead > th': {
