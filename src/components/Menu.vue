@@ -49,8 +49,10 @@
 </example>
 
 <script>
+import cancelDetector from '../utility/cancelDetector';
+
 export default {
-  inject: ['$layout', '$theme'],
+  inject: ['$theme'],
   data() {
     return {
       visible: false,
@@ -77,7 +79,7 @@ export default {
         this.cancelDetector.release();
       }
       this.$nextTick(() => {
-        this.cancelDetector = this.$layout.cancelDetector(this.$refs.menu, this.close);
+        this.cancelDetector = cancelDetector(this.$refs.menu, this.close);
         this.$emit('open');
       });
     },
