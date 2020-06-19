@@ -3,7 +3,7 @@
     :name="$style.menuAnimation"
   >
     <div
-      v-show="visible"
+      v-if="visible"
       ref="menu"
       :class="$style.menu"
       :style="position"
@@ -76,8 +76,10 @@ export default {
       if (this.cancelDetector) {
         this.cancelDetector.release();
       }
-      this.cancelDetector = this.$layout.cancelDetector(this.$refs.menu, this.close);
-      this.$emit('open');
+      this.$nextTick(() => {
+        this.cancelDetector = this.$layout.cancelDetector(this.$refs.menu, this.close);
+        this.$emit('open');
+      });
     },
     handleClose() {
       if (this.cancelDetector) {
@@ -146,11 +148,13 @@ export default {
       }),
       className('menuAnimation', {
         '&-enter-active, &-leave-active': {
-          transitionDuration: '120ms',
-          transitionProperty: 'opacity',
+          transitionDuration: '80ms',
+          transitionProperty: 'opacity, transform',
+          transform: 'translateY(0)',
         },
         '&-enter, &-leave-to': {
           opacity: 0,
+          transform: 'translateY(-10px)',
         },
       }),
     ];
