@@ -98,7 +98,7 @@ export default {
         nextChar: direction === 'ltr' ? '>' : '<',
         prevChar: direction === 'ltr' ? '<' : '>',
         static: (dir) => (dir ? dir.replace('start', start).replace('end', end) : null),
-        staticDir: (dir) => (dir ? dir.replace('start', ste).replace('end', ets) : null),
+        staticDir: (dir) => (dir ? dir.replace('start', ste).replace('end', ets).replace('left', 'ltr').replace('right', 'rtl') : null),
       };
     },
     _sizes() {
