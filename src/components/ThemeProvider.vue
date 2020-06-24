@@ -82,7 +82,11 @@ export default {
       const { direction } = this;
       const start = direction === 'ltr' ? 'left' : 'right';
       const end = direction !== 'ltr' ? 'left' : 'right';
+      const ste = direction;
+      const ets = direction === 'ltr' ? 'rtl' : 'ltr';
       return {
+        ste,
+        ets,
         start,
         center: 'center',
         end,
@@ -94,6 +98,7 @@ export default {
         nextChar: direction === 'ltr' ? '>' : '<',
         prevChar: direction === 'ltr' ? '<' : '>',
         static: (dir) => (dir ? dir.replace('start', start).replace('end', end) : null),
+        staticDir: (dir) => (dir ? dir.replace('start', ste).replace('end', ets) : null),
       };
     },
     _sizes() {
@@ -359,7 +364,7 @@ export default {
       // Directions
       ['direction', 'float'].forEach((prop) => {
         ['start', 'end', 'right', 'left'].forEach((dynamicDir) => {
-          const dir = this._direction.static(dynamicDir);
+          const dir = this._direction[prop === 'direction' ? 'staticDir' : 'static'](dynamicDir);
           ret[attrName(cx('-', prop), dynamicDir)] = {
             [prop]: forceValue(dir),
           };
