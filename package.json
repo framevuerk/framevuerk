@@ -1,6 +1,6 @@
 {
   "name": "framevuerk",
-  "version": "3.0.0-beta44",
+  "version": "3.0.0-beta45",
   "description": "Fast, Responsive, Without Dependencies, Both Direction Support and Configurable UI Framework based on Vue.js.",
   "main": "dist/framevuerk.js",
   "scripts": {
