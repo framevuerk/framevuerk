@@ -131,7 +131,7 @@ export default {
           ]);
         }
       } else if (index > -1) {
-        this.$emit('input', undefined);
+        this.$emit('input', this.required ? item : undefined);
       } else {
         this.$emit('input', item);
       }
