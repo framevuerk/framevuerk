@@ -154,7 +154,7 @@ export default {
           this.swipe.while(this.whileSwipe);
           this.swipe.after(this.afterSwipe);
           this.swipe.on();
-        } else {
+        } else if (this.swipe) {
           this.swipe.off();
         }
       });
