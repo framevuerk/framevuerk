@@ -494,6 +494,7 @@ export default {
         borderColor: 'inherit',
         backgroundColor: 'transparent',
         borderSpacing: 0,
+        font: 'unset',
         '-webkitOverflowScrolling': 'touch',
         '-webkitTapHighlightColor': 'rgba(0, 0, 0, 0)',
         touchAction: 'pan-y',
