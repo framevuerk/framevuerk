@@ -47,6 +47,9 @@ export default {
       formattedValue: this.formatter(this.value),
     };
   },
+  created() {
+    if(this.value) this.valueChangesHandler(this.value);
+  },
   methods: {
     focus() {
       this.$el.focus();
