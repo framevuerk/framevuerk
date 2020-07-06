@@ -104,6 +104,9 @@ export default {
     value(newValue) {
       this.valueChangesHandler(newValue);
     },
+    validation(newValue) {
+      this.valueChangesHandler(newValue);
+    },
     errors(errors) {
       set(this.$formElement, 'errors', errors);
     },
