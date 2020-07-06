@@ -226,6 +226,9 @@ export default {
           '&:hover, &:focus, &[focus]': {
             borderColor: $color.autoShade(-39),
           },
+          '&[invalid]': {
+            borderColor: this.$theme.colors.danger.normal,
+          },
         },
         '& > .input-container': {
           display: 'inline-flex',

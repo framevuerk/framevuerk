@@ -147,6 +147,9 @@ export default {
           '&:hover, &:focus': {
             borderColor: $color.autoShade(-39),
           },
+          '&[invalid]': {
+            borderColor: this.$theme.colors.danger.normal,
+          },
         },
       }),
     ];
