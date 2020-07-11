@@ -19,7 +19,10 @@
     </div>
     <slot v-else />
     <div v-if="hasErrorsSlot">
-      <slot name="errors" :errors="errors" />
+      <slot
+        name="errors"
+        :errors="errors"
+      />
     </div>
   </div>
 </template>
