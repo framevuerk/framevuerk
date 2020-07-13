@@ -107,13 +107,13 @@ export default {
     },
     expanded: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   data() {
     return {
       isHighlighted: false,
-      isExpanded: true,
+      isExpanded: this.expanded,
     };
   },
   computed: {
