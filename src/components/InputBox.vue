@@ -128,6 +128,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    autoWidthBox: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -254,7 +258,9 @@ export default {
           borderRadius: this.$theme.sizes.radius.factor('md', 'radius'),
           minHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
           height: 'auto',
-          width: '100%',
+          maxHeight: '30vh',
+          overflow: 'auto',
+          width: this.autoWidthBox ? 'auto' : '100%',
           left: '0',
           zIndex: 999,
           '&.down': {
