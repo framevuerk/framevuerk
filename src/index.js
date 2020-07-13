@@ -39,6 +39,7 @@ import Switch from './components/Switch.vue';
 // import fvRange from './components/fvRange.vue'
 import Loading from './components/Loading.vue';
 import Pagination from './components/Pagination.vue';
+import Datepicker from './components/Datepicker.vue';
 // import config from './utility/config.js'
 
 const Framevuerk = {
@@ -72,6 +73,7 @@ const Framevuerk = {
       Check,
       Switch,
       Menu,
+      Datepicker,
     }, (key, component) => {
       Vue.component(`fv${key}`, component);
     });
@@ -111,6 +113,7 @@ export {
   Check,
   Switch,
   Menu,
+  Datepicker,
 };
 
 export default Framevuerk;

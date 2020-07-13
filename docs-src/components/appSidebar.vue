@@ -118,6 +118,13 @@
                 </fvListItem>
                 <fvListItem
                   tag="router-link"
+                  to="/components/datepicker"
+                  :class="{ selected: isSelected('component', 'datepicker') }"
+                >
+                  Datepicker
+                </fvListItem>
+                <fvListItem
+                  tag="router-link"
                   to="/components/check"
                   :class="{ selected: isSelected('component', 'check') }"
                 >

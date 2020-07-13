@@ -128,6 +128,9 @@ export default {
             if (size === 'auto') {
               return 'auto';
             }
+            if (factorType === 'custom') {
+              return `${(value * [options.factors[factors.indexOf(size)]]) + sum}px`;
+            }
             if (factorType === 'size') {
               return `${(value * [sizeFactor[factors.indexOf(size)]]) + sum}px`;
             }
