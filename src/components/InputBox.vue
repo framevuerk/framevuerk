@@ -60,6 +60,7 @@
 <doc>
 @prop searchInput @type Boolean @default false @description Allow users to temporary typing inside value slot? (content accessable via `search` event)
 @prop query @type String @default '' @description User searching string. use .sync modifier to works.
+@prop autoWidthBox @type Boolean @default false @description Is box auto-width?
 @prop disabled @type Boolean @default false @description Is disabled?
 @prop isValidate @type Boolean @default true @description Is validated?
 @prop placeholder @type String @default '' @description String shows instead of `input` slot.
@@ -71,6 +72,8 @@
 @event keydown @params nativeEvent @description Triggers when user start pressing a button while 'box' slot is open.
 @event focus @params nativeEvent @description Triggers when user focus on element.
 @event blur @params nativeEvent @description Triggers when user blur from element.
+@event open @description Triggers when box opens.
+@event close @description Triggers when box closes.
 </doc>
 
 <example>
@@ -154,6 +157,11 @@ export default {
     },
     focusElemenTag() {
       return this.searchInput ? 'input' : 'div';
+    },
+  },
+  watch: {
+    isOpened(newVal) {
+      this.$emit(newVal ? 'open' : 'close');
     },
   },
   methods: {
