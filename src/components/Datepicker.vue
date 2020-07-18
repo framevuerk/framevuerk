@@ -5,12 +5,14 @@
     :disabled="disabled"
     :is-validate="isValidate"
     :auto-close="false"
+    auto-width-box
+    @open="handleBoxOpen"
     @keydown="handleKeydown"
     @focus="onFocusDefault"
     @blur="onBlurDefault"
   >
     <template
-      v-if="parsedValue"
+      v-if="parsedValue.date"
       #input
     >
       <span
@@ -34,56 +36,229 @@
       </span>
     </template>
     <template #box>
-      <div>
-        <template v-if="pick.includes('date')">
-          <span @click="currentView = 'years'"> {{ parsedValue.year }} </span>-
-          <span @click="currentView = 'months'"> {{ parsedValue.month + 1 }} </span>-
-          <span @click="currentView = 'days'"> {{ parsedValue.date }} </span>
-        </template>
-        <template v-if="pick.includes('time')">
-          <span @click="currentView = 'time'">
-            {{ parsedValue.hour }}:{{ parsedValue.minute }}
-          </span>
-        </template>
+      <div :class="$style.box">
+        <div v-if="currentView === 'day'">
+          <fvInputGroup
+            css-flex
+            css-padding="sm"
+          >
+            <div css-padding-end="sm">
+              <fvButton
+                fab
+                css-size="sm"
+                @click="setValue({ year: parsedEditingValue.year - 1 }, 'editingValue')"
+              >
+                {{ $theme.direction.prevChar }}{{ $theme.direction.prevChar }}
+              </fvButton>
+            </div>
+            <div>
+              <fvButton
+                fab
+                css-size="sm"
+                @click="setValue({ month: parsedEditingValue.month - 1 }, 'editingValue')"
+              >
+                {{ $theme.direction.prevChar }}
+              </fvButton>
+            </div>
+            <div
+              css-grow
+              @click="currentView = currentView === 'time' ? 'day' : 'monthyear'"
+              v-text="parsedEditingValue.formattedMonthYear"
+            />
+            <div>
+              <fvButton
+                fab
+                css-size="sm"
+                @click="setValue({ month: parsedEditingValue.month + 1 }, 'editingValue')"
+              >
+                {{ $theme.direction.nextChar }}
+              </fvButton>
+            </div>
+            <div css-padding-start="sm">
+              <fvButton
+                fab
+                css-size="sm"
+                @click="setValue({ year: parsedEditingValue.year + 1 }, 'editingValue')"
+              >
+                {{ $theme.direction.nextChar }}{{ $theme.direction.nextChar }}
+              </fvButton>
+            </div>
+          </fvInputGroup>
+          <table
+            :class="$style.dateTable"
+            class="day"
+            css-padding="sm"
+          >
+            <tbody>
+              <tr
+                v-for="(daysRow, i) in daysMatrix"
+                :key="'days-tr-'+i"
+              >
+                <td
+                  v-for="(day, j) in daysRow"
+                  :key="'days-td-'+j"
+                  :class="[day.isGray ? 'gray' : null, day.isSelected ? 'selected' : null]"
+                  @click="setValue({ date: day.value, month: day.monthValue, year: parsedEditingValue.year })"
+                >
+                  {{ day.value }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          v-if="currentView === 'monthyear'"
+          css-border-top="md"
+        >
+          <table
+            :class="$style.dateTable"
+            class="month"
+            css-padding="sm"
+          >
+            <tbody>
+              <tr
+                v-for="(monthsRow, i) in monthsMatrix"
+                :key="'months-tr-'+i"
+              >
+                <td
+                  v-for="(month, j) in monthsRow"
+                  :key="'months-td-'+j"
+                  :class="[month.isGray ? 'gray' : null, month.isSelected ? 'selected' : null]"
+                  @click="setValue({ month: month.value }, 'editingValue'); currentView = 'day'"
+                >
+                  {{ month.value + 1 }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <fvInputGroup
+            css-flex
+            css-border-top="md"
+            css-padding="sm"
+          >
+            <div>
+              <fvButton
+                fab
+                css-size="sm"
+                @click="setValue({ year: parsedEditingValue.year - 1 }, 'editingValue')"
+              >
+                -
+              </fvButton>
+            </div>
+            <div
+              css-grow
+              v-text="parsedEditingValue.year"
+            />
+            <div>
+              <fvButton
+                fab
+                css-size="sm"
+                @click="setValue({ year: parsedEditingValue.year + 1 }, 'editingValue')"
+              >
+                +
+              </fvButton>
+            </div>
+            <!-- <a
+              css-padding-x="md"
+              @click="setValue({ year: parsedEditingValue.year + 1 }, 'editingValue')"
+            >
+              {{ $theme.direction.nextChar }}
+            </a> -->
+          </fvInputGroup>
+        </div>
+        <fvInputGroup
+          v-if="currentView === 'time'"
+          css-flex
+          css-padding="md"
+        >
+          <div css-grow>
+            <fvButton
+              key="h+"
+              css-size="sm"
+              fab
+              @click="setValue({ hour: parsedEditingValue.hour + 1 })"
+            >
+              +
+            </fvButton>
+            <div
+              css-padding-y="md"
+              v-text="parsedEditingValue.formattedHour"
+            />
+            <fvButton
+              key="h-"
+              css-size="sm"
+              fab
+              @click="setValue({ hour: parsedEditingValue.hour - 1 })"
+            >
+              -
+            </fvButton>
+          </div>
+          <div> : </div>
+          <div css-grow>
+            <fvButton
+              key="m+"
+              css-size="sm"
+              fab
+              @click="setValue({ minute: parsedEditingValue.minute + 1 })"
+            >
+              +
+            </fvButton>
+            <div
+              css-padding-y="md"
+              v-text="parsedEditingValue.formattedMinute"
+            />
+            <fvButton
+              key="m-"
+              css-size="sm"
+              fab
+              @click="setValue({ minute: parsedEditingValue.minute - 1 })"
+            >
+              -
+            </fvButton>
+          </div>
+          <div> : </div>
+          <div css-grow>
+            <fvButton
+              key="s+"
+              css-size="sm"
+              fab
+              @click="setValue({ second: parsedEditingValue.second + 1 })"
+            >
+              +
+            </fvButton>
+            <div
+              css-padding-y="md"
+              v-text="parsedEditingValue.formattedSecond"
+            />
+            <fvButton
+              key="s-"
+              css-size="sm"
+              fab
+              @click="setValue({ second: parsedEditingValue.second - 1 })"
+            >
+              -
+            </fvButton>
+          </div>
+        </fvInputGroup>
+        <div
+          v-if="pick.includes('time') && currentView === 'day'"
+          css-padding="sm"
+          css-border-top="md"
+          css-grow
+          @click="currentView = 'time'"
+        >
+          {{ parsedEditingValue.formattedTime }}
+        </div>
+        <div
+          v-if="pick.includes('date') && currentView === 'time'"
+          css-padding="sm"
+          css-border-top="md"
+          css-grow
+          @click="currentView = 'day'"
+        >
+          {{ parsedEditingValue.formattedMonthYear }}
+        </div>
       </div>
-      <table
-        v-if="currentView === 'days'"
-        :class="$style.daysTable"
-      >
-        <tbody>
-          <tr
-            v-for="(daysRow, i) in daysMatrix"
-            :key="'days-tr-'+i"
-          >
-            <td
-              v-for="(day, j) in daysRow"
-              :key="'days-td-'+j"
-              :class="[day.isGray ? 'gray' : null, day.isSelected ? 'selected' : null]"
-            >
-              {{ day.value }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <table
-        v-if="currentView === 'months'"
-        :class="$style.monthsTable"
-      >
-        <tbody>
-          <tr
-            v-for="(monthsRow, i) in monthsMatrix"
-            :key="'months-tr-'+i"
-          >
-            <td
-              v-for="(month, j) in monthsRow"
-              :key="'months-td-'+j"
-              :class="[month.isGray ? 'gray' : null, month.isSelected ? 'selected' : null]"
-            >
-              {{ month.value + 1 }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </template>
   </fvInputBox>
 </template>
@@ -107,6 +282,7 @@
 @config example true
 
 @data val = new Date()
+<div v-text="val"></div>
 <fvDatepicker v-model="val" placeholder="Sex" />
 </example>
 
@@ -115,7 +291,28 @@ import color from '../mixins/color';
 import size from '../mixins/size';
 import formElement from '../mixins/formElement';
 
-// const toStatic = JSON.stringify;
+const createDateInstance = (dates, Constructor) => {
+  let value;
+  let currentIndex = 0;
+  do {
+    value = new Constructor(dates[currentIndex]);
+    currentIndex += 1;
+  } while ((!value || !value.getTime()) && dates[currentIndex]);
+  return value;
+};
+
+const parseDate = (dates, Constructor) => {
+  const value = createDateInstance(dates, Constructor);
+  return {
+    year: value.getFullYear(),
+    month: value.getMonth(),
+    date: value.getDate(),
+    day: value.getDay(),
+    hour: value.getHours(),
+    minute: value.getMinutes(),
+    second: value.getSeconds(),
+  };
+};
 
 export default {
   mixins: [
@@ -137,7 +334,7 @@ export default {
     },
     pick: {
       type: Array,
-      default: () => ['date'],
+      default: () => ['date', 'time'],
       validator: (v) => v.length && v.every((i) => ['date', 'time'].includes(i)),
     },
     dateConstructor: {
@@ -147,45 +344,47 @@ export default {
   },
   data() {
     return {
-      localCurrentView: 'days', // days, months, years, time
+      localCurrentView: null, // day, monthyear, time
+      editingValue: null,
+      inputTimeTimer: null,
     };
   },
   computed: {
-    Date() {
-      return this.dateConstructor;
+    views() {
+      return [
+        ...(this.pick.includes('date') ? ['day', 'monthyear'] : []),
+        ...(this.pick.includes('time') ? ['time'] : []),
+      ];
     },
     currentView: {
       set(x) {
         this.localCurrentView = x;
       },
       get() {
-        const allowedList = [
-          ...(this.pick.includes('date') ? ['days', 'months', 'years'] : []),
-          ...(this.pick.includes('time') ? ['time'] : []),
-        ];
-        return allowedList.includes(this.localCurrentView) ? this.localCurrentView : allowedList[0];
+        return this.views.includes(this.localCurrentView) ? this.localCurrentView : this.views[0];
       },
     },
-    parsedValue() {
-      let value = new this.Date(this.value);
-      if (!value.getTime()) {
-        value = new this.Date(this.defaultValue);
-      }
+    parsedEditingValue() {
+      const mainObj = parseDate([
+        this.editingValue,
+        this.defaultValue,
+      ], this.dateConstructor);
       return {
-        year: value.getFullYear(),
-        month: value.getMonth(),
-        date: value.getDate(),
-        day: value.getDay(),
-        hour: value.getHours(),
-        minute: value.getMinutes(),
-        seconds: value.getSeconds(),
-        millisecond: value.getMilliseconds(),
+        ...mainObj,
+        formattedMonthYear: `${mainObj.year}-${mainObj.month.toString().padStart(2, 0)}`,
+        formattedTime: `${mainObj.hour.toString().padStart(2, 0)}:${mainObj.minute.toString().padStart(2, 0)}:${mainObj.second.toString().padStart(2, 0)}`,
+        formattedHour: mainObj.hour.toString().padStart(2, 0),
+        formattedMinute: mainObj.minute.toString().padStart(2, 0),
+        formattedSecond: mainObj.second.toString().padStart(2, 0),
       };
+    },
+    parsedValue() {
+      return parseDate([this.value], this.dateConstructor);
     },
     daysMatrix() {
       if (!this.pick.includes('date')) return [];
       const ret = [];
-      const { year, month } = this.parsedValue;
+      const { year, month } = this.parsedEditingValue;
       const monthFirstDay = this.monthFirstDay(year, month);
       const daysInMonth = this.daysInMonth(year, month);
       const daysInPrevMonth = this.daysInMonth(year, month - 1);
@@ -194,18 +393,24 @@ export default {
         const dayStart = i * 7;
         for (let j = 0; j < 7; j += 1) {
           let value = (dayStart + j) - (monthFirstDay - 1);
-          let isGray = false;
+          let isGray = true;
+          let isSelected = false;
+          let monthValue = month;
           if (value < 1) {
             value += daysInPrevMonth;
-            isGray = true;
+            monthValue -= 1;
           } else if (value > daysInMonth) {
             value -= daysInMonth;
-            isGray = true;
+            monthValue += 1;
+          } else {
+            isGray = false;
           }
+          isSelected = this.isDateSelected(year, monthValue, value);
           row.push({
             value,
+            monthValue,
             isGray,
-            isSelected: this.isSelected(year, month, value),
+            isSelected,
           });
         }
         ret.push(row);
@@ -215,7 +420,7 @@ export default {
     monthsMatrix() {
       if (!this.pick.includes('date')) return [];
       const ret = [];
-      const { year } = this.parsedValue;
+      const { month } = this.parsedEditingValue;
       for (let i = 0; i < 4; i += 1) {
         const row = [];
         const monthStart = i * 3;
@@ -223,7 +428,7 @@ export default {
           const value = monthStart + j;
           row.push({
             value,
-            isSelected: this.isSelected(year, value),
+            isSelected: month === value,
           });
         }
         ret.push(row);
@@ -233,33 +438,75 @@ export default {
     yearsMatrix() {
       if (!this.pick.includes('date')) return [];
       const ret = [];
-      const { year } = this.parsedValue;
-      for (let i = -13; i < 14; i += 1) {
+      const { year } = this.parsedEditingValue;
+      for (let i = -8; i < 11; i += 1) {
         const row = [];
-        const yearStart = (i * 7) - 3;
-        for (let j = 0; j < 7; j += 1) {
-          row.push((yearStart + j) + year);
+        const yearStart = (i * 3) - 3;
+        for (let j = -1; j < 2; j += 1) {
+          const value = (yearStart + j) + year;
+          row.push({
+            value,
+            isSelected: year === value,
+          });
         }
         ret.push(row);
       }
       return ret;
     },
   },
+  watch: {
+    value() {
+      this.resetEditingValue();
+    },
+  },
   methods: {
+    resetEditingValue() {
+      this.editingValue = createDateInstance([this.value, this.defaultValue], this.dateConstructor);
+    },
+    handleBoxOpen() {
+      this.resetEditingValue();
+    },
     monthFirstDay(year, month) {
-      return new this.Date(year, month, 1).getDay();
+      // eslint-disable-next-line new-cap
+      return new this.dateConstructor(year, month, 1).getDay();
     },
     daysInMonth(year, month) {
-      return new this.Date(year, month + 1, 0).getDate();
+      // eslint-disable-next-line new-cap
+      return new this.dateConstructor(year, month + 1, 0).getDate();
     },
-    isSelected(aYear = undefined, aMonth = undefined, aDate = undefined) {
+    setValue({
+      year = null,
+      month = null,
+      date = null,
+      hour = null,
+      minute = null,
+      second = null,
+    }, scope = 'value') {
+      const newDate = createDateInstance([
+        this[scope],
+        this.defaultValue,
+      ], this.dateConstructor);
+      if (year !== null) newDate.setFullYear(year);
+      if (month !== null) newDate.setMonth(month);
+      if (date !== null) newDate.setDate(date);
+      if (hour !== null) newDate.setHours(hour);
+      if (minute !== null) newDate.setMinutes(minute);
+      if (second !== null) newDate.setSeconds(second);
+      if (scope === 'value') {
+        this.$emit('input', newDate);
+      } else {
+        this.editingValue = newDate;
+      }
+    },
+    isDateSelected(uYear, uMonth, uDate) {
       const { year, month, date } = this.parsedValue;
-      const uYear = typeof aYear === 'undefined' ? year : aYear;
-      const uMonth = typeof aMonth === 'undefined' ? month : aMonth;
-      const uDate = typeof aDate === 'undefined' ? date : aDate;
-      return (year - uYear) + (month - uMonth) + (date - uDate) === 0;
+      // eslint-disable-next-line new-cap
+      const { year: cYear, month: cMonth, date: cDate } = parseDate([new this.dateConstructor(uYear, uMonth, uDate)], this.dateConstructor);
+      return year === cYear && month === cMonth && date === cDate;
     },
     handleKeydown(_event) {
+      // eslint-disable-next-line no-console
+      console.log('not implemented yet', _event);
     },
     clearValue() {
       this.$emit('input', undefined);
@@ -269,32 +516,29 @@ export default {
     const $daySize = this.$theme.sizes.base.factor(this.$size, 'custom', {
       factors: [0, 1, 3, 4, 5, 6],
     });
-    // const $monthSize = this.$theme.sizes.base.factor(this.$size, 'custom', {
-    //   factors: [0, 1, 3, 4, 5, 6],
-    // });
     return [
-      className('daysTable', {
-        '& td': {
-          width: $daySize,
-          height: $daySize,
-          textAlign: 'center',
-          '&.gray': {
-            opacity: 0.4,
-          },
-          '&.selected': {
-            background: this.$theme.colors.primary.normal,
-          },
-        },
+      className('box', {
+        width: `${parseInt($daySize, 10) * 7}px`,
+        textAlign: 'center',
       }),
-      className('monthsTable', {
-        '& td': {
+      className('dateTable', {
+        width: '100%',
+        '&.month td': {
           width: '33.33%',
-          textAlign: 'center',
+        },
+        '&.day td': {
+          width: $daySize,
+        },
+        '& td': {
+          height: $daySize,
+          verticalAlign: 'middle',
           '&.gray': {
             opacity: 0.4,
           },
           '&.selected': {
             background: this.$theme.colors.primary.normal,
+            color: this.$theme.colors.primary.text,
+            borderRadius: this.$theme.sizes.radius.normal,
           },
         },
       }),
