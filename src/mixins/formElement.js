@@ -57,8 +57,8 @@ export default {
     onBlurDefault() {
       set(this.$formElement, 'isHighlighted', false);
     },
-    valueChangesHandler(newValue) {
-      const formattedValue = this.formatter(newValue);
+    valueChangesHandler() {
+      const formattedValue = this.formatter(this.value);
       let errors = [];
       const validation = this.validation(formattedValue);
       const isFilled = (() => {
@@ -101,11 +101,11 @@ export default {
     },
   },
   watch: {
-    value(newValue) {
-      this.valueChangesHandler(newValue);
+    value() {
+      this.valueChangesHandler();
     },
-    validation(newValue) {
-      this.valueChangesHandler(newValue);
+    validation() {
+      this.valueChangesHandler();
     },
     errors(errors) {
       set(this.$formElement, 'errors', errors);
