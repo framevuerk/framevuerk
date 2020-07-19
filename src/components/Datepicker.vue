@@ -12,7 +12,7 @@
     @blur="onBlurDefault"
   >
     <template
-      v-if="parsedValue.date"
+      v-if="parsedValue"
       #input
     >
       <span
@@ -38,52 +38,16 @@
     <template #box>
       <div :class="$style.box">
         <div v-if="currentView === 'day'">
-          <fvInputGroup
+          <div
             css-flex
             css-padding="sm"
-          >
-            <div css-padding-end="sm">
-              <fvButton
-                fab
-                css-size="sm"
-                @click="setValue({ year: parsedEditingValue.year - 1 }, 'editingValue')"
-              >
-                {{ $theme.direction.prevChar }}{{ $theme.direction.prevChar }}
-              </fvButton>
-            </div>
-            <div>
-              <fvButton
-                fab
-                css-size="sm"
-                @click="setValue({ month: parsedEditingValue.month - 1 }, 'editingValue')"
-              >
-                {{ $theme.direction.prevChar }}
-              </fvButton>
-            </div>
-            <div
-              css-grow
-              @click="currentView = currentView === 'time' ? 'day' : 'monthyear'"
-              v-text="parsedEditingValue.formattedMonthYear"
-            />
-            <div>
-              <fvButton
-                fab
-                css-size="sm"
-                @click="setValue({ month: parsedEditingValue.month + 1 }, 'editingValue')"
-              >
-                {{ $theme.direction.nextChar }}
-              </fvButton>
-            </div>
-            <div css-padding-start="sm">
-              <fvButton
-                fab
-                css-size="sm"
-                @click="setValue({ year: parsedEditingValue.year + 1 }, 'editingValue')"
-              >
-                {{ $theme.direction.nextChar }}{{ $theme.direction.nextChar }}
-              </fvButton>
-            </div>
-          </fvInputGroup>
+            css-border-bottom="md"
+            css-cursor="pointer"
+            :class="[navigateParts.monthyear.isHighlighted && 'highlighted']"
+            @click="navigateParts.monthyear.click"
+            @mousemove="currentHighlighted = navigateParts.monthyear.highlightKey"
+            v-text="navigateParts.monthyear.value"
+          />
           <table
             :class="$style.dateTable"
             class="day"
@@ -91,14 +55,15 @@
           >
             <tbody>
               <tr
-                v-for="(daysRow, i) in daysMatrix"
+                v-for="(daysRow, i) in daysParts"
                 :key="'days-tr-'+i"
               >
                 <td
                   v-for="(day, j) in daysRow"
                   :key="'days-td-'+j"
-                  :class="[day.isGray ? 'gray' : null, day.isSelected ? 'selected' : null]"
-                  @click="setValue({ date: day.value, month: day.monthValue, year: parsedEditingValue.year })"
+                  :class="[day.isGray && 'gray', day.isSelected && 'selected', day.isHighlighted && 'highlighted']"
+                  @mousemove="currentHighlighted = day.highlightKey"
+                  @click="day.click"
                 >
                   {{ day.value }}
                 </td>
@@ -117,14 +82,15 @@
           >
             <tbody>
               <tr
-                v-for="(monthsRow, i) in monthsMatrix"
+                v-for="(monthsRow, i) in monthsParts"
                 :key="'months-tr-'+i"
               >
                 <td
                   v-for="(month, j) in monthsRow"
                   :key="'months-td-'+j"
-                  :class="[month.isGray ? 'gray' : null, month.isSelected ? 'selected' : null]"
-                  @click="setValue({ month: month.value }, 'editingValue'); currentView = 'day'"
+                  :class="[month.isSelected && 'selected', month.isHighlighted && 'highlighted']"
+                  @mousemove="currentHighlighted = month.highlightKey"
+                  @click="month.click"
                 >
                   {{ month.value + 1 }}
                 </td>
@@ -135,106 +101,64 @@
             css-flex
             css-border-top="md"
             css-padding="sm"
+            :class="[yearPart.isHighlighted && 'highlighted']"
+            @mousemove.native="currentHighlighted = yearPart.highlightKey"
           >
             <div>
               <fvButton
+                tabindex="-1"
                 fab
                 css-size="sm"
-                @click="setValue({ year: parsedEditingValue.year - 1 }, 'editingValue')"
+                @click="yearPart.prev"
               >
                 -
               </fvButton>
             </div>
             <div
               css-grow
-              v-text="parsedEditingValue.year"
+              v-text="yearPart.value"
             />
             <div>
               <fvButton
+                tabindex="-1"
                 fab
                 css-size="sm"
-                @click="setValue({ year: parsedEditingValue.year + 1 }, 'editingValue')"
+                @click="yearPart.next"
               >
                 +
               </fvButton>
             </div>
-            <!-- <a
-              css-padding-x="md"
-              @click="setValue({ year: parsedEditingValue.year + 1 }, 'editingValue')"
-            >
-              {{ $theme.direction.nextChar }}
-            </a> -->
           </fvInputGroup>
         </div>
         <fvInputGroup
           v-if="currentView === 'time'"
           css-flex
-          css-padding="md"
         >
-          <div css-grow>
+          <div
+            v-for="timePart in timeParts"
+            :key="timePart.highlightKey"
+            :class="[timePart.isHighlighted && 'highlighted']"
+            css-grow
+            css-padding="md"
+            @mousemove="currentHighlighted = timePart.highlightKey"
+          >
             <fvButton
-              key="h+"
+              tabindex="-1"
               css-size="sm"
               fab
-              @click="setValue({ hour: parsedEditingValue.hour + 1 })"
+              @click="timePart.next"
             >
               +
             </fvButton>
             <div
               css-padding-y="md"
-              v-text="parsedEditingValue.formattedHour"
+              v-text="timePart.value"
             />
             <fvButton
-              key="h-"
+              tabindex="-1"
               css-size="sm"
               fab
-              @click="setValue({ hour: parsedEditingValue.hour - 1 })"
-            >
-              -
-            </fvButton>
-          </div>
-          <div> : </div>
-          <div css-grow>
-            <fvButton
-              key="m+"
-              css-size="sm"
-              fab
-              @click="setValue({ minute: parsedEditingValue.minute + 1 })"
-            >
-              +
-            </fvButton>
-            <div
-              css-padding-y="md"
-              v-text="parsedEditingValue.formattedMinute"
-            />
-            <fvButton
-              key="m-"
-              css-size="sm"
-              fab
-              @click="setValue({ minute: parsedEditingValue.minute - 1 })"
-            >
-              -
-            </fvButton>
-          </div>
-          <div> : </div>
-          <div css-grow>
-            <fvButton
-              key="s+"
-              css-size="sm"
-              fab
-              @click="setValue({ second: parsedEditingValue.second + 1 })"
-            >
-              +
-            </fvButton>
-            <div
-              css-padding-y="md"
-              v-text="parsedEditingValue.formattedSecond"
-            />
-            <fvButton
-              key="s-"
-              css-size="sm"
-              fab
-              @click="setValue({ second: parsedEditingValue.second - 1 })"
+              @click="timePart.prev"
             >
               -
             </fvButton>
@@ -245,19 +169,23 @@
           css-padding="sm"
           css-border-top="md"
           css-grow
-          @click="currentView = 'time'"
-        >
-          {{ parsedEditingValue.formattedTime }}
-        </div>
+          css-cursor="pointer"
+          :class="[navigateParts.time.isHighlighted && 'highlighted']"
+          @click="navigateParts.time.click"
+          @mousemove="currentHighlighted = navigateParts.time.highlightKey"
+          v-text="navigateParts.time.value"
+        />
         <div
           v-if="pick.includes('date') && currentView === 'time'"
           css-padding="sm"
           css-border-top="md"
           css-grow
-          @click="currentView = 'day'"
-        >
-          {{ parsedEditingValue.formattedMonthYear }}
-        </div>
+          css-cursor="pointer"
+          :class="[navigateParts.day.isHighlighted && 'highlighted']"
+          @click="navigateParts.day.click"
+          @mousemove="currentHighlighted = navigateParts.day.highlightKey"
+          v-text="navigateParts.day.value"
+        />
       </div>
     </template>
   </fvInputBox>
@@ -292,17 +220,21 @@ import size from '../mixins/size';
 import formElement from '../mixins/formElement';
 
 const createDateInstance = (dates, Constructor) => {
-  let value;
+  let value = null;
   let currentIndex = 0;
   do {
     value = new Constructor(dates[currentIndex]);
+    if (!value.getTime()) {
+      value = null;
+    }
     currentIndex += 1;
-  } while ((!value || !value.getTime()) && dates[currentIndex]);
+  } while (!value && dates[currentIndex]);
   return value;
 };
 
 const parseDate = (dates, Constructor) => {
   const value = createDateInstance(dates, Constructor);
+  if (!value) return null;
   return {
     year: value.getFullYear(),
     month: value.getMonth(),
@@ -344,9 +276,10 @@ export default {
   },
   data() {
     return {
-      localCurrentView: null, // day, monthyear, time
+      currentView: null, // day, monthyear, time
       editingValue: null,
       inputTimeTimer: null,
+      currentHighlighted: 'day-1', // 'day-0 to day-41, month-0 to month-11, time-0 to time-2, monthyear, day, time
     };
   },
   computed: {
@@ -356,14 +289,6 @@ export default {
         ...(this.pick.includes('time') ? ['time'] : []),
       ];
     },
-    currentView: {
-      set(x) {
-        this.localCurrentView = x;
-      },
-      get() {
-        return this.views.includes(this.localCurrentView) ? this.localCurrentView : this.views[0];
-      },
-    },
     parsedEditingValue() {
       const mainObj = parseDate([
         this.editingValue,
@@ -371,7 +296,8 @@ export default {
       ], this.dateConstructor);
       return {
         ...mainObj,
-        formattedMonthYear: `${mainObj.year}-${mainObj.month.toString().padStart(2, 0)}`,
+        formattedFullDate: `${mainObj.year}/${mainObj.month.toString().padStart(2, 0)}/${mainObj.date.toString().padStart(2, 0)}`,
+        formattedMonthYear: `${mainObj.year}/${mainObj.month.toString().padStart(2, 0)}`,
         formattedTime: `${mainObj.hour.toString().padStart(2, 0)}:${mainObj.minute.toString().padStart(2, 0)}:${mainObj.second.toString().padStart(2, 0)}`,
         formattedHour: mainObj.hour.toString().padStart(2, 0),
         formattedMinute: mainObj.minute.toString().padStart(2, 0),
@@ -381,7 +307,7 @@ export default {
     parsedValue() {
       return parseDate([this.value], this.dateConstructor);
     },
-    daysMatrix() {
+    daysParts() {
       if (!this.pick.includes('date')) return [];
       const ret = [];
       const { year, month } = this.parsedEditingValue;
@@ -406,18 +332,22 @@ export default {
             isGray = false;
           }
           isSelected = this.isDateSelected(year, monthValue, value);
+          const highlightKey = `day-${(i * 7) + j}`;
           row.push({
             value,
             monthValue,
             isGray,
             isSelected,
+            highlightKey,
+            isHighlighted: this.currentHighlighted === highlightKey,
+            click: () => this.setValue({ date: value, month: monthValue }),
           });
         }
         ret.push(row);
       }
       return ret;
     },
-    monthsMatrix() {
+    monthsParts() {
       if (!this.pick.includes('date')) return [];
       const ret = [];
       const { month } = this.parsedEditingValue;
@@ -426,32 +356,67 @@ export default {
         const monthStart = i * 3;
         for (let j = 0; j < 3; j += 1) {
           const value = monthStart + j;
+          const highlightKey = `monthyear-${(i * 3) + j}`;
           row.push({
             value,
             isSelected: month === value,
+            highlightKey,
+            isHighlighted: this.currentHighlighted === highlightKey,
+            click: () => {
+              this.setValue({ month: value }, 'editingValue');
+              this.changeView('day');
+            },
           });
         }
         ret.push(row);
       }
       return ret;
     },
-    yearsMatrix() {
-      if (!this.pick.includes('date')) return [];
-      const ret = [];
+    yearPart() {
       const { year } = this.parsedEditingValue;
-      for (let i = -8; i < 11; i += 1) {
-        const row = [];
-        const yearStart = (i * 3) - 3;
-        for (let j = -1; j < 2; j += 1) {
-          const value = (yearStart + j) + year;
-          row.push({
-            value,
-            isSelected: year === value,
-          });
-        }
-        ret.push(row);
-      }
-      return ret;
+      const highlightKey = 'year';
+      return {
+        highlightKey,
+        isHighlighted: this.currentHighlighted === highlightKey,
+        value: year,
+        next: () => this.setValue({ year: year + 1 }, 'editingValue'),
+        prev: () => this.setValue({ year: year - 1 }, 'editingValue'),
+      };
+    },
+    timeParts() {
+      const { hour, minute, second } = this.parsedEditingValue;
+      return [[hour, 'hour'], [minute, 'minute'], [second, 'second']].map((val, index) => {
+        const highlightKey = `time-${index}`;
+        return {
+          highlightKey,
+          isHighlighted: this.currentHighlighted === highlightKey,
+          value: val[0].toString().padStart(2, 0),
+          next: () => this.setValue({ [val[1]]: val[0] + 1 }, 'editingValue'),
+          prev: () => this.setValue({ [val[1]]: val[0] - 1 }, 'editingValue'),
+        };
+      });
+    },
+    navigateParts() {
+      return {
+        monthyear: {
+          highlightKey: 'monthyear',
+          isHighlighted: this.currentHighlighted === 'monthyear',
+          click: () => this.changeView('monthyear'),
+          value: `${this.parsedEditingValue.year}/${(this.parsedEditingValue.month + 1).toString().padStart(2, 0)}`,
+        },
+        time: {
+          highlightKey: 'time',
+          isHighlighted: this.currentHighlighted === 'time',
+          click: () => this.changeView('time'),
+          value: this.parsedValue ? `${this.timeParts.map((part) => part.value).join(':')}` : '--:--:--',
+        },
+        day: {
+          highlightKey: 'day',
+          isHighlighted: this.currentHighlighted === 'day',
+          click: () => this.changeView('day'),
+          value: this.parsedValue ? `${this.parsedValue.year}/${(this.parsedValue.month + 1).toString().padStart(2, 0)}/${this.parsedValue.date.toString().padStart(2, 0)}` : '----/--/--',
+        },
+      };
     },
   },
   watch: {
@@ -460,11 +425,17 @@ export default {
     },
   },
   methods: {
+    changeView(userValue) {
+      const value = this.views.includes(userValue) ? userValue : this.views[0];
+      this.currentView = value;
+      this.currentHighlighted = `${value}-0`;
+    },
     resetEditingValue() {
       this.editingValue = createDateInstance([this.value, this.defaultValue], this.dateConstructor);
     },
     handleBoxOpen() {
       this.resetEditingValue();
+      this.changeView(this.views[0]);
     },
     monthFirstDay(year, month) {
       // eslint-disable-next-line new-cap
@@ -499,14 +470,122 @@ export default {
       }
     },
     isDateSelected(uYear, uMonth, uDate) {
+      if (!this.parsedValue) return false;
       const { year, month, date } = this.parsedValue;
       // eslint-disable-next-line new-cap
       const { year: cYear, month: cMonth, date: cDate } = parseDate([new this.dateConstructor(uYear, uMonth, uDate)], this.dateConstructor);
       return year === cYear && month === cMonth && date === cDate;
     },
-    handleKeydown(_event) {
-      // eslint-disable-next-line no-console
-      console.log('not implemented yet', _event);
+    handleKeydown(event) {
+      const { keyCode } = event;
+      const { currentHighlighted, currentView } = this;
+      const [currentHighlightedPart, currentHighlightedIndex] = currentHighlighted.split('-');
+      const numberedCurrentHighlightedIndex = Number(currentHighlightedIndex);
+      const { endKey, startKey } = this.$theme.direction;
+      console.log(keyCode);
+      if (currentView === 'day') {
+        switch (keyCode) {
+          case 38:
+            if (currentHighlighted === 'monthyear') {
+              this.currentHighlighted = 'time';
+            } else if (currentHighlighted === 'time') {
+              this.currentHighlighted = 'day-38';
+            } else if (Math.floor(numberedCurrentHighlightedIndex / 7) === 0) {
+              this.currentHighlighted = 'monthyear';
+            } else {
+              this.currentHighlighted = `day-${numberedCurrentHighlightedIndex - 7}`;
+            }
+            event.preventDefault();
+            break;
+          case 40:
+            if (currentHighlighted === 'monthyear') {
+              this.currentHighlighted = 'day-3';
+            } else if (currentHighlighted === 'time') {
+              this.currentHighlighted = 'monthyear';
+            } else if (Math.floor(numberedCurrentHighlightedIndex / 7) === 5) {
+              this.currentHighlighted = 'time';
+            } else {
+              this.currentHighlighted = `day-${numberedCurrentHighlightedIndex + 7}`;
+            }
+            event.preventDefault();
+            break;
+          case startKey:
+            if (!Number.isNaN(numberedCurrentHighlightedIndex)) {
+              const rowIndex = Math.floor(numberedCurrentHighlightedIndex / 7);
+              const colIndex = numberedCurrentHighlightedIndex % 7;
+              this.currentHighlighted = `day-${(rowIndex * 7) + (colIndex === 0 ? 6 : colIndex - 1)}`;
+            }
+            event.preventDefault();
+            break;
+          case endKey:
+            if (!Number.isNaN(numberedCurrentHighlightedIndex)) {
+              const rowIndex = Math.floor(numberedCurrentHighlightedIndex / 7);
+              const colIndex = numberedCurrentHighlightedIndex % 7;
+              this.currentHighlighted = `day-${(rowIndex * 7) + (colIndex === 6 ? 0 : colIndex + 1)}`;
+            }
+            event.preventDefault();
+            break;
+          case 13:
+            if (!Number.isNaN(numberedCurrentHighlightedIndex)) {
+              this.daysParts[Math.floor(numberedCurrentHighlightedIndex / 7)][numberedCurrentHighlightedIndex % 7].click();
+            } else {
+              this.navigateParts[currentHighlightedPart].click();
+            }
+            event.preventDefault();
+            break;
+          default:
+        }
+      } else if (currentView === 'monthyear') {
+        switch (keyCode) {
+          case 38:
+            if (currentHighlighted === 'year') {
+              this.currentHighlighted = 'monthyear-10';
+            } else if (Math.floor(numberedCurrentHighlightedIndex / 3) === 0) {
+              this.currentHighlighted = 'year';
+            } else {
+              this.currentHighlighted = `monthyear-${numberedCurrentHighlightedIndex - 3}`;
+            }
+            event.preventDefault();
+            break;
+          case 40:
+            if (currentHighlighted === 'year') {
+              this.currentHighlighted = 'monthyear-1';
+            } else if (Math.floor(numberedCurrentHighlightedIndex / 3) === 3) {
+              this.currentHighlighted = 'year';
+            } else {
+              this.currentHighlighted = `monthyear-${numberedCurrentHighlightedIndex + 3}`;
+            }
+            event.preventDefault();
+            break;
+          case startKey:
+            if (!Number.isNaN(numberedCurrentHighlightedIndex)) {
+              const rowIndex = Math.floor(numberedCurrentHighlightedIndex / 3);
+              const colIndex = numberedCurrentHighlightedIndex % 3;
+              this.currentHighlighted = `monthyear-${(rowIndex * 3) + (colIndex === 0 ? 2 : colIndex - 1)}`;
+            } else {
+              this.yearPart.prev();
+            }
+            event.preventDefault();
+            break;
+          case endKey:
+            if (!Number.isNaN(numberedCurrentHighlightedIndex)) {
+              const rowIndex = Math.floor(numberedCurrentHighlightedIndex / 3);
+              const colIndex = numberedCurrentHighlightedIndex % 3;
+              this.currentHighlighted = `monthyear-${(rowIndex * 3) + (colIndex === 2 ? 0 : colIndex + 1)}`;
+            } else {
+              this.yearPart.next();
+            }
+            event.preventDefault();
+            break;
+          case 13:
+            if (!Number.isNaN(numberedCurrentHighlightedIndex)) {
+              this.monthsParts[Math.floor(numberedCurrentHighlightedIndex / 3)][numberedCurrentHighlightedIndex % 3].click();
+            }
+            event.preventDefault();
+            break;
+          default:
+        }
+      }
     },
     clearValue() {
       this.$emit('input', undefined);
@@ -520,6 +599,9 @@ export default {
       className('box', {
         width: `${parseInt($daySize, 10) * 7}px`,
         textAlign: 'center',
+        '& .highlighted': {
+          background: this.$theme.colors.background.autoShade(10),
+        },
       }),
       className('dateTable', {
         width: '100%',
@@ -532,13 +614,14 @@ export default {
         '& td': {
           height: $daySize,
           verticalAlign: 'middle',
+          borderRadius: this.$theme.sizes.radius.normal,
+          cursor: 'pointer',
           '&.gray': {
             opacity: 0.4,
           },
           '&.selected': {
             background: this.$theme.colors.primary.normal,
             color: this.$theme.colors.primary.text,
-            borderRadius: this.$theme.sizes.radius.normal,
           },
         },
       }),
