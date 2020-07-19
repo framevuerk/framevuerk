@@ -4,7 +4,7 @@
   >
     <div
       class="label"
-      :class="[isHighlighted && 'highlighted', !isValidate && 'unvalid']"
+      :class="[isHighlighted && 'highlighted', !isValidate && 'invalid']"
     >
       <slot
         name="label"
@@ -118,7 +118,7 @@ export default {
           '&:not(.highlighted)': {
             opacity: 0.7,
           },
-          '&.unvalid': {
+          '&.invalid': {
             color: this.$theme.colors.danger.normal,
           },
         },
