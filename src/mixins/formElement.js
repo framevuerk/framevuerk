@@ -65,7 +65,7 @@ export default {
         if (this.multiple) {
           return Array.isArray(formattedValue) && formattedValue.length;
         }
-        return !!formattedValue;
+        return !!formattedValue.toString().trim();
       })();
       const isRequired = this.required;
       const isEnabled = !this.disabled;
