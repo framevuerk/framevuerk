@@ -402,12 +402,11 @@ export default {
       return null;
     },
     timeWheels() {
-      const { hour, minute, second } = this.parsedEditingValue;
-      return [[hour, 'hour'], [minute, 'minute'], [second, 'second']].map((val, index) => ({
+      return ['hour', 'minute', 'second'].map((val, index) => ({
         key: `time${index}`,
-        value: val[0].toString().padStart(2, 0),
-        up: () => this.setValue({ [val[1]]: val[0] + 1 }, 'editingValue'),
-        down: () => this.setValue({ [val[1]]: val[0] - 1 }, 'editingValue'),
+        value: this.parsedEditingValue[val].toString().padStart(2, 0),
+        up: () => this.setValue({ [val]: this.parsedEditingValue[val] + 1 }, 'editingValue'),
+        down: () => this.setValue({ [val]: this.parsedEditingValue[val] - 1 }, 'editingValue'),
         next: () => this.changeHighlight(index === 2 ? this.dayLink || this.timeWheels[0] : this.timeWheels[index + 1]),
         prev: () => this.changeHighlight(index === 0 ? this.dayLink || this.timeWheels[2] : this.timeWheels[index - 1]),
       }));
@@ -519,6 +518,9 @@ export default {
         textAlign: 'center',
         '& .highlighted': {
           background: this.$theme.colors.background.autoShade(10),
+          '&.selected': {
+            background: this.$theme.colors.primary.autoShade(10),
+          },
         },
       }),
       className('dateTable', {
