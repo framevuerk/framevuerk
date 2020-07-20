@@ -184,12 +184,17 @@
 </template>
 
 <doc>
-@prop value @type oneOf(Any /* for non-multiple */, Array /* for multiple */) @default undefined @description Value of input.
-@prop multiple @type Boolean @default false @description Allow user to select multiple items.
-@prop placeholder @type String @default '' @description Showes when value is empty.
-@prop required @type Boolean or Function @default false @description If you use this element inside `form` component, the `form` component will reject until this element filled. by passing `false` this check will be skiped and by passing function, you can manualy get current value as an argument and return true/false to allow/reject form submits.
-@prop disabled @type Boolean @default false @description Is disabled?
+@prop value @type Any value that js Date constructor accept @default undefined @description Value of input.
+@prop defaultValue @type Any value that js Date constructor accept @default Local Time (Date.now()) @description Default highlighted date when box open.
+@prop pick @type oneOf(['date'], ['time'], ['date', 'time']) @default ['date'] @description Datepicker box views.
+@prop dateConstructor @type Any contructor that has native js methods and act like it. @default Date @description Datepicker Date constructor.
 
+@prop disabled @type Boolean @default false @description Is disabled?
+@prop required @type Boolean @default false @description Is required to fill?
+@prop validation @type Function @default () => true @description If you use this element inside `form` component, the `form` component will reject until this function pass `true` or empty array. You can return Array of errors or even Boolean value at the end of function.
+@prop formatter @type Function @default (value) => value @description If you use this element inside `form` component, will format `value` of component by this function.
+@prop name @type String @default () => Math.random() @description If you use this element inside `form` component, you will access the value and triggered errors of this component by this key.
+@prop placeholder @type String @default '' @description Showes when value is empty.
 @prop cssColor @type String @default 'background' @description Use any colors that already declared in themeProvider.
 @prop cssSize @type oneOf('xs', 'sm', 'md', 'lg', 'xl') @default 'md' @description Size of element.
 
@@ -197,13 +202,50 @@
 </doc>
 
 <example>
-@config title 'Default'
+@config title 'Default (just Date)'
 @config state true
 @config example true
 
-@data val = new Date()
-<div v-text="val"></div>
-<fvDatepicker v-model="val" placeholder="Sex" />
+@data val = undefined
+<fvDatepicker v-model="val" placeholder="Choose Date" />
+</example>
+
+<example>
+@config title 'Date and Time'
+@config state true
+@config example true
+
+@data val = undefined
+<fvDatepicker v-model="val" :pick="['date', 'time']" placeholder="Select Date and Time" />
+</example>
+
+<example>
+@config title 'Time'
+@config state true
+@config example true
+
+@data val = undefined
+<fvDatepicker v-model="val" :pick="['time']" placeholder="Select Time" />
+</example>
+
+<example>
+@config title 'Custom Validation'
+@config state true
+@config example true
+
+@data val = undefined
+@data validation = (val) => { if (val && val.getDate() % 2 === 0) return true; else return false; }
+<fvDatepicker v-model="val" placeholder="Select Date and Time" :validation="validation" />
+</example>
+
+<example>
+@config title 'Custom Date Constructor (Jalaali Date using <a css-text-color="primary" href="https://github.com/nainemom/idate" target="_blank"> IDate library </a>)'
+@config state true
+@config example true
+
+@data val = undefined
+@data IDate = require('idate')
+<fvDatepicker v-model="val" :pick="['date', 'time']" placeholder="Choose Jalaali Date" :date-constructor="IDate" />
 </example>
 
 <script>
@@ -215,7 +257,7 @@ const createDateInstance = (dates, Constructor) => {
   let value = null;
   let currentIndex = 0;
   do {
-    value = new Constructor(dates[currentIndex]);
+    value = dates[currentIndex] ? new Constructor(dates[currentIndex]) : { getTime: () => 0 };
     if (!value.getTime()) {
       value = null;
     }
@@ -249,9 +291,14 @@ export default {
   inject: ['$theme'],
   props: {
     value: {
-      type: [Date, String, Number],
       default: undefined,
-      validator: (v) => !v || (new Date(v).getTime()),
+      validator: (v) => {
+        try {
+          return !v || v.getTime();
+        } catch {
+          return (new Date(v).getTime());
+        }
+      },
     },
     defaultValue: {
       type: [Date, String, Number],
@@ -260,12 +307,12 @@ export default {
     },
     pick: {
       type: Array,
-      default: () => ['date', 'time'],
+      default: () => ['date'],
       validator: (v) => v.length && v.every((i) => ['date', 'time'].includes(i)),
     },
     dateConstructor: {
-      type: Function,
-      default: Date,
+      default: () => Date,
+      validator: (Constructor) => new Constructor().getTime(),
     },
   },
   data() {
@@ -335,14 +382,17 @@ export default {
             isGray = false;
           }
           isSelected = this.isDateSelected(year, monthValue, value);
+          const isDisabled = !this.validation(this.setValue({ date: value, month: monthValue }, 'temp'));
           row.push({
             key: `day${(i * 7) + j}`,
             value,
             isGray,
+            isDisabled,
             isSelected,
             click: () => {
+              if (isDisabled) return false;
               this.setValue({ date: value, month: monthValue });
-              this.$nextTick(() => {
+              return this.$nextTick(() => {
                 if (!this.pick.includes('time')) {
                   this.$refs.inputBox.isOpened = false;
                 } else {
@@ -413,11 +463,6 @@ export default {
       return {
         key: 'yearWheel',
         value: this.parsedEditingValue.year,
-        click: () => {
-          this.$nextTick(() => {
-            this.$refs.inputBox.isOpened = false;
-          });
-        },
         up: () => this.changeHighlight(this.monthsGrid[3][1]),
         down: () => this.changeHighlight(this.monthsGrid[0][1]),
         next: () => this.setValue({ year: this.parsedEditingValue.year + 1 }, 'editingValue'),
@@ -439,11 +484,6 @@ export default {
       return ['hour', 'minute', 'second'].map((val, index) => ({
         key: `time${index}`,
         value: padByZero(this.parsedEditingValue[val]),
-        click: () => {
-          this.$nextTick(() => {
-            this.$refs.inputBox.isOpened = false;
-          });
-        },
         up: () => this.setValue({ [val]: this.parsedEditingValue[val] + 1 }),
         down: () => this.setValue({ [val]: this.parsedEditingValue[val] - 1 }),
         next: () => this.changeHighlight(index === 2 ? this.dayLink || this.timeWheels[0] : this.timeWheels[index + 1]),
@@ -459,7 +499,12 @@ export default {
   methods: {
     highlightableProps(value) {
       return {
-        class: { highlighted: this.highlighted.key === value.key, selected: value.isSelected, gray: value.isGray },
+        class: {
+          highlighted: this.highlighted.key === value.key,
+          selected: value.isSelected,
+          gray: value.isGray,
+          disabled: value.isDisabled,
+        },
       };
     },
     highlightableEvents(value) {
@@ -505,7 +550,7 @@ export default {
       second = null,
     }, scope = 'value') {
       const newDate = createDateInstance([
-        this[scope],
+        this[scope === 'value' ? 'value' : 'editingValue'],
         this.defaultValue,
       ], this.dateConstructor);
       if (year !== null) newDate.setFullYear(year);
@@ -516,9 +561,12 @@ export default {
       if (second !== null) newDate.setSeconds(second);
       if (scope === 'value') {
         this.$emit('input', newDate);
-      } else {
+      } else if (scope === 'editingValue') {
         this.editingValue = newDate;
+      } else {
+        return newDate;
       }
+      return true;
     },
     isDateSelected(uYear, uMonth, uDate) {
       if (!this.parsedValue) return false;
@@ -560,6 +608,9 @@ export default {
           '&.selected': {
             background: this.$theme.colors.primary.autoShade(10),
           },
+        },
+        '& .disabled': {
+          textDecoration: 'line-through',
         },
       }),
       className('dateTable', {
