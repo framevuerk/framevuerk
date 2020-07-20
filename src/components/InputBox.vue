@@ -131,7 +131,7 @@ export default {
     autoWidthBox: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   data() {
     return {
