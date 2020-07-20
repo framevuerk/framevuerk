@@ -209,8 +209,12 @@ export default {
     },
     onFocusElementKeydown(event) {
       this.$emit('keydown', event);
-      this.isFocused = true;
-      this.isOpened = true;
+      if (event.keyCode === 27) {
+        this.isOpened = false;
+      } else {
+        this.isFocused = true;
+        this.isOpened = true;
+      }
     },
   },
   style({ className }) {
