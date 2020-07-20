@@ -139,14 +139,11 @@ export default {
         '&::placeholder': {
           color: this.$theme.colors.gray.normal,
         },
-        '&[invalid]': {
-          borderColor: this.$theme.colors.danger.normal,
-        },
         '&[disabled]': {
           opacity: 0.5,
           cursor: 'not-allowed',
         },
-        '&:not([disabled]):not([invalid])': {
+        '&:not([disabled])': {
           '&:hover, &:focus': {
             borderColor: $color.autoShade(-39),
           },
