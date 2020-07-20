@@ -12,7 +12,7 @@
     @blur="onBlurDefault"
   >
     <template
-      v-if="parsedValue"
+      v-if="displayValue"
       #input
     >
       <span
@@ -23,8 +23,7 @@
         css-margin-y="xs"
         css-margin-end="xs"
       >
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <span v-html="parsedValue" />
+        <span v-text="displayValue" />
         <span
           css-cursor="pointer"
           css-border-start="md"
@@ -151,7 +150,7 @@
                 tabindex="-1"
                 css-size="sm"
                 fab
-                @click="timeWheel.next"
+                @click="timeWheel.up"
               >
                 +
               </fvButton>
@@ -163,7 +162,7 @@
                 tabindex="-1"
                 css-size="sm"
                 fab
-                @click="timeWheel.prev"
+                @click="timeWheel.down"
               >
                 -
               </fvButton>
@@ -238,6 +237,8 @@ const parseDate = (dates, Constructor) => {
   };
 };
 
+const padByZero = (val, length = 2) => val.toString().padStart(length, 0);
+
 export default {
   mixins: [
     color,
@@ -289,6 +290,25 @@ export default {
     parsedValue() {
       return parseDate([this.value], this.dateConstructor);
     },
+    displayValue() {
+      if (!this.parsedValue) return '';
+      const {
+        year,
+        month,
+        date,
+        hour,
+        minute,
+        second,
+      } = this.parsedValue;
+      const ret = [];
+      if (this.pick.includes('date')) {
+        ret.push(`${year}/${padByZero(month)}/${padByZero(date)}`);
+      }
+      if (this.pick.includes('time')) {
+        ret.push(`${padByZero(hour)}:${padByZero(minute)}:${padByZero(second)}`);
+      }
+      return ret.join(' ');
+    },
     daysGrid() {
       if (!this.pick.includes('date')) return [];
       const { year, month } = this.parsedEditingValue;
@@ -337,7 +357,7 @@ export default {
         click: () => this.changeView('monthYear'),
         down: () => this.changeHighlight(this.daysGrid[0][3]),
         up: () => this.changeHighlight(this.timeLink || this.daysGrid[5][3]),
-        value: `${year}/${(month + 1).toString().padStart(2, 0)}`,
+        value: `${year}/${padByZero(month + 1)}`,
       };
     },
     timeLink() {
@@ -393,7 +413,7 @@ export default {
       if (this.pick.includes('date')) {
         return {
           key: 'daylink',
-          value: this.parsedValue ? `${this.parsedValue.year}/${(this.parsedValue.month + 1).toString().padStart(2, 0)}/${this.parsedValue.date.toString().padStart(2, 0)}` : '----/--/--',
+          value: this.parsedValue ? `${this.parsedValue.year}/${padByZero(this.parsedValue.month + 1)}/${padByZero(this.parsedValue.date)}` : '----/--/--',
           click: () => this.changeView('day'),
           next: () => this.changeHighlight(this.timeWheels[0]),
           prev: () => this.changeHighlight(this.timeWheels[2]),
@@ -404,9 +424,9 @@ export default {
     timeWheels() {
       return ['hour', 'minute', 'second'].map((val, index) => ({
         key: `time${index}`,
-        value: this.parsedEditingValue[val].toString().padStart(2, 0),
-        up: () => this.setValue({ [val]: this.parsedEditingValue[val] + 1 }, 'editingValue'),
-        down: () => this.setValue({ [val]: this.parsedEditingValue[val] - 1 }, 'editingValue'),
+        value: padByZero(this.parsedEditingValue[val]),
+        up: () => this.setValue({ [val]: this.parsedEditingValue[val] + 1 }),
+        down: () => this.setValue({ [val]: this.parsedEditingValue[val] - 1 }),
         next: () => this.changeHighlight(index === 2 ? this.dayLink || this.timeWheels[0] : this.timeWheels[index + 1]),
         prev: () => this.changeHighlight(index === 0 ? this.dayLink || this.timeWheels[2] : this.timeWheels[index - 1]),
       }));
