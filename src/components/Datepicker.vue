@@ -1,5 +1,6 @@
 <template>
   <fvInputBox
+    ref="inputBox"
     :placeholder="!parsedValue ? placeholder : ''"
     :search-input="false"
     :disabled="disabled"
@@ -310,7 +311,7 @@ export default {
       return ret.join(' ');
     },
     daysGrid() {
-      if (!this.pick.includes('date')) return [];
+      if (!this.pick.includes('date')) return null;
       const { year, month } = this.parsedEditingValue;
       const monthFirstDay = this.monthFirstDay(year, month);
       const daysInMonth = this.daysInMonth(year, month);
@@ -339,7 +340,16 @@ export default {
             value,
             isGray,
             isSelected,
-            click: () => this.setValue({ date: value, month: monthValue }),
+            click: () => {
+              this.setValue({ date: value, month: monthValue });
+              this.$nextTick(() => {
+                if (!this.pick.includes('time')) {
+                  this.$refs.inputBox.isOpened = false;
+                } else {
+                  this.changeView('time');
+                }
+              });
+            },
             up: () => this.changeHighlight(i === 0 ? this.monthYearLink : this.daysGrid[i - 1][j]),
             down: () => this.changeHighlight(i === 5 ? this.timeLink || this.daysGrid[0][j] : this.daysGrid[i + 1][j]),
             next: () => this.changeHighlight(this.daysGrid[i][j === 6 ? 0 : j + 1]),
@@ -351,6 +361,7 @@ export default {
       return ret;
     },
     monthYearLink() {
+      if (!this.pick.includes('date')) return null;
       const { year, month } = this.parsedEditingValue;
       return {
         key: 'monthYearLink',
@@ -361,19 +372,17 @@ export default {
       };
     },
     timeLink() {
-      if (this.pick.includes('time')) {
-        return {
-          key: 'timelink',
-          click: () => this.changeView('time'),
-          down: () => this.changeHighlight(this.monthYearLink),
-          up: () => this.changeHighlight(this.daysGrid[5][3]),
-          value: this.parsedValue ? `${this.timeWheels.map((part) => part.value).join(':')}` : '--:--:--',
-        };
-      }
-      return null;
+      if (!this.pick.includes('time')) return null;
+      return {
+        key: 'timelink',
+        click: () => this.changeView('time'),
+        down: () => this.changeHighlight(this.monthYearLink),
+        up: () => this.changeHighlight(this.daysGrid[5][3]),
+        value: this.parsedValue ? `${this.timeWheels.map((part) => part.value).join(':')}` : '--:--:--',
+      };
     },
     monthsGrid() {
-      if (!this.pick.includes('date')) return [];
+      if (!this.pick.includes('date')) return null;
       const ret = [];
       const { month } = this.parsedEditingValue;
       for (let i = 0; i < 4; i += 1) {
@@ -400,9 +409,15 @@ export default {
       return ret;
     },
     yearWheel() {
+      if (!this.pick.includes('date')) return null;
       return {
         key: 'yearWheel',
         value: this.parsedEditingValue.year,
+        click: () => {
+          this.$nextTick(() => {
+            this.$refs.inputBox.isOpened = false;
+          });
+        },
         up: () => this.changeHighlight(this.monthsGrid[3][1]),
         down: () => this.changeHighlight(this.monthsGrid[0][1]),
         next: () => this.setValue({ year: this.parsedEditingValue.year + 1 }, 'editingValue'),
@@ -410,21 +425,25 @@ export default {
       };
     },
     dayLink() {
-      if (this.pick.includes('date')) {
-        return {
-          key: 'daylink',
-          value: this.parsedValue ? `${this.parsedValue.year}/${padByZero(this.parsedValue.month + 1)}/${padByZero(this.parsedValue.date)}` : '----/--/--',
-          click: () => this.changeView('day'),
-          next: () => this.changeHighlight(this.timeWheels[0]),
-          prev: () => this.changeHighlight(this.timeWheels[2]),
-        };
-      }
-      return null;
+      if (!this.pick.includes('date')) return null;
+      return {
+        key: 'daylink',
+        value: this.parsedValue ? `${this.parsedValue.year}/${padByZero(this.parsedValue.month + 1)}/${padByZero(this.parsedValue.date)}` : '----/--/--',
+        click: () => this.changeView('day'),
+        next: () => this.changeHighlight(this.timeWheels[0]),
+        prev: () => this.changeHighlight(this.timeWheels[2]),
+      };
     },
     timeWheels() {
+      if (!this.pick.includes('time')) return null;
       return ['hour', 'minute', 'second'].map((val, index) => ({
         key: `time${index}`,
         value: padByZero(this.parsedEditingValue[val]),
+        click: () => {
+          this.$nextTick(() => {
+            this.$refs.inputBox.isOpened = false;
+          });
+        },
         up: () => this.setValue({ [val]: this.parsedEditingValue[val] + 1 }),
         down: () => this.setValue({ [val]: this.parsedEditingValue[val] - 1 }),
         next: () => this.changeHighlight(index === 2 ? this.dayLink || this.timeWheels[0] : this.timeWheels[index + 1]),
@@ -455,9 +474,9 @@ export default {
     changeView(userValue) {
       const value = this.views.includes(userValue) ? userValue : this.views[0];
       const mapViewToHighlight = new Map([
-        ['day', this.monthYearLink],
-        ['monthYear', this.monthsGrid[0][0]],
-        ['time', this.timeWheels[0]],
+        ['day', this.monthYearLink || null],
+        ['monthYear', this.monthsGrid ? this.monthsGrid[0][0] : null],
+        ['time', this.timeWheels ? this.timeWheels[0] : null],
       ]);
       this.view = value;
       this.changeHighlight(mapViewToHighlight.get(value));
