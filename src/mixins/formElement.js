@@ -62,10 +62,14 @@ export default {
       let errors = [];
       const validation = this.validation(formattedValue);
       const isFilled = (() => {
-        if (this.multiple) {
-          return Array.isArray(formattedValue) && formattedValue.length;
+        try {
+          if (this.multiple) {
+            return Array.isArray(formattedValue) && formattedValue.length;
+          }
+          return !!formattedValue.toString().trim();
+        } catch(_e) {
+          return false;
         }
-        return !!formattedValue.toString().trim();
       })();
       const isRequired = this.required;
       const isEnabled = !this.disabled;
