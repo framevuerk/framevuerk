@@ -8,7 +8,7 @@
     :auto-close="false"
     auto-width-box
     @open="handleBoxOpen"
-    @keydown="handleKeydown"
+    @keydown.prevent="handleKeydown"
     @focus="onFocusDefault"
     @blur="onBlurDefault"
   >
@@ -111,7 +111,7 @@
                   tabindex="-1"
                   fab
                   css-size="sm"
-                  @click="yearWheel.prev"
+                  @click.prevent="yearWheel.prev"
                 >
                   -
                 </fvButton>
@@ -125,7 +125,7 @@
                   tabindex="-1"
                   fab
                   css-size="sm"
-                  @click="yearWheel.next"
+                  @click.prevent="yearWheel.next"
                 >
                   +
                 </fvButton>
@@ -151,7 +151,7 @@
                 tabindex="-1"
                 css-size="sm"
                 fab
-                @click="timeWheel.up"
+                @click.prevent="timeWheel.up"
               >
                 +
               </fvButton>
@@ -163,7 +163,7 @@
                 tabindex="-1"
                 css-size="sm"
                 fab
-                @click="timeWheel.down"
+                @click.prevent="timeWheel.down"
               >
                 -
               </fvButton>
