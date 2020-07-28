@@ -350,7 +350,7 @@ export default {
       } = this.parsedValue;
       const ret = [];
       if (this.pick.includes('date')) {
-        ret.push(`${year}/${padByZero(month)}/${padByZero(date)}`);
+        ret.push(`${year}/${padByZero(month + 1)}/${padByZero(date)}`);
       }
       if (this.pick.includes('time')) {
         ret.push(`${padByZero(hour)}:${padByZero(minute)}:${padByZero(second)}`);
