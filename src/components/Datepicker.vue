@@ -8,7 +8,7 @@
     :auto-close="false"
     auto-width-box
     @open="handleBoxOpen"
-    @keydown.prevent="handleKeydown"
+    @keydown="handleKeydown"
     @focus="onFocusDefault"
     @blur="onBlurDefault"
   >
@@ -589,6 +589,7 @@ export default {
       const action = mapKeyToMethods.get(keyCode);
       if (this.highlighted && this.highlighted[action]) {
         this.highlighted[action]();
+        event.preventDefault();
       }
     },
     clearValue() {
