@@ -106,7 +106,7 @@ export default {
     },
     forceArrayValue() {
       // eslint-disable-next-line no-nested-ternary
-      return this.multiple ? this.value : (this.value ? [this.value] : []);
+      return this.multiple ? this.value : (typeof this.value !== 'undefined' ? [this.value] : []);
     },
     isChecked() {
       return this.forceArrayValue
