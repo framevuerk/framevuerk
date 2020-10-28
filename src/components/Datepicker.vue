@@ -364,6 +364,7 @@ export default {
       const daysInMonth = this.daysInMonth(year, month);
       const daysInPrevMonth = this.daysInMonth(year, month - 1);
       const ret = [];
+      const today = parseDate([Date.now()], this.dateConstructor);
       for (let i = 0; i < 6; i += 1) {
         const row = [];
         const dayStart = i * 7;
@@ -389,6 +390,7 @@ export default {
             isGray,
             isDisabled,
             isSelected,
+            isToday: today.date === value && today.month === monthValue,
             click: () => {
               if (isDisabled) return false;
               this.setValue({ date: value, month: monthValue });
@@ -504,6 +506,7 @@ export default {
           selected: value.isSelected,
           gray: value.isGray,
           disabled: value.isDisabled,
+          today: value.isToday,
         },
       };
     },
@@ -568,6 +571,13 @@ export default {
       }
       return true;
     },
+    isDateToday(uYear, uMonth, uDate) {
+      if (!this.parsedValue) return false;
+      const { year, month, date } = this.parsedValue;
+      // eslint-disable-next-line new-cap
+      const { year: cYear, month: cMonth, date: cDate } = parseDate([new this.dateConstructor(uYear, uMonth, uDate)], this.dateConstructor);
+      return year === cYear && month === cMonth && date === cDate;
+    },
     isDateSelected(uYear, uMonth, uDate) {
       if (!this.parsedValue) return false;
       const { year, month, date } = this.parsedValue;
@@ -630,9 +640,13 @@ export default {
           '&.gray': {
             opacity: 0.4,
           },
+          '&.today': {
+            textDecoration: 'underline',
+          },
           '&.selected': {
             background: this.$theme.colors.primary.normal,
             color: this.$theme.colors.primary.text,
+            fontWeight: 'bold',
           },
         },
       }),
