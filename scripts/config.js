@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { rollup, watch } = require('rollup');
 const pathResolve = require('./utils/pathResolve');
 const buble = require('./plugins/buble');
@@ -42,7 +43,7 @@ const rollupConfigs = [
       name: 'Framevuerk',
       exports: 'named',
       globals: ['Vue'],
-      footer: `Vue.use(Framevuerk);`,
+      footer: 'Vue.use(Framevuerk);',
       format: 'iife',
       file: pathResolve('dist/framevuerk.browser.js'),
     },
@@ -65,16 +66,10 @@ const docVersionRollupConfig = {
 };
 
 module.exports.build = () => Promise.all(
-  [...rollupConfigs, docVersionRollupConfig].map((rollupConfig) => rollup(rollupConfig).then(bundle => bundle.write(rollupConfig.output)))
+  [...rollupConfigs, docVersionRollupConfig].map((rollupConfig) => rollup(rollupConfig).then((bundle) => bundle.write(rollupConfig.output))),
 );
 
-module.exports.watch = (outputFile = '', cb = () => {}) => {
-  const watcher = watch({
-    ...docVersionRollupConfig,
-    output: {
-      ...docVersionRollupConfig.output,
-      file: outputFile,
-    },
-  });
+module.exports.watch = (cb = () => {}) => {
+  const watcher = watch(docVersionRollupConfig);
   watcher.on('event', cb);
-}
+};

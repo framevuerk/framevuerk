@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const vue = require('rollup-plugin-vue');
 
 module.exports = (includeDocs = false) => vue({
