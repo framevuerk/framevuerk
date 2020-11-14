@@ -295,7 +295,7 @@ export default {
       validator: (v) => {
         try {
           return !v || v.getTime();
-        } catch {
+        } catch (_e) {
           return (new Date(v).getTime());
         }
       },

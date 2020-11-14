@@ -1,4 +1,0 @@
-- add number formatter for datepicker?
-- make configs available in json and scss and less
-- fvDatepicker from-to
-- fvDatepicker time
