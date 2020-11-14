@@ -393,7 +393,7 @@ export default {
             isToday: today.date === value && today.month === monthValue,
             click: () => {
               if (isDisabled) return false;
-              this.setValue({ date: value, month: monthValue });
+              this.setValue({ date: value, month: monthValue, year });
               return this.$nextTick(() => {
                 if (!this.pick.includes('time')) {
                   this.$refs.inputBox.isOpened = false;
