@@ -436,7 +436,8 @@ export default {
     monthsGrid() {
       if (!this.pick.includes('date')) return null;
       const ret = [];
-      const { month } = this.parsedEditingValue;
+      const { month, year } = this.parsedEditingValue;
+      const selectedYear = this.parsedValue ? this.parsedValue.year : -1;
       for (let i = 0; i < 4; i += 1) {
         const row = [];
         const monthStart = i * 3;
@@ -445,9 +446,9 @@ export default {
           row.push({
             key: `month-${value}`,
             value: value + 1,
-            isSelected: month === value,
+            isSelected: month === value && year === selectedYear,
             click: () => {
-              this.setValue({ month: value }, 'editingValue');
+              this.setValue({ month: value, date: 1 }, 'editingValue');
               this.changeView('day');
             },
             up: () => this.changeHighlight(i === 0 ? this.yearWheel : this.monthsGrid[i - 1][j]),
@@ -556,6 +557,7 @@ export default {
         this[scope === 'value' ? 'value' : 'editingValue'],
         this.defaultValue,
       ], this.dateConstructor);
+      if (year !== null || month !== null) newDate.setDate(1);
       if (year !== null) newDate.setFullYear(year);
       if (month !== null) newDate.setMonth(month);
       if (date !== null) newDate.setDate(date);
