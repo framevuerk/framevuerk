@@ -3,6 +3,7 @@
     v-if="!multiLine"
     v-model="theValue"
     :class="$style.input"
+    :name="name"
     :placeholder="placeholder"
     :disabled="disabled"
     :invalid="!isValidate"
@@ -13,6 +14,7 @@
     v-else
     v-model="theValue"
     :class="$style.input"
+    :name="name"
     :placeholder="placeholder"
     :disabled="disabled"
     :invalid="!isValidate"
