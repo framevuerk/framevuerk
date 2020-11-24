@@ -12,6 +12,7 @@
   </component>
 </template>
 
+<docs>./‌Button.html</docs>
 
 <doc>
 @prop tag @type String @default 'button' @description Rendering html tag.

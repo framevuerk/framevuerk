@@ -1,0 +1,26 @@
+<template data-id="1">
+  <fvButton css-color="primary"> Primary </fvButton>
+  <fvButton css-color="danger"> Danger </fvButton>
+  <fvButton css-color="background"> Background </fvButton>
+  <fvButton css-color="primary" invert> Inverted Primary </fvButton>
+  <fvButton css-color="danger" invert> Inverted Danger {{a}} </fvButton>
+</template>
+
+<script data-id="1">
+export default {
+  data() {
+    return {
+      a: 2,
+    };
+  },
+}
+</script>
+
+<script>
+export default {
+  props: [],
+  events: [],
+  methods: [],
+  slots: [],
+}
+</script>
