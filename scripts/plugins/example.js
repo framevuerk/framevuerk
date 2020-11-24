@@ -22,6 +22,7 @@ const removeData = (str) => str.replace(/(@data|@config)(.*)(?=)/g, '').trim();
 module.exports = () => ({
   name: 'example',
   transform: (source, id) => {
+    // console.log(id);
     if (!id.endsWith('.example')) return null;
 
     const data = getData(source);
@@ -34,20 +35,16 @@ module.exports = () => ({
       return dashCase(ret);
     })();
 
-    const code = `
-      window.framevuerkExamples = window.framevuerkExamples || {};
-      window.framevuerkExamples['${componentName}'] = window.framevuerkExamples['${componentName}'] || [];
-      window.framevuerkExamples['${componentName}'].push({
-        template: ${JSON.stringify(template)},
-        data: {${data}},
-        configs: ${JSON.stringify(configs)},
-      });
+    // console.log(source);
+
+    // const code = `a = 'b';`;
+    return `
+      export default (component) => {
+
+      };
     `;
     return {
-      code,
-      map: {
-        mappings: ''
-      }
+      code: 'export default { test: "testmyfuck" };'
     };
   },
 });

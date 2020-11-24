@@ -5,14 +5,18 @@ const buble = require('./plugins/buble');
 const vue = require('./plugins/vue');
 const example = require('./plugins/example');
 const doc = require('./plugins/doc');
+const docs = require('./plugins/docs');
 const terser = require('./plugins/terser');
 
 const commonRollupConfig = {
   input: pathResolve('src/index.js'),
-  external: ['Vue'],
+  external: ['vue'],
 };
 
 const commonPlugins = [
+  example(true),
+  doc(true),
+  docs(),
   vue(false),
   buble(),
   terser(),
@@ -27,27 +31,29 @@ const rollupConfigs = [
       file: pathResolve('dist/framevuerk.esm.js'),
     },
   },
-  {
-    ...commonRollupConfig,
-    plugins: commonPlugins,
-    output: {
-      format: 'cjs',
-      exports: 'named',
-      file: pathResolve('dist/framevuerk.cjs.js'),
-    },
-  },
-  {
-    ...commonRollupConfig,
-    plugins: commonPlugins,
-    output: {
-      name: 'Framevuerk',
-      exports: 'named',
-      globals: ['Vue'],
-      footer: 'Vue.use(Framevuerk);',
-      format: 'iife',
-      file: pathResolve('dist/framevuerk.browser.js'),
-    },
-  },
+  // {
+  //   ...commonRollupConfig,
+  //   plugins: commonPlugins,
+  //   output: {
+  //     format: 'cjs',
+  //     exports: 'named',
+  //     file: pathResolve('dist/framevuerk.cjs.js'),
+  //   },
+  // },
+  // {
+  //   ...commonRollupConfig,
+  //   plugins: commonPlugins,
+  //   output: {
+  //     name: 'Framevuerk',
+  //     exports: 'named',
+  //     globals: {
+  //       vue: 'Vue',
+  //     },
+  //     footer: 'Vue.use(Framevuerk);',
+  //     format: 'iife',
+  //     file: pathResolve('dist/framevuerk.browser.js'),
+  //   },
+  // },
 ];
 
 const docVersionRollupConfig = {
@@ -55,9 +61,10 @@ const docVersionRollupConfig = {
   plugins: [
     example(),
     doc(),
+    docs(),
     vue(true),
     buble(),
-    terser(),
+    // terser(),
   ],
   output: {
     format: 'esm',

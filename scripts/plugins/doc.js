@@ -46,15 +46,12 @@ module.exports = () => ({
     })();
 
     const code = `
-      window.framevuerkDocs = window.framevuerkDocs || {};
-      window.framevuerkDocs['${componentName}'] = ${JSON.stringify(api)};
+      export default {};
     `;
+    //   window.framevuerkDocs = window.framevuerkDocs || {};
+    //   window.framevuerkDocs['${componentName}'] = ${JSON.stringify(api)};
+    // `;
   
-    return {
-      code,
-      map: {
-        mappings: ''
-      }
-    };
+    return code;
   },
 });

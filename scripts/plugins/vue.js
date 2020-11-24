@@ -6,7 +6,8 @@ module.exports = (includeDocs = false) => vue({
   customBlocks: [
     'template',
     'script',
-    ...(includeDocs ? ['doc', 'example'] : []),
+    // ...(includeDocs ? ['doc', 'example'] : ['!doc', '!example']),
+    ...(includeDocs ? ['docs'] : ['!docs']),
     '!*',
   ],
   template: {
@@ -20,6 +21,11 @@ module.exports = (includeDocs = false) => vue({
 
   // },
   // compilerParseOptions: {
-  //   customBlocks: ['doc'],
-  // }
+  //   customBlocks: [
+  //     'template',
+  //     'script',
+  //     ...(includeDocs ? ['doc', 'example'] : ['!doc', '!example']),
+  //     '!*',
+  //   ],
+  // },
 });
