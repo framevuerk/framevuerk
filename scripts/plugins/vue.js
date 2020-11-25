@@ -6,8 +6,7 @@ module.exports = (includeDocs = false) => vue({
   customBlocks: [
     'template',
     'script',
-    // ...(includeDocs ? ['doc', 'example'] : ['!doc', '!example']),
-    ...(includeDocs ? ['docs'] : ['!docs']),
+    ...(includeDocs ? ['docs'] : []),
     '!*',
   ],
   template: {

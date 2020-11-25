@@ -1,26 +1,82 @@
-const path = require('path');
-const process = require('process');
-const cli = require('./utils/cli');
-const config = require('./config');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { rollup, watch } = require('rollup');
+const pathResolve = require('./utils/pathResolve');
+const buble = require('./plugins/buble');
+const vue = require('./plugins/vue');
+const docs = require('./plugins/docs');
+const terser = require('./plugins/terser');
 
-const { log } = console;
-
-const startApp = async (action) => {
-  if (action === 'build') {
-    log('Building Lib...');
-    await config.build();
-    log('Done!');
-    process.exit(0);
-  } else if (action === 'dev') {
-    let outputFile = await cli.ask('Enter output file:');
-    if (outputFile) {
-      outputFile = path.resolve(process.cwd(), outputFile);
-    } else {
-      outputFile = path.resolve(__dirname, '../../framevuerk-docs/node_modules/framevuerk/dist/framevuerk.docs.js');
-    }
-    log(`Watching Doc Version... (changes will save to "${outputFile}")`);
-    await config.watch(outputFile, ({ code }) => log(`[WATCHER] => ${code}`));
-  }
+const commonRollupConfig = {
+  input: pathResolve('src/index.js'),
+  external: ['vue'],
 };
 
-startApp(cli.getArg('--action'));
+const commonPlugins = [
+  vue(false),
+  buble(),
+  terser(),
+];
+
+const rollupConfigs = [
+  {
+    ...commonRollupConfig,
+    plugins: commonPlugins,
+    output: {
+      format: 'esm',
+      file: pathResolve('dist/framevuerk.esm.js'),
+    },
+  },
+  {
+    ...commonRollupConfig,
+    plugins: commonPlugins,
+    output: {
+      format: 'cjs',
+      exports: 'named',
+      file: pathResolve('dist/framevuerk.cjs.js'),
+    },
+  },
+  {
+    ...commonRollupConfig,
+    plugins: commonPlugins,
+    output: {
+      name: 'Framevuerk',
+      exports: 'named',
+      globals: {
+        vue: 'Vue',
+      },
+      footer: 'Vue.use(Framevuerk);',
+      format: 'iife',
+      file: pathResolve('dist/framevuerk.browser.js'),
+    },
+  },
+];
+
+const docVersionRollupConfig = {
+  ...commonRollupConfig,
+  plugins: [
+    docs(),
+    vue(true),
+    buble(),
+    // terser(),
+  ],
+  output: {
+    format: 'esm',
+    file: pathResolve('dist/framevuerk.docs.js'),
+  },
+};
+
+module.exports.build = () => Promise.all(
+  [...rollupConfigs, docVersionRollupConfig].map((rollupConfig) => rollup(rollupConfig).then((bundle) => bundle.write(rollupConfig.output))),
+);
+
+module.exports.watch = (outputFile, cb = () => {}) => {
+  const config = {
+    ...docVersionRollupConfig,
+    output: {
+      ...docVersionRollupConfig.output,
+      file: outputFile || docVersionRollupConfig.output.file,
+    },
+  };
+  const watcher = watch(config);
+  watcher.on('event', cb);
+};
