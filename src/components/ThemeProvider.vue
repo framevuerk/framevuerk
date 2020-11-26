@@ -111,7 +111,7 @@ export default {
       const sizes = Object.assign(defaultSizes, this.sizes);
       // const heightFactor = [0, 1, 3, 5, 7, 9];
       const heightFactor = [0, 2, 4, 5, 7, 9];
-      const borderHeightFactor = [0, 0.25, 0.75, 1.25, 1.75, 2.25];
+      const borderHeightFactor = [0, 0.25, 0.75, 1, 1.6, 2.1];
       const sizeFactor = [0, 0.25, 0.5, 1, 3, 9];
       const shadowFactor = [0, 0.25, 0.5, 1, 1.5, 2.5];
       const shadowBlurFactor = [0, 0.5, 0.75, 1, 1.25, 1.5];
@@ -181,6 +181,7 @@ export default {
       const defaultColors = {
         background: '#FFF',
         gray: '#AAA',
+        dark: '#222',
         primary: '#0B62EA',
         danger: '#EF2424',
         header: '#0B62EA',
