@@ -1,5 +1,3 @@
-const fs = require('fs');
-const path = require('path');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { parse } = require('node-html-parser');
 
@@ -7,7 +5,7 @@ module.exports = () => ({
   name: 'docs',
   transform: (_source, id) => {
     if (!id.endsWith('.docs')) return null;
-    const source = parse(fs.readFileSync(path.resolve(path.dirname(id), _source.trim()), 'utf-8').toString());
+    const source = parse(_source);
     const scripts = [...source.querySelectorAll('script')];
     const templates = [...source.querySelectorAll('template')];
     const api = scripts.find((tag) => !tag.getAttribute('data-id')).innerHTML.trim().replace('export default ', '');

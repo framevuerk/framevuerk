@@ -1,18 +1,24 @@
 <template>
   <component
     :is="tag"
-    :class="$style.button"
-    :disabled="disabled"
-    :to="$attrs.to"
+    :class="[$style.button, loading && 'loading']"
+    :disabled="disabled || null"
+    :to="$attrs.to || null"
     @click="onClick"
   >
-    <template>
+    <div class="content">
       <slot />
-    </template>
+    </div>
+    <fvLoading
+      v-if="loading"
+      :css-color="cssColor"
+      :css-size="$size"
+      class="loading"
+    />
   </component>
 </template>
 
-<docs>./‌Button.html</docs>
+<docs src="./‌Button.html" />
 
 <doc>
 @prop tag @type String @default 'button' @description Rendering html tag.
@@ -23,7 +29,6 @@
 @prop cssSize @type oneOf('xs', 'sm', 'md', 'lg', 'xl') @default 'md' @description Size of element.
 
 @slot default
-
 
 @event click @params event @description Triggers when users clicks on component.
 </doc>
@@ -68,6 +73,7 @@ import size from '../mixins/size';
 
 export default {
   mixins: [color, size],
+  emits: ['click'],
   props: {
     tag: {
       type: String,
@@ -85,11 +91,18 @@ export default {
       type: Boolean,
       default: false,
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     onClick(event) {
       if (!this.loading && !this.disabled) {
         this.$emit('click', event);
+      } else {
+        event.preventDefault();
+        event.stopPropagation();
       }
     },
   },
@@ -99,6 +112,7 @@ export default {
       className('button', {
         font: 'inherit',
         display: 'inline-block',
+        position: 'relative',
         backgroundColor: this.invert ? 'transparent' : $color.normal,
         color: $color[this.invert ? 'normal' : 'text'],
         boxShadow: this.$theme.sizes.shadow.factor(this.$size, 'shadow', { dir: 'bottom' }),
@@ -122,6 +136,16 @@ export default {
         '&[disabled]': {
           opacity: 0.5,
           cursor: 'not-allowed',
+        },
+        '&.loading > .content': {
+          opacity: 0,
+        },
+        '&.loading > .loading': {
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%) scale(0.7)',
+          color: $color.text,
         },
         '&:not([disabled])': {
           '&:hover, &:focus': {

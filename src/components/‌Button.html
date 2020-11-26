@@ -1,19 +1,40 @@
 <template data-id="1">
-  <fvButton css-color="primary"> Primary </fvButton>
-  <fvButton css-color="danger"> Danger </fvButton>
-  <fvButton css-color="background"> Background </fvButton>
-  <fvButton css-color="primary" invert> Inverted Primary </fvButton>
-  <fvButton css-color="danger" invert> Inverted Danger {{a}} </fvButton>
+  <fvButton css-color="primary" @click="a = a+1"> Primary {{a}} </fvButton> ‌ 
+  <fvButton css-color="danger"> Danger </fvButton> ‌ 
+  <fvButton css-color="background"> Background </fvButton> ‌ 
+  <fvButton css-color="primary" invert> Inverted Primary </fvButton> ‌ 
+  <fvButton css-color="danger" invert> Inverted Danger {{a}} z </fvButton>
 </template>
-
 <script data-id="1">
-export default {
-  data() {
-    return {
-      a: 2,
-    };
-  },
-}
+  export default {
+    config: {
+      title: 'Colors',
+      showState: true,
+      showSource: true,
+      showResult: true,
+    },
+    data() {
+      return {
+        a: 2,
+        b: '2',
+      };
+    },
+  }
+  </script>
+
+<template data-id="2">
+  <fvButton css-color="primary" loading> Primary {{a}} </fvButton> ‌ 
+  <fvButton css-color="danger" loading> Danger </fvButton> ‌ 
+  <fvButton css-color="background" loading> Background </fvButton> ‌ 
+  <fvButton css-color="primary" invert loading> Inverted Primary </fvButton> ‌ 
+  <fvButton css-color="danger" invert loading> Inverted Danger {{a}} z </fvButton>
+</template>
+<script data-id="2">
+  export default {
+    config: {
+      title: 'Sizes',
+    },
+  }
 </script>
 
 <script>
