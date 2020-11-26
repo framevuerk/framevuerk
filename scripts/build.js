@@ -13,7 +13,7 @@ const startApp = async (action) => {
     log('Watching Lib...');
     rollup.watch(({ code }) => log(`[WATCHER] => ${code}`));
   } else if (action === 'dev-to') {
-    const defaultOutputFile = '../framevuerk-docs/node_modules/framevuerk/dist/framevuerk.docs.js';
+    const defaultOutputFile = '../framevuerk-docs/src/framevuerk/index.js';
     const outputFile = path.resolve(process.cwd(), (await cli.ask(`Output File Path? [${defaultOutputFile}]`) || defaultOutputFile));
     log('Watching Lib...');
     rollup.watch(outputFile, ({ code }) => log(`[WATCHER] => ${code}`));
