@@ -1,26 +1,31 @@
+const captureOptions = {
+  passive: true,
+  capture: true,
+};
+
 /* eslint-disable no-use-before-define */
 function bindEvents(element, parts = ['element', 'window'], onTouchStart, onTouchMove, onTouchEnd) {
   if (parts.includes('element')) {
-    element.addEventListener('mousedown', onTouchStart);
-    element.addEventListener('touchstart', onTouchStart);
+    element.addEventListener('mousedown', onTouchStart, captureOptions);
+    element.addEventListener('touchstart', onTouchStart, captureOptions);
   }
   if (parts.includes('window')) {
-    window.addEventListener('mousemove', onTouchMove);
-    window.addEventListener('touchmove', onTouchMove);
-    window.addEventListener('mouseup', onTouchEnd);
-    window.addEventListener('touchend', onTouchEnd);
+    window.addEventListener('mousemove', onTouchMove, captureOptions);
+    window.addEventListener('touchmove', onTouchMove, captureOptions);
+    window.addEventListener('mouseup', onTouchEnd, captureOptions);
+    window.addEventListener('touchend', onTouchEnd, captureOptions);
   }
 }
 function unbindEvents(element, parts = ['element', 'window'], onTouchStart, onTouchMove, onTouchEnd) {
   if (parts.includes('element')) {
-    element.removeEventListener('mousedown', onTouchStart);
-    element.removeEventListener('touchstart', onTouchStart);
+    element.removeEventListener('mousedown', onTouchStart, captureOptions);
+    element.removeEventListener('touchstart', onTouchStart, captureOptions);
   }
   if (parts.includes('window')) {
-    window.removeEventListener('mousemove', onTouchMove);
-    window.removeEventListener('touchmove', onTouchMove);
-    window.removeEventListener('mouseup', onTouchEnd);
-    window.removeEventListener('touchend', onTouchEnd);
+    window.removeEventListener('mousemove', onTouchMove, captureOptions);
+    window.removeEventListener('touchmove', onTouchMove, captureOptions);
+    window.removeEventListener('mouseup', onTouchEnd, captureOptions);
+    window.removeEventListener('touchend', onTouchEnd, captureOptions);
   }
 }
 
@@ -29,7 +34,6 @@ export default function Swipe(bindingElement = null) {
   const whileSwipeCallbacks = [];
   const afterSwipeCallbacks = [];
   let element = bindingElement;
-
 
   function getTouchPos(event) {
     if (event.changedTouches && event.changedTouches.length) {
@@ -60,8 +64,8 @@ export default function Swipe(bindingElement = null) {
       beforeSwipeCallbacks[index](startPos);
     }
     startTime = Date.now();
-    event.stopPropagation();
-    event.preventDefault();
+    // event.stopPropagation();
+    // event.preventDefault();
     bindEvents(element, ['window'], null, onTouchMove, onTouchEnd);
   }
   function onTouchMove(event) {
@@ -70,8 +74,8 @@ export default function Swipe(bindingElement = null) {
     for (let index = whileSwipeCallbacks.length - 1; index > -1; index -= 1) {
       whileSwipeCallbacks[index](pos, diff);
     }
-    event.stopPropagation();
-    event.preventDefault();
+    // event.stopPropagation();
+    // event.preventDefault();
   }
   function onTouchEnd(event) {
     const pos = getTouchPos(event);
