@@ -16,7 +16,7 @@ module.exports = () => ({
       const component = rawComponent ? rawComponent.innerHTML.trim().replace('export default ', '') : '{}';
       return `
         {
-          template: \`\n<div>${template}</div>\n\`,
+          template: \`\n${template}\n\`,
           ${component.substr(1)}
       `;
     });
