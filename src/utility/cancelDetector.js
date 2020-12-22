@@ -24,6 +24,8 @@ export default (element, callback) => {
   };
   const onClick = (event) => {
     if (!element.contains(event.target)) {
+      event.preventDefault();
+      event.stopPropagation();
       callback();
     }
   };
