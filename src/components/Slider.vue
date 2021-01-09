@@ -1,14 +1,21 @@
 <template>
   <div :class="$style.slider">
     <div class="labels">
-      <slot name="label" />
+      <custom-slot
+        :uid="$.uid"
+        component="SlideLabel"
+      />
     </div>
     <div class="contents">
       <div
         ref="inner"
         class="inner"
       >
-        <slot name="content" />
+        <custom-slot
+          :uid="$.uid"
+          component="SlideContent"
+          @update="setContents"
+        />
       </div>
       <fvButton
         v-if="showButtons"
@@ -81,10 +88,17 @@
 
 <script>
 import { moveIndex } from '../utility/utils';
+import findSlots from '../utility/findSlots';
+import CustomSlot from './_CustomSlot.vue';
 import Swipe from '../utility/swipe';
 
 export default {
+  name: 'Slider',
   inject: ['$theme'],
+  emits: ['update:current'],
+  components: {
+    CustomSlot,
+  },
   props: {
     // eslint-disable-next-line vue/require-prop-types
     current: {
@@ -111,24 +125,22 @@ export default {
   data() {
     return {
       swipe: null,
+      contents: [],
     };
   },
   computed: {
-    numberOfTabs() {
-      return this.$slots.content.length;
-    },
     numberOfSlides() {
-      return Math.ceil(this.numberOfTabs / this.slidesPerPage);
+      return Math.ceil(this.contents.length / this.slidesPerPage);
     },
     eachTabSize() {
-      return this.numberOfTabs / (this.numberOfSlides * 100);
+      return this.contents.length / (this.numberOfSlides * 100);
     },
     currentIndex() {
-      return this.current ? this.$slots.content.findIndex((content) => content.componentOptions.propsData.name === this.current) : 0;
+      return this.current ? this.contents.findIndex((content) => content === this.current) : 0;
     },
     currentTransform() {
       const factor = this.$theme.direction.leftFactor * -1;
-      return factor * (this.currentIndex * (100 / this.numberOfTabs));
+      return factor * (this.currentIndex * (100 / this.contents.length));
     },
   },
   watch: {
@@ -141,11 +153,24 @@ export default {
       },
       immediate: true,
     },
+    contents(newContents) {
+      console.log('contents changed');
+      if (!newContents.includes(this.current)) {
+        this.setCurrent(newContents[0]);
+      }
+      this.$nextTick(() => {
+        this.$refs.inner.style.width = `${this.numberOfSlides * 100}%`;
+        this.resetTransform(true);
+      });
+    },
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.setSwipeEvents(false);
   },
   methods: {
+    setContents(contents) {
+      this.contents = contents.map((item) => item.props.name);
+    },
     setSwipeEvents(active) {
       this.$nextTick(() => {
         if (active) {
@@ -159,11 +184,17 @@ export default {
         }
       });
     },
-    resetTransform() {
+    resetTransform(withoutTransition = false) {
+      if (withoutTransition) {
+        this.$refs.inner.style.transitionDuration = '0s';
+        setTimeout(() => {
+          this.$refs.inner.style.transitionDuration = null;
+        });
+      }
       this.$refs.inner.style.transform = `translateX(${this.currentTransform}%)`;
     },
     moveIndex(offset) {
-      const max = this.numberOfTabs - (this.slidesPerPage - 1);
+      const max = this.contents.length - (this.slidesPerPage - 1);
       return moveIndex(this.currentIndex + offset, max);
     },
     beforeSwipe() {
@@ -177,7 +208,7 @@ export default {
       // eslint-disable-next-line no-nested-ternary
       const offsetIndex = this.$theme.direction.leftFactor * (diff.x < -100 ? 1 : (diff.x > 100 ? -1 : 0));
       const newIndex = this.moveIndex(offsetIndex);
-      const newValue = this.$slots.content[newIndex].componentOptions.propsData.name;
+      const newValue = this.contents[newIndex];
       if (newIndex === this.currentIndex) {
         this.resetTransform();
       }
@@ -187,7 +218,7 @@ export default {
       this.$emit('update:current', value);
     },
     moveCurrent(offset) {
-      this.$emit('update:current', this.$slots.content[this.moveIndex(offset)].componentOptions.propsData.name);
+      this.$emit('update:current', this.contents[this.moveIndex(offset)]);
     },
   },
   style({ className }) {
@@ -217,7 +248,7 @@ export default {
           '& > .inner': {
             display: 'flex',
             flexDirection: 'row',
-            width: `${this.numberOfSlides * 100}%`,
+            // width: `${this.numberOfSlides * 100}%`,
             transition: 'transform 230ms',
             willChange: 'transform',
           },
