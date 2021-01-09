@@ -1,12 +1,29 @@
 <template>
   <div :class="$style.layout">
-    <slot name="header" />
+    <custom-slot
+      :uid="$.uid"
+      component="Header"
+    />
     <main>
-      <slot name="start-sidebar" />
-      <slot name="content" />
-      <slot name="end-sidebar" />
+      <custom-slot
+        :uid="$.uid"
+        component="Sidebar"
+        :custom-check="checkIfSidebar('start')"
+      />
+      <custom-slot
+        :uid="$.uid"
+        component="Content"
+      />
+      <custom-slot
+        :uid="$.uid"
+        component="Sidebar"
+        :custom-check="checkIfSidebar('end')"
+      />
     </main>
-    <slot name="footer" />
+    <custom-slot
+      :uid="$.uid"
+      component="Footer"
+    />
   </div>
 </template>
 
@@ -33,7 +50,13 @@
 </example>
 
 <script>
+import CustomSlot from './_CustomSlot.vue';
+
 export default {
+  name: 'Layout',
+  components: {
+    CustomSlot,
+  },
   provide() {
     return {
       $layout: this,
@@ -41,68 +64,51 @@ export default {
   },
   data() {
     return {
-      eventEl: null,
-      listeners: {
-        scroll: [],
-        resize: [],
-      },
-      localListeners: {
-        scroll: this.onScroll,
-        resize: this.onResize,
-      },
-      eventsData: {
-        scroll: {
-          last: 0,
-          timeout: null,
-        },
-      },
       overlays: [],
     };
   },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.localScrollListener);
-  },
   methods: {
-    on(eventType, listener, immediately = false) {
-      const listeners = this.listeners[eventType];
-      const localListener = this.localListeners[eventType];
-      if (listeners.push(listener) === 1) {
-        this.$nextTick(() => {
-          setTimeout(() => {
-            window.addEventListener(eventType, localListener);
-            if (immediately) {
-              localListener();
-            }
+    listen(eventName, handler, immediate = false) {
+      const trueHandler = (event = null) => {
+        const target = document.scrollingElement;
+        if (eventName === 'scroll') {
+          const { scrollTop } = document.scrollingElement;
+          clearTimeout(target.fvScrollTimeout);
+          target.fvScrollDirection = scrollTop > (target.fvLastScrollTop || 0) ? 'down' : 'up';
+          target.fvScrollTimeout = setTimeout(() => {
+            target.fvLastScrollTop = scrollTop;
+            handler({
+              event,
+              direction: target.fvScrollDirection,
+              scrollTop,
+            });
           });
-        });
-      }
-    },
-    off(eventType, listener) {
-      const listeners = this.listeners[eventType];
-      const localListener = this.localListeners[eventType];
-      listeners.splice(listeners.findIndex((l) => l === listener), 1);
-      if (listeners.length === 0) {
-        window.removeEventListener(eventType, localListener);
-      }
-    },
-    getSidebarPosition(sidebarComponent) {
-      return (this.$slots['end-sidebar'] || []).includes(sidebarComponent.$vnode) ? 'end' : 'start';
-    },
-    onScroll() {
-      const { scrollTop } = document.scrollingElement;
-      clearTimeout(this.eventsData.scroll.timeout);
-      this.listeners.scroll.forEach((listener) => listener(scrollTop, scrollTop > this.eventsData.scroll.last ? 'down' : 'up'));
-      this.eventsData.scroll.timeout = setTimeout(() => {
-        this.eventsData.scroll.last = scrollTop;
-      });
-    },
-    onResize() {
-      const el = document.scrollingElement;
-      const size = {
-        width: el.offsetWidth,
-        height: el.offsetHeight,
+        } else if (eventName === 'resize') {
+          clearTimeout(target.fvResizeTimeout);
+          target.fvResizeTimeout = setTimeout(() => {
+            const { offsetWidth, offsetHeight } = document.scrollingElement;
+            handler({
+              event,
+              width: offsetWidth,
+              height: offsetHeight,
+            });
+          });
+        } else {
+          handler({ event });
+        }
       };
-      this.listeners.resize.forEach((listener) => listener(size));
+      window.addEventListener(eventName, trueHandler);
+      if (immediate) {
+        trueHandler();
+      }
+      return {
+        release() {
+          window.removeEventListener(eventName, trueHandler);
+        },
+      };
+    },
+    checkIfSidebar(position) {
+      return (slot) => (slot.props && slot.props.position === position);
     },
   },
   style({ className }) {

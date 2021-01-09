@@ -1,9 +1,8 @@
 <template>
-  <aside :class="[$style.sidebar, visible ? 'show' : 'hide']">
+  <aside :class="[$style.sidebar, trueType, visible ? 'show' : 'hide']">
     <slot />
   </aside>
 </template>
-
 
 <doc>
 @prop visible @type Boolean @default false @description Sidebar visibility. To use all of fvSidebar functionality, use .sync modifier.
@@ -12,7 +11,6 @@
 
 @event update:visible @description @params newVisible @description Triggers when sidemenu open/close.
 </doc>
-
 
 <example>
 @config state false
@@ -31,100 +29,117 @@
 import cancelDetector from '../utility/cancelDetector';
 
 export default {
+  name: 'Sidebar',
+  emits: ['update:visible'],
   props: {
     visible: {
       type: Boolean,
       default: false,
     },
+    position: {
+      type: String,
+      validator: (position) => ['start', 'end'].includes(position),
+      required: true,
+    },
+    type: {
+      type: String,
+      validator: (type) => ['smart', 'pinned', 'unpinned'].includes(type),
+      default: 'smart',
+    },
   },
   data() {
     return {
-      lastCapturedViewportWidth: 0,
       cancelDetector: null,
+      resizeListener: null,
+      trueType: null,
     };
   },
   watch: {
-    visible(newValue) {
+    visible(visible) {
       if (this.cancelDetector) {
         this.cancelDetector.release();
       }
-      if (newValue && window.innerWidth < 992) {
+      if (visible && this.trueType === 'unpinned') {
         this.cancelDetector = cancelDetector(this.$el, this.toggle);
       }
     },
+    type: {
+      handler(type) {
+        if (type === 'smart') {
+          this.$nextTick(() => {
+            this.resizeListener = this.$layout.listen('resize', this.handleLayoutResize, true);
+          });
+        } else {
+          this.trueType = this.type;
+          if (this.resizeListener) {
+            this.resizeListener.release();
+          }
+        }
+      },
+      immediate: true,
+    },
   },
-  mounted() {
-    if (window.innerWidth < 992) {
-      this.$emit('update:visible', false);
-    } else {
-      this.$emit('update:visible', true);
-    }
-    this.$layout.on('resize', this.handleResize);
-  },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.cancelDetector) {
       this.cancelDetector.release();
     }
-    this.$layout.off('resize', this.handleResize);
+    if (this.resizeListener) {
+      this.resizeListener.release();
+    }
   },
   methods: {
     toggle() {
       this.$emit('update:visible', !this.visible);
     },
-    handleSmart() {
+    handleLayoutResize() {
+      const isLargeLayout = window.innerWidth >= 992;
       this.$el.style.transitionDuration = '0s';
-      this.$emit('update:visible', window.innerWidth >= 992);
-      this.className = window.innerWidth >= 992 ? 'pinned' : 'unattached';
+      this.$emit('update:visible', isLargeLayout);
+      this.trueType = isLargeLayout ? 'pinned' : 'unpinned';
       setTimeout(() => {
         this.$el.style.transitionDuration = null;
       });
     },
-    handleResize() {
-      if (window.innerWidth !== this.lastCapturedViewportWidth) {
-        this.handleSmart();
-        this.lastCapturedViewportWidth = window.innerWidth;
-      }
-    },
   },
-  style({ className, mediaQuery }) {
-    const position = this.$theme.direction[this.$layout.getSidebarPosition(this)];
+  style({ className }) {
+    const position = this.$theme.direction[this.position];
     return [
       className('sidebar', {
         backgroundColor: this.$theme.colors.sidebar.normal,
         color: this.$theme.colors.sidebar.text,
         borderColor: this.$theme.colors.sidebar.shade(-15),
         minHeight: '100%',
-        [position]: 0,
-        overflowX: 'hidden !important',
-        transition: `transform ${this.$theme.speed.normal} ease`,
-        position: 'relative',
-        '&.show': {
-          transform: 'translateX(0) !important',
+        height: '100%',
+        maxHeight: '100%',
+        top: 0,
+        '&.pinned': {
+          [position]: 0,
+          overflowX: 'hidden !important',
+          transition: `transform ${this.$theme.speed.normal} ease`,
+          position: 'relative',
+          '&.show': {
+            transform: 'translateX(0) !important',
+          },
+          '&.hide': {
+            position: 'fixed',
+            transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
+          },
         },
-        '&.hide': {
-          position: 'fixed',
-          transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
-        },
-      }),
-      mediaQuery({ maxWidth: '991px' }, [
-        className('sidebar', {
-          top: '0',
-          height: '100%',
-          maxHeight: '100%',
+        '&.unpinned': {
           overflow: 'auto',
           position: 'fixed',
           transition: `transform ${this.$theme.speed.normal} ease-in-out`,
           zIndex: 2,
+          [`border-${position}-width`]: this.$theme.sizes.base.factor('md', 'border'),
+          [`border-${position}-style`]: 'solid',
           '&.show': {
             transform: 'translateX(0) !important',
           },
-          [`border-${position}-width`]: this.$theme.sizes.base.factor('md', 'border'),
-          [`border-${position}-style`]: 'solid',
           '&.hide': {
             transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
           },
-        }),
-      ]),
+        },
+      }),
     ];
   },
   inject: ['$layout', '$theme'],

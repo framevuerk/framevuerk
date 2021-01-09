@@ -29,6 +29,7 @@
 import { offsetTo } from '../utility/utils';
 
 export default {
+  name: 'Header',
   props: {
     type: {
       type: String,
@@ -39,29 +40,36 @@ export default {
   data() {
     return {
       offsetToParent: 0,
+      scrollListener: null,
     };
   },
+  watch: {
+    type: {
+      handler(type) {
+        this.$nextTick(() => {
+          this.$el.classList.remove('pre-show', 'show');
+          if (type === 'smart') {
+            this.scrollListener = this.$layout.listen('scroll', this.handleLayoutScroll);
+          } else if (this.scrollListener) {
+            this.scrollListener.release();
+          }
+        });
+      },
+      immediate: true,
+    },
+  },
   mounted() {
-    if (this.type === 'smart') {
-      this.offsetToParent = offsetTo(this.$el, null).top;
-      this.$layout.on('scroll', this.handleSmart);
+    this.offsetToParent = offsetTo(this.$el, null).top;
+  },
+  beforeUnmount() {
+    if (this.scrollListener) {
+      this.scrollListener.release();
     }
   },
-  beforeDestroy() {
-    this.$layout.off('scroll', this.handleSmart);
-  },
   methods: {
-    handleSmart(scrollTop, direction) {
-      if (scrollTop > this.offsetToParent) {
-        this.$el.classList.add('pre-show');
-        if (direction === 'down') {
-          this.$el.classList.remove('show');
-        } else {
-          this.$el.classList.add('show');
-        }
-      } else {
-        this.$el.classList.remove('pre-show');
-      }
+    handleLayoutScroll({ scrollTop, direction }) {
+      this.$el.classList[scrollTop > this.offsetToParent ? 'add' : 'remove']('pre-show');
+      this.$el.classList[direction === 'down' ? 'remove' : 'add']('show');
     },
   },
   style({ className }) {

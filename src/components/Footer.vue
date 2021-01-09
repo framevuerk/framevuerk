@@ -4,28 +4,10 @@
   </footer>
 </template>
 
-<doc>
-@prop type @type oneOf('normal', 'pinned') @default 'normal' @description Type of footer behavior.
-
-@slot default
-</doc>
-
-<example>
-@config state false
-@config example false
-
-<fvLayout>
-  <!-- ... -->
-  <!-- ... -->
-  <!-- ... -->
-  <fvFooter #footer> <!-- Content --> </fvFooter>
-</fvLayout>
-
-</example>
-
 <script>
 export default {
-  inject: ['$layout', '$theme'],
+  name: 'Footer',
+  inject: ['$theme'],
   props: {
     type: {
       type: String,
