@@ -1,47 +1,124 @@
 <template data-id="1">
-  <fvButton css-color="primary" @click="a = a+1"> Primary {{a}} </fvButton> ‌ 
-  <fvButton css-color="danger"> Danger </fvButton> ‌ 
-  <fvButton css-color="background"> Background </fvButton> ‌ 
-  <fvButton css-color="primary" invert> Inverted Primary </fvButton> ‌ 
-  <fvButton css-color="danger" invert> Inverted Danger {{a}} z </fvButton>
+  <fv-button css-color="primary"> Primary </fv-button>&nbsp;
+  <fv-button css-color="danger"> Danger </fv-button>&nbsp;
+  <fv-button css-color="background"> Background </fv-button>&nbsp;
+  <fv-button css-color="primary" invert> Inverted Primary </fv-button>&nbsp;
+  <fv-button css-color="danger" invert> Inverted Danger </fv-button>
 </template>
 <script data-id="1">
-  export default {
-    config: {
-      title: 'Colors',
-      showState: true,
-      showSource: true,
-      showResult: true,
-    },
-    data() {
-      return {
-        a: 2,
-        b: '2',
-      };
-    },
-  }
-  </script>
+export default {
+  config: {
+    title: 'Colors',
+    showState: false,
+  },
+}
+</script>
 
 <template data-id="2">
-  <fvButton css-color="primary" loading> Primary {{a}} </fvButton> ‌ 
-  <fvButton css-color="danger" loading> Danger </fvButton> ‌ 
-  <fvButton css-color="background" loading> Background </fvButton> ‌ 
-  <fvButton css-color="primary" invert loading> Inverted Primary </fvButton> ‌ 
-  <fvButton css-color="danger" invert loading> Inverted Danger {{a}} z </fvButton>
+  <fv-button css-color="primary" css-size="xs"> Button xs </fv-button>&nbsp;
+  <fv-button css-color="primary" css-size="sm"> Button sm </fv-button>&nbsp;
+  <fv-button css-color="primary" css-size="md"> Button md </fv-button>&nbsp;
+  <fv-button css-color="primary" css-size="lg"> Button lg </fv-button>&nbsp;
+  <fv-button css-color="primary" css-size="xl"> Button xl </fv-button>
 </template>
 <script data-id="2">
-  export default {
-    config: {
-      title: 'Sizes',
-    },
-  }
+export default {
+  config: {
+    title: 'Sizes',
+    showState: false,
+  },
+}
+</script>
+
+<template data-id="3">
+  <fv-button css-color="primary" fab> :D </fv-button>&nbsp;
+  <fv-button css-color="danger" fab> :( </fv-button>&nbsp;
+  <fv-button css-color="primary" css-size="lg" fab> :) </fv-button>&nbsp;
+  <fv-button css-color="danger" css-size="lg" fab> :S </fv-button>&nbsp;
+  <fv-button css-color="primary" css-size="xl" fab invert> :X </fv-button>&nbsp;
+  <fv-button css-color="danger" css-size="xl" fab invert> ;) </fv-button>
+</template>
+<script data-id="3">
+export default {
+  config: {
+    title: 'Fab Mode',
+    showState: false,
+  },
+}
+</script>
+
+<template data-id="3">
+  <fv-button css-color="primary" disabled> I'm disabled :( </fv-button>&nbsp;
+  <fv-button css-color="primary" loading> Loadind... </fv-button>
+</template>
+<script data-id="3">
+export default {
+  config: {
+    title: 'Loading/Disabled',
+    showState: false,
+  },
+}
 </script>
 
 <script>
 export default {
-  props: [],
-  events: [],
+  props: [
+    {
+      name: 'tag',
+      type: 'String <HTML Tag Name>',
+      default: '\'button\'',
+      description: 'Rendering html tag.',
+    },
+    {
+      name: 'fab',
+      type: 'Boolean',
+      default: 'false',
+      description: 'Is Fab (like a circle) mode?',
+    },
+    {
+      name: 'invert',
+      type: 'Boolean',
+      default: 'false',
+      description: 'Invert background and forground color of button.',
+    },
+    {
+      name: 'disabled',
+      type: 'Boolean',
+      default: 'false',
+      description: 'Disable button.',
+    },
+    {
+      name: 'loading',
+      type: 'Boolean',
+      default: 'false',
+      description: 'Disable the button and show loading spinner instead of default slot.',
+    },
+    {
+      name: 'css-color',
+      type: 'oneOf declared color names in ThemeProvider component',
+      default: 'background',
+      description: 'The color of button. The value can be one of declared color names in ThemeProvider.',
+    },
+    {
+      name: 'css-size',
+      type: 'oneOf \'xs\', \'sm\', \'md\', \'lg\', \'xl\'',
+      default: 'md',
+      description: 'The size of button.',
+    },
+  ],
+  events: [
+    {
+      name: 'click',
+      params: ['event'],
+      description: 'Triggers when component is not in loading or disabled state and got clicked.'
+    }
+  ],
   methods: [],
-  slots: [],
+  slots: [
+    {
+      name: 'default',
+      description: 'Inner content of element.',
+    }
+  ],
 }
 </script>
