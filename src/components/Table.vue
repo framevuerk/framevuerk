@@ -3,15 +3,21 @@
     :class="[$style.table]"
     :css-color="$color"
   >
-    <thead>
-      <slot name="th" />
-    </thead>
-    <tbody>
-      <slot name="tr" />
-    </tbody>
+    <template v-if="trueType === 'grid'">
+      <thead>
+        <render-slot
+          :slots="labels"
+        />
+      </thead>
+      <tbody>
+        <custom-slot
+          :uid="$.uid"
+          component="TableRow"
+        />
+      </tbody>
+    </template>
   </table>
 </template>
-
 
 <doc>
 @doc @description Try resize window to check style changes based on viewport size.
@@ -36,15 +42,30 @@
 </fvTable>
 </example>
 
-
 <script>
 import color from '../mixins/color';
+import CustomSlot from './_CustomSlot.vue';
+import findSlots from '../utility/findSlots';
+import RenderSlot from './_RenderSlot.vue';
+import _RenderSlot from './_RenderSlot.vue';
 
 export default {
-  inject: ['$theme'],
+  name: 'Table',
+  inject: ['$layout', '$theme'],
+  emits: ['update:current'],
+  components: {
+    CustomSlot,
+  },
   mixins: [
     color,
   ],
+  props: {
+    type: {
+      type: String,
+      default: 'smart',
+      validator: (v) => ['grid', 'smart', 'inline'].includes(v),
+    },
+  },
   provide() {
     return {
       $table: this,
@@ -53,12 +74,40 @@ export default {
   data() {
     return {
       fields: [], // filled by childs
+      trueType: null,
+      resizeListener: null,
+      labels: [],
     };
   },
-  mounted() {
-    if (this.type === 'smart') {
-      this.handleSmart();
+  watch: {
+    type: {
+      handler(type) {
+        this.$nextTick(() => {
+          this.$el.classList.remove('pre-show', 'show');
+          if (type === 'smart') {
+            this.resizeListener = this.$layout.listen('resize', this.handleLayoutResize, true);
+          } else if (this.scrollListener) {
+            this.trueType = type;
+            this.resizeListener.release();
+          }
+        });
+      },
+      immediate: true,
+    },
+  },
+  beforeUnmount() {
+    if (this.resizeListener) {
+      this.resizeListener.release();
     }
+  },
+  mounted() {
+    this.labels = findSlots(this, (slot) => slot.type.name === 'TableLabel');
+  },
+  methods: {
+    handleLayoutResize() {
+      const isLargeLayout = window.innerWidth >= 992;
+      this.trueType = isLargeLayout ? 'grid' : 'inline';
+    },
   },
   style({ className, mediaQuery }) {
     const fieldContainerCommonStyle = {
