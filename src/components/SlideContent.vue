@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  name: 'SlideContent',
   inject: ['$theme'],
   props: {
     name: {

@@ -23,6 +23,7 @@
 
 <script>
 export default {
+  name: 'Content',
   style({ className }) {
     return [
       className('content', {

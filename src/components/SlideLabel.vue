@@ -15,6 +15,7 @@
 
 <script>
 export default {
+  name: 'SlideLabel',
   props: {
     name: {
       type: String,
