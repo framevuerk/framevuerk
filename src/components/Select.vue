@@ -147,7 +147,7 @@ export default {
   computed: {
     forceArrayValue() {
       // eslint-disable-next-line no-nested-ternary
-      return this.multiple ? this.value : (typeof this.value !== 'undefined' ? [this.value] : []);
+      return this.multiple ? this.value : (this.value !== null && this.value !== undefined ? [this.value] : []);
     },
     isEmpty() {
       return this.forceArrayValue.length === 0;
