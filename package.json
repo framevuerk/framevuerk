@@ -10,7 +10,6 @@
     "clean": "rimraf ./dist",
     "build": "node scripts/build.js --action build",
     "dev": "node scripts/build.js --action dev",
-    "dev-to": "node scripts/build.js --action dev-to",
     "prepublishOnly": "./prepublish.sh"
   },
   "devDependencies": {

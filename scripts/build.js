@@ -10,12 +10,10 @@ const startApp = async (action) => {
     log('Building Lib...');
     await rollup.build();
   } else if (action === 'dev') {
-    log('Watching Lib...');
-    rollup.watch(({ code }) => log(`[WATCHER] => ${code}`));
-  } else if (action === 'dev-to') {
     const defaultOutputFile = '../framevuerk-docs/src/framevuerk/index.js';
-    const outputFile = path.resolve(process.cwd(), (await cli.ask(`Output File Path? [${defaultOutputFile}]`) || defaultOutputFile));
-    log('Watching Lib...');
+    const userOutputFile = await cli.ask(`Output File Path? [${defaultOutputFile}]`);
+    const outputFile = path.resolve(process.cwd(), (userOutputFile || defaultOutputFile));
+    log('Watching Lib...', outputFile);
     rollup.watch(outputFile, ({ code }) => log(`[WATCHER] => ${code}`));
   }
 };
