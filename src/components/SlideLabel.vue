@@ -25,7 +25,7 @@ export default {
   inject: ['$theme', '$slider'],
   computed: {
     isSelected() {
-      return this.$slider && this.$slider.current === this.name;
+      return this.$slider.current === this.name;
     },
   },
   methods: {

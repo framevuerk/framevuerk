@@ -1,21 +1,14 @@
 <template>
   <div :class="$style.slider">
     <div class="labels">
-      <custom-slot
-        :uid="$.uid"
-        component="SlideLabel"
-      />
+      <slot name="label" />
     </div>
     <div class="contents">
       <div
         ref="inner"
         class="inner"
       >
-        <custom-slot
-          :uid="$.uid"
-          component="SlideContent"
-          @update="setContents"
-        />
+        <slot name="content" />
       </div>
       <fvButton
         v-if="showButtons"
@@ -88,17 +81,13 @@
 
 <script>
 import { moveIndex } from '../utility/utils';
-import findSlots from '../utility/findSlots';
-import CustomSlot from './_CustomSlot.vue';
+// import findSlots from '../utility/findSlots';
 import Swipe from '../utility/swipe';
 
 export default {
   name: 'Slider',
   inject: ['$theme'],
   emits: ['update:current'],
-  components: {
-    CustomSlot,
-  },
   props: {
     // eslint-disable-next-line vue/require-prop-types
     current: {
@@ -125,27 +114,29 @@ export default {
   data() {
     return {
       swipe: null,
-      contents: [],
+      slides: [], // filled by children
     };
   },
   computed: {
     numberOfSlides() {
-      return Math.ceil(this.contents.length / this.slidesPerPage);
+      return Math.ceil(this.slides.length / this.slidesPerPage);
     },
     eachTabSize() {
-      return this.contents.length / (this.numberOfSlides * 100);
+      return this.slides.length / (this.numberOfSlides * 100);
     },
     currentIndex() {
-      return this.current ? this.contents.findIndex((content) => content === this.current) : 0;
+      return this.current ? this.slides.findIndex((content) => content === this.current) : 0;
     },
     currentTransform() {
       const factor = this.$theme.direction.leftFactor * -1;
-      return factor * (this.currentIndex * (100 / this.contents.length));
+      return factor * (this.currentIndex * (100 / this.slides.length));
     },
   },
   watch: {
     current() {
-      this.resetTransform();
+      this.$nextTick(() => {
+        this.resetTransform();
+      });
     },
     swipeEvents: {
       handler(value) {
@@ -153,24 +144,20 @@ export default {
       },
       immediate: true,
     },
-    contents(newContents) {
-      console.log('contents changed');
-      if (!newContents.includes(this.current)) {
-        this.setCurrent(newContents[0]);
-      }
-      this.$nextTick(() => {
-        this.$refs.inner.style.width = `${this.numberOfSlides * 100}%`;
-        this.resetTransform(true);
-      });
+    slides: {
+      immediate: true,
+      handler() {
+        this.$nextTick(() => {
+          this.$refs.inner.style.width = `${this.numberOfSlides * 100}%`;
+          this.resetTransform(true);
+        });
+      },
     },
   },
   beforeUnmount() {
     this.setSwipeEvents(false);
   },
   methods: {
-    setContents(contents) {
-      this.contents = contents.map((item) => item.props.name);
-    },
     setSwipeEvents(active) {
       this.$nextTick(() => {
         if (active) {
@@ -194,21 +181,21 @@ export default {
       this.$refs.inner.style.transform = `translateX(${this.currentTransform}%)`;
     },
     moveIndex(offset) {
-      const max = this.contents.length - (this.slidesPerPage - 1);
+      const max = this.slides.length - (this.slidesPerPage - 1);
       return moveIndex(this.currentIndex + offset, max);
     },
     beforeSwipe() {
-      this.$refs.inner.style.transitionDuration = '0s';
+      this.$refs.inner.style.traswipeEventsnsitionDuration = '0s';
     },
-    whileSwipe(pos, diff) {
+    whileSwipe(_pos, diff) {
       this.$refs.inner.style.transform = `translateX(calc(${this.currentTransform}% + ${diff.x}px))`;
     },
-    afterSwipe(pos, diff) {
+    afterSwipe(_pos, diff) {
       this.$refs.inner.style.transitionDuration = null;
       // eslint-disable-next-line no-nested-ternary
       const offsetIndex = this.$theme.direction.leftFactor * (diff.x < -100 ? 1 : (diff.x > 100 ? -1 : 0));
       const newIndex = this.moveIndex(offsetIndex);
-      const newValue = this.contents[newIndex];
+      const newValue = this.slides[newIndex];
       if (newIndex === this.currentIndex) {
         this.resetTransform();
       }
@@ -218,7 +205,7 @@ export default {
       this.$emit('update:current', value);
     },
     moveCurrent(offset) {
-      this.$emit('update:current', this.contents[this.moveIndex(offset)]);
+      this.$emit('update:current', this.slides[this.moveIndex(offset)]);
     },
   },
   style({ className }) {

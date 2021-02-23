@@ -13,12 +13,19 @@
 <script>
 export default {
   name: 'SlideContent',
-  inject: ['$theme'],
+  inject: ['$theme', '$slider'],
   props: {
     name: {
       type: String,
       required: true,
     },
+  },
+  mounted() {
+    this.$slider.slides.push(this.name);
+  },
+  beforeUnmount() {
+    this.$slider.slides.splice(this.$slider.slides.indexOf(this.name), 1);
+    // this.$slider.contents.splice(this.$slider.contents.indexOf(this.name), 1);
   },
   style({ className }) {
     return [
