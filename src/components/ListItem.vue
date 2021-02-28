@@ -3,13 +3,13 @@
     :is="tag"
     :class="[$style.listItem, disabled && 'disabled', selected && 'selected', isHighlighted && 'highlighted']"
     :to="$attrs.to"
-    tabindex="-1"
-    @focus.capture="onFocus"
+    :data-list-item-focusable="isFocusable"
+    :tabindex="isFocusable ? 0 : -1"
+    @keydown.self="onKeydown"
   >
     <div
       class="content"
       css-padding-x="md"
-      @mouseenter.stop="onMouseEnter"
       @click="onClick"
     >
       <span
@@ -86,12 +86,14 @@
 </example>
 
 <script>
-import { hasSlot } from '../utility/utils';
 import size from '../mixins/size';
+import { moveIndex } from '../utility/utils';
+import injector from '../utility/injector';
 
 export default {
   mixins: [size],
-  inject: ['$theme', '$list'],
+  emits: ['click', 'collapse', 'expand'],
+  ...injector('$theme', '$list', ['$listItem', null]),
   props: {
     tag: {
       type: String,
@@ -110,19 +112,31 @@ export default {
       default: false,
     },
   },
+  provide() {
+    return {
+      $listItem: this,
+    };
+  },
   data() {
     return {
       isHighlighted: false,
-      isExpanded: this.expanded,
+      isExpanded: this.hasSubList ? this.expanded : true,
     };
   },
   computed: {
     hasSubList() {
-      return hasSlot(this, 'sub-list');
+      return !!this.$slots['sub-list'];
+    },
+    isFocusable() {
+      return this.$list.isFocusable && (!this.$listItem || this.$listItem.isExpanded);
     },
   },
   watch: {
+    expanded(value) {
+      this.isExpanded = value;
+    },
     isExpanded(value) {
+      if (!this.$refs.subList) return;
       if (value) {
         this.$refs.subList.style.display = 'block';
         this.$refs.subList.style.height = `${this.$refs.subList.children[0].offsetHeight}px`;
@@ -142,9 +156,6 @@ export default {
       }
     },
   },
-  created() {
-    this.$list.moveHighlight('reset');
-  },
   methods: {
     expand() {
       this.isExpanded = true;
@@ -155,29 +166,36 @@ export default {
     toggle() {
       this.isExpanded = !this.isExpanded;
     },
-    onClick(event) {
-      if (!this.disabled) {
-        if (this.hasSubList) {
-          this.toggle();
-        }
-        this.$emit('click', event);
-        if (event.type === 'keydown') {
-          try {
-            this.$el.click(); // click on root element manually (links, etc)
-            event.stopPropagation();
-          } catch (_e) {
-            //
+    onClick(e) {
+      this.toggle();
+      this.$emit('click', e);
+    },
+    onKeydown(e) {
+      const k = e.which;
+      if (this.$list.isFocusable && ((k > 36 && k < 41))) {
+        e.preventDefault();
+        const all = document.querySelectorAll('[data-list-item-focusable="true"]');
+        if ([38, 40].includes(k)) {
+          const myIndex = (() => {
+            for (let i = 0; i < all.length; i += 1) {
+              if (all[i] === this.$el) {
+                return i;
+              }
+            }
+            return -1;
+          })();
+          if (myIndex !== -1) {
+            const nextFocusingEl = all[moveIndex(myIndex + (k === 38 ? -1 : 1), all.length)];
+            nextFocusingEl.focus();
+          }
+        } else if ([37, 39].includes(k) && this.hasSubList) {
+          if (k === this.$theme.direction.endKey) {
+            this.expand();
+          } else {
+            this.collapse();
           }
         }
       }
-    },
-    onMouseEnter() {
-      if (!this.disabled) {
-        this.$list.moveHighlight('set', this);
-      }
-    },
-    onFocus(event) {
-      event.preventDefault();
     },
   },
   style({ className }) {
@@ -191,8 +209,10 @@ export default {
           fontSize: this.$theme.sizes.font.factor(this.$size, 'font'),
           height: this.$theme.sizes.base.factor(this.$size, 'height'),
           lineHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
-          [`border-${this.$theme.direction.start}-width`]: this.$theme.sizes.base.normal,
-          [`border-${this.$theme.direction.start}-color`]: 'transparent',
+          '& .expand-btn': {
+            fontWeight: 'bold',
+            [`padding-${this.$theme.direction.end}`]: this.$theme.sizes.base.normal,
+          },
         },
         '& > .sub-list': {
           overflowY: 'visible',
@@ -208,7 +228,7 @@ export default {
             height: 'auto',
           },
         },
-        '&.highlighted > .content': {
+        '&:focus > .content': {
           backgroundColor: 'rgba(0, 0, 0, 0.06)',
         },
         '&.selected > .content': {
