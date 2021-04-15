@@ -14,15 +14,15 @@
       <span
         v-for="i in $list.indent - 1"
         :key="'indent-' + i"
-        css-space-x="lg"
+        class="indent"
       />
+      <slot name="default" />
       <span
         v-if="hasSubList"
-        class="expand-btn"
+        class="expand"
       >
-        {{ isExpanded ? '-' : '+' }}
+        {{ isExpanded ? '⏶' : '⏷' }}
       </span>
-      <slot name="default" />
     </div>
     <div
       v-if="hasSubList"
@@ -193,9 +193,13 @@ export default {
           padding: `0 ${$sizes.space.factor($size)}`,
           height,
           lineHeight: height,
-          '& .expand-btn': {
-            fontWeight: 'bold',
-            [`padding-${this.$theme.direction.end}`]: $sizes.space.factor($size),
+          '& > .indent': {
+            marginLeft: $sizes.space.factor('lg'),
+          },
+          '& > .expand': {
+            float: this.$theme.direction.end,
+            cursor: 'pointer',
+            padding: `0 ${$sizes.space.factor($size)}`,
           },
         },
         '& > .sub-list': {
@@ -212,10 +216,11 @@ export default {
             height: 'auto',
           },
         },
-        '&:focus > .content': {
-          backgroundColor: 'rgba(0, 0, 0, 0.06)',
+        '&:focus > .content, & > .content:hover': {
+          backgroundColor: '#00000020',
         },
         '&.selected > .content': {
+          [`border-${this.$theme.direction.start}-width`]: '3px',
           [`border-${this.$theme.direction.start}-color`]: $colors.primary.bg,
         },
         // '&.disabled': {
