@@ -5,7 +5,9 @@ module.exports = () => ({
   name: 'docs',
   transform: (_source, id) => {
     if (!id.endsWith('.docs')) return null;
-    const source = parse(_source);
+    const source = parse(_source, {
+      comment: true,
+    });
     const scripts = [...source.querySelectorAll('script')];
     const templates = [...source.querySelectorAll('template')];
     const api = scripts.find((tag) => !tag.getAttribute('data-id')).innerHTML.trim().replace('export default ', '');
