@@ -27,26 +27,18 @@
 
 <script>
 import cancelDetector from '../utility/cancelDetector';
+import { inject, props } from '../utility/vue';
+import color from '../mixins/color';
 
 export default {
-  name: 'Sidebar',
+  mixins: [color('sidebar')],
   emits: ['update:visible'],
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-    position: {
-      type: String,
-      validator: (position) => ['start', 'end'].includes(position),
-      required: true,
-    },
-    type: {
-      type: String,
-      validator: (type) => ['smart', 'pinned', 'unpinned'].includes(type),
-      default: 'smart',
-    },
-  },
+  ...inject('$theme', '$layout'),
+  ...props({
+    visible: props.bool(false),
+    position: props.oneOf(['start', 'end']),
+    type: props.oneOf(['smart', 'pinned', 'unpinned'], 'smart'),
+  }),
   data() {
     return {
       cancelDetector: null,
@@ -102,46 +94,49 @@ export default {
     },
   },
   style({ className }) {
-    const position = this.$theme.direction[this.position];
+    const position = this.$theme.direction.static(this.position);
+    const opositePosition = position === 'left' ? 'right' : 'left';
+    const $color = this.$theme.colors[this.$color];
+    const $speed = this.$theme.speed;
+    const $sizes = this.$theme.sizes;
+    const $direction = this.$theme.direction;
     return [
       className('sidebar', {
-        backgroundColor: this.$theme.colors.sidebar.normal,
-        color: this.$theme.colors.sidebar.text,
-        borderColor: this.$theme.colors.sidebar.shade(-15),
-        minHeight: '100%',
-        height: '100%',
-        maxHeight: '100%',
+        backgroundColor: $color.bg,
+        color: $color.fg,
+        borderColor: $color.shade(-15),
+        [`border-${opositePosition}-width`]: $sizes.border.px,
+        borderStyle: 'solid',
+        boxShadow: $sizes.shadow.factor('md', opositePosition),
+        height: 'auto',
         top: 0,
         '&.pinned': {
           [position]: 0,
           overflowX: 'hidden !important',
-          transition: `transform ${this.$theme.speed.normal} ease`,
+          transition: `transform ${$speed.ms} ease`,
           position: 'relative',
-          '&.show': {
-            transform: 'translateX(0) !important',
-          },
           '&.hide': {
             position: 'fixed',
-            transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
+            height: '100%',
           },
         },
         '&.unpinned': {
           overflow: 'auto',
           position: 'fixed',
-          transition: `transform ${this.$theme.speed.normal} ease-in-out`,
+          transition: `transform ${$speed.ms} ease-in-out`,
           zIndex: 2,
-          [`border-${position}-width`]: this.$theme.sizes.base.factor('md', 'border'),
+          [`border-${position}-width`]: $sizes.border.px,
           [`border-${position}-style`]: 'solid',
-          '&.show': {
-            transform: 'translateX(0) !important',
-          },
-          '&.hide': {
-            transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
-          },
+          height: '100%',
+        },
+        '&.show': {
+          transform: 'translateX(0) !important',
+        },
+        '&.hide': {
+          transform: `translateX(${$direction[`${position}Factor`] * -100}%)`,
         },
       }),
     ];
   },
-  inject: ['$layout', '$theme'],
 };
 </script>

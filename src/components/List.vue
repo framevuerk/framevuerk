@@ -26,20 +26,15 @@
 </example>
 
 <script>
-import injector from '../utility/injector';
+import { inject, provideAs, props } from '../utility/vue';
 
 export default {
-  ...injector('$theme', ['$list', null]),
-  props: {
-    tag: {
-      type: String,
-      default: 'ul',
-    },
-    focusable: {
-      type: Boolean,
-      default: true,
-    },
-  },
+  ...inject('$theme', ['$list', null]),
+  ...provideAs('$list'),
+  ...props({
+    tag: props.str('ul'),
+    focusable: props.bool(true),
+  }),
   computed: {
     isFocusable() {
       return this.focusable || (this.$list && this.$list.isFocusable);
@@ -47,11 +42,6 @@ export default {
     indent() {
       return this.$list ? this.$list.indent + 1 : 1;
     },
-  },
-  provide() {
-    return {
-      $list: this,
-    };
   },
   style({ className }) {
     return [

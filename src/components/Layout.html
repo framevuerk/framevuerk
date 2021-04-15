@@ -1,0 +1,44 @@
+<template data-id="1">
+  <fv-layout>
+    <!-- ... -->
+    <!-- ... -->
+    <!-- ... -->
+    <!-- ... -->
+  </fv-layout>
+</template>
+<script data-id="1">
+export default {
+  config: {
+    title: 'Default',
+    showState: false,
+    showResult: false,
+  },
+}
+</script>
+
+<script>
+export default {
+  slots: [
+    {
+      name: 'header',
+      description: 'Inner content of header.',
+    },
+    {
+      name: 'content',
+      description: 'Inner content of contents.',
+    },
+    {
+      name: 'footer',
+      description: 'Inner content of contents.',
+    },
+    {
+      name: 'start-sidebar',
+      description: 'Inner content of start-sidebar (in ltr mode, left side of content).',
+    },
+    {
+      name: 'end-sidebar',
+      description: 'Inner content of end-sidebar (in ltr mode, right side of content).',
+    }
+  ],
+}
+</script>

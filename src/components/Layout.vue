@@ -1,67 +1,25 @@
 <template>
   <div :class="$style.layout">
-    <custom-slot
-      :uid="$.uid"
-      component="Header"
-    />
+    <slot name="header" />
     <main>
-      <custom-slot
-        :uid="$.uid"
-        component="Sidebar"
-        :custom-check="checkIfSidebar('start')"
-      />
-      <custom-slot
-        :uid="$.uid"
-        component="Content"
-      />
-      <custom-slot
-        :uid="$.uid"
-        component="Sidebar"
-        :custom-check="checkIfSidebar('end')"
-      />
+      <slot name="start-sidebar" />
+      <slot name="content" />
+      <slot name="end-sidebar" />
     </main>
-    <custom-slot
-      :uid="$.uid"
-      component="Footer"
-    />
+    <slot name="footer" />
   </div>
 </template>
 
-<doc>
-@slot header @description Header section. By default you need to set this slot on your fvHeader component.
-@slot content @description Content section. By default you need to set this slot on your fvContent component.
-@slot footer @description Footer section. By default you need to set this slot on your fvFooter component.
-@slot start-sidebar @description Sidebar section. In ltr mode this is renders on left. Behavior is based on main direction. By default you need to set this slot on your fvSidebar component.
-@slot end-sidebar @description Sidebar section. In ltr mode this is renders on right. Behavior is based on main direction. By default you need to set this slot on your fvSidebar component.
-
-</doc>
-
-<example>
-@config state false
-@config example false
-
-<fvLayout>
-  <!-- ... -->
-  <!-- ... -->
-  <!-- ... -->
-  <!-- ... -->
-</fvLayout>
-
-</example>
+<docs src="./Layout.html" />
 
 <script>
-import CustomSlot from './_CustomSlot.vue';
+import { provideAs, inject } from '../utility/vue';
+import color from '../mixins/color';
 
 export default {
-  name: 'Layout',
-  components: {
-    CustomSlot,
-  },
-  provide() {
-    return {
-      $layout: this,
-    };
-  },
+  mixins: [color('background')],
+  ...provideAs('$layout'),
+  ...inject('$theme'),
   data() {
     return {
       overlays: [],
@@ -73,25 +31,19 @@ export default {
         const target = document.scrollingElement;
         if (eventName === 'scroll') {
           const { scrollTop } = document.scrollingElement;
-          clearTimeout(target.fvScrollTimeout);
           target.fvScrollDirection = scrollTop > (target.fvLastScrollTop || 0) ? 'down' : 'up';
-          target.fvScrollTimeout = setTimeout(() => {
-            target.fvLastScrollTop = scrollTop;
-            handler({
-              event,
-              direction: target.fvScrollDirection,
-              scrollTop,
-            });
+          target.fvLastScrollTop = scrollTop;
+          handler({
+            event,
+            direction: target.fvScrollDirection,
+            scrollTop,
           });
         } else if (eventName === 'resize') {
-          clearTimeout(target.fvResizeTimeout);
-          target.fvResizeTimeout = setTimeout(() => {
-            const { offsetWidth, offsetHeight } = document.scrollingElement;
-            handler({
-              event,
-              width: offsetWidth,
-              height: offsetHeight,
-            });
+          const { offsetWidth, offsetHeight } = document.scrollingElement;
+          handler({
+            event,
+            width: offsetWidth,
+            height: offsetHeight,
           });
         } else {
           handler({ event });
@@ -107,11 +59,9 @@ export default {
         },
       };
     },
-    checkIfSidebar(position) {
-      return (slot) => (slot.props && slot.props.position === position);
-    },
   },
   style({ className }) {
+    const $color = this.$theme.colors[this.$color];
     return [
       className('overlay', {
         position: 'fixed',
@@ -119,8 +69,8 @@ export default {
         left: 0,
         width: '100%',
         height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
-        zIndex: 1,
+        backgroundColor: '#00000020',
+        zIndex: 2,
       }),
       className('layout', {
         display: 'flex',
@@ -128,17 +78,17 @@ export default {
         overflow: 'visible',
         width: '100%',
         position: 'relative',
-        background: this.$theme.colors.background.normal,
-        color: this.$theme.colors.background.text,
+        background: $color.bg,
+        color: $color.fg,
         minHeight: '100vh',
         '& > main': {
           display: 'flex',
           maxWidth: '100%',
           flexGrow: '1',
+          alignItems: 'stretch',
         },
       }),
     ];
   },
-  inject: ['$theme'],
 };
 </script>

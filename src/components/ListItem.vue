@@ -9,7 +9,6 @@
   >
     <div
       class="content"
-      css-padding-x="md"
       @click="onClick"
     >
       <span
@@ -20,10 +19,6 @@
       <span
         v-if="hasSubList"
         class="expand-btn"
-        css-radius="no"
-        css-shadow="no"
-        css-cursor="pointer"
-        css-text-size="lg"
       >
         {{ isExpanded ? '-' : '+' }}
       </span>
@@ -88,35 +83,19 @@
 <script>
 import size from '../mixins/size';
 import { moveIndex } from '../utility/utils';
-import injector from '../utility/injector';
+import { inject, props, provideAs } from '../utility/vue';
 
 export default {
   mixins: [size],
   emits: ['click', 'collapse', 'expand'],
-  ...injector('$theme', '$list', ['$listItem', null]),
-  props: {
-    tag: {
-      type: String,
-      default: 'li',
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    selected: {
-      type: Boolean,
-      default: false,
-    },
-    expanded: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  provide() {
-    return {
-      $listItem: this,
-    };
-  },
+  ...inject('$theme', '$list', ['$listItem', null]),
+  ...props({
+    tag: props.str('li'),
+    disabled: props.bool(false),
+    selected: props.bool(false),
+    expanded: props.bool(false),
+  }),
+  ...provideAs('$listItem'),
   data() {
     return {
       isHighlighted: false,
@@ -199,19 +178,24 @@ export default {
     },
   },
   style({ className }) {
+    const $colors = this.$theme.colors;
+    const $sizes = this.$theme.sizes;
+    const { $size } = this;
+    const height = $sizes.height.factor($size);
     return [
       className('listItem', {
         display: 'block',
-        borderTopWidth: '1px',
+        borderTopWidth: $sizes.border.px,
         overflow: 'hidden',
         '& > .content': {
           opacity: this.disabled ? 0.5 : 1,
-          fontSize: this.$theme.sizes.font.factor(this.$size, 'font'),
-          height: this.$theme.sizes.base.factor(this.$size, 'height'),
-          lineHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
+          fontSize: $sizes.font.factor($size),
+          padding: `0 ${$sizes.space.factor($size)}`,
+          height,
+          lineHeight: height,
           '& .expand-btn': {
             fontWeight: 'bold',
-            [`padding-${this.$theme.direction.end}`]: this.$theme.sizes.base.normal,
+            [`padding-${this.$theme.direction.end}`]: $sizes.space.factor($size),
           },
         },
         '& > .sub-list': {
@@ -220,7 +204,7 @@ export default {
           transitionProperty: 'height',
           willChange: 'height',
           transitionTimingFunction: 'ease',
-          borderTopWidth: '1px',
+          borderTopWidth: $sizes.border.px,
           '&.collapse': {
             height: 0,
           },
@@ -232,7 +216,7 @@ export default {
           backgroundColor: 'rgba(0, 0, 0, 0.06)',
         },
         '&.selected > .content': {
-          [`border-${this.$theme.direction.start}-color`]: this.$theme.colors.primary.normal,
+          [`border-${this.$theme.direction.start}-color`]: $colors.primary.bg,
         },
         // '&.disabled': {
         //   textDecoration: 'line-through',

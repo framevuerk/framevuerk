@@ -23,12 +23,12 @@
 
 <script>
 export default {
-  name: 'Content',
   style({ className }) {
     return [
       className('content', {
         flexGrow: 1,
         maxWidth: '100%',
+        minWidth: 0,
       }),
     ];
   },

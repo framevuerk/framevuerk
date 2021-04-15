@@ -15,17 +15,16 @@ export default {
   name: 'SlideContent',
   inject: ['$theme', '$slider'],
   props: {
-    name: {
-      type: String,
+    value: {
+      type: [String, Number],
       required: true,
     },
   },
   mounted() {
-    this.$slider.slides.push(this.name);
+    this.$slider.slides.push(this.value);
   },
   beforeUnmount() {
-    this.$slider.slides.splice(this.$slider.slides.indexOf(this.name), 1);
-    // this.$slider.contents.splice(this.$slider.contents.indexOf(this.name), 1);
+    this.$slider.slides.splice(this.$slider.slides.indexOf(this.value), 1);
   },
   style({ className }) {
     return [

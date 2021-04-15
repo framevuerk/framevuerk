@@ -14,23 +14,25 @@
 </doc>
 
 <script>
+import { inject } from '../utility/vue';
+
 export default {
   name: 'SlideLabel',
   props: {
-    name: {
-      type: String,
+    value: {
+      type: [String, Number],
       required: true,
     },
   },
-  inject: ['$theme', '$slider'],
+  ...inject('$theme', '$slider'),
   computed: {
     isSelected() {
-      return this.$slider.current === this.name;
+      return this.$slider.current === this.value;
     },
   },
   methods: {
     onClick() {
-      this.$slider.setCurrent(this.name);
+      this.$slider.setCurrent(this.value);
     },
   },
   style({ className }) {

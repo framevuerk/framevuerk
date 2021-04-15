@@ -1,14 +1,14 @@
 <template>
   <div :class="$style.slider">
     <div class="labels">
-      <slot name="label" />
+      <slot name="labels" />
     </div>
     <div class="contents">
       <div
         ref="inner"
         class="inner"
       >
-        <slot name="content" />
+        <slot name="contents" />
       </div>
       <fvButton
         v-if="showButtons"
@@ -83,10 +83,11 @@
 import { moveIndex } from '../utility/utils';
 // import findSlots from '../utility/findSlots';
 import Swipe from '../utility/swipe';
+import { inject } from '../utility/vue';
 
 export default {
   name: 'Slider',
-  inject: ['$theme'],
+  ...inject('$theme'),
   emits: ['update:current'],
   props: {
     // eslint-disable-next-line vue/require-prop-types

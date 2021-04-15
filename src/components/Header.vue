@@ -27,16 +27,15 @@
 
 <script>
 import { offsetTo } from '../utility/utils';
+import color from '../mixins/color';
+import { inject, props } from '../utility/vue';
 
 export default {
-  name: 'Header',
-  props: {
-    type: {
-      type: String,
-      default: 'smart',
-      validator: (v) => ['normal', 'smart', 'pinned'].includes(v),
-    },
-  },
+  mixins: [color('header')],
+  ...inject('$theme', '$layout'),
+  ...props({
+    type: props.oneOf(['normal', 'smart', 'pinned'], 'smart'),
+  }),
   data() {
     return {
       offsetToParent: 0,
@@ -68,11 +67,14 @@ export default {
   },
   methods: {
     handleLayoutScroll({ scrollTop, direction }) {
-      this.$el.classList[scrollTop > this.offsetToParent ? 'add' : 'remove']('pre-show');
-      this.$el.classList[direction === 'down' ? 'remove' : 'add']('show');
+      const { classList } = this.$el;
+      classList[scrollTop > this.offsetToParent ? 'add' : 'remove']('pre-show');
+      classList[direction === 'down' ? 'remove' : 'add']('show');
     },
   },
   style({ className }) {
+    const $color = this.$theme.colors[this.$color];
+    const $sizes = this.$theme.sizes;
     const positionMap = {
       normal: 'static',
       smart: 'sticky',
@@ -80,11 +82,11 @@ export default {
     };
     return [
       className('header', {
-        backgroundColor: this.$theme.colors.header.normal,
-        color: this.$theme.colors.header.text,
-        borderColor: this.$theme.colors.header.shade(-15),
-        boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: 'bottom' }),
-        borderBottomWidth: this.$theme.sizes.base.factor('md', 'border'),
+        backgroundColor: $color.bg,
+        color: $color.fg,
+        borderColor: $color.shade(-15),
+        boxShadow: $sizes.shadow.factor('lg', 'bottom'),
+        borderBottomWidth: $sizes.border.px,
         borderBottomStyle: 'solid',
         width: '100%',
         position: positionMap[this.type],
@@ -101,6 +103,5 @@ export default {
       }),
     ];
   },
-  inject: ['$layout', '$theme'],
 };
 </script>

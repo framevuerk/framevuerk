@@ -1,21 +1,16 @@
 <template>
   <table
-    :class="[$style.table]"
+    :class="[$style.table, trueType]"
     :css-color="$color"
   >
-    <template v-if="trueType === 'grid'">
-      <thead>
-        <render-slot
-          :slots="labels"
-        />
-      </thead>
-      <tbody>
-        <custom-slot
-          :uid="$.uid"
-          component="TableRow"
-        />
-      </tbody>
-    </template>
+    <thead>
+      <tr>
+        <slot name="labels" />
+      </tr>
+    </thead>
+    <tbody>
+      <slot name="rows" />
+    </tbody>
   </table>
 </template>
 
@@ -44,18 +39,10 @@
 
 <script>
 import color from '../mixins/color';
-import CustomSlot from './_CustomSlot.vue';
-import findSlots from '../utility/findSlots';
-import RenderSlot from './_RenderSlot.vue';
-import _RenderSlot from './_RenderSlot.vue';
 
 export default {
   name: 'Table',
   inject: ['$layout', '$theme'],
-  emits: ['update:current'],
-  components: {
-    CustomSlot,
-  },
   mixins: [
     color,
   ],
@@ -63,9 +50,14 @@ export default {
     type: {
       type: String,
       default: 'smart',
-      validator: (v) => ['grid', 'smart', 'inline'].includes(v),
+      validator: (v) => ['grid', 'breaked', 'smart'].includes(v),
+    },
+    smartBreakWidth: {
+      type: Number,
+      default: 960,
     },
   },
+  emits: ['update:current'],
   provide() {
     return {
       $table: this,
@@ -73,26 +65,33 @@ export default {
   },
   data() {
     return {
-      fields: [], // filled by childs
-      trueType: null,
+      trueType: 'grid',
       resizeListener: null,
-      labels: [],
+      labels: [], // filled by children (TableLabel)
     };
   },
   watch: {
     type: {
       handler(type) {
         this.$nextTick(() => {
-          this.$el.classList.remove('pre-show', 'show');
           if (type === 'smart') {
             this.resizeListener = this.$layout.listen('resize', this.handleLayoutResize, true);
-          } else if (this.scrollListener) {
-            this.trueType = type;
+          } else if (this.resizeListener) {
             this.resizeListener.release();
+            this.trueType = type;
           }
         });
       },
       immediate: true,
+    },
+  },
+  methods: {
+    handleLayoutResize({ width }) {
+      if (width < this.smartBreakWidth) {
+        this.trueType = 'breaked';
+      } else {
+        this.trueType = 'grid';
+      }
     },
   },
   beforeUnmount() {
@@ -100,23 +99,10 @@ export default {
       this.resizeListener.release();
     }
   },
-  mounted() {
-    this.labels = findSlots(this, (slot) => slot.type.name === 'TableLabel');
-  },
-  methods: {
-    handleLayoutResize() {
-      const isLargeLayout = window.innerWidth >= 992;
-      this.trueType = isLargeLayout ? 'grid' : 'inline';
-    },
-  },
-  style({ className, mediaQuery }) {
-    const fieldContainerCommonStyle = {
-      textAlign: 'center',
-      padding: `${this.$theme.sizes.base.factor('md', 'size')}`,
-      backgroundColor: 'transparent',
-      verticalAlign: 'middle',
+  style({ className }) {
+    const fieldCommonStyle = {
+      padding: this.$theme.sizes.base.normal,
     };
-
     return [
       className('table', {
         borderWidth: '1px',
@@ -125,38 +111,35 @@ export default {
         fontSize: this.$theme.sizes.font.factor('md', 'font'),
         width: '100%',
         maxWidth: '100%',
-        '& > thead > th': {
-          ...fieldContainerCommonStyle,
-          borderBottomWidth: '1px',
-          backgroundColor: 'rgba(0, 0, 0, 0.03)',
-          fontWeight: 'bold',
-          '&:not(:last-child)': {
-            [`border-${this.$theme.direction.end}-width`]: '1px',
-          },
-        },
         '& > tbody > tr': {
           '&:nth-child(even)': {
             backgroundColor: this.$theme.colors.primary.autoShade(30, 0.1),
           },
-          '&:not(:last-child) td': {
+          '&:not(:last-child) > td': {
             borderBottomWidth: '1px',
-          },
-          '& td': {
-            ...fieldContainerCommonStyle,
-            '&:not(:last-child)': {
-              [`border-${this.$theme.direction.end}-width`]: '1px',
-            },
           },
           '& tbody tr:nth-child(odd)': {
             backgroundColor: this.$theme.colors.primary.autoShade(30, 0.1),
           },
-          '& > td > .title': {
-            display: 'none',
+        },
+        '&.grid': {
+          '& > tbody > tr > td': {
+            '& > .label': {
+              display: 'none',
+            },
+            '& > .value': {
+              ...fieldCommonStyle,
+              textAlign: 'center',
+            },
+          },
+          '& > thead > tr > th': {
+            ...fieldCommonStyle,
+            borderBottomWidth: '1px',
+            textAlign: 'center',
+            fontWeight: 'bold',
           },
         },
-      }),
-      mediaQuery({ maxWidth: '1200px' }, [
-        className('table', {
+        '&.breaked': {
           '& > thead': {
             display: 'none',
           },
@@ -169,20 +152,20 @@ export default {
               '&:not(:last-child)': {
                 borderBottomWidth: 0,
               },
-              '& > .title': {
-                display: 'block',
+              '& > .label': {
+                ...fieldCommonStyle,
+                flexGrow: 1,
                 textAlign: this.$theme.direction.start,
                 fontWeight: 'bold',
-                minWidth: '20%',
               },
               '& > .value': {
-                flexGrow: '1',
-                textAlign: this.$theme.direction.end,
+                ...fieldCommonStyle,
+                // textAlign: this.$theme.direction.end,
               },
             },
           },
-        }),
-      ]),
+        },
+      }),
     ];
   },
 };
