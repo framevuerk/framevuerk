@@ -1,0 +1,35 @@
+<template data-id="1">
+  <fv-layout>
+    <template #header>
+      <fv-header type="smart"> Header Content </fv-header>
+    </template>
+  </fv-layout>
+</template>
+<script data-id="1">
+export default {
+  config: {
+    title: 'Default',
+    showState: false,
+    showResult: false,
+  },
+}
+</script>
+
+<script>
+export default {
+  props: [
+    {
+      name: 'type',
+      type: 'oneOf \'normal\', \'smart\', \'pinned\'',
+      default: 'smart',
+      description: 'The type of header, \'normal\' will keep on top of content (hide when scrolls), \'pinned\' will keep on top of screen, \'smart\' will keep of top of screen when scrolling up, but hide on scrolling down.',
+    },
+  ],
+  slots: [
+  {
+      name: 'default',
+      description: 'Inner content of element.',
+    }
+  ],
+}
+</script>

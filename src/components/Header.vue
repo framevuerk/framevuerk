@@ -6,24 +6,7 @@
   </header>
 </template>
 
-<doc>
-@prop type @type oneOf('smart', 'normal', 'pinned') @default 'smart' @description Type of header behavior.
-
-@slot default
-</doc>
-
-<example>
-@config state false
-@config example false
-
-<fvLayout>
-  <fvHeader #header> <!-- Content --> </fvHeader>
-  <!-- ... -->
-  <!-- ... -->
-  <!-- ... -->
-</fvLayout>
-
-</example>
+<docs src="./Header.html" />
 
 <script>
 import { offsetTo } from '../utility/utils';
