@@ -26,7 +26,7 @@ export default {
         backgroundColor: $color.bg,
         color: $color.fg,
         borderColor: $color.shade(-15),
-        boxShadow: $sizes.shadow.factor('md', 'top'),
+        // boxShadow: $sizes.shadow.factor('md', 'top'),
         borderTopWidth: $sizes.border.px,
         borderTopStyle: 'solid',
         width: '100%',

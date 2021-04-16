@@ -107,7 +107,7 @@ export default {
         borderColor: $color.shade(-15),
         [`border-${opositePosition}-width`]: $sizes.border.px,
         borderStyle: 'solid',
-        boxShadow: $sizes.shadow.factor('md', opositePosition),
+        // boxShadow: $sizes.shadow.factor('md', opositePosition),
         height: 'auto',
         top: 0,
         '&.pinned': {
