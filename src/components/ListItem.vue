@@ -220,7 +220,9 @@ export default {
           backgroundColor: '#00000020',
         },
         '&.selected > .content': {
-          [`border-${this.$theme.direction.start}-width`]: '3px',
+          fontWeight: 'bold',
+          color: $colors.primary.bg,
+          [`border-${this.$theme.direction.start}-width`]: $sizes.space.px,
           [`border-${this.$theme.direction.start}-color`]: $colors.primary.bg,
         },
         // '&.disabled': {
