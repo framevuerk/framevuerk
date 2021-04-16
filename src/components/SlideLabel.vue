@@ -14,16 +14,12 @@
 </doc>
 
 <script>
-import { inject } from '../utility/vue';
+import { inject, props } from '../utility/vue';
 
 export default {
-  name: 'SlideLabel',
-  props: {
-    value: {
-      type: [String, Number],
-      required: true,
-    },
-  },
+  ...props({
+    value: props.str(),
+  }),
   ...inject('$theme', '$slider'),
   computed: {
     isSelected() {
@@ -36,18 +32,19 @@ export default {
     },
   },
   style({ className }) {
+    const $colors = this.$theme.colors;
     return [
       className('slideLabel', {
         userSelect: 'none',
         flexGrow: 1,
         borderBottomWidth: '3px',
         borderBottomColor: 'transparent',
-        height: this.$theme.sizes.base.factor('md', 'height'),
+        height: this.$theme.sizes.height.px,
         fontWeight: 'bold',
         transition: 'border-bottom-color 200ms',
         '&.selected': {
-          color: this.$theme.colors.primary.normal,
-          borderBottomColor: this.$theme.colors.primary.normal,
+          color: $colors.primary.bg,
+          borderBottomColor: $colors.primary.bg,
         },
       }),
     ];

@@ -11,15 +11,13 @@
 </doc>
 
 <script>
+import { inject, props } from '../utility/vue';
+
 export default {
-  name: 'SlideContent',
-  inject: ['$theme', '$slider'],
-  props: {
-    value: {
-      type: [String, Number],
-      required: true,
-    },
-  },
+  ...inject('$theme', '$slider'),
+  ...props({
+    value: props.str(),
+  }),
   mounted() {
     this.$slider.slides.push(this.value);
   },
@@ -34,7 +32,7 @@ export default {
         flexGrow: 1,
         flexBasis: 0,
         flexShrink: 1,
-        padding: this.$theme.sizes.base.normal,
+        padding: this.$theme.sizes.space.px,
       }),
     ];
   },

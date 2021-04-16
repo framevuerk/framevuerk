@@ -19,9 +19,9 @@ import ListItem from './components/ListItem.vue';
 import Button from './components/Button.vue';
 // import Select from './components/Select.vue';
 // import SelectOption from './components/SelectOption.vue';
-// import Slider from './components/Slider.vue';
-// import SlideContent from './components/SlideContent.vue';
-// import SlideLabel from './components/SlideLabel.vue';
+import Slider from './components/Slider.vue';
+import SlideContent from './components/SlideContent.vue';
+import SlideLabel from './components/SlideLabel.vue';
 // import Table from './components/Table.vue';
 // import TableLabel from './components/TableLabel.vue';
 // import TableField from './components/TableField.vue';
@@ -58,9 +58,9 @@ const install = (vue, userOptions = {}) => {
     Button,
     // Select,
     // SelectOption,
-    // Slider,
-    // SlideContent,
-    // SlideLabel,
+    Slider,
+    SlideContent,
+    SlideLabel,
     // Table,
     // TableLabel,
     // TableField,
@@ -95,9 +95,9 @@ export {
   Button,
   // Select,
   // SelectOption,
-  // Slider,
-  // SlideContent,
-  // SlideLabel,
+  Slider,
+  SlideContent,
+  SlideLabel,
   // Table,
   // TableLabel,
   // TableField,

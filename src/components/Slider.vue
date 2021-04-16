@@ -83,35 +83,18 @@
 import { moveIndex } from '../utility/utils';
 // import findSlots from '../utility/findSlots';
 import Swipe from '../utility/swipe';
-import { inject } from '../utility/vue';
+import { inject, props, provideAs } from '../utility/vue';
 
 export default {
-  name: 'Slider',
   ...inject('$theme'),
   emits: ['update:current'],
-  props: {
-    // eslint-disable-next-line vue/require-prop-types
-    current: {
-      default: undefined,
-    },
-    slidesPerPage: {
-      type: Number,
-      default: 1,
-    },
-    showButtons: {
-      type: Boolean,
-      default: false,
-    },
-    swipeEvents: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  provide() {
-    return {
-      $slider: this,
-    };
-  },
+  ...props({
+    current: props.any(),
+    slidesPerPage: props.num(1),
+    showButtons: props.bool(false),
+    swipeEvents: props.bool(true),
+  }),
+  ...provideAs('$slider'),
   data() {
     return {
       swipe: null,
@@ -210,6 +193,7 @@ export default {
     },
   },
   style({ className }) {
+    const $direction = this.$theme.direction;
     return [
       className('slider', {
         '& > .labels': {
@@ -217,7 +201,7 @@ export default {
           display: 'flex',
           flexDirection: 'row',
           borderBottomWidth: '1px',
-          borderBottomColor: this.$theme.colors.background.shade(-13),
+          borderBottomColor: this.$theme.colors.background.shade(-15),
         },
         '& > .contents': {
           position: 'relative',
@@ -227,16 +211,15 @@ export default {
             top: '50%',
             transform: 'translateY(-50%)',
             '&.next': {
-              [this.$theme.direction.end]: 0,
+              [$direction.end]: 0,
             },
             '&.prev': {
-              [this.$theme.direction.start]: 0,
+              [$direction.start]: 0,
             },
           },
           '& > .inner': {
             display: 'flex',
             flexDirection: 'row',
-            // width: `${this.numberOfSlides * 100}%`,
             transition: 'transform 230ms',
             willChange: 'transform',
           },
