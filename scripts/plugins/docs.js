@@ -11,7 +11,7 @@ module.exports = () => ({
     const scripts = [...source.querySelectorAll('script')];
     const templates = [...source.querySelectorAll('template')];
     const api = scripts.find((tag) => !tag.getAttribute('data-id')).innerHTML.trim().replace('export default ', '');
-    const examples = [...templates].map((rawTemplate) => {
+    const examples = [...templates].filter((tag) => !!tag.getAttribute('data-id')).map((rawTemplate) => {
       const exampleId = rawTemplate.getAttribute('data-id');
       const template = rawTemplate.innerHTML;
       const rawComponent = scripts.find((tag) => tag.getAttribute('data-id') === exampleId);
