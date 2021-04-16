@@ -4,26 +4,7 @@
   </aside>
 </template>
 
-<doc>
-@prop visible @type Boolean @default false @description Sidebar visibility. To use all of fvSidebar functionality, use .sync modifier.
-
-@slot default
-
-@event update:visible @description @params newVisible @description Triggers when sidemenu open/close.
-</doc>
-
-<example>
-@config state false
-@config example false
-
-<fvLayout>
-  <!-- ... -->
-  <fvSidebar #start-sidebar> <!-- Content --> </fvSidebar>
-  <!-- ... -->
-  <!-- ... -->
-</fvLayout>
-
-</example>
+<docs src="./Sidebar.html" />
 
 <script>
 import cancelDetector from '../utility/cancelDetector';
