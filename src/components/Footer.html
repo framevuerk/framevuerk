@@ -1,0 +1,36 @@
+<template data-id="1">
+  <fv-layout>
+    <template #footer>
+      <fv-footer type="normal"> Footer Content </fv-footer>
+    </template>
+  </fv-layout>
+</template>
+
+<script data-id="1">
+export default {
+  config: {
+    title: 'Default',
+    showState: false,
+    showResult: false,
+  },
+}
+</script>
+
+<script>
+export default {
+  props: [
+    {
+      name: 'type',
+      type: 'oneOf \'normal\', \'pinned\'',
+      default: 'smart',
+      description: 'The type of footer, \'normal\' will keep on bottom of content, \'pinned\' will keep on bottom of screen.',
+    },
+  ],
+  slots: [
+  {
+      name: 'default',
+      description: 'Inner content of element.',
+    }
+  ],
+}
+</script>

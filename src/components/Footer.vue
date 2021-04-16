@@ -4,6 +4,8 @@
   </footer>
 </template>
 
+<docs src="./Footer.html" />
+
 <script>
 import { inject, props } from '../utility/vue';
 import color from '../mixins/color';
