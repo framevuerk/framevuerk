@@ -4,22 +4,7 @@
   </div>
 </template>
 
-<doc>
-@slot default
-</doc>
-
-<example>
-@config state false
-@config example false
-
-<fvLayout>
-  <!-- ... -->
-  <!-- ... -->
-  <fvContent #content> <!-- Content --> </fvContent>
-  <!-- ... -->
-</fvLayout>
-
-</example>
+<docs src="./Content.html" />
 
 <script>
 export default {
@@ -28,6 +13,7 @@ export default {
       className('content', {
         flexGrow: 1,
         maxWidth: '100%',
+        minWidth: 0,
       }),
     ];
   },

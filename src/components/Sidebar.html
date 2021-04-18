@@ -1,0 +1,52 @@
+<template data-id="1">
+  <fv-layout>
+    <template #start-sidebar>
+      <fv-sidebar type="unpinned" position="start" v-model:visible="visible"> Sidebar Content </fv-sidebar>
+    </template>
+  </fv-layout>
+</template>
+<script data-id="1">
+export default {
+  config: {
+    title: 'Default',
+    showState: true,
+    showResult: false,
+  },
+  data() {
+    return {
+      visible: false,
+    };
+  },
+}
+</script>
+
+<script>
+export default {
+  props: [
+    {
+      name: 'type',
+      type: 'oneOf \'unpinned\', \'pinned\', \'smart\'',
+      default: 'smart',
+      description: 'The type of sidebar, \'unpinned\' is out of screen and will shows like burger menu, \'pinned\' will keep on screen and shift contents, \'smart\' will auto detect type based on screen size.',
+    },
+    {
+      name: 'visible',
+      type: 'boolean',
+      default: 'false',
+      description: 'Visibility of sidebar.',
+    },
+    {
+      name: 'position',
+      type: 'oneOf \'start\', \'end\'',
+      default: '',
+      description: 'Position of sidebar based on content. note that you also should use sidebar-${position} slot to mark this component for layout component.',
+    },
+  ],
+  slots: [
+  {
+      name: 'default',
+      description: 'Inner content of element.',
+    }
+  ],
+}
+</script>

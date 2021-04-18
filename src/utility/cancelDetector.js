@@ -1,3 +1,5 @@
+import { each } from './utils';
+
 let timeout;
 export default (element, callback) => {
   // hide scroll
@@ -5,12 +7,17 @@ export default (element, callback) => {
   document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
   document.body.style.overflow = 'hidden';
   const overlay = document.createElement('DIV');
-  overlay.style.position = 'fixed';
-  overlay.style.top = 0;
-  overlay.style.left = 0;
-  overlay.style.width = '100%';
-  overlay.style.height = '100%';
-  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.06)';
+  each({
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#00000020',
+    zIndex: 2,
+  }, (key, value) => {
+    overlay.style[key] = value;
+  });
   overlay.dataset.overlay = 'true';
   const parent = element.parentElement;
   parent.insertBefore(overlay, element);
@@ -24,6 +31,8 @@ export default (element, callback) => {
   };
   const onClick = (event) => {
     if (!element.contains(event.target)) {
+      event.preventDefault();
+      event.stopPropagation();
       callback();
     }
   };

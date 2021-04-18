@@ -14,37 +14,37 @@
 </doc>
 
 <script>
+import { inject, props } from '../utility/vue';
+
 export default {
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-  },
-  inject: ['$theme', '$slider'],
+  ...props({
+    value: props.str(),
+  }),
+  ...inject('$theme', '$slider'),
   computed: {
     isSelected() {
-      return this.$slider && this.$slider.current === this.name;
+      return this.$slider.current === this.value;
     },
   },
   methods: {
     onClick() {
-      this.$slider.setCurrent(this.name);
+      this.$slider.setCurrent(this.value);
     },
   },
   style({ className }) {
+    const $colors = this.$theme.colors;
     return [
       className('slideLabel', {
         userSelect: 'none',
         flexGrow: 1,
         borderBottomWidth: '3px',
         borderBottomColor: 'transparent',
-        height: this.$theme.sizes.base.factor('md', 'height'),
+        height: this.$theme.sizes.height.px,
         fontWeight: 'bold',
         transition: 'border-bottom-color 200ms',
         '&.selected': {
-          color: this.$theme.colors.primary.normal,
-          borderBottomColor: this.$theme.colors.primary.normal,
+          color: $colors.primary.bg,
+          borderBottomColor: $colors.primary.bg,
         },
       }),
     ];

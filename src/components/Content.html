@@ -1,0 +1,28 @@
+<template data-id="1">
+  <fv-layout>
+    <template #content>
+      <fv-content> Main Content of App </fv-content>
+    </template>
+  </fv-layout>
+</template>
+
+<script data-id="1">
+export default {
+  config: {
+    title: 'Default',
+    showState: false,
+    showResult: false,
+  },
+}
+</script>
+
+<script>
+export default {
+  slots: [
+  {
+      name: 'default',
+      description: 'Inner content of element.',
+    }
+  ],
+}
+</script>

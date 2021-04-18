@@ -30,6 +30,12 @@ export default {
     color,
     size,
   ],
+  props: {
+    invert: {
+      type: Boolean,
+      default: true,
+    },
+  },
   style({ className, keyFrames }) {
     const $color = this.$theme.colors[this.$color];
     const $size = this.$theme.sizes.base.factor(this.$size, 'height');
@@ -46,10 +52,10 @@ export default {
           height: $size,
           width: $size,
           clear: 'both',
-          verticalAlign: 'middle',
+          verticalAlign: 'top',
           border: `${$borderSize} solid`,
-          borderColor: 'rgba(0, 0, 0, 0.1)',
-          borderTopColor: $color.normal,
+          borderColor: $color.autoShade(20, 0.5),
+          borderTopColor: this.invert ? $color.text : $color.normal,
           borderRadius: $size,
           animation: `${keyFrames('loadingAnimation')} ${$animationSpeed} infinite linear`,
         },

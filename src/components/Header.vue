@@ -6,65 +6,58 @@
   </header>
 </template>
 
-<doc>
-@prop type @type oneOf('smart', 'normal', 'pinned') @default 'smart' @description Type of header behavior.
-
-@slot default
-</doc>
-
-<example>
-@config state false
-@config example false
-
-<fvLayout>
-  <fvHeader #header> <!-- Content --> </fvHeader>
-  <!-- ... -->
-  <!-- ... -->
-  <!-- ... -->
-</fvLayout>
-
-</example>
+<docs src="./Header.html" />
 
 <script>
 import { offsetTo } from '../utility/utils';
+import color from '../mixins/color';
+import { inject, props } from '../utility/vue';
 
 export default {
-  props: {
-    type: {
-      type: String,
-      default: 'smart',
-      validator: (v) => ['normal', 'smart', 'pinned'].includes(v),
-    },
-  },
+  mixins: [color('header')],
+  ...inject('$theme', '$layout'),
+  ...props({
+    type: props.oneOf(['normal', 'smart', 'pinned'], 'smart'),
+  }),
   data() {
     return {
       offsetToParent: 0,
+      scrollListener: null,
     };
   },
+  watch: {
+    type: {
+      handler(type) {
+        this.$nextTick(() => {
+          this.$el.classList.remove('pre-show', 'show');
+          if (type === 'smart') {
+            this.scrollListener = this.$layout.listen('scroll', this.handleLayoutScroll);
+          } else if (this.scrollListener) {
+            this.scrollListener.release();
+          }
+        });
+      },
+      immediate: true,
+    },
+  },
   mounted() {
-    if (this.type === 'smart') {
-      this.offsetToParent = offsetTo(this.$el, null).top;
-      this.$layout.on('scroll', this.handleSmart);
+    this.offsetToParent = offsetTo(this.$el, null).top;
+  },
+  beforeUnmount() {
+    if (this.scrollListener) {
+      this.scrollListener.release();
     }
   },
-  beforeDestroy() {
-    this.$layout.off('scroll', this.handleSmart);
-  },
   methods: {
-    handleSmart(scrollTop, direction) {
-      if (scrollTop > this.offsetToParent) {
-        this.$el.classList.add('pre-show');
-        if (direction === 'down') {
-          this.$el.classList.remove('show');
-        } else {
-          this.$el.classList.add('show');
-        }
-      } else {
-        this.$el.classList.remove('pre-show');
-      }
+    handleLayoutScroll({ scrollTop, direction }) {
+      const { classList } = this.$el;
+      classList[scrollTop > this.offsetToParent ? 'add' : 'remove']('pre-show');
+      classList[direction === 'down' ? 'remove' : 'add']('show');
     },
   },
   style({ className }) {
+    const $color = this.$theme.colors[this.$color];
+    const $sizes = this.$theme.sizes;
     const positionMap = {
       normal: 'static',
       smart: 'sticky',
@@ -72,11 +65,11 @@ export default {
     };
     return [
       className('header', {
-        backgroundColor: this.$theme.colors.header.normal,
-        color: this.$theme.colors.header.text,
-        borderColor: this.$theme.colors.header.shade(-15),
-        boxShadow: this.$theme.sizes.shadow.factor('md', 'shadow', { dir: 'bottom' }),
-        borderBottomWidth: this.$theme.sizes.base.factor('md', 'border'),
+        backgroundColor: $color.bg,
+        color: $color.fg,
+        borderColor: $color.shade(-15),
+        boxShadow: $sizes.shadow.factor('lg', 'bottom'),
+        borderBottomWidth: $sizes.border.px,
         borderBottomStyle: 'solid',
         width: '100%',
         position: positionMap[this.type],
@@ -93,6 +86,5 @@ export default {
       }),
     ];
   },
-  inject: ['$layout', '$theme'],
 };
 </script>

@@ -1,73 +1,58 @@
 <template>
-  <component
-    :is="tag"
-  >
-    <!-- eslint-disable vue/no-v-html -->
+  <td>
     <div
-      v-if="tag === 'td'"
-      class="title"
-      @click="simulateClick"
-      v-html="titleContent()"
-    />
-    <!-- eslint-enable vue/no-v-html -->
+      v-if="label"
+      class="label"
+      @click="emitLabelClick"
+    >
+      <render-slot
+        :slots="labelSlot"
+      />
+    </div>
     <div
-      :class="tag === 'td' ? 'value' : 'title'"
-      @click="onClick"
+      class="value"
+      @click="emitClick"
     >
       <slot />
     </div>
-  </component>
+  </td>
 </template>
 
-<doc>
-@doc @description Use for both field title and field value inside Table component. Check Table component to view example.
-@prop name* @type String @description Field unique id.
-@event click @params event @description Triggers when user clicks on field.
-@slot default
-</doc>
-
 <script>
+import RenderSlot from './_RenderSlot.vue';
+
 export default {
-  inject: {
-    $table: {},
-    $row: {
-      default: null,
-    },
+  components: {
+    RenderSlot,
   },
+  emits: ['click'],
+  inject: ['$table', '$theme'],
   props: {
-    name: {
-      type: String,
+    value: {
+      type: [String, Number],
       required: true,
     },
   },
   computed: {
-    tag() {
-      return this.$row ? 'td' : 'th';
+    label() {
+      return this.$table.labels.find((item) => item.value === this.value);
     },
-  },
-  created() {
-    if (!this.$row) {
-      this.$table.fields.push(this);
-    }
-  },
-  methods: {
-    titleContent() {
+    labelSlot() {
       try {
-        const thComponent = this.$table.fields.find((field) => field.name === this.name);
-        return thComponent.$el.innerHTML;
+        return this.label.$slots.default();
       } catch (_e) {
-        return '';
+        return null;
       }
     },
-    simulateClick(e) {
-      try {
-        const thComponent = this.$table.fields.find((field) => field.name === this.name);
-        thComponent.onClick(e);
-      // eslint-disable-next-line no-empty
-      } catch (_e) {}
-    },
-    onClick(e) {
+  },
+  methods: {
+    emitClick(e) {
       this.$emit('click', e);
+    },
+    emitLabelClick(e) {
+      if (this.label) {
+        this.label.emitClick(e);
+      }
     },
   },
 };

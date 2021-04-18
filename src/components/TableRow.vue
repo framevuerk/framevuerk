@@ -1,8 +1,6 @@
 <template>
-  <tr
-    @click="onClick"
-  >
-    <slot name="td" />
+  <tr>
+    <slot />
   </tr>
 </template>
 
@@ -13,21 +11,5 @@
 </doc>
 
 <script>
-export default {
-  provide() {
-    return {
-      $row: this,
-    };
-  },
-  data() {
-    return {
-      fields: [], // will fill by children
-    };
-  },
-  methods: {
-    onClick(event) {
-      this.$emit('click', event);
-    },
-  },
-};
+export default {};
 </script>

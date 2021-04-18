@@ -3,31 +3,26 @@
     :is="tag"
     :class="[$style.listItem, disabled && 'disabled', selected && 'selected', isHighlighted && 'highlighted']"
     :to="$attrs.to"
-    tabindex="-1"
-    @focus.capture="onFocus"
+    :data-list-item-focusable="isFocusable"
+    :tabindex="isFocusable ? 0 : -1"
+    @keydown.self="onKeydown"
   >
     <div
       class="content"
-      css-padding-x="md"
-      @mouseenter.stop="onMouseEnter"
       @click="onClick"
     >
       <span
         v-for="i in $list.indent - 1"
         :key="'indent-' + i"
-        css-space-x="lg"
+        class="indent"
       />
+      <slot name="default" />
       <span
         v-if="hasSubList"
-        class="expand-btn"
-        css-radius="no"
-        css-shadow="no"
-        css-cursor="pointer"
-        css-text-size="lg"
+        class="expand"
       >
-        {{ isExpanded ? '-' : '+' }}
+        {{ isExpanded ? '⏶' : '⏷' }}
       </span>
-      <slot name="default" />
     </div>
     <div
       v-if="hasSubList"
@@ -86,43 +81,41 @@
 </example>
 
 <script>
-import { hasSlot } from '../utility/utils';
 import size from '../mixins/size';
+import { moveIndex } from '../utility/utils';
+import { inject, props, provideAs } from '../utility/vue';
 
 export default {
   mixins: [size],
-  inject: ['$theme', '$list'],
-  props: {
-    tag: {
-      type: String,
-      default: 'li',
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    selected: {
-      type: Boolean,
-      default: false,
-    },
-    expanded: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  emits: ['click', 'collapse', 'expand'],
+  ...inject('$theme', '$list', ['$listItem', null]),
+  ...props({
+    tag: props.str('li'),
+    disabled: props.bool(false),
+    selected: props.bool(false),
+    expanded: props.bool(false),
+  }),
+  ...provideAs('$listItem'),
   data() {
     return {
       isHighlighted: false,
-      isExpanded: this.expanded,
+      isExpanded: this.hasSubList ? this.expanded : true,
     };
   },
   computed: {
     hasSubList() {
-      return hasSlot(this, 'sub-list');
+      return !!this.$slots['sub-list'];
+    },
+    isFocusable() {
+      return this.$list.isFocusable && (!this.$listItem || this.$listItem.isExpanded);
     },
   },
   watch: {
+    expanded(value) {
+      this.isExpanded = value;
+    },
     isExpanded(value) {
+      if (!this.$refs.subList) return;
       if (value) {
         this.$refs.subList.style.display = 'block';
         this.$refs.subList.style.height = `${this.$refs.subList.children[0].offsetHeight}px`;
@@ -142,9 +135,6 @@ export default {
       }
     },
   },
-  created() {
-    this.$list.moveHighlight('reset');
-  },
   methods: {
     expand() {
       this.isExpanded = true;
@@ -155,44 +145,62 @@ export default {
     toggle() {
       this.isExpanded = !this.isExpanded;
     },
-    onClick(event) {
-      if (!this.disabled) {
-        if (this.hasSubList) {
-          this.toggle();
-        }
-        this.$emit('click', event);
-        if (event.type === 'keydown') {
-          try {
-            this.$el.click(); // click on root element manually (links, etc)
-            event.stopPropagation();
-          } catch (_e) {
-            //
+    onClick(e) {
+      this.toggle();
+      this.$emit('click', e);
+    },
+    onKeydown(e) {
+      const k = e.which;
+      if (this.$list.isFocusable && ((k > 36 && k < 41))) {
+        e.preventDefault();
+        const all = document.querySelectorAll('[data-list-item-focusable="true"]');
+        if ([38, 40].includes(k)) {
+          const myIndex = (() => {
+            for (let i = 0; i < all.length; i += 1) {
+              if (all[i] === this.$el) {
+                return i;
+              }
+            }
+            return -1;
+          })();
+          if (myIndex !== -1) {
+            const nextFocusingEl = all[moveIndex(myIndex + (k === 38 ? -1 : 1), all.length)];
+            nextFocusingEl.focus();
+          }
+        } else if ([37, 39].includes(k) && this.hasSubList) {
+          if (k === this.$theme.direction.endKey) {
+            this.expand();
+          } else {
+            this.collapse();
           }
         }
       }
     },
-    onMouseEnter() {
-      if (!this.disabled) {
-        this.$list.moveHighlight('set', this);
-      }
-    },
-    onFocus(event) {
-      event.preventDefault();
-    },
   },
   style({ className }) {
+    const $colors = this.$theme.colors;
+    const $sizes = this.$theme.sizes;
+    const { $size } = this;
+    const height = $sizes.height.factor($size);
     return [
       className('listItem', {
         display: 'block',
-        borderTopWidth: '1px',
+        borderTopWidth: $sizes.border.px,
         overflow: 'hidden',
         '& > .content': {
           opacity: this.disabled ? 0.5 : 1,
-          fontSize: this.$theme.sizes.font.factor(this.$size, 'font'),
-          height: this.$theme.sizes.base.factor(this.$size, 'height'),
-          lineHeight: this.$theme.sizes.base.factor(this.$size, 'height'),
-          [`border-${this.$theme.direction.start}-width`]: this.$theme.sizes.base.normal,
-          [`border-${this.$theme.direction.start}-color`]: 'transparent',
+          fontSize: $sizes.font.factor($size),
+          padding: `0 ${$sizes.space.factor($size)}`,
+          height,
+          lineHeight: height,
+          '& > .indent': {
+            marginLeft: $sizes.space.factor('lg'),
+          },
+          '& > .expand': {
+            float: this.$theme.direction.end,
+            cursor: 'pointer',
+            padding: `0 ${$sizes.space.factor($size)}`,
+          },
         },
         '& > .sub-list': {
           overflowY: 'visible',
@@ -200,7 +208,7 @@ export default {
           transitionProperty: 'height',
           willChange: 'height',
           transitionTimingFunction: 'ease',
-          borderTopWidth: '1px',
+          borderTopWidth: $sizes.border.px,
           '&.collapse': {
             height: 0,
           },
@@ -208,11 +216,14 @@ export default {
             height: 'auto',
           },
         },
-        '&.highlighted > .content': {
-          backgroundColor: 'rgba(0, 0, 0, 0.06)',
+        '&:focus > .content, & > .content:hover': {
+          backgroundColor: '#00000020',
         },
         '&.selected > .content': {
-          [`border-${this.$theme.direction.start}-color`]: this.$theme.colors.primary.normal,
+          fontWeight: 'bold',
+          color: $colors.primary.bg,
+          [`border-${this.$theme.direction.start}-width`]: $sizes.space.px,
+          [`border-${this.$theme.direction.start}-color`]: $colors.primary.bg,
         },
         // '&.disabled': {
         //   textDecoration: 'line-through',

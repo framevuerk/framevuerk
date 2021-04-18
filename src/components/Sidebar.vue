@@ -1,132 +1,123 @@
 <template>
-  <aside :class="[$style.sidebar, visible ? 'show' : 'hide']">
+  <aside :class="[$style.sidebar, trueType, visible ? 'show' : 'hide']">
     <slot />
   </aside>
 </template>
 
-
-<doc>
-@prop visible @type Boolean @default false @description Sidebar visibility. To use all of fvSidebar functionality, use .sync modifier.
-
-@slot default
-
-@event update:visible @description @params newVisible @description Triggers when sidemenu open/close.
-</doc>
-
-
-<example>
-@config state false
-@config example false
-
-<fvLayout>
-  <!-- ... -->
-  <fvSidebar #start-sidebar> <!-- Content --> </fvSidebar>
-  <!-- ... -->
-  <!-- ... -->
-</fvLayout>
-
-</example>
+<docs src="./Sidebar.html" />
 
 <script>
 import cancelDetector from '../utility/cancelDetector';
+import { inject, props } from '../utility/vue';
+import color from '../mixins/color';
 
 export default {
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  mixins: [color('sidebar')],
+  emits: ['update:visible'],
+  ...inject('$theme', '$layout'),
+  ...props({
+    visible: props.bool(false),
+    position: props.oneOf(['start', 'end']),
+    type: props.oneOf(['smart', 'pinned', 'unpinned'], 'smart'),
+  }),
   data() {
     return {
-      lastCapturedViewportWidth: 0,
       cancelDetector: null,
+      resizeListener: null,
+      trueType: null,
     };
   },
   watch: {
-    visible(newValue) {
+    visible(visible) {
       if (this.cancelDetector) {
         this.cancelDetector.release();
       }
-      if (newValue && window.innerWidth < 992) {
+      if (visible && this.trueType === 'unpinned') {
         this.cancelDetector = cancelDetector(this.$el, this.toggle);
       }
     },
+    type: {
+      handler(type) {
+        if (type === 'smart') {
+          this.$nextTick(() => {
+            this.resizeListener = this.$layout.listen('resize', this.handleLayoutResize, true);
+          });
+        } else {
+          this.trueType = this.type;
+          if (this.resizeListener) {
+            this.resizeListener.release();
+          }
+        }
+      },
+      immediate: true,
+    },
   },
-  mounted() {
-    if (window.innerWidth < 992) {
-      this.$emit('update:visible', false);
-    } else {
-      this.$emit('update:visible', true);
-    }
-    this.$layout.on('resize', this.handleResize);
-  },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.cancelDetector) {
       this.cancelDetector.release();
     }
-    this.$layout.off('resize', this.handleResize);
+    if (this.resizeListener) {
+      this.resizeListener.release();
+    }
   },
   methods: {
     toggle() {
       this.$emit('update:visible', !this.visible);
     },
-    handleSmart() {
+    handleLayoutResize() {
+      const isLargeLayout = window.innerWidth >= 992;
       this.$el.style.transitionDuration = '0s';
-      this.$emit('update:visible', window.innerWidth >= 992);
-      this.className = window.innerWidth >= 992 ? 'pinned' : 'unattached';
+      this.$emit('update:visible', isLargeLayout);
+      this.trueType = isLargeLayout ? 'pinned' : 'unpinned';
       setTimeout(() => {
         this.$el.style.transitionDuration = null;
       });
     },
-    handleResize() {
-      if (window.innerWidth !== this.lastCapturedViewportWidth) {
-        this.handleSmart();
-        this.lastCapturedViewportWidth = window.innerWidth;
-      }
-    },
   },
-  style({ className, mediaQuery }) {
-    const position = this.$theme.direction[this.$layout.getSidebarPosition(this)];
+  style({ className }) {
+    const position = this.$theme.direction.static(this.position);
+    const opositePosition = position === 'left' ? 'right' : 'left';
+    const $color = this.$theme.colors[this.$color];
+    const $speed = this.$theme.speed;
+    const $sizes = this.$theme.sizes;
+    const $direction = this.$theme.direction;
     return [
       className('sidebar', {
-        backgroundColor: this.$theme.colors.sidebar.normal,
-        color: this.$theme.colors.sidebar.text,
-        borderColor: this.$theme.colors.sidebar.shade(-15),
-        minHeight: '100%',
-        [position]: 0,
-        overflowX: 'hidden !important',
-        transition: `transform ${this.$theme.speed.normal} ease`,
-        position: 'relative',
+        backgroundColor: $color.bg,
+        color: $color.fg,
+        borderColor: $color.shade(-15),
+        [`border-${opositePosition}-width`]: $sizes.border.px,
+        borderStyle: 'solid',
+        // boxShadow: $sizes.shadow.factor('md', opositePosition),
+        height: 'auto',
+        top: 0,
+        '&.pinned': {
+          [position]: 0,
+          overflowX: 'hidden !important',
+          transition: `transform ${$speed.ms} ease`,
+          position: 'relative',
+          '&.hide': {
+            position: 'fixed',
+            height: '100%',
+          },
+        },
+        '&.unpinned': {
+          overflow: 'auto',
+          position: 'fixed',
+          transition: `transform ${$speed.ms} ease-in-out`,
+          zIndex: 2,
+          [`border-${position}-width`]: $sizes.border.px,
+          [`border-${position}-style`]: 'solid',
+          height: '100%',
+        },
         '&.show': {
           transform: 'translateX(0) !important',
         },
         '&.hide': {
-          position: 'fixed',
-          transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
+          transform: `translateX(${$direction[`${position}Factor`] * -100}%)`,
         },
       }),
-      mediaQuery({ maxWidth: '991px' }, [
-        className('sidebar', {
-          top: '0',
-          height: '100%',
-          maxHeight: '100%',
-          overflow: 'auto',
-          position: 'fixed',
-          transition: `transform ${this.$theme.speed.normal} ease-in-out`,
-          zIndex: 2,
-          '&.show': {
-            transform: 'translateX(0) !important',
-          },
-          [`border-${position}-width`]: this.$theme.sizes.base.factor('md', 'border'),
-          [`border-${position}-style`]: 'solid',
-          '&.hide': {
-            transform: `translateX(${this.$theme.direction[`${position}Factor`] * -100}%)`,
-          },
-        }),
-      ]),
     ];
   },
-  inject: ['$layout', '$theme'],
 };
 </script>

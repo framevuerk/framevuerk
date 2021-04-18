@@ -1,17 +1,18 @@
 <template>
   <table
-    :class="[$style.table]"
+    :class="[$style.table, trueType]"
     :css-color="$color"
   >
     <thead>
-      <slot name="th" />
+      <tr>
+        <slot name="labels" />
+      </tr>
     </thead>
     <tbody>
-      <slot name="tr" />
+      <slot name="rows" />
     </tbody>
   </table>
 </template>
-
 
 <doc>
 @doc @description Try resize window to check style changes based on viewport size.
@@ -36,15 +37,27 @@
 </fvTable>
 </example>
 
-
 <script>
 import color from '../mixins/color';
 
 export default {
-  inject: ['$theme'],
+  name: 'Table',
+  inject: ['$layout', '$theme'],
   mixins: [
     color,
   ],
+  props: {
+    type: {
+      type: String,
+      default: 'smart',
+      validator: (v) => ['grid', 'breaked', 'smart'].includes(v),
+    },
+    smartBreakWidth: {
+      type: Number,
+      default: 960,
+    },
+  },
+  emits: ['update:current'],
   provide() {
     return {
       $table: this,
@@ -52,22 +65,44 @@ export default {
   },
   data() {
     return {
-      fields: [], // filled by childs
+      trueType: 'grid',
+      resizeListener: null,
+      labels: [], // filled by children (TableLabel)
     };
   },
-  mounted() {
-    if (this.type === 'smart') {
-      this.handleSmart();
+  watch: {
+    type: {
+      handler(type) {
+        this.$nextTick(() => {
+          if (type === 'smart') {
+            this.resizeListener = this.$layout.listen('resize', this.handleLayoutResize, true);
+          } else if (this.resizeListener) {
+            this.resizeListener.release();
+            this.trueType = type;
+          }
+        });
+      },
+      immediate: true,
+    },
+  },
+  methods: {
+    handleLayoutResize({ width }) {
+      if (width < this.smartBreakWidth) {
+        this.trueType = 'breaked';
+      } else {
+        this.trueType = 'grid';
+      }
+    },
+  },
+  beforeUnmount() {
+    if (this.resizeListener) {
+      this.resizeListener.release();
     }
   },
-  style({ className, mediaQuery }) {
-    const fieldContainerCommonStyle = {
-      textAlign: 'center',
-      padding: `${this.$theme.sizes.base.factor('md', 'size')}`,
-      backgroundColor: 'transparent',
-      verticalAlign: 'middle',
+  style({ className }) {
+    const fieldCommonStyle = {
+      padding: this.$theme.sizes.base.normal,
     };
-
     return [
       className('table', {
         borderWidth: '1px',
@@ -76,38 +111,35 @@ export default {
         fontSize: this.$theme.sizes.font.factor('md', 'font'),
         width: '100%',
         maxWidth: '100%',
-        '& > thead > th': {
-          ...fieldContainerCommonStyle,
-          borderBottomWidth: '1px',
-          backgroundColor: 'rgba(0, 0, 0, 0.03)',
-          fontWeight: 'bold',
-          '&:not(:last-child)': {
-            [`border-${this.$theme.direction.end}-width`]: '1px',
-          },
-        },
         '& > tbody > tr': {
           '&:nth-child(even)': {
             backgroundColor: this.$theme.colors.primary.autoShade(30, 0.1),
           },
-          '&:not(:last-child) td': {
+          '&:not(:last-child) > td': {
             borderBottomWidth: '1px',
-          },
-          '& td': {
-            ...fieldContainerCommonStyle,
-            '&:not(:last-child)': {
-              [`border-${this.$theme.direction.end}-width`]: '1px',
-            },
           },
           '& tbody tr:nth-child(odd)': {
             backgroundColor: this.$theme.colors.primary.autoShade(30, 0.1),
           },
-          '& > td > .title': {
-            display: 'none',
+        },
+        '&.grid': {
+          '& > tbody > tr > td': {
+            '& > .label': {
+              display: 'none',
+            },
+            '& > .value': {
+              ...fieldCommonStyle,
+              textAlign: 'center',
+            },
+          },
+          '& > thead > tr > th': {
+            ...fieldCommonStyle,
+            borderBottomWidth: '1px',
+            textAlign: 'center',
+            fontWeight: 'bold',
           },
         },
-      }),
-      mediaQuery({ maxWidth: '1200px' }, [
-        className('table', {
+        '&.breaked': {
           '& > thead': {
             display: 'none',
           },
@@ -120,20 +152,20 @@ export default {
               '&:not(:last-child)': {
                 borderBottomWidth: 0,
               },
-              '& > .title': {
-                display: 'block',
+              '& > .label': {
+                ...fieldCommonStyle,
+                flexGrow: 1,
                 textAlign: this.$theme.direction.start,
                 fontWeight: 'bold',
-                minWidth: '20%',
               },
               '& > .value': {
-                flexGrow: '1',
-                textAlign: this.$theme.direction.end,
+                ...fieldCommonStyle,
+                // textAlign: this.$theme.direction.end,
               },
             },
           },
-        }),
-      ]),
+        },
+      }),
     ];
   },
 };
